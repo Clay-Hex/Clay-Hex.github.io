@@ -1,0 +1,3 @@
+User-agent: *
+Disallow:
+Sitemap: https://CLay-Hex.github.io/sitemap.xml
