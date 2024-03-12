@@ -1,11 +1,152 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Clay-Hex&#39;s Blog</title>
+    <title>Clay&#39;s Blog</title>
     <link>https://Clay-Hex.github.io/</link>
-    <description>Recent content on Clay-Hex&#39;s Blog</description>
+    <description>Recent content on Clay&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
+    <lastBuildDate>Fri, 18 Nov 2022 00:39:31 +0800</lastBuildDate>
     <atom:link href="https://Clay-Hex.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>C&#43;&#43;学习记录(15) 条件变量与互斥锁</title>
+      <link>https://Clay-Hex.github.io/posts/2022/11/cpp-conditional-variables-lock/</link>
+      <pubDate>Fri, 18 Nov 2022 00:39:31 +0800</pubDate>
+      <guid>https://Clay-Hex.github.io/posts/2022/11/cpp-conditional-variables-lock/</guid>
+      <description>c&#43;&#43;中的条件变量与互斥锁</description>
+    </item>
+    <item>
+      <title>C&#43;&#43;学习记录(14) 构造函数与析构函数</title>
+      <link>https://Clay-Hex.github.io/posts/2022/04/cpp-constructors-destructors/</link>
+      <pubDate>Tue, 26 Apr 2022 11:48:13 +0800</pubDate>
+      <guid>https://Clay-Hex.github.io/posts/2022/04/cpp-constructors-destructors/</guid>
+      <description>c&#43;&#43;中的构造函数与析构函数</description>
+    </item>
+    <item>
+      <title>常见排序算法及稳定性</title>
+      <link>https://Clay-Hex.github.io/posts/2021/12/sorting-algorithm-stability/</link>
+      <pubDate>Mon, 20 Dec 2021 20:04:26 +0800</pubDate>
+      <guid>https://Clay-Hex.github.io/posts/2021/12/sorting-algorithm-stability/</guid>
+      <description>常见排序算法模板及稳定性</description>
+    </item>
+    <item>
+      <title>📖 关于</title>
+      <link>https://Clay-Hex.github.io/about/</link>
+      <pubDate>Sat, 06 Nov 2021 14:57:28 +0800</pubDate>
+      <guid>https://Clay-Hex.github.io/about/</guid>
+      <description>I&amp;rsquo;m Clay. 能力不高，水平有限，但TM总想写点什么。 这是第N次搭博客，希望不会有N+1次。 2024年3月·上海</description>
+    </item>
+    <item>
+      <title>C&#43;&#43;学习记录(13) new与delete</title>
+      <link>https://Clay-Hex.github.io/posts/2021/08/cpp-new-and-delete/</link>
+      <pubDate>Fri, 20 Aug 2021 22:23:55 +0800</pubDate>
+      <guid>https://Clay-Hex.github.io/posts/2021/08/cpp-new-and-delete/</guid>
+      <description>c&#43;&#43;中的new与delete</description>
+    </item>
+    <item>
+      <title>C&#43;&#43;学习记录(12) 类型转换</title>
+      <link>https://Clay-Hex.github.io/posts/2021/08/cpp-type-conversion/</link>
+      <pubDate>Mon, 02 Aug 2021 21:07:40 +0800</pubDate>
+      <guid>https://Clay-Hex.github.io/posts/2021/08/cpp-type-conversion/</guid>
+      <description>c&#43;&#43;中的类型转换</description>
+    </item>
+    <item>
+      <title>C&#43;&#43;学习记录(11) 智能指针</title>
+      <link>https://Clay-Hex.github.io/posts/2021/07/cpp-smart-pointers/</link>
+      <pubDate>Sat, 10 Jul 2021 22:26:24 +0800</pubDate>
+      <guid>https://Clay-Hex.github.io/posts/2021/07/cpp-smart-pointers/</guid>
+      <description>c&#43;&#43;中的智能指针</description>
+    </item>
+    <item>
+      <title>C&#43;&#43;学习记录(10) 内存对齐</title>
+      <link>https://Clay-Hex.github.io/posts/2021/06/cpp-memory-alignment/</link>
+      <pubDate>Fri, 25 Jun 2021 21:26:00 +0800</pubDate>
+      <guid>https://Clay-Hex.github.io/posts/2021/06/cpp-memory-alignment/</guid>
+      <description>c&#43;&#43;中的内存对齐问题</description>
+    </item>
+    <item>
+      <title>C&#43;&#43;学习记录(9) 常量折叠</title>
+      <link>https://Clay-Hex.github.io/posts/2021/06/cpp-constant-folding/</link>
+      <pubDate>Thu, 24 Jun 2021 09:09:56 +0800</pubDate>
+      <guid>https://Clay-Hex.github.io/posts/2021/06/cpp-constant-folding/</guid>
+      <description>关于c&#43;&#43;中的常量折叠问题</description>
+    </item>
+    <item>
+      <title>C&#43;&#43;学习记录(8) 模板</title>
+      <link>https://Clay-Hex.github.io/posts/2021/02/cpp-template/</link>
+      <pubDate>Sat, 20 Feb 2021 14:25:23 +0800</pubDate>
+      <guid>https://Clay-Hex.github.io/posts/2021/02/cpp-template/</guid>
+      <description>c&#43;&#43;中的模板</description>
+    </item>
+    <item>
+      <title>C&#43;&#43;学习记录(7) 多态</title>
+      <link>https://Clay-Hex.github.io/posts/2021/02/cpp-polymorphic/</link>
+      <pubDate>Wed, 17 Feb 2021 17:14:03 +0800</pubDate>
+      <guid>https://Clay-Hex.github.io/posts/2021/02/cpp-polymorphic/</guid>
+      <description>c&#43;&#43;中的多态</description>
+    </item>
+    <item>
+      <title>C&#43;&#43;学习记录(6) 继承</title>
+      <link>https://Clay-Hex.github.io/posts/2021/02/cpp-inheritance/</link>
+      <pubDate>Wed, 17 Feb 2021 14:56:59 +0800</pubDate>
+      <guid>https://Clay-Hex.github.io/posts/2021/02/cpp-inheritance/</guid>
+      <description>c&#43;&#43;中的继承问题</description>
+    </item>
+    <item>
+      <title>C&#43;&#43;学习记录(5) 类</title>
+      <link>https://Clay-Hex.github.io/posts/2021/02/cpp-class/</link>
+      <pubDate>Wed, 17 Feb 2021 14:56:45 +0800</pubDate>
+      <guid>https://Clay-Hex.github.io/posts/2021/02/cpp-class/</guid>
+      <description>c&#43;&#43;中的类</description>
+    </item>
+    <item>
+      <title>C&#43;&#43;学习记录(4) 引用</title>
+      <link>https://Clay-Hex.github.io/posts/2021/02/cpp-reference/</link>
+      <pubDate>Tue, 16 Feb 2021 19:25:59 +0800</pubDate>
+      <guid>https://Clay-Hex.github.io/posts/2021/02/cpp-reference/</guid>
+      <description>c&#43;&#43;中的引用</description>
+    </item>
+    <item>
+      <title>C&#43;&#43;学习记录(3) 常量指针与指针常量</title>
+      <link>https://Clay-Hex.github.io/posts/2021/02/cpp-constant-pointer-and-pointer-constant/</link>
+      <pubDate>Mon, 15 Feb 2021 22:05:41 +0800</pubDate>
+      <guid>https://Clay-Hex.github.io/posts/2021/02/cpp-constant-pointer-and-pointer-constant/</guid>
+      <description>c&#43;&#43;中的常量指针与指针常量</description>
+    </item>
+    <item>
+      <title>单调栈与单调队列详解</title>
+      <link>https://Clay-Hex.github.io/posts/2021/02/monotone-stack-monotone-queue/</link>
+      <pubDate>Tue, 09 Feb 2021 12:58:52 +0800</pubDate>
+      <guid>https://Clay-Hex.github.io/posts/2021/02/monotone-stack-monotone-queue/</guid>
+      <description>关于单调栈与单调队列的一些问题</description>
+    </item>
+    <item>
+      <title>C&#43;&#43;学习记录(2) Lambda表达式（匿名函数）</title>
+      <link>https://Clay-Hex.github.io/posts/2021/01/cpp-lambda-function/</link>
+      <pubDate>Thu, 28 Jan 2021 17:27:47 +0800</pubDate>
+      <guid>https://Clay-Hex.github.io/posts/2021/01/cpp-lambda-function/</guid>
+      <description>c&#43;&#43;中的匿名函数</description>
+    </item>
+    <item>
+      <title>C&#43;&#43;学习记录(1) 重写、重载、重构三者区别</title>
+      <link>https://Clay-Hex.github.io/posts/2021/01/cpp-override-overload-refactoring/</link>
+      <pubDate>Thu, 28 Jan 2021 12:33:10 +0800</pubDate>
+      <guid>https://Clay-Hex.github.io/posts/2021/01/cpp-override-overload-refactoring/</guid>
+      <description>重写 重载 重构</description>
+    </item>
+    <item>
+      <title>扩展欧几里得算法详解及C&#43;&#43;代码实现</title>
+      <link>https://Clay-Hex.github.io/posts/2020/09/exgcd-cpp-code/</link>
+      <pubDate>Sun, 06 Sep 2020 22:22:28 +0800</pubDate>
+      <guid>https://Clay-Hex.github.io/posts/2020/09/exgcd-cpp-code/</guid>
+      <description>扩展欧几里得算法及其代码实现</description>
+    </item>
+    <item>
+      <title>对快速幂代码的理解</title>
+      <link>https://Clay-Hex.github.io/posts/2020/03/quick-power/</link>
+      <pubDate>Mon, 02 Mar 2020 19:33:46 +0800</pubDate>
+      <guid>https://Clay-Hex.github.io/posts/2020/03/quick-power/</guid>
+      <description>关于快速幂</description>
+    </item>
   </channel>
 </rss>

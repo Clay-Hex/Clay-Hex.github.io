@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="zh" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>C&#43;&#43;学习记录(3) 常量指针与指针常量 | Clay&#39;s Blog</title>
+<meta name="keywords" content="C&#43;&#43;">
+<meta name="description" content="c&#43;&#43;中的常量指针与指针常量">
+<meta name="author" content="Clay">
+<link rel="canonical" href="https://Clay-Hex.github.io/posts/2021/02/cpp-constant-pointer-and-pointer-constant/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.js" onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://Clay-Hex.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Clay-Hex.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Clay-Hex.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Clay-Hex.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Clay-Hex.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="zh" href="https://Clay-Hex.github.io/posts/2021/02/cpp-constant-pointer-and-pointer-constant/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><meta property="og:title" content="C&#43;&#43;学习记录(3) 常量指针与指针常量" />
+<meta property="og:description" content="c&#43;&#43;中的常量指针与指针常量" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://Clay-Hex.github.io/posts/2021/02/cpp-constant-pointer-and-pointer-constant/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-02-15T22:05:41+08:00" />
+<meta property="article:modified_time" content="2021-02-15T22:05:41+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="C&#43;&#43;学习记录(3) 常量指针与指针常量"/>
+<meta name="twitter:description" content="c&#43;&#43;中的常量指针与指针常量"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "📒 记录",
+      "item": "https://Clay-Hex.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "📚 学习",
+      "item": "https://Clay-Hex.github.io/posts/learn/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "C++学习记录(3) 常量指针与指针常量",
+      "item": "https://Clay-Hex.github.io/posts/2021/02/cpp-constant-pointer-and-pointer-constant/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "C++学习记录(3) 常量指针与指针常量",
+  "name": "C\u002b\u002b学习记录(3) 常量指针与指针常量",
+  "description": "c++中的常量指针与指针常量",
+  "keywords": [
+    "C++"
+  ],
+  "articleBody": "两个比较容易混淆的概念。\n0. 记忆方法 const int * p; int * const p; int const * p; 这是常见的三种写法，按照从左至右的顺序记忆，按照从右至左的顺序理解。\n记忆 只关注const 和 * 的先后先后顺序，const读做常量，*读做指针。\n参考《Effective c++》Item21上的做法，如果const位于星号的左侧，则const就是用来修饰指针所指向的变量，即指针指向为常量；如果const位于星号的右侧，const就是修饰指针本身，即指针本身是常量。\n比如\nconst int * p; // 常量指针 int * const p;\t// 指针常量 int const * p; // 常量指针 理解 将 * 读做指向。\nconst int * p; // p指向一个const int * const p; // 常量p 指向一个 int int const * p; // p指向一个const 1. 指针常量 int * const p; // 常量p 指向一个 int 重点在“常量”，这是一个常量，也是一个指针，也就是说，这个指针一旦指向了一个地址，那么它就不可以再指向别的地址空间。\n2. 常量指针 const int * p; // p指向一个const int const * p; // p指向一个const 重点在“指针”，这是一个用const修饰的指针，它既可以指向常量，也可以指向变量。 所谓的“常量”指针或者“常量”引用，不过是指针或引用“自以为是”罢了，只是不能通过该指针或引用来修改对象的值。\ncode:\nint a = 15; const int *p = \u0026a; cout \u003c\u003c *p \u003c\u003c endl; output:\n15 通过指针修改 int a = 15; const int *p = \u0026a; *p = 10; // 通过常量指针修改 cout \u003c\u003c *p \u003c\u003c endl; output:\n编译报错 通过变量自身修改 int a = 15; const int *p = \u0026a; a = 10; // 通过变量自身修改 cout \u003c\u003c *p \u003c\u003c endl; output:\n10 3. 底层const和顶层const 对于一个指针对象来说，它本身可以是const的，也就是说它只可以指向初始化的地址，不可以再指向其他地址空间。另外，指针所指的对象也可以是const的，这就叫底层const，也就是说它所指的地址空间或者对象是不可以通过它修改的（前边说过，这是“自以为是”的）。\n在执行拷贝操作时，顶层const不受影响，拷入和拷出的对象是否是常量没有关系。 而底层const不可以，拷入和拷出的对象必须具有相同的底层const资格，或者两个对象的数据类型必须能够转换，一般来说，非常量可以转换为常量，反之则不行。\n几个转换的例子\n// 变量声明 const int v2 = 0; int v1 = v2; int *p1 = \u0026v1, \u0026r1 = v1; const int *p2 = \u0026v2, *const p3 = \u0026i, \u0026r2 = v2; // 下列哪些是合法的？ r1 = v2; // 合法 p1 = p2; // 不合法，p1是变量，p2是底层const。二者要么都有底层const，要么是变量赋给常量。 p2 = p1; // 合法， p1是变量，p2是底层const。执行的是变量转到常量。 p1 = p3; // 不合法，p1是变量，p3是顶层const+底层const，二者要么都有底层const，要么是变量赋给常量。 p2 = p3; // 合法，p2是底层const，p3是顶层const+底层const，二者都有底层const资格。 4. 通过地址修改const修饰的变量 使用const修饰变量以后，该变量就成为了一个常量。使用赋值的方式对该变量直接进行修改是行不通的。但是可以通过变量的地址进行修改（做一次强制类型转换）。\nconst int a = 2; int *p = const_cast\u003cint*\u003e(\u0026a); (*p)++; cout \u003c\u003c a \u003c\u003c endl; cout \u003c\u003c (*p) \u003c\u003c endl; 上边代码输出的是\n2 3 为什么？ 再次输出变量a的地址和p所指向的地址，也是相同的。但是输出的时候a却显示3。原因在于：C++中的常量折叠。指const变量（即常量）值放在编译器的符号表中，计算时编译器直接从表中取值，省去了访问内存的时间，从而达到了优化。\n",
+  "wordCount" : "1334",
+  "inLanguage": "zh",
+  "datePublished": "2021-02-15T22:05:41+08:00",
+  "dateModified": "2021-02-15T22:05:41+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "Clay"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Clay-Hex.github.io/posts/2021/02/cpp-constant-pointer-and-pointer-constant/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Clay's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Clay-Hex.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://Clay-Hex.github.io/" accesskey="h" title="Clay&#39;s Blog (Alt + H)">
+                <img src="https://Clay-Hex.github.io/img/avatar.jpg" alt="" aria-label="logo"
+                    height="35">Clay&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch">
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://Clay-Hex.github.io/search" title="🔍 搜索 (Alt &#43; /)" accesskey=/>
+                    <span>🔍 搜索</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/" title="🏡 主页">
+                    <span>🏡 主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/posts" title="📒 记录">
+                    <span>📒 记录</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/tags" title="📛 标签">
+                    <span>📛 标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/archives/" title="📁 归档">
+                    <span>📁 归档</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/about" title="📖 关于">
+                    <span>📖 关于</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://Clay-Hex.github.io/">主页</a>&nbsp;»&nbsp;<a href="https://Clay-Hex.github.io/posts/">📒 记录</a>&nbsp;»&nbsp;<a href="https://Clay-Hex.github.io/posts/learn/">📚 学习</a></div>
+    <h1 class="post-title entry-hint-parent">
+      C&#43;&#43;学习记录(3) 常量指针与指针常量
+    </h1>
+    <div class="post-description">
+      c&#43;&#43;中的常量指针与指针常量
+    </div>
+    <div class="post-meta"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2021-02-15
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>1334字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    <span id="post_meta_style_6">
+        <span class="fa fa-tags" style="opacity: 0.8"></span>
+        <span>
+            <span class="post-tags-meta">
+                <a href="https://Clay-Hex.github.io/tags/c&#43;&#43;/" style="color: var(--secondary)!important;">C&#43;&#43;</a>
+            </span>
+        </span>
+    </span>
+</span>
+
+</div>
+  </header> <aside id="toc-container" class="toc-container wide">
+    <div class="toc">
+        <details  open>
+            <summary accesskey="c" title="(Alt + C)">
+                <span class="details">目录</span>
+            </summary>
+
+            <div class="inner"><ul>
+                    <li>
+                        <a href="#0-%e8%ae%b0%e5%bf%86%e6%96%b9%e6%b3%95" aria-label="0. 记忆方法">0. 记忆方法</a><ul>
+                            
+                    <li>
+                        <a href="#%e8%ae%b0%e5%bf%86" aria-label="记忆">记忆</a></li>
+                    <li>
+                        <a href="#%e7%90%86%e8%a7%a3" aria-label="理解">理解</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#1-%e6%8c%87%e9%92%88%e5%b8%b8%e9%87%8f" aria-label="1. 指针常量">1. 指针常量</a></li>
+                    <li>
+                        <a href="#2-%e5%b8%b8%e9%87%8f%e6%8c%87%e9%92%88" aria-label="2. 常量指针">2. 常量指针</a><ul>
+                            
+                    <li>
+                        <a href="#%e9%80%9a%e8%bf%87%e6%8c%87%e9%92%88%e4%bf%ae%e6%94%b9" aria-label="通过指针修改">通过指针修改</a></li>
+                    <li>
+                        <a href="#%e9%80%9a%e8%bf%87%e5%8f%98%e9%87%8f%e8%87%aa%e8%ba%ab%e4%bf%ae%e6%94%b9" aria-label="通过变量自身修改">通过变量自身修改</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#3-%e5%ba%95%e5%b1%82const%e5%92%8c%e9%a1%b6%e5%b1%82const" aria-label="3. 底层const和顶层const">3. 底层const和顶层const</a></li>
+                    <li>
+                        <a href="#4-%e9%80%9a%e8%bf%87%e5%9c%b0%e5%9d%80%e4%bf%ae%e6%94%b9const%e4%bf%ae%e9%a5%b0%e7%9a%84%e5%8f%98%e9%87%8f" aria-label="4. 通过地址修改const修饰的变量">4. 通过地址修改const修饰的变量</a>
+                    </li>
+                </ul>
+            </div>
+        </details>
+    </div>
+</aside>
+<script>
+    let activeElement;
+    let elements;
+    window.addEventListener('DOMContentLoaded', function (event) {
+        checkTocPosition();
+
+        elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+         
+         activeElement = elements[0];
+         const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+         document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+     }, false);
+
+    window.addEventListener('resize', function(event) {
+        checkTocPosition();
+    }, false);
+
+    window.addEventListener('scroll', () => {
+        
+        activeElement = Array.from(elements).find((element) => {
+            if ((getOffsetTop(element) - window.pageYOffset) > 0 && 
+                (getOffsetTop(element) - window.pageYOffset) < window.innerHeight/2) {
+                return element;
+            }
+        }) || activeElement
+
+        elements.forEach(element => {
+             const id = encodeURI(element.getAttribute('id')).toLowerCase();
+             if (element === activeElement){
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+             } else {
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.remove('active');
+             }
+         })
+     }, false);
+
+    const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+    const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+    const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+    function checkTocPosition() {
+        const width = document.body.scrollWidth;
+
+        if (width - main - (toc * 2) - (gap * 4) > 0) {
+            document.getElementById("toc-container").classList.add("wide");
+        } else {
+            document.getElementById("toc-container").classList.remove("wide");
+        }
+    }
+
+    function getOffsetTop(element) {
+        if (!element.getClientRects().length) {
+            return 0;
+        }
+        let rect = element.getBoundingClientRect();
+        let win = element.ownerDocument.defaultView;
+        return rect.top + win.pageYOffset;   
+    }
+</script>
+  <div class="post-content"><p>两个比较容易混淆的概念。</p>
+<h1 id="0-记忆方法">0. 记忆方法<a hidden class="anchor" aria-hidden="true" href="#0-记忆方法">#</a></h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="o">*</span> <span class="n">p</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="o">*</span> <span class="k">const</span> <span class="n">p</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="k">const</span> <span class="o">*</span> <span class="n">p</span><span class="p">;</span>
+</span></span></code></pre></div><p>这是常见的三种写法，按照<strong>从左至右</strong>的顺序记忆，按照<strong>从右至左</strong>的顺序理解。</p>
+<h2 id="记忆">记忆<a hidden class="anchor" aria-hidden="true" href="#记忆">#</a></h2>
+<p>只关注const 和 * 的先后先后顺序，const读做常量，*读做指针。</p>
+<p>参考《Effective c++》Item21上的做法，如果const位于星号的左侧，则const就是用来修饰指针所指向的变量，即指针指向为常量；如果const位于星号的右侧，const就是修饰指针本身，即指针本身是常量。</p>
+<p>比如</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="o">*</span> <span class="n">p</span><span class="p">;</span>  <span class="c1">// 常量指针
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="o">*</span> <span class="k">const</span> <span class="n">p</span><span class="p">;</span>	<span class="c1">// 指针常量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="k">const</span> <span class="o">*</span> <span class="n">p</span><span class="p">;</span>  <span class="c1">// 常量指针
+</span></span></span></code></pre></div><h2 id="理解">理解<a hidden class="anchor" aria-hidden="true" href="#理解">#</a></h2>
+<p>将 * 读做指向。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="o">*</span> <span class="n">p</span><span class="p">;</span>  <span class="c1">// p指向一个const
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="o">*</span> <span class="k">const</span> <span class="n">p</span><span class="p">;</span>  <span class="c1">// 常量p 指向一个 int
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="k">const</span> <span class="o">*</span> <span class="n">p</span><span class="p">;</span>  <span class="c1">// p指向一个const
+</span></span></span></code></pre></div><hr>
+<h1 id="1-指针常量">1. 指针常量<a hidden class="anchor" aria-hidden="true" href="#1-指针常量">#</a></h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="o">*</span> <span class="k">const</span> <span class="n">p</span><span class="p">;</span>  <span class="c1">// 常量p 指向一个 int
+</span></span></span></code></pre></div><p>重点在“常量”，这是一个常量，也是一个指针，也就是说，这个指针一旦指向了一个地址，那么它就不可以再指向别的地址空间。</p>
+<h1 id="2-常量指针">2. 常量指针<a hidden class="anchor" aria-hidden="true" href="#2-常量指针">#</a></h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="o">*</span> <span class="n">p</span><span class="p">;</span>  <span class="c1">// p指向一个const
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="k">const</span> <span class="o">*</span> <span class="n">p</span><span class="p">;</span>  <span class="c1">// p指向一个const
+</span></span></span></code></pre></div><p>重点在“指针”，这是一个用const修饰的指针，<strong>它既可以指向常量，也可以指向变量。</strong>
+所谓的“常量”指针或者“常量”引用，不过是指针或引用“自以为是”罢了，只是不能通过该指针或引用来修改对象的值。</p>
+<p>code:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">15</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">const</span> <span class="kt">int</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="o">*</span><span class="n">p</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> 
+</span></span></code></pre></div><p>output:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mi">15</span>
+</span></span></code></pre></div><h2 id="通过指针修改">通过指针修改<a hidden class="anchor" aria-hidden="true" href="#通过指针修改">#</a></h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">15</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">const</span> <span class="kt">int</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>  <span class="c1">// 通过常量指针修改
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="o">*</span><span class="n">p</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> 
+</span></span></code></pre></div><p>output:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="err">编译报错</span>
+</span></span></code></pre></div><h2 id="通过变量自身修改">通过变量自身修改<a hidden class="anchor" aria-hidden="true" href="#通过变量自身修改">#</a></h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">15</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">const</span> <span class="kt">int</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">a</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>   <span class="c1">// 通过变量自身修改
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="o">*</span><span class="n">p</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> 
+</span></span></code></pre></div><p>output:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mi">10</span>
+</span></span></code></pre></div><h1 id="3-底层const和顶层const">3. 底层const和顶层const<a hidden class="anchor" aria-hidden="true" href="#3-底层const和顶层const">#</a></h1>
+<p>对于一个指针对象来说，它本身可以是const的，也就是说它只可以指向初始化的地址，不可以再指向其他地址空间。另外，指针所指的对象也可以是const的，这就叫底层const，也就是说它所指的地址空间或者对象是不可以通过它修改的（前边说过，这是“自以为是”的）。</p>
+<p>在执行拷贝操作时，顶层const不受影响，拷入和拷出的对象是否是常量没有关系。
+而底层const不可以，拷入和拷出的对象必须<strong>具有相同的底层const资格，或者两个对象的数据类型必须能够转换，一般来说，非常量可以转换为常量，反之则不行。</strong></p>
+<p>几个转换的例子</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// 变量声明
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">const</span> <span class="kt">int</span> <span class="n">v2</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">v1</span> <span class="o">=</span> <span class="n">v2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="o">*</span><span class="n">p1</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">v1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">r1</span> <span class="o">=</span> <span class="n">v1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="o">*</span><span class="n">p2</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">v2</span><span class="p">,</span> <span class="o">*</span><span class="k">const</span> <span class="n">p3</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">i</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">r2</span> <span class="o">=</span> <span class="n">v2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 下列哪些是合法的？
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">r1</span> <span class="o">=</span> <span class="n">v2</span><span class="p">;</span> <span class="c1">// 合法
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">p1</span> <span class="o">=</span> <span class="n">p2</span><span class="p">;</span> <span class="c1">// 不合法，p1是变量，p2是底层const。二者要么都有底层const，要么是变量赋给常量。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">p2</span> <span class="o">=</span> <span class="n">p1</span><span class="p">;</span> <span class="c1">// 合法， p1是变量，p2是底层const。执行的是变量转到常量。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">p1</span> <span class="o">=</span> <span class="n">p3</span><span class="p">;</span> <span class="c1">// 不合法，p1是变量，p3是顶层const+底层const，二者要么都有底层const，要么是变量赋给常量。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">p2</span> <span class="o">=</span> <span class="n">p3</span><span class="p">;</span> <span class="c1">// 合法，p2是底层const，p3是顶层const+底层const，二者都有底层const资格。
+</span></span></span></code></pre></div><h1 id="4-通过地址修改const修饰的变量">4. 通过地址修改const修饰的变量<a hidden class="anchor" aria-hidden="true" href="#4-通过地址修改const修饰的变量">#</a></h1>
+<p>使用const修饰变量以后，该变量就成为了一个常量。使用赋值的方式对该变量直接进行修改是行不通的。但是可以通过变量的地址进行修改（做一次强制类型转换）。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="k">const_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">*&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="p">)</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">a</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span></span></code></pre></div><p>上边代码输出的是</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">2
+</span></span><span class="line"><span class="cl">3
+</span></span></code></pre></div><p>为什么？
+再次输出变量a的地址和p所指向的地址，也是相同的。但是输出的时候a却显示3。原因在于：C++中的常量折叠。指const变量（即常量）值放在编译器的符号表中，计算时编译器直接从表中取值，省去了访问内存的时间，从而达到了优化。</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Clay-Hex.github.io/tags/c&#43;&#43;/">C&#43;&#43;</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Clay-Hex.github.io/posts/2021/02/cpp-reference/">
+    <span class="title">« 上一篇</span>
+    <br>
+    <span>C&#43;&#43;学习记录(4) 引用</span>
+  </a>
+  <a class="next" href="https://Clay-Hex.github.io/posts/2021/02/monotone-stack-monotone-queue/">
+    <span class="title">下一篇 »</span>
+    <br>
+    <span>单调栈与单调队列详解</span>
+  </a>
+</nav>
+
+  </footer><script>
+    function createGiscusScript(data) {
+      const giscusScript = document.createElement('script');
+  
+      
+      Object.entries(data).forEach(([key, value]) => giscusScript.setAttribute(key, value));
+  
+      
+      document.querySelector('article').appendChild(giscusScript);
+  
+      
+      const toggle = document.querySelector('label[for="switch_default"]');
+      if (toggle) {
+        toggle.addEventListener('click', function () {
+          
+          const theme = document.body.classList.contains('dark') ? 'transparent_dark' : 'light';
+          giscusScript.setAttribute('data-theme', theme);
+  
+          
+          sendMessage({ setConfig: { theme } });
+        });
+      }
+    }
+  
+    function sendMessage(message) {
+      const iframe = document.querySelector('iframe.giscus-frame');
+      if (iframe) {
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+    }
+  
+    document.addEventListener('DOMContentLoaded', function () {
+      
+      const giscusAttributes = {
+        src: 'https://giscus.app/client.js',
+        'data-repo': 'Clay-Hex/BlogComments',
+        'data-repo-id': 'R_kgDOLexoRQ',
+        'data-category': 'Announcements',
+        'data-category-id': 'DIC_kwDOLexoRc4Cd5Ao',
+        'data-mapping': 'pathname',
+        'data-strict': '1',
+        'data-reactions-enabled': '1',
+        'data-emit-metadata': '0',
+        'data-input-position': 'top',
+        'data-lang': 'zh-CN',
+        crossorigin: 'anonymous',
+        async: '',
+      };
+  
+      
+      giscusAttributes['data-theme'] = document.body.classList.contains('dark')
+        ? 'transparent_dark'
+        : 'light';
+  
+      
+      createGiscusScript(giscusAttributes);
+  
+      
+      const bodyObserver = new MutationObserver(() => {
+        const theme = document.body.classList.contains('dark') ? 'transparent_dark' : 'light';
+        sendMessage({ setConfig: { theme } });
+      });
+  
+      bodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    });
+  </script>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://Clay-Hex.github.io/">Clay&#39;s Blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <span class="topInner">
+        <svg class="topSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z"/>
+        </svg>
+        <span id="read_progress"></span>
+    </span>
+</a>
+
+<script>
+    document.addEventListener('scroll', function (e) {
+        const readProgress = document.getElementById("read_progress");
+        const scrollHeight = document.documentElement.scrollHeight;
+        const clientHeight = document.documentElement.clientHeight;
+        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        readProgress.innerText = ((scrollTop / (scrollHeight - clientHeight)).toFixed(2) * 100).toFixed(0);
+    })
+</script>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = '复制';
+
+        function copyingDone() {
+            copybutton.innerHTML = '已复制';
+            setTimeout(() => {
+                copybutton.innerHTML = '复制';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        let language = codeblock.className.replaceAll("language-", "")
+        let macTool = document.createElement("div")
+        let macTool1 = document.createElement("div")
+        let macTool2 = document.createElement("div")
+        let macTool3 = document.createElement("div")
+        let languageType = document.createElement("div")
+        languageType.innerText = language
+        macTool.setAttribute('class', 'mac-tool')
+        macTool1.setAttribute('class', 'mac bb1')
+        macTool2.setAttribute('class', 'mac bb2')
+        macTool3.setAttribute('class', 'mac bb3')
+        languageType.setAttribute('class', 'language-type')
+        macTool.appendChild(macTool1)
+        macTool.appendChild(macTool2)
+        macTool.appendChild(macTool3)
+        macTool.appendChild(languageType)
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+            container.appendChild(macTool)
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+            container.appendChild(macTool)
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+            container.appendChild(macTool)
+        }
+    });
+</script>
+</body>
+
+</html>

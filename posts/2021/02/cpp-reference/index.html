@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>C&#43;&#43;学习记录(4) 引用 | Clay&#39;s Blog</title>
+<meta name="keywords" content="C&#43;&#43;">
+<meta name="description" content="c&#43;&#43;中的引用">
+<meta name="author" content="Clay">
+<link rel="canonical" href="https://Clay-Hex.github.io/posts/2021/02/cpp-reference/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.js" onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://Clay-Hex.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Clay-Hex.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Clay-Hex.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Clay-Hex.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Clay-Hex.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="zh" href="https://Clay-Hex.github.io/posts/2021/02/cpp-reference/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><meta property="og:title" content="C&#43;&#43;学习记录(4) 引用" />
+<meta property="og:description" content="c&#43;&#43;中的引用" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://Clay-Hex.github.io/posts/2021/02/cpp-reference/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-02-16T19:25:59+08:00" />
+<meta property="article:modified_time" content="2021-02-16T19:25:59+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="C&#43;&#43;学习记录(4) 引用"/>
+<meta name="twitter:description" content="c&#43;&#43;中的引用"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "📒 记录",
+      "item": "https://Clay-Hex.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "📚 学习",
+      "item": "https://Clay-Hex.github.io/posts/learn/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "C++学习记录(4) 引用",
+      "item": "https://Clay-Hex.github.io/posts/2021/02/cpp-reference/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "C++学习记录(4) 引用",
+  "name": "C\u002b\u002b学习记录(4) 引用",
+  "description": "c++中的引用",
+  "keywords": [
+    "C++"
+  ],
+  "articleBody": "0. 引用的本质 本质：引用在C++内部的实现是一个指针常量（* const）。 const就限制了必须要初始化，并且初始化以后不可更改。\n它不是一个对象，所以没有引用的引用。\n1. 注意事项 引用必须初始化 引用在初始化后不可修改 2. 引用做函数参数 与指针传递相似\n3. 引用做函数返回值 与指针一样，不要返回局部变量（栈区空间）的引用 函数的调用可以作为左值 int\u0026 test(){ static int a = 10; return a; } int main(){ int \u0026ss = test(); test() = 100; // 引用作为左值 cout \u003c\u003c ss \u003c\u003c endl; // 输出100 return 0; } 4. 常量引用 作用：在函数中用来修饰形参，防止误操作。\n",
+  "wordCount" : "228",
+  "inLanguage": "zh",
+  "datePublished": "2021-02-16T19:25:59+08:00",
+  "dateModified": "2021-02-16T19:25:59+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "Clay"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Clay-Hex.github.io/posts/2021/02/cpp-reference/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Clay's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Clay-Hex.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://Clay-Hex.github.io/" accesskey="h" title="Clay&#39;s Blog (Alt + H)">
+                <img src="https://Clay-Hex.github.io/img/avatar.jpg" alt="" aria-label="logo"
+                    height="35">Clay&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch">
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://Clay-Hex.github.io/search" title="🔍 搜索 (Alt &#43; /)" accesskey=/>
+                    <span>🔍 搜索</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/" title="🏡 主页">
+                    <span>🏡 主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/posts" title="📒 记录">
+                    <span>📒 记录</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/tags" title="📛 标签">
+                    <span>📛 标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/archives/" title="📁 归档">
+                    <span>📁 归档</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/about" title="📖 关于">
+                    <span>📖 关于</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://Clay-Hex.github.io/">主页</a>&nbsp;»&nbsp;<a href="https://Clay-Hex.github.io/posts/">📒 记录</a>&nbsp;»&nbsp;<a href="https://Clay-Hex.github.io/posts/learn/">📚 学习</a></div>
+    <h1 class="post-title entry-hint-parent">
+      C&#43;&#43;学习记录(4) 引用
+    </h1>
+    <div class="post-description">
+      c&#43;&#43;中的引用
+    </div>
+    <div class="post-meta"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2021-02-16
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>228字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    <span id="post_meta_style_6">
+        <span class="fa fa-tags" style="opacity: 0.8"></span>
+        <span>
+            <span class="post-tags-meta">
+                <a href="https://Clay-Hex.github.io/tags/c&#43;&#43;/" style="color: var(--secondary)!important;">C&#43;&#43;</a>
+            </span>
+        </span>
+    </span>
+</span>
+
+</div>
+  </header> <aside id="toc-container" class="toc-container wide">
+    <div class="toc">
+        <details  open>
+            <summary accesskey="c" title="(Alt + C)">
+                <span class="details">目录</span>
+            </summary>
+
+            <div class="inner"><ul>
+                    <li>
+                        <a href="#0-%e5%bc%95%e7%94%a8%e7%9a%84%e6%9c%ac%e8%b4%a8" aria-label="0. 引用的本质">0. 引用的本质</a></li>
+                    <li>
+                        <a href="#1-%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9" aria-label="1. 注意事项">1. 注意事项</a></li>
+                    <li>
+                        <a href="#2-%e5%bc%95%e7%94%a8%e5%81%9a%e5%87%bd%e6%95%b0%e5%8f%82%e6%95%b0" aria-label="2. 引用做函数参数">2. 引用做函数参数</a></li>
+                    <li>
+                        <a href="#3-%e5%bc%95%e7%94%a8%e5%81%9a%e5%87%bd%e6%95%b0%e8%bf%94%e5%9b%9e%e5%80%bc" aria-label="3. 引用做函数返回值">3. 引用做函数返回值</a></li>
+                    <li>
+                        <a href="#4-%e5%b8%b8%e9%87%8f%e5%bc%95%e7%94%a8" aria-label="4. 常量引用">4. 常量引用</a>
+                    </li>
+                </ul>
+            </div>
+        </details>
+    </div>
+</aside>
+<script>
+    let activeElement;
+    let elements;
+    window.addEventListener('DOMContentLoaded', function (event) {
+        checkTocPosition();
+
+        elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+         
+         activeElement = elements[0];
+         const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+         document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+     }, false);
+
+    window.addEventListener('resize', function(event) {
+        checkTocPosition();
+    }, false);
+
+    window.addEventListener('scroll', () => {
+        
+        activeElement = Array.from(elements).find((element) => {
+            if ((getOffsetTop(element) - window.pageYOffset) > 0 && 
+                (getOffsetTop(element) - window.pageYOffset) < window.innerHeight/2) {
+                return element;
+            }
+        }) || activeElement
+
+        elements.forEach(element => {
+             const id = encodeURI(element.getAttribute('id')).toLowerCase();
+             if (element === activeElement){
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+             } else {
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.remove('active');
+             }
+         })
+     }, false);
+
+    const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+    const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+    const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+    function checkTocPosition() {
+        const width = document.body.scrollWidth;
+
+        if (width - main - (toc * 2) - (gap * 4) > 0) {
+            document.getElementById("toc-container").classList.add("wide");
+        } else {
+            document.getElementById("toc-container").classList.remove("wide");
+        }
+    }
+
+    function getOffsetTop(element) {
+        if (!element.getClientRects().length) {
+            return 0;
+        }
+        let rect = element.getBoundingClientRect();
+        let win = element.ownerDocument.defaultView;
+        return rect.top + win.pageYOffset;   
+    }
+</script>
+  <div class="post-content"><h1 id="0-引用的本质">0. 引用的本质<a hidden class="anchor" aria-hidden="true" href="#0-引用的本质">#</a></h1>
+<p>本质：引用在C++内部的实现是一个指针常量（* const）。
+const就限制了必须要初始化，并且初始化以后不可更改。</p>
+<p>它不是一个对象，所以没有引用的引用。</p>
+<h1 id="1-注意事项">1. 注意事项<a hidden class="anchor" aria-hidden="true" href="#1-注意事项">#</a></h1>
+<ul>
+<li>引用必须初始化</li>
+<li>引用在初始化后不可修改</li>
+</ul>
+<h1 id="2-引用做函数参数">2. 引用做函数参数<a hidden class="anchor" aria-hidden="true" href="#2-引用做函数参数">#</a></h1>
+<p>与指针传递相似</p>
+<h1 id="3-引用做函数返回值">3. 引用做函数返回值<a hidden class="anchor" aria-hidden="true" href="#3-引用做函数返回值">#</a></h1>
+<ul>
+<li>与指针一样，不要返回局部变量（栈区空间）的引用</li>
+<li>函数的调用可以作为左值</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span><span class="o">&amp;</span> <span class="n">test</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">	<span class="k">static</span> <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="n">a</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="o">&amp;</span><span class="n">ss</span> <span class="o">=</span> <span class="n">test</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="n">test</span><span class="p">()</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>   <span class="c1">// 引用作为左值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>  <span class="c1">// 输出100
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h1 id="4-常量引用">4. 常量引用<a hidden class="anchor" aria-hidden="true" href="#4-常量引用">#</a></h1>
+<p>作用：在函数中用来修饰形参，防止误操作。</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Clay-Hex.github.io/tags/c&#43;&#43;/">C&#43;&#43;</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Clay-Hex.github.io/posts/2021/02/cpp-class/">
+    <span class="title">« 上一篇</span>
+    <br>
+    <span>C&#43;&#43;学习记录(5) 类</span>
+  </a>
+  <a class="next" href="https://Clay-Hex.github.io/posts/2021/02/cpp-constant-pointer-and-pointer-constant/">
+    <span class="title">下一篇 »</span>
+    <br>
+    <span>C&#43;&#43;学习记录(3) 常量指针与指针常量</span>
+  </a>
+</nav>
+
+  </footer><script>
+    function createGiscusScript(data) {
+      const giscusScript = document.createElement('script');
+  
+      
+      Object.entries(data).forEach(([key, value]) => giscusScript.setAttribute(key, value));
+  
+      
+      document.querySelector('article').appendChild(giscusScript);
+  
+      
+      const toggle = document.querySelector('label[for="switch_default"]');
+      if (toggle) {
+        toggle.addEventListener('click', function () {
+          
+          const theme = document.body.classList.contains('dark') ? 'transparent_dark' : 'light';
+          giscusScript.setAttribute('data-theme', theme);
+  
+          
+          sendMessage({ setConfig: { theme } });
+        });
+      }
+    }
+  
+    function sendMessage(message) {
+      const iframe = document.querySelector('iframe.giscus-frame');
+      if (iframe) {
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+    }
+  
+    document.addEventListener('DOMContentLoaded', function () {
+      
+      const giscusAttributes = {
+        src: 'https://giscus.app/client.js',
+        'data-repo': 'Clay-Hex/BlogComments',
+        'data-repo-id': 'R_kgDOLexoRQ',
+        'data-category': 'Announcements',
+        'data-category-id': 'DIC_kwDOLexoRc4Cd5Ao',
+        'data-mapping': 'pathname',
+        'data-strict': '1',
+        'data-reactions-enabled': '1',
+        'data-emit-metadata': '0',
+        'data-input-position': 'top',
+        'data-lang': 'zh-CN',
+        crossorigin: 'anonymous',
+        async: '',
+      };
+  
+      
+      giscusAttributes['data-theme'] = document.body.classList.contains('dark')
+        ? 'transparent_dark'
+        : 'light';
+  
+      
+      createGiscusScript(giscusAttributes);
+  
+      
+      const bodyObserver = new MutationObserver(() => {
+        const theme = document.body.classList.contains('dark') ? 'transparent_dark' : 'light';
+        sendMessage({ setConfig: { theme } });
+      });
+  
+      bodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    });
+  </script>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://Clay-Hex.github.io/">Clay&#39;s Blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <span class="topInner">
+        <svg class="topSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z"/>
+        </svg>
+        <span id="read_progress"></span>
+    </span>
+</a>
+
+<script>
+    document.addEventListener('scroll', function (e) {
+        const readProgress = document.getElementById("read_progress");
+        const scrollHeight = document.documentElement.scrollHeight;
+        const clientHeight = document.documentElement.clientHeight;
+        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        readProgress.innerText = ((scrollTop / (scrollHeight - clientHeight)).toFixed(2) * 100).toFixed(0);
+    })
+</script>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = '复制';
+
+        function copyingDone() {
+            copybutton.innerHTML = '已复制';
+            setTimeout(() => {
+                copybutton.innerHTML = '复制';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        let language = codeblock.className.replaceAll("language-", "")
+        let macTool = document.createElement("div")
+        let macTool1 = document.createElement("div")
+        let macTool2 = document.createElement("div")
+        let macTool3 = document.createElement("div")
+        let languageType = document.createElement("div")
+        languageType.innerText = language
+        macTool.setAttribute('class', 'mac-tool')
+        macTool1.setAttribute('class', 'mac bb1')
+        macTool2.setAttribute('class', 'mac bb2')
+        macTool3.setAttribute('class', 'mac bb3')
+        languageType.setAttribute('class', 'language-type')
+        macTool.appendChild(macTool1)
+        macTool.appendChild(macTool2)
+        macTool.appendChild(macTool3)
+        macTool.appendChild(languageType)
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+            container.appendChild(macTool)
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+            container.appendChild(macTool)
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+            container.appendChild(macTool)
+        }
+    });
+</script>
+</body>
+
+</html>

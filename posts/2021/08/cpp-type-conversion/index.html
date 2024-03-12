@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="zh" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>C&#43;&#43;学习记录(12) 类型转换 | Clay&#39;s Blog</title>
+<meta name="keywords" content="C&#43;&#43;">
+<meta name="description" content="c&#43;&#43;中的类型转换">
+<meta name="author" content="Clay">
+<link rel="canonical" href="https://Clay-Hex.github.io/posts/2021/08/cpp-type-conversion/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.js" onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://Clay-Hex.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Clay-Hex.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Clay-Hex.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Clay-Hex.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Clay-Hex.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="zh" href="https://Clay-Hex.github.io/posts/2021/08/cpp-type-conversion/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><meta property="og:title" content="C&#43;&#43;学习记录(12) 类型转换" />
+<meta property="og:description" content="c&#43;&#43;中的类型转换" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://Clay-Hex.github.io/posts/2021/08/cpp-type-conversion/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-08-02T21:07:40+08:00" />
+<meta property="article:modified_time" content="2021-08-02T21:07:40+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="C&#43;&#43;学习记录(12) 类型转换"/>
+<meta name="twitter:description" content="c&#43;&#43;中的类型转换"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "📒 记录",
+      "item": "https://Clay-Hex.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "📚 学习",
+      "item": "https://Clay-Hex.github.io/posts/learn/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "C++学习记录(12) 类型转换",
+      "item": "https://Clay-Hex.github.io/posts/2021/08/cpp-type-conversion/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "C++学习记录(12) 类型转换",
+  "name": "C\u002b\u002b学习记录(12) 类型转换",
+  "description": "c++中的类型转换",
+  "keywords": [
+    "C++"
+  ],
+  "articleBody": " 0. 必要性 C语言中的类型转换，没有安全检查，安全性需要程序猿来保证，C++提供了4种类型转换的方法，在一定程度上保证转换的安全性。\n重点是 dynamic_cast\n1. const_cast 仅用于去除类型的const属性，也是四种类型转换中，唯一可以去掉const限制的方法。\n只能转换 指针、引用、this（在类内的时候用）。 2. static_cast 隐式转换能转的，它都能转，但是也有例外（父类指针 转 子类指针）。\n低风险的都可以转：\n整数与浮点数 整数与字符 void指针转其他类型指针 转换运算符（类内必须提供转换运算符，eg : operator int() { }） 高风险的不允许转：\n整数与指针 （eg：int *p = static_cast (a);） 注意：父类转子类，是不安全的，因为转换后的子类指针有可能越界访问资源。隐式转换中，这种转换是不允许的，但是static_cast可以做这种向下转换，但是，转换后的使用安全，需要程序猿来保证。 这种向下转换的不安全，可以使用dynamic_cast来保证。\n3. dynamic_cast 用于 具有多态类类型的向下转换时，必须使用。 在转换过程中，如果dynamic_cast发现这种转换不安全，会返回null，转换成功会返回转换后的指针。\n那么，它如何发现父类转子类是不安全的？ 因为它内部使用了RTTI技术，运行时类型识别。RTTI依赖于虚函数表，虚函数表上边有一个type_info的指针，指向了这个类的继承链。 所有，dynamic_cast 需要转换的类型有虚函数，才会检测安全性。\n因为RTTI有开销，所以，除非必要，否则不会使用dynamic_cast 总结：\n基类必须要有虚函数（使用了RTTI，RTTI依赖虚函数表） 运行时类型识别，转换不成功会返回NULL RTTI有额外的开销，一般情况下不使用它做类型转换。 4. interpret_cast 与C语言中的强制类型转换几乎无异。 可以用于各种高危险的类型转换. 不存在类型检查。\n",
+  "wordCount" : "739",
+  "inLanguage": "zh",
+  "datePublished": "2021-08-02T21:07:40+08:00",
+  "dateModified": "2021-08-02T21:07:40+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "Clay"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Clay-Hex.github.io/posts/2021/08/cpp-type-conversion/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Clay's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Clay-Hex.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://Clay-Hex.github.io/" accesskey="h" title="Clay&#39;s Blog (Alt + H)">
+                <img src="https://Clay-Hex.github.io/img/avatar.jpg" alt="" aria-label="logo"
+                    height="35">Clay&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch">
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://Clay-Hex.github.io/search" title="🔍 搜索 (Alt &#43; /)" accesskey=/>
+                    <span>🔍 搜索</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/" title="🏡 主页">
+                    <span>🏡 主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/posts" title="📒 记录">
+                    <span>📒 记录</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/tags" title="📛 标签">
+                    <span>📛 标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/archives/" title="📁 归档">
+                    <span>📁 归档</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/about" title="📖 关于">
+                    <span>📖 关于</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://Clay-Hex.github.io/">主页</a>&nbsp;»&nbsp;<a href="https://Clay-Hex.github.io/posts/">📒 记录</a>&nbsp;»&nbsp;<a href="https://Clay-Hex.github.io/posts/learn/">📚 学习</a></div>
+    <h1 class="post-title entry-hint-parent">
+      C&#43;&#43;学习记录(12) 类型转换
+    </h1>
+    <div class="post-description">
+      c&#43;&#43;中的类型转换
+    </div>
+    <div class="post-meta"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2021-08-02
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>739字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    <span id="post_meta_style_6">
+        <span class="fa fa-tags" style="opacity: 0.8"></span>
+        <span>
+            <span class="post-tags-meta">
+                <a href="https://Clay-Hex.github.io/tags/c&#43;&#43;/" style="color: var(--secondary)!important;">C&#43;&#43;</a>
+            </span>
+        </span>
+    </span>
+</span>
+
+</div>
+  </header> <aside id="toc-container" class="toc-container wide">
+    <div class="toc">
+        <details  open>
+            <summary accesskey="c" title="(Alt + C)">
+                <span class="details">目录</span>
+            </summary>
+
+            <div class="inner"><ul>
+                    <li>
+                        <a href="#0-%e5%bf%85%e8%a6%81%e6%80%a7" aria-label="0. 必要性">0. 必要性</a></li>
+                    <li>
+                        <a href="#1-const_cast" aria-label="1. const_cast">1. const_cast</a></li>
+                    <li>
+                        <a href="#2-static_cast" aria-label="2. static_cast">2. static_cast</a></li>
+                    <li>
+                        <a href="#3-dynamic_cast" aria-label="3. dynamic_cast">3. dynamic_cast</a></li>
+                    <li>
+                        <a href="#4-interpret_cast" aria-label="4. interpret_cast">4. interpret_cast</a>
+                    </li>
+                </ul>
+            </div>
+        </details>
+    </div>
+</aside>
+<script>
+    let activeElement;
+    let elements;
+    window.addEventListener('DOMContentLoaded', function (event) {
+        checkTocPosition();
+
+        elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+         
+         activeElement = elements[0];
+         const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+         document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+     }, false);
+
+    window.addEventListener('resize', function(event) {
+        checkTocPosition();
+    }, false);
+
+    window.addEventListener('scroll', () => {
+        
+        activeElement = Array.from(elements).find((element) => {
+            if ((getOffsetTop(element) - window.pageYOffset) > 0 && 
+                (getOffsetTop(element) - window.pageYOffset) < window.innerHeight/2) {
+                return element;
+            }
+        }) || activeElement
+
+        elements.forEach(element => {
+             const id = encodeURI(element.getAttribute('id')).toLowerCase();
+             if (element === activeElement){
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+             } else {
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.remove('active');
+             }
+         })
+     }, false);
+
+    const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+    const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+    const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+    function checkTocPosition() {
+        const width = document.body.scrollWidth;
+
+        if (width - main - (toc * 2) - (gap * 4) > 0) {
+            document.getElementById("toc-container").classList.add("wide");
+        } else {
+            document.getElementById("toc-container").classList.remove("wide");
+        }
+    }
+
+    function getOffsetTop(element) {
+        if (!element.getClientRects().length) {
+            return 0;
+        }
+        let rect = element.getBoundingClientRect();
+        let win = element.ownerDocument.defaultView;
+        return rect.top + win.pageYOffset;   
+    }
+</script>
+  <div class="post-content"><center><figure>
+    <img loading="lazy" src="pic1.jpg" width="100%"/> 
+</figure>
+</center>
+<h1 id="0-必要性">0. 必要性<a hidden class="anchor" aria-hidden="true" href="#0-必要性">#</a></h1>
+<p>C语言中的类型转换，没有安全检查，安全性需要程序猿来保证，C++提供了4种类型转换的方法，在一定程度上保证转换的安全性。</p>
+<p>重点是 <code>dynamic_cast</code></p>
+<h1 id="1-const_cast">1. const_cast<a hidden class="anchor" aria-hidden="true" href="#1-const_cast">#</a></h1>
+<p>仅用于去除类型的<code>const</code>属性，也是四种类型转换中，唯一可以去掉<code>const</code>限制的方法。</p>
+<ul>
+<li>只能转换 指针、引用、this（在类内的时候用）。</li>
+</ul>
+<h1 id="2-static_cast">2. static_cast<a hidden class="anchor" aria-hidden="true" href="#2-static_cast">#</a></h1>
+<p>隐式转换能转的，它都能转，但是也有例外（父类指针 转 子类指针）。</p>
+<p>低风险的都可以转：</p>
+<ul>
+<li>整数与浮点数</li>
+<li>整数与字符</li>
+<li><code>void</code>指针转其他类型指针</li>
+<li>转换运算符（类内必须提供转换运算符，eg : operator int() { }）</li>
+</ul>
+<p>高风险的不允许转：</p>
+<ul>
+<li>整数与指针 （eg：<code>int *p = static_cast&lt;int *&gt; (a);</code>）</li>
+</ul>
+<p><code>注意：</code>父类转子类，是不安全的，因为转换后的子类指针有可能越界访问资源。隐式转换中，这种转换是不允许的，但是<code>static_cast</code>可以做这种<code>向下转换</code>，但是，转换后的使用安全，需要程序猿来保证。
+这种<code>向下转换</code>的不安全，可以使用<code>dynamic_cast</code>来保证。</p>
+<h1 id="3-dynamic_cast">3. dynamic_cast<a hidden class="anchor" aria-hidden="true" href="#3-dynamic_cast">#</a></h1>
+<p>用于 <code>具有多态类类型的向下转换</code>时，必须使用。
+在转换过程中，如果<code>dynamic_cast</code>发现这种转换不安全，会返回null，转换成功会返回转换后的指针。</p>
+<p><strong>那么，它如何发现父类转子类是不安全的？</strong>
+因为它内部使用了<code>RTTI</code>技术，运行时类型识别。<code>RTTI</code>依赖于虚函数表，虚函数表上边有一个<code>type_info</code>的指针，指向了这个类的继承链。
+所有，<code>dynamic_cast</code> 需要转换的类型有虚函数，才会检测安全性。</p>
+<ul>
+<li>因为<code>RTTI</code>有开销，所以，除非必要，否则不会使用<code>dynamic_cast</code></li>
+</ul>
+<p><strong>总结：</strong></p>
+<ul>
+<li>基类必须要有虚函数（使用了RTTI，RTTI依赖虚函数表）</li>
+<li>运行时类型识别，转换不成功会返回NULL</li>
+<li>RTTI有额外的开销，一般情况下不使用它做类型转换。</li>
+</ul>
+<h1 id="4-interpret_cast">4. interpret_cast<a hidden class="anchor" aria-hidden="true" href="#4-interpret_cast">#</a></h1>
+<p>与C语言中的强制类型转换几乎无异。
+可以用于各种高危险的类型转换.
+不存在类型检查。</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Clay-Hex.github.io/tags/c&#43;&#43;/">C&#43;&#43;</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Clay-Hex.github.io/posts/2021/08/cpp-new-and-delete/">
+    <span class="title">« 上一篇</span>
+    <br>
+    <span>C&#43;&#43;学习记录(13) new与delete</span>
+  </a>
+  <a class="next" href="https://Clay-Hex.github.io/posts/2021/07/cpp-smart-pointers/">
+    <span class="title">下一篇 »</span>
+    <br>
+    <span>C&#43;&#43;学习记录(11) 智能指针</span>
+  </a>
+</nav>
+
+  </footer><script>
+    function createGiscusScript(data) {
+      const giscusScript = document.createElement('script');
+  
+      
+      Object.entries(data).forEach(([key, value]) => giscusScript.setAttribute(key, value));
+  
+      
+      document.querySelector('article').appendChild(giscusScript);
+  
+      
+      const toggle = document.querySelector('label[for="switch_default"]');
+      if (toggle) {
+        toggle.addEventListener('click', function () {
+          
+          const theme = document.body.classList.contains('dark') ? 'transparent_dark' : 'light';
+          giscusScript.setAttribute('data-theme', theme);
+  
+          
+          sendMessage({ setConfig: { theme } });
+        });
+      }
+    }
+  
+    function sendMessage(message) {
+      const iframe = document.querySelector('iframe.giscus-frame');
+      if (iframe) {
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+    }
+  
+    document.addEventListener('DOMContentLoaded', function () {
+      
+      const giscusAttributes = {
+        src: 'https://giscus.app/client.js',
+        'data-repo': 'Clay-Hex/BlogComments',
+        'data-repo-id': 'R_kgDOLexoRQ',
+        'data-category': 'Announcements',
+        'data-category-id': 'DIC_kwDOLexoRc4Cd5Ao',
+        'data-mapping': 'pathname',
+        'data-strict': '1',
+        'data-reactions-enabled': '1',
+        'data-emit-metadata': '0',
+        'data-input-position': 'top',
+        'data-lang': 'zh-CN',
+        crossorigin: 'anonymous',
+        async: '',
+      };
+  
+      
+      giscusAttributes['data-theme'] = document.body.classList.contains('dark')
+        ? 'transparent_dark'
+        : 'light';
+  
+      
+      createGiscusScript(giscusAttributes);
+  
+      
+      const bodyObserver = new MutationObserver(() => {
+        const theme = document.body.classList.contains('dark') ? 'transparent_dark' : 'light';
+        sendMessage({ setConfig: { theme } });
+      });
+  
+      bodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    });
+  </script>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://Clay-Hex.github.io/">Clay&#39;s Blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <span class="topInner">
+        <svg class="topSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z"/>
+        </svg>
+        <span id="read_progress"></span>
+    </span>
+</a>
+
+<script>
+    document.addEventListener('scroll', function (e) {
+        const readProgress = document.getElementById("read_progress");
+        const scrollHeight = document.documentElement.scrollHeight;
+        const clientHeight = document.documentElement.clientHeight;
+        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        readProgress.innerText = ((scrollTop / (scrollHeight - clientHeight)).toFixed(2) * 100).toFixed(0);
+    })
+</script>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = '复制';
+
+        function copyingDone() {
+            copybutton.innerHTML = '已复制';
+            setTimeout(() => {
+                copybutton.innerHTML = '复制';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        let language = codeblock.className.replaceAll("language-", "")
+        let macTool = document.createElement("div")
+        let macTool1 = document.createElement("div")
+        let macTool2 = document.createElement("div")
+        let macTool3 = document.createElement("div")
+        let languageType = document.createElement("div")
+        languageType.innerText = language
+        macTool.setAttribute('class', 'mac-tool')
+        macTool1.setAttribute('class', 'mac bb1')
+        macTool2.setAttribute('class', 'mac bb2')
+        macTool3.setAttribute('class', 'mac bb3')
+        languageType.setAttribute('class', 'language-type')
+        macTool.appendChild(macTool1)
+        macTool.appendChild(macTool2)
+        macTool.appendChild(macTool3)
+        macTool.appendChild(languageType)
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+            container.appendChild(macTool)
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+            container.appendChild(macTool)
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+            container.appendChild(macTool)
+        }
+    });
+</script>
+</body>
+
+</html>

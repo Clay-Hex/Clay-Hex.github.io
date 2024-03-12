@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>C&#43;&#43;学习记录(10) 内存对齐 | Clay&#39;s Blog</title>
+<meta name="keywords" content="C&#43;&#43;">
+<meta name="description" content="c&#43;&#43;中的内存对齐问题">
+<meta name="author" content="Clay">
+<link rel="canonical" href="https://Clay-Hex.github.io/posts/2021/06/cpp-memory-alignment/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.js" onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://Clay-Hex.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Clay-Hex.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Clay-Hex.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Clay-Hex.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Clay-Hex.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="zh" href="https://Clay-Hex.github.io/posts/2021/06/cpp-memory-alignment/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><meta property="og:title" content="C&#43;&#43;学习记录(10) 内存对齐" />
+<meta property="og:description" content="c&#43;&#43;中的内存对齐问题" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://Clay-Hex.github.io/posts/2021/06/cpp-memory-alignment/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-06-25T21:26:00+08:00" />
+<meta property="article:modified_time" content="2021-06-25T21:26:00+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="C&#43;&#43;学习记录(10) 内存对齐"/>
+<meta name="twitter:description" content="c&#43;&#43;中的内存对齐问题"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "📒 记录",
+      "item": "https://Clay-Hex.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "📚 学习",
+      "item": "https://Clay-Hex.github.io/posts/learn/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "C++学习记录(10) 内存对齐",
+      "item": "https://Clay-Hex.github.io/posts/2021/06/cpp-memory-alignment/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "C++学习记录(10) 内存对齐",
+  "name": "C\u002b\u002b学习记录(10) 内存对齐",
+  "description": "c++中的内存对齐问题",
+  "keywords": [
+    "C++"
+  ],
+  "articleBody": "0. 为什么要内存对齐？ 经过内存对齐之后，一个最最主要的原因是可以使得CPU的内存访问速度大大提升。 内存空间按照byte划分，从理论上讲似乎对任何类型的变量的访问可以从任何地址开始，但实际情况是在访问特定变量的时候经常在特定的内存地址访问，这就需要各类型数据按照一定的规则在空间上排列，而不是顺序的一个接一个的排放，这就是对齐。\n用空间换时间！\nCPU在读内存的时候是n个为一组的方式去读。 假设此时4个字节为一组去读。\n内存对齐之后的内存空间如下图：\n这样的话，只需要读内存2次。\n先从第一组读，然后扣除0位置，a就读取结束了。 读b的时候，先读第一组，扣除1，2，3。然后读第二组，扣除4，拼起来组成变量b。\n这样的话。一共读了3次。\n1. 内存对齐的原则? #pragma pack(N); // N 字节对齐； 默认为4(32位), 8(64位) 数据成员对齐规则： * 第一个成员offset = 0; * 后面每个成员的起始位置为：min( N, 自身长度) 的 倍数\n如果成员中有结构体，那么该结构体的起始位置为，min( N, 结构体内部所有成员最大长度) 的倍数\n结构体的总大小，也就是sizeof的结果，必须是 min(#pragram pack() , 长度最长的数据成员) 的整数倍\n注意，N必须为1,2,4,8…这种才生效，否则的话，都是按默认的字节数进行对齐。\n",
+  "wordCount" : "526",
+  "inLanguage": "zh",
+  "datePublished": "2021-06-25T21:26:00+08:00",
+  "dateModified": "2021-06-25T21:26:00+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "Clay"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Clay-Hex.github.io/posts/2021/06/cpp-memory-alignment/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Clay's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Clay-Hex.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://Clay-Hex.github.io/" accesskey="h" title="Clay&#39;s Blog (Alt + H)">
+                <img src="https://Clay-Hex.github.io/img/avatar.jpg" alt="" aria-label="logo"
+                    height="35">Clay&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch">
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://Clay-Hex.github.io/search" title="🔍 搜索 (Alt &#43; /)" accesskey=/>
+                    <span>🔍 搜索</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/" title="🏡 主页">
+                    <span>🏡 主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/posts" title="📒 记录">
+                    <span>📒 记录</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/tags" title="📛 标签">
+                    <span>📛 标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/archives/" title="📁 归档">
+                    <span>📁 归档</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/about" title="📖 关于">
+                    <span>📖 关于</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://Clay-Hex.github.io/">主页</a>&nbsp;»&nbsp;<a href="https://Clay-Hex.github.io/posts/">📒 记录</a>&nbsp;»&nbsp;<a href="https://Clay-Hex.github.io/posts/learn/">📚 学习</a></div>
+    <h1 class="post-title entry-hint-parent">
+      C&#43;&#43;学习记录(10) 内存对齐
+    </h1>
+    <div class="post-description">
+      c&#43;&#43;中的内存对齐问题
+    </div>
+    <div class="post-meta"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2021-06-25
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>526字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    <span id="post_meta_style_6">
+        <span class="fa fa-tags" style="opacity: 0.8"></span>
+        <span>
+            <span class="post-tags-meta">
+                <a href="https://Clay-Hex.github.io/tags/c&#43;&#43;/" style="color: var(--secondary)!important;">C&#43;&#43;</a>
+            </span>
+        </span>
+    </span>
+</span>
+
+</div>
+  </header> <aside id="toc-container" class="toc-container wide">
+    <div class="toc">
+        <details  open>
+            <summary accesskey="c" title="(Alt + C)">
+                <span class="details">目录</span>
+            </summary>
+
+            <div class="inner"><ul>
+                    <li>
+                        <a href="#0-%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e5%86%85%e5%ad%98%e5%af%b9%e9%bd%90" aria-label="0. 为什么要内存对齐？">0. 为什么要内存对齐？</a></li>
+                    <li>
+                        <a href="#1-%e5%86%85%e5%ad%98%e5%af%b9%e9%bd%90%e7%9a%84%e5%8e%9f%e5%88%99" aria-label="1. 内存对齐的原则?">1. 内存对齐的原则?</a>
+                    </li>
+                </ul>
+            </div>
+        </details>
+    </div>
+</aside>
+<script>
+    let activeElement;
+    let elements;
+    window.addEventListener('DOMContentLoaded', function (event) {
+        checkTocPosition();
+
+        elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+         
+         activeElement = elements[0];
+         const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+         document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+     }, false);
+
+    window.addEventListener('resize', function(event) {
+        checkTocPosition();
+    }, false);
+
+    window.addEventListener('scroll', () => {
+        
+        activeElement = Array.from(elements).find((element) => {
+            if ((getOffsetTop(element) - window.pageYOffset) > 0 && 
+                (getOffsetTop(element) - window.pageYOffset) < window.innerHeight/2) {
+                return element;
+            }
+        }) || activeElement
+
+        elements.forEach(element => {
+             const id = encodeURI(element.getAttribute('id')).toLowerCase();
+             if (element === activeElement){
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+             } else {
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.remove('active');
+             }
+         })
+     }, false);
+
+    const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+    const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+    const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+    function checkTocPosition() {
+        const width = document.body.scrollWidth;
+
+        if (width - main - (toc * 2) - (gap * 4) > 0) {
+            document.getElementById("toc-container").classList.add("wide");
+        } else {
+            document.getElementById("toc-container").classList.remove("wide");
+        }
+    }
+
+    function getOffsetTop(element) {
+        if (!element.getClientRects().length) {
+            return 0;
+        }
+        let rect = element.getBoundingClientRect();
+        let win = element.ownerDocument.defaultView;
+        return rect.top + win.pageYOffset;   
+    }
+</script>
+  <div class="post-content"><h1 id="0-为什么要内存对齐">0. 为什么要内存对齐？<a hidden class="anchor" aria-hidden="true" href="#0-为什么要内存对齐">#</a></h1>
+<p>经过内存对齐之后，一个最最主要的原因是可以使得CPU的内存访问速度大大提升。
+　　内存空间按照byte划分，从理论上讲似乎对任何类型的变量的访问可以从任何地址开始，但实际情况是在访问特定变量的时候经常在特定的内存地址访问，这就需要各类型数据按照一定的规则在空间上排列，而不是顺序的一个接一个的排放，这就是对齐。</p>
+<p><strong>用空间换时间！</strong></p>
+<p>CPU在读内存的时候是n个为一组的方式去读。
+假设此时4个字节为一组去读。</p>
+<p>内存对齐之后的内存空间如下图：</p>
+<center><figure>
+    <img loading="lazy" src="pic1.png" width="100%"/> 
+</figure>
+</center>
+<p>这样的话，只需要读内存2次。</p>
+<center><figure>
+    <img loading="lazy" src="pic2.png" width="100%"/> 
+</figure>
+</center>
+<p>先从第一组读，然后扣除0位置，a就读取结束了。
+读b的时候，先读第一组，扣除1，2，3。然后读第二组，扣除4，拼起来组成变量b。</p>
+<p>这样的话。一共读了3次。</p>
+<h1 id="1-内存对齐的原则">1. 内存对齐的原则?<a hidden class="anchor" aria-hidden="true" href="#1-内存对齐的原则">#</a></h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#pragma pack(N);    </span><span class="c1">// N 字节对齐；   默认为4(32位), 8(64位)
+</span></span></span></code></pre></div><ol>
+<li>
+<p>数据成员对齐规则：
+* 第一个成员offset = 0;
+* 后面每个成员的起始位置为：min( N,  自身长度) 的 倍数</p>
+</li>
+<li>
+<p>如果成员中有结构体，那么该结构体的起始位置为，min( N,  结构体内部所有成员最大长度) 的倍数</p>
+</li>
+<li>
+<p>结构体的总大小，也就是sizeof的结果，必须是 min(#pragram pack() , 长度最长的数据成员) 的整数倍</p>
+</li>
+</ol>
+<p>注意，N必须为1,2,4,8&hellip;这种才生效，否则的话，都是按默认的字节数进行对齐。</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Clay-Hex.github.io/tags/c&#43;&#43;/">C&#43;&#43;</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Clay-Hex.github.io/posts/2021/07/cpp-smart-pointers/">
+    <span class="title">« 上一篇</span>
+    <br>
+    <span>C&#43;&#43;学习记录(11) 智能指针</span>
+  </a>
+  <a class="next" href="https://Clay-Hex.github.io/posts/2021/06/cpp-constant-folding/">
+    <span class="title">下一篇 »</span>
+    <br>
+    <span>C&#43;&#43;学习记录(9) 常量折叠</span>
+  </a>
+</nav>
+
+  </footer><script>
+    function createGiscusScript(data) {
+      const giscusScript = document.createElement('script');
+  
+      
+      Object.entries(data).forEach(([key, value]) => giscusScript.setAttribute(key, value));
+  
+      
+      document.querySelector('article').appendChild(giscusScript);
+  
+      
+      const toggle = document.querySelector('label[for="switch_default"]');
+      if (toggle) {
+        toggle.addEventListener('click', function () {
+          
+          const theme = document.body.classList.contains('dark') ? 'transparent_dark' : 'light';
+          giscusScript.setAttribute('data-theme', theme);
+  
+          
+          sendMessage({ setConfig: { theme } });
+        });
+      }
+    }
+  
+    function sendMessage(message) {
+      const iframe = document.querySelector('iframe.giscus-frame');
+      if (iframe) {
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+    }
+  
+    document.addEventListener('DOMContentLoaded', function () {
+      
+      const giscusAttributes = {
+        src: 'https://giscus.app/client.js',
+        'data-repo': 'Clay-Hex/BlogComments',
+        'data-repo-id': 'R_kgDOLexoRQ',
+        'data-category': 'Announcements',
+        'data-category-id': 'DIC_kwDOLexoRc4Cd5Ao',
+        'data-mapping': 'pathname',
+        'data-strict': '1',
+        'data-reactions-enabled': '1',
+        'data-emit-metadata': '0',
+        'data-input-position': 'top',
+        'data-lang': 'zh-CN',
+        crossorigin: 'anonymous',
+        async: '',
+      };
+  
+      
+      giscusAttributes['data-theme'] = document.body.classList.contains('dark')
+        ? 'transparent_dark'
+        : 'light';
+  
+      
+      createGiscusScript(giscusAttributes);
+  
+      
+      const bodyObserver = new MutationObserver(() => {
+        const theme = document.body.classList.contains('dark') ? 'transparent_dark' : 'light';
+        sendMessage({ setConfig: { theme } });
+      });
+  
+      bodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    });
+  </script>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://Clay-Hex.github.io/">Clay&#39;s Blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <span class="topInner">
+        <svg class="topSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z"/>
+        </svg>
+        <span id="read_progress"></span>
+    </span>
+</a>
+
+<script>
+    document.addEventListener('scroll', function (e) {
+        const readProgress = document.getElementById("read_progress");
+        const scrollHeight = document.documentElement.scrollHeight;
+        const clientHeight = document.documentElement.clientHeight;
+        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        readProgress.innerText = ((scrollTop / (scrollHeight - clientHeight)).toFixed(2) * 100).toFixed(0);
+    })
+</script>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = '复制';
+
+        function copyingDone() {
+            copybutton.innerHTML = '已复制';
+            setTimeout(() => {
+                copybutton.innerHTML = '复制';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        let language = codeblock.className.replaceAll("language-", "")
+        let macTool = document.createElement("div")
+        let macTool1 = document.createElement("div")
+        let macTool2 = document.createElement("div")
+        let macTool3 = document.createElement("div")
+        let languageType = document.createElement("div")
+        languageType.innerText = language
+        macTool.setAttribute('class', 'mac-tool')
+        macTool1.setAttribute('class', 'mac bb1')
+        macTool2.setAttribute('class', 'mac bb2')
+        macTool3.setAttribute('class', 'mac bb3')
+        languageType.setAttribute('class', 'language-type')
+        macTool.appendChild(macTool1)
+        macTool.appendChild(macTool2)
+        macTool.appendChild(macTool3)
+        macTool.appendChild(languageType)
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+            container.appendChild(macTool)
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+            container.appendChild(macTool)
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+            container.appendChild(macTool)
+        }
+    });
+</script>
+</body>
+
+</html>

@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="zh" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>📚 学习 | Clay&#39;s Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="📚 学习 - Clay&#39;s Blog">
+<meta name="author" content="Clay">
+<link rel="canonical" href="https://Clay-Hex.github.io/posts/learn/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://Clay-Hex.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Clay-Hex.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Clay-Hex.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Clay-Hex.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Clay-Hex.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="https://Clay-Hex.github.io/posts/learn/index.xml">
+<link rel="alternate" hreflang="zh" href="https://Clay-Hex.github.io/posts/learn/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><meta property="og:title" content="📚 学习" />
+<meta property="og:description" content="Clay的博客,Clay&#39;s Blog,Clay-Hex&#39;s Blog,hugo,paperMod,c&#43;&#43;" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://Clay-Hex.github.io/posts/learn/" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="📚 学习"/>
+<meta name="twitter:description" content="Clay的博客,Clay&#39;s Blog,Clay-Hex&#39;s Blog,hugo,paperMod,c&#43;&#43;"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "📒 记录",
+      "item": "https://Clay-Hex.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "📚 学习",
+      "item": "https://Clay-Hex.github.io/posts/learn/"
+    }
+  ]
+}
+</script>
+</head>
+
+<body class="list" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://Clay-Hex.github.io/" accesskey="h" title="Clay&#39;s Blog (Alt + H)">
+                <img src="https://Clay-Hex.github.io/img/avatar.jpg" alt="" aria-label="logo"
+                    height="35">Clay&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch">
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://Clay-Hex.github.io/search" title="🔍 搜索 (Alt &#43; /)" accesskey=/>
+                    <span>🔍 搜索</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/" title="🏡 主页">
+                    <span>🏡 主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/posts" title="📒 记录">
+                    <span>📒 记录</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/tags" title="📛 标签">
+                    <span>📛 标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/archives/" title="📁 归档">
+                    <span>📁 归档</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/about" title="📖 关于">
+                    <span>📖 关于</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><div class="breadcrumbs"><a href="https://Clay-Hex.github.io/">主页</a>&nbsp;»&nbsp;<a href="https://Clay-Hex.github.io/posts/">📒 记录</a></div>
+  <h1>
+    📚 学习
+  </h1>
+</header>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">C&#43;&#43;学习记录(15) 条件变量与互斥锁
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>0. C&#43;&#43; 中的锁 两种最常用的：互斥锁、条件锁，此外还有自旋锁 1. C&#43;&#43; 中的条件变量 2. 生产者消费者模型 引出虚假唤醒的问题 3. 虚假唤醒 有多个线程在wait同一个条件变量时，当条件变量发出notify_one的时候，各个线程去竞争锁，此时，只能有一个线程得到锁，但是，其他线程在收到notify_on...</p>
+  </div>
+  <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2022-11-18
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>433字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    <span id="post_meta_style_6">
+        <span class="fa fa-tags" style="opacity: 0.8"></span>
+        <span>
+            <span class="post-tags-meta">
+                <a href="https://Clay-Hex.github.io/tags/c&#43;&#43;/" style="color: var(--secondary)!important;">C&#43;&#43;</a>
+            </span>
+        </span>
+    </span>
+</span></footer>
+  <a class="entry-link" aria-label="post link to C&#43;&#43;学习记录(15) 条件变量与互斥锁" href="https://Clay-Hex.github.io/posts/2022/11/cpp-conditional-variables-lock/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">C&#43;&#43;学习记录(14) 构造函数与析构函数
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>1. 编译器默认添加的函数 自写类的时候，如果没有显式的写出来构造函数、析构函数、拷贝构造函数、拷贝赋值函数。如果程序中这些函数被需要（被调用），编译器就会默认的创建这些函数。 默认的构造函数和析构函数都是空实现的。 默认的拷贝构造函数和拷贝赋值函数都是浅拷贝。 如果有自己写的一个或者多个构...</p>
+  </div>
+  <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2022-04-26
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>843字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    <span id="post_meta_style_6">
+        <span class="fa fa-tags" style="opacity: 0.8"></span>
+        <span>
+            <span class="post-tags-meta">
+                <a href="https://Clay-Hex.github.io/tags/c&#43;&#43;/" style="color: var(--secondary)!important;">C&#43;&#43;</a>
+            </span>
+        </span>
+    </span>
+</span></footer>
+  <a class="entry-link" aria-label="post link to C&#43;&#43;学习记录(14) 构造函数与析构函数" href="https://Clay-Hex.github.io/posts/2022/04/cpp-constructors-destructors/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">常见排序算法及稳定性
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>1. 代码 /* * @Brief: 常见排序算法汇总 * @Author: * @Date: 2021-07-01 */ #include &lt;iostream&gt; #include &lt;algorithm&gt; #include &lt;vector&gt; #include &lt;queue&gt; using namespace std; void printArray(int *a, int len){ for(int i = 0; i &lt; len; i&#43;&#43;) cout &lt;&lt; a[i] &lt;&lt; &#34; &#34;; cout &lt;&lt; endl &lt;&lt; endl; } void bubbleSort(int *a, int len){ for(int i = 0; i &lt; len - 1; i&#43;&#43;){ for(int j = 0; j &lt; len - i; j&#43;&#43;){ if(a[j] &gt; a[j&#43;1]) swap(a[j], a[j&#43;1]); } } } void selectSort(int *a, int len){ for(int i = 0; i &lt; len; i&#43;&#43;){ int mi = i; for(int j = i; j &lt; len; j&#43;&#43;){ if(a[j] &lt; a[mi]) mi = j; } if(i != mi) swap(a[i], a[mi]); } } void insertionSort(int *a, int len){ for(int i = 0; i &lt; len;...</p>
+  </div>
+  <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2021-12-20
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>1023字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    <span id="post_meta_style_6">
+        <span class="fa fa-tags" style="opacity: 0.8"></span>
+        <span>
+            <span class="post-tags-meta">
+                <a href="https://Clay-Hex.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" style="color: var(--secondary)!important;">数据结构与算法</a>
+            </span>
+        </span>
+    </span>
+</span></footer>
+  <a class="entry-link" aria-label="post link to 常见排序算法及稳定性" href="https://Clay-Hex.github.io/posts/2021/12/sorting-algorithm-stability/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">C&#43;&#43;学习记录(13) new与delete
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>0. placement new 即 原地构造。 用法： int *p = new int(10); // new operator new(p) int(1000); // 在 p 指向的内存上 构造一个int对象，即placement new // 此时 *P 为 1000。 因为是在一个已有的空间上构造对象，所以，空间的释放，就由free或者delete负责了。 0.1 重载placement new 与后边的 3 ：operator new的重载无...</p>
+  </div>
+  <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2021-08-20
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>2064字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    <span id="post_meta_style_6">
+        <span class="fa fa-tags" style="opacity: 0.8"></span>
+        <span>
+            <span class="post-tags-meta">
+                <a href="https://Clay-Hex.github.io/tags/c&#43;&#43;/" style="color: var(--secondary)!important;">C&#43;&#43;</a>
+            </span>
+        </span>
+    </span>
+</span></footer>
+  <a class="entry-link" aria-label="post link to C&#43;&#43;学习记录(13) new与delete" href="https://Clay-Hex.github.io/posts/2021/08/cpp-new-and-delete/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">C&#43;&#43;学习记录(12) 类型转换
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>0. 必要性 C语言中的类型转换，没有安全检查，安全性需要程序猿来保证，C&#43;&#43;提供了4种类型转换的方法，在一定程度上保证转换的安全性。 重点是 dynamic_cast 1. const_cast 仅用于去除类型的const属性，也是四种类型转换中，唯一可以去掉const限制的方法。 只能转换 指针、引用、this（在类内的时候用）。 2. static_cast 隐...</p>
+  </div>
+  <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2021-08-02
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>739字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    <span id="post_meta_style_6">
+        <span class="fa fa-tags" style="opacity: 0.8"></span>
+        <span>
+            <span class="post-tags-meta">
+                <a href="https://Clay-Hex.github.io/tags/c&#43;&#43;/" style="color: var(--secondary)!important;">C&#43;&#43;</a>
+            </span>
+        </span>
+    </span>
+</span></footer>
+  <a class="entry-link" aria-label="post link to C&#43;&#43;学习记录(12) 类型转换" href="https://Clay-Hex.github.io/posts/2021/08/cpp-type-conversion/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">C&#43;&#43;学习记录(11) 智能指针
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>1. 什么是智能指针 简而言之，为了更安全的使用指针。 实现方式简单来说，就是用一个模板类把一般的指针包装起来。用这个类来维护内部指针的释放操作。 std中有四种智能指针。 auto_ptr（已弃用） unique_ptr shared_ptr weak_ptr 2. auto_ptr 比较简单的智能指针，实现逻辑如下代码。 实现的原则是：内存空间只能由一个指针所拥有。...</p>
+  </div>
+  <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2021-07-10
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>2502字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    <span id="post_meta_style_6">
+        <span class="fa fa-tags" style="opacity: 0.8"></span>
+        <span>
+            <span class="post-tags-meta">
+                <a href="https://Clay-Hex.github.io/tags/c&#43;&#43;/" style="color: var(--secondary)!important;">C&#43;&#43;</a>
+            </span>
+        </span>
+    </span>
+</span></footer>
+  <a class="entry-link" aria-label="post link to C&#43;&#43;学习记录(11) 智能指针" href="https://Clay-Hex.github.io/posts/2021/07/cpp-smart-pointers/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">C&#43;&#43;学习记录(10) 内存对齐
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>0. 为什么要内存对齐？ 经过内存对齐之后，一个最最主要的原因是可以使得CPU的内存访问速度大大提升。 内存空间按照byte划分，从理论上讲似乎对任何类型的变量的访问可以从任何地址开始，但实际情况是在访问特定变量的时候经常在特定的内存地址访问，这就需要各类型数据按照一定的规则在空间上排列...</p>
+  </div>
+  <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2021-06-25
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>526字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    <span id="post_meta_style_6">
+        <span class="fa fa-tags" style="opacity: 0.8"></span>
+        <span>
+            <span class="post-tags-meta">
+                <a href="https://Clay-Hex.github.io/tags/c&#43;&#43;/" style="color: var(--secondary)!important;">C&#43;&#43;</a>
+            </span>
+        </span>
+    </span>
+</span></footer>
+  <a class="entry-link" aria-label="post link to C&#43;&#43;学习记录(10) 内存对齐" href="https://Clay-Hex.github.io/posts/2021/06/cpp-memory-alignment/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">C&#43;&#43;学习记录(9) 常量折叠
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>转自：https://www.cnblogs.com/stemon/p/4406824.html 前几天女票问了我一个阿里的面试题，是有关C&#43;&#43;语言的const常量的，其实她一提出来我就知道考察的点了：肯定是const常量的内存不是分配在read-only的存储区的，const常量...</p>
+  </div>
+  <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2021-06-24
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>3466字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    <span id="post_meta_style_6">
+        <span class="fa fa-tags" style="opacity: 0.8"></span>
+        <span>
+            <span class="post-tags-meta">
+                <a href="https://Clay-Hex.github.io/tags/c&#43;&#43;/" style="color: var(--secondary)!important;">C&#43;&#43;</a>
+            </span>
+        </span>
+    </span>
+</span></footer>
+  <a class="entry-link" aria-label="post link to C&#43;&#43;学习记录(9) 常量折叠" href="https://Clay-Hex.github.io/posts/2021/06/cpp-constant-folding/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">C&#43;&#43;学习记录(8) 模板
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>0. 模板 C&#43;&#43;中除了有面向对象的思想，还有泛型编程的思想，泛型编程利用的主要技术就是模板。 C&#43;&#43;中两种模板：函数模板、类模板 语法： template&lt;typename T&gt; 函数声明或定义 含义： template 固定的，声明创建模板 typename 表明后边的T是一种数据类型，也可以用class代替 T 类似形参，任意的合法字符都可以，习惯上用 T 模板有两种...</p>
+  </div>
+  <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2021-02-20
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>2424字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    <span id="post_meta_style_6">
+        <span class="fa fa-tags" style="opacity: 0.8"></span>
+        <span>
+            <span class="post-tags-meta">
+                <a href="https://Clay-Hex.github.io/tags/c&#43;&#43;/" style="color: var(--secondary)!important;">C&#43;&#43;</a>
+            </span>
+        </span>
+    </span>
+</span></footer>
+  <a class="entry-link" aria-label="post link to C&#43;&#43;学习记录(8) 模板" href="https://Clay-Hex.github.io/posts/2021/02/cpp-template/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">C&#43;&#43;学习记录(7) 多态
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>0. 基本语法 多态是面向对象的三大特性之一。 多态：多态即调用成员函数时，会根据调用函数的对象的类型来执行不同的函数。 多态分为两类 静态多态：函数重载 和 运算符重载 属于静态多态，是对函数名的复用。 动态多态：派生类和虚函数实现运行时多态。 静态多态的函数地址早绑定， 编译阶段确定函数地址。 动态多...</p>
+  </div>
+  <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2021-02-17
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>1186字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    <span id="post_meta_style_6">
+        <span class="fa fa-tags" style="opacity: 0.8"></span>
+        <span>
+            <span class="post-tags-meta">
+                <a href="https://Clay-Hex.github.io/tags/c&#43;&#43;/" style="color: var(--secondary)!important;">C&#43;&#43;</a>
+            </span>
+        </span>
+    </span>
+</span></footer>
+  <a class="entry-link" aria-label="post link to C&#43;&#43;学习记录(7) 多态" href="https://Clay-Hex.github.io/posts/2021/02/cpp-polymorphic/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">C&#43;&#43;学习记录(6) 继承
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>0. 基本语法 继承是面向对象的三大特性之一。 class 子类 ： 继承方式 父类 从父类继承来的表现其共性，而新增的成员表现其个性。 1. 继承方式 三种继承方式 public protected private 父类中的private成员，无论哪种方式都不能访问。 2. 继承中的对象模型 问题：从父类继承来的成员，哪些属于子类对象中？ 输出子类的sizeof可以...</p>
+  </div>
+  <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2021-02-17
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>680字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    <span id="post_meta_style_6">
+        <span class="fa fa-tags" style="opacity: 0.8"></span>
+        <span>
+            <span class="post-tags-meta">
+                <a href="https://Clay-Hex.github.io/tags/c&#43;&#43;/" style="color: var(--secondary)!important;">C&#43;&#43;</a>
+            </span>
+        </span>
+    </span>
+</span></footer>
+  <a class="entry-link" aria-label="post link to C&#43;&#43;学习记录(6) 继承" href="https://Clay-Hex.github.io/posts/2021/02/cpp-inheritance/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">C&#43;&#43;学习记录(5) 类
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>0. 类的4个默认函数 4个函数：构造函数、析构函数、拷贝构造函数、赋值号重载函数。 在定义类时，如果没有自定义这些函数，编译器会提供默认的函数，在默认的函数中，构造函数、析构函数默认空实现，拷贝构造函数、赋值号重载函数默认是浅拷贝。 拷贝构造函数作用： 参数是一个同类型的对象，直接拷贝这个...</p>
+  </div>
+  <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2021-02-17
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>3982字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    <span id="post_meta_style_6">
+        <span class="fa fa-tags" style="opacity: 0.8"></span>
+        <span>
+            <span class="post-tags-meta">
+                <a href="https://Clay-Hex.github.io/tags/c&#43;&#43;/" style="color: var(--secondary)!important;">C&#43;&#43;</a>
+            </span>
+        </span>
+    </span>
+</span></footer>
+  <a class="entry-link" aria-label="post link to C&#43;&#43;学习记录(5) 类" href="https://Clay-Hex.github.io/posts/2021/02/cpp-class/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">C&#43;&#43;学习记录(4) 引用
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>0. 引用的本质 本质：引用在C&#43;&#43;内部的实现是一个指针常量（* const）。 const就限制了必须要初始化，并且初始化以后不可更改。 它不是一个对象，所以没有引用的引用。 1. 注意事项 引用必须初始化 引用在初始化后不可修改 2. 引用做函数参数 与指针传递相似 3. 引用做函数返回值 与指针一样，不要返回局...</p>
+  </div>
+  <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2021-02-16
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>228字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    <span id="post_meta_style_6">
+        <span class="fa fa-tags" style="opacity: 0.8"></span>
+        <span>
+            <span class="post-tags-meta">
+                <a href="https://Clay-Hex.github.io/tags/c&#43;&#43;/" style="color: var(--secondary)!important;">C&#43;&#43;</a>
+            </span>
+        </span>
+    </span>
+</span></footer>
+  <a class="entry-link" aria-label="post link to C&#43;&#43;学习记录(4) 引用" href="https://Clay-Hex.github.io/posts/2021/02/cpp-reference/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">C&#43;&#43;学习记录(3) 常量指针与指针常量
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>两个比较容易混淆的概念。 0. 记忆方法 const int * p; int * const p; int const * p; 这是常见的三种写法，按照从左至右的顺序记忆，按照从右至左的顺序理解。 记忆 只关注const 和 * 的先后先后顺序，const读做常量，*读做指针。 参考《Effective c&#43;&#43;》Item21上的做法，如果const位于星号的左侧...</p>
+  </div>
+  <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2021-02-15
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>1334字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    <span id="post_meta_style_6">
+        <span class="fa fa-tags" style="opacity: 0.8"></span>
+        <span>
+            <span class="post-tags-meta">
+                <a href="https://Clay-Hex.github.io/tags/c&#43;&#43;/" style="color: var(--secondary)!important;">C&#43;&#43;</a>
+            </span>
+        </span>
+    </span>
+</span></footer>
+  <a class="entry-link" aria-label="post link to C&#43;&#43;学习记录(3) 常量指针与指针常量" href="https://Clay-Hex.github.io/posts/2021/02/cpp-constant-pointer-and-pointer-constant/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">单调栈与单调队列详解
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>1. 单调栈 1.1 可解决的问题 单调栈的使用场景时分有限，只处理一种典型的问题，叫做 Next Greater Element。 例如：在一个数组中，每个数左边（右边）第一个比它大（小）的数是什么。 1.2 详解 直接上例子解释它。 题目：给出一个原始数组 a[3, 4, 2, 7, 5]，输出每个数左边第一个比它小的数，如果不存在则输出-1。 解释...</p>
+  </div>
+  <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2021-02-09
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>2319字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    <span id="post_meta_style_6">
+        <span class="fa fa-tags" style="opacity: 0.8"></span>
+        <span>
+            <span class="post-tags-meta">
+                <a href="https://Clay-Hex.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" style="color: var(--secondary)!important;">数据结构与算法</a>
+            </span>
+        </span>
+    </span>
+</span></footer>
+  <a class="entry-link" aria-label="post link to 单调栈与单调队列详解" href="https://Clay-Hex.github.io/posts/2021/02/monotone-stack-monotone-queue/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="next" href="https://Clay-Hex.github.io/posts/learn/page/2/">下一篇&nbsp;&nbsp;»
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://Clay-Hex.github.io/">Clay&#39;s Blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <span class="topInner">
+        <svg class="topSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z"/>
+        </svg>
+        <span id="read_progress"></span>
+    </span>
+</a>
+
+<script>
+    document.addEventListener('scroll', function (e) {
+        const readProgress = document.getElementById("read_progress");
+        const scrollHeight = document.documentElement.scrollHeight;
+        const clientHeight = document.documentElement.clientHeight;
+        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        readProgress.innerText = ((scrollTop / (scrollHeight - clientHeight)).toFixed(2) * 100).toFixed(0);
+    })
+</script>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

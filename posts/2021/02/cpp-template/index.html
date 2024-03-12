@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="zh" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>C&#43;&#43;学习记录(8) 模板 | Clay&#39;s Blog</title>
+<meta name="keywords" content="C&#43;&#43;">
+<meta name="description" content="c&#43;&#43;中的模板">
+<meta name="author" content="Clay">
+<link rel="canonical" href="https://Clay-Hex.github.io/posts/2021/02/cpp-template/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.js" onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://Clay-Hex.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Clay-Hex.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Clay-Hex.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Clay-Hex.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Clay-Hex.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="zh" href="https://Clay-Hex.github.io/posts/2021/02/cpp-template/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><meta property="og:title" content="C&#43;&#43;学习记录(8) 模板" />
+<meta property="og:description" content="c&#43;&#43;中的模板" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://Clay-Hex.github.io/posts/2021/02/cpp-template/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-02-20T14:25:23+08:00" />
+<meta property="article:modified_time" content="2021-02-20T14:25:23+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="C&#43;&#43;学习记录(8) 模板"/>
+<meta name="twitter:description" content="c&#43;&#43;中的模板"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "📒 记录",
+      "item": "https://Clay-Hex.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "📚 学习",
+      "item": "https://Clay-Hex.github.io/posts/learn/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "C++学习记录(8) 模板",
+      "item": "https://Clay-Hex.github.io/posts/2021/02/cpp-template/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "C++学习记录(8) 模板",
+  "name": "C\u002b\u002b学习记录(8) 模板",
+  "description": "c++中的模板",
+  "keywords": [
+    "C++"
+  ],
+  "articleBody": "0. 模板 C++中除了有面向对象的思想，还有泛型编程的思想，泛型编程利用的主要技术就是模板。 C++中两种模板：函数模板、类模板\n语法：\ntemplate\u003ctypename T\u003e 函数声明或定义 含义：\ntemplate 固定的，声明创建模板 typename 表明后边的T是一种数据类型，也可以用class代替 T 类似形参，任意的合法字符都可以，习惯上用 T 模板有两种类型推导的方式，一种是编译器自动推导，另外一种是程序猿手动指定：\n#include using namespace std; template\u003ctypename T\u003e void func(T \u0026a, T \u0026b){\tT s = a; a = b; b = s; } int main(){ int a = 10, s = 9; // func(a, s); // 自动类型推导 // func(a, s); // 指定类型推导 cout \u003c\u003c a \u003c\u003c endl; cout \u003c\u003c s \u003c\u003c endl; return 0; } 1. 函数模板注意事项 自动类型推导，必须推导出一致的数据类型才可以使用。 模板必须要确定 T 的数据类型，才可以使用。 eg:二分排序的模板实现\ntemplate\u003ctypename T\u003e void mySort(T a[], int len, int l, int r){\t// quickSort if(l \u003e= r) return ; int x = a[(l + r) / 2]; int i = l - 1, j = r + 1; while(i \u003c j){ while(a[++i] \u003c x); while(a[--j] \u003e x); if(i \u003c j) swap(a[i], a[j]); } mySort(a, len, l, j); mySort(a, len, j + 1, r);\t} 2. 普通函数与函数模板对比 2.1 区别 普通函数调用时，参数可以发生自动类型转换（隐式转换） 函数模板，在自动类型推导形式下，不会自动类型转换。 函数模板，在指定类型形式下，会发生自动类型转换。 2.2 调用规则 如果普通函数和函数模板同时存在，则会调用普通函数，如果普通函数只有声明，没有实现，那也不会去调用函数模板，会直接报错 可以用过空模板参数列表，强制调用函数模板 函数模板也可以重载 如果函数模板可以更好的匹配调用，会优先调用函数模板 #include using namespace std; void fuc(int a, int b){ cout \u003c\u003c \"普通\" \u003c\u003c endl; } template\u003cclass T\u003e void fuc(T a, T b){ cout \u003c\u003c \"模板\" \u003c\u003c endl; } template\u003cclass T\u003e // 重载函数模板 void fuc(T a, T b, T c){ cout \u003c\u003c \"模板 重载\" \u003c\u003c endl; } void test(){ int a = 1; int b = 2; fuc(a, b); // 调用普通函数 fuc\u003c\u003e(a, b); // 空模板参数列表，调用函数模板 fuc\u003c\u003e(a, b, 1); // 模板 重载 char c1 = 'a'; char c2 = 's'; fuc(c1, c2); // 传入char型，普通函数需要做自动类型转换，而函数模板不需要转换，所以优先调用函数模板。 } int main(){ test(); return 0; } 3. 模板的局限性 比如模板是一个赋值操作，那么传入的是数组的话，就不正确了。 再比如，比较两个对象的大小关系，类型不确定，比较方式也不确定。\n为了解决上边问题，C++提供了模板的重载，可以为特定的类型提供具体化的模板（当然，也可以在重载特定类型的运算符）\n语法：\ntemplate\u003cclass T\u003e void fuc(T a, T b){ cout \u003c\u003c \"原模板\" \u003c\u003c endl; } // test是自定义的数据类型 // 这里将函数模板为test数据类型具体化，如果传入是test类型的话，优先调用具体化的模板 template\u003c\u003e void fuc(test a, test b){ // ... code } 4. 类模板 作用：建立一个通用类，类的成员的数据类型可以不指定，用一个虚拟的类型来代表。 语法：和函数模板一样\ntemplate\u003ctypename T\u003e 类 例程：\n#include #include using namespace std; template\u003cclass nameType, class ageType\u003e class Person{ public: Person(nameType name, ageType age) : m_name(name), m_age(age){ }; void print(){ cout \u003c\u003c m_name \u003c\u003c endl; cout \u003c\u003c m_age \u003c\u003c endl; } string m_name; int m_age; }; int main(){ Person\u003cstring, int\u003e a(\"张三\", 18); a.print(); return 0; } 5. 类模板与函数模板区别 类模板没有自动类型推导，必须指定类型。 类模板在参数列表中，可以有默认参数，在C++11标准以后，函数模板也可以有默认参数了。 上边的代码可以改成这：\ntemplate\u003cclass nameType = string, class ageType = int\u003e 6. 类模板中成员函数创建的时机 类模板中的成员函数与普通类的成员函数创建时机有所区别：\n普通类的成员函数一开始就可以创建。 类模板的成员函数在调用时才创建。 类模板的成员函数在调用时才创建的原因如下：\n因为类中的某些类型并不确定，传入的类型到底能不能执行成员函数中的动作也不知道，所以不能提前创建。\n#include #include using namespace std; class Person1{ public: void f1(){ cout \u003c\u003c \"f1\" \u003c\u003c endl; } }; class Person2{ public: void f2(){ cout \u003c\u003c \"f2\" \u003c\u003c endl; } }; template\u003cclass T\u003e class tt{ public: T obj; void f1(){ obj.f1(); } void f2(){ obj.f2(); } }; int main(){ tt\u003cPerson1\u003e s; s.f1(); // 合法 s.f2();\t// 不合法 因为类模板指定的类型是Person1，而该类型没有f2的方法。 return 0; } 7. 类模板实例化的对象 做 函数参数 函数参数有三种类型进行接收：\n指定类型 ： 对象是什么类型，直接将该类型作为函数参数 把类模板的参数 模板化： 将对象中的参数变为模板 把 类模板整体 模板化 第一种在实际开发中最常用，因为后两种需要函数模板配合类模板，麻烦。\n#include #include using namespace std; template\u003cclass T1, class T2\u003e class Person{ public: T1 m_name; T2 m_age; Person(T1 name, T2 age){ m_name = name; m_age = age; } void print(){ cout \u003c\u003c \"name : \" \u003c\u003c m_name \u003c\u003c \" age : \" \u003c\u003c m_age \u003c\u003c endl; } }; //1. 指定类型 void printP1(Person\u003cstring, int\u003e \u0026a){ a.print();\t} // 2. 参数模板化 template\u003cclass T1, class T2\u003e void printP2(Person\u003cT1, T2\u003e \u0026a){ a.print(); } // 3. 类模板 模板化 template\u003cclass T\u003e void printP3( T \u0026a){ a.print(); } int main(){ Person\u003cstring, int\u003e a(\"张三\", 33); printP1(a); printP2(a); printP3(a); return 0; } 8. 类模板遇到继承 在继承时，如果父类是一个类模板，那么必须指定父类模板的数据类型。 如果想灵活继承父类模板，那么子类也需要做成类模板。 9. 类模板成员函数类外实现 template\u003cclass T1, class T2\u003e class Person{ public: T1 m_name; T2 m_age; Person(T1 name, T2 age); void print(); }; template\u003cclass T1, class T2\u003e Person\u003cT1, T2\u003e::Person(T1 name, T2 age){ m_name = name; m_age = age; } template\u003cclass T1, class T2\u003e void Person\u003cT1, T2\u003e::print(){ cout \u003c\u003c \"name : \" \u003c\u003c m_name \u003c\u003c \" age : \" \u003c\u003c m_age \u003c\u003c endl; } 10. 类模板分文件编写 类模板的声明在.h文件中，类模板的成员函数在相关联的.cpp文件中实现。 这种情况下，如果在别的文件中（比如main.cpp）引入该 .h文件，使用该类，会无法编译（无法解析外部符号），为什么？\n原因是，类模板的成员函数在调用时才会创建。main.cpp引入了.h文件，该文件中只有类模板的声明，没有具体实现。\n为了解决这个问题，有两种解决方法：\n法1：不include类的.h文件，而是include类的.cpp文件。 法2：可以将类模板的声明和实现写在同一个文件中，并且习惯上把该文件的后缀名写成 .hpp。 实际中，第二种方法更加普遍。\n11. 类模板的友元 类内定义：与普通类定义友元一样。 类内声明，类外定义：类外定义的话，肯定要声明称模板，而类内的声明语句，会认为是一个普通的函数，所以，类内的声明要加上空参数列表friend test\u003c\u003e(test);说明这是一个模板，并不是一个普通的函数。 例程：\n#include using namespace std; // 声明有Person类 要不然test2找不到Person类 template\u003cclass T\u003e class Person; // 声明test2是个模板函数，要不然下边的Person类中找不到test2这个模板函数 template\u003cclass T\u003e void test2(Person\u003cT\u003e a){ cout \u003c\u003c a.a \u003c\u003c endl; } template\u003cclass T\u003e class Person{ // 1. 类内实现友元 friend void test1(){ // 友元函数声明 + 定义，如果不加friend的话，相当于一个普通的成员 cout \u003c\u003c 123 \u003c\u003c endl; } // 2. 类外实现友元 这里声明要加空参数列表 说明需要的是一个模板函数 friend void test2\u003c\u003e(Person\u003cT\u003e); public: Person(T age){ a = age; } T a; }; // test1函数的声明 供main调用。 void test1(); int main(){ Person\u003cint\u003e a(10); test2(a); return 0; } ",
+  "wordCount" : "2424",
+  "inLanguage": "zh",
+  "datePublished": "2021-02-20T14:25:23+08:00",
+  "dateModified": "2021-02-20T14:25:23+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "Clay"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Clay-Hex.github.io/posts/2021/02/cpp-template/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Clay's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Clay-Hex.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://Clay-Hex.github.io/" accesskey="h" title="Clay&#39;s Blog (Alt + H)">
+                <img src="https://Clay-Hex.github.io/img/avatar.jpg" alt="" aria-label="logo"
+                    height="35">Clay&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch">
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://Clay-Hex.github.io/search" title="🔍 搜索 (Alt &#43; /)" accesskey=/>
+                    <span>🔍 搜索</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/" title="🏡 主页">
+                    <span>🏡 主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/posts" title="📒 记录">
+                    <span>📒 记录</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/tags" title="📛 标签">
+                    <span>📛 标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/archives/" title="📁 归档">
+                    <span>📁 归档</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/about" title="📖 关于">
+                    <span>📖 关于</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://Clay-Hex.github.io/">主页</a>&nbsp;»&nbsp;<a href="https://Clay-Hex.github.io/posts/">📒 记录</a>&nbsp;»&nbsp;<a href="https://Clay-Hex.github.io/posts/learn/">📚 学习</a></div>
+    <h1 class="post-title entry-hint-parent">
+      C&#43;&#43;学习记录(8) 模板
+    </h1>
+    <div class="post-description">
+      c&#43;&#43;中的模板
+    </div>
+    <div class="post-meta"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2021-02-20
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>2424字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    <span id="post_meta_style_6">
+        <span class="fa fa-tags" style="opacity: 0.8"></span>
+        <span>
+            <span class="post-tags-meta">
+                <a href="https://Clay-Hex.github.io/tags/c&#43;&#43;/" style="color: var(--secondary)!important;">C&#43;&#43;</a>
+            </span>
+        </span>
+    </span>
+</span>
+
+</div>
+  </header> <aside id="toc-container" class="toc-container wide">
+    <div class="toc">
+        <details  open>
+            <summary accesskey="c" title="(Alt + C)">
+                <span class="details">目录</span>
+            </summary>
+
+            <div class="inner"><ul>
+                    <li>
+                        <a href="#0-%e6%a8%a1%e6%9d%bf" aria-label="0. 模板">0. 模板</a></li>
+                    <li>
+                        <a href="#1-%e5%87%bd%e6%95%b0%e6%a8%a1%e6%9d%bf%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9" aria-label="1. 函数模板注意事项">1. 函数模板注意事项</a></li>
+                    <li>
+                        <a href="#2-%e6%99%ae%e9%80%9a%e5%87%bd%e6%95%b0%e4%b8%8e%e5%87%bd%e6%95%b0%e6%a8%a1%e6%9d%bf%e5%af%b9%e6%af%94" aria-label="2. 普通函数与函数模板对比">2. 普通函数与函数模板对比</a><ul>
+                            
+                    <li>
+                        <a href="#21-%e5%8c%ba%e5%88%ab" aria-label="2.1 区别">2.1 区别</a></li>
+                    <li>
+                        <a href="#22-%e8%b0%83%e7%94%a8%e8%a7%84%e5%88%99" aria-label="2.2 调用规则">2.2 调用规则</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#3-%e6%a8%a1%e6%9d%bf%e7%9a%84%e5%b1%80%e9%99%90%e6%80%a7" aria-label="3. 模板的局限性">3. 模板的局限性</a></li>
+                    <li>
+                        <a href="#4-%e7%b1%bb%e6%a8%a1%e6%9d%bf" aria-label="4. 类模板">4. 类模板</a></li>
+                    <li>
+                        <a href="#5-%e7%b1%bb%e6%a8%a1%e6%9d%bf%e4%b8%8e%e5%87%bd%e6%95%b0%e6%a8%a1%e6%9d%bf%e5%8c%ba%e5%88%ab" aria-label="5. 类模板与函数模板区别">5. 类模板与函数模板区别</a></li>
+                    <li>
+                        <a href="#6-%e7%b1%bb%e6%a8%a1%e6%9d%bf%e4%b8%ad%e6%88%90%e5%91%98%e5%87%bd%e6%95%b0%e5%88%9b%e5%bb%ba%e7%9a%84%e6%97%b6%e6%9c%ba" aria-label="6. 类模板中成员函数创建的时机">6. 类模板中成员函数创建的时机</a></li>
+                    <li>
+                        <a href="#7-%e7%b1%bb%e6%a8%a1%e6%9d%bf%e5%ae%9e%e4%be%8b%e5%8c%96%e7%9a%84%e5%af%b9%e8%b1%a1-%e5%81%9a-%e5%87%bd%e6%95%b0%e5%8f%82%e6%95%b0" aria-label="7. 类模板实例化的对象 做 函数参数">7. 类模板实例化的对象 做 函数参数</a></li>
+                    <li>
+                        <a href="#8-%e7%b1%bb%e6%a8%a1%e6%9d%bf%e9%81%87%e5%88%b0%e7%bb%a7%e6%89%bf" aria-label="8. 类模板遇到继承">8. 类模板遇到继承</a></li>
+                    <li>
+                        <a href="#9-%e7%b1%bb%e6%a8%a1%e6%9d%bf%e6%88%90%e5%91%98%e5%87%bd%e6%95%b0%e7%b1%bb%e5%a4%96%e5%ae%9e%e7%8e%b0" aria-label="9. 类模板成员函数类外实现">9. 类模板成员函数类外实现</a></li>
+                    <li>
+                        <a href="#10-%e7%b1%bb%e6%a8%a1%e6%9d%bf%e5%88%86%e6%96%87%e4%bb%b6%e7%bc%96%e5%86%99" aria-label="10. 类模板分文件编写">10. 类模板分文件编写</a></li>
+                    <li>
+                        <a href="#11-%e7%b1%bb%e6%a8%a1%e6%9d%bf%e7%9a%84%e5%8f%8b%e5%85%83" aria-label="11. 类模板的友元">11. 类模板的友元</a>
+                    </li>
+                </ul>
+            </div>
+        </details>
+    </div>
+</aside>
+<script>
+    let activeElement;
+    let elements;
+    window.addEventListener('DOMContentLoaded', function (event) {
+        checkTocPosition();
+
+        elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+         
+         activeElement = elements[0];
+         const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+         document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+     }, false);
+
+    window.addEventListener('resize', function(event) {
+        checkTocPosition();
+    }, false);
+
+    window.addEventListener('scroll', () => {
+        
+        activeElement = Array.from(elements).find((element) => {
+            if ((getOffsetTop(element) - window.pageYOffset) > 0 && 
+                (getOffsetTop(element) - window.pageYOffset) < window.innerHeight/2) {
+                return element;
+            }
+        }) || activeElement
+
+        elements.forEach(element => {
+             const id = encodeURI(element.getAttribute('id')).toLowerCase();
+             if (element === activeElement){
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+             } else {
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.remove('active');
+             }
+         })
+     }, false);
+
+    const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+    const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+    const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+    function checkTocPosition() {
+        const width = document.body.scrollWidth;
+
+        if (width - main - (toc * 2) - (gap * 4) > 0) {
+            document.getElementById("toc-container").classList.add("wide");
+        } else {
+            document.getElementById("toc-container").classList.remove("wide");
+        }
+    }
+
+    function getOffsetTop(element) {
+        if (!element.getClientRects().length) {
+            return 0;
+        }
+        let rect = element.getBoundingClientRect();
+        let win = element.ownerDocument.defaultView;
+        return rect.top + win.pageYOffset;   
+    }
+</script>
+  <div class="post-content"><h1 id="0-模板">0. 模板<a hidden class="anchor" aria-hidden="true" href="#0-模板">#</a></h1>
+<p>C++中除了有面向对象的思想，还有泛型编程的思想，泛型编程利用的主要技术就是模板。
+C++中两种模板：函数模板、类模板</p>
+<p>语法：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="err">函数声明或定义</span>
+</span></span></code></pre></div><p>含义：</p>
+<blockquote>
+<ul>
+<li>template 固定的，声明创建模板</li>
+<li>typename 表明后边的T是一种数据类型，也可以用class代替</li>
+<li>T 类似形参，任意的合法字符都可以，习惯上用 T</li>
+</ul>
+</blockquote>
+<p>模板有两种类型推导的方式，一种是编译器自动推导，另外一种是程序猿手动指定：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="n">T</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">,</span> <span class="n">T</span> <span class="o">&amp;</span><span class="n">b</span><span class="p">){</span>	
+</span></span><span class="line"><span class="cl">	<span class="n">T</span> <span class="n">s</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">a</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">b</span> <span class="o">=</span> <span class="n">s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="mi">9</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// func(a, s);  // 自动类型推导
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// func&lt;int&gt;(a, s);   // 指定类型推导 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">a</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">s</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> 
+</span></span></code></pre></div><h1 id="1-函数模板注意事项">1. 函数模板注意事项<a hidden class="anchor" aria-hidden="true" href="#1-函数模板注意事项">#</a></h1>
+<ul>
+<li>自动类型推导，必须推导出一致的数据类型才可以使用。</li>
+<li>模板<strong>必须</strong>要确定 T 的数据类型，才可以使用。</li>
+</ul>
+<p>eg:二分排序的模板实现</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">mySort</span><span class="p">(</span><span class="n">T</span> <span class="n">a</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">len</span><span class="p">,</span> <span class="kt">int</span> <span class="n">l</span><span class="p">,</span> <span class="kt">int</span> <span class="n">r</span><span class="p">){</span>	
+</span></span><span class="line"><span class="cl">	<span class="c1">// quickSort
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">if</span><span class="p">(</span><span class="n">l</span> <span class="o">&gt;=</span> <span class="n">r</span><span class="p">)</span> <span class="k">return</span> <span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">a</span><span class="p">[(</span><span class="n">l</span> <span class="o">+</span> <span class="n">r</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">l</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="k">while</span><span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">j</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">		<span class="k">while</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="o">++</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">x</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="k">while</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="o">--</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">x</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span><span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">j</span><span class="p">)</span> <span class="n">swap</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="n">mySort</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">len</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">j</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">mySort</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">len</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">r</span><span class="p">);</span>	
+</span></span><span class="line"><span class="cl"><span class="p">}</span> 
+</span></span></code></pre></div><h1 id="2-普通函数与函数模板对比">2. 普通函数与函数模板对比<a hidden class="anchor" aria-hidden="true" href="#2-普通函数与函数模板对比">#</a></h1>
+<h2 id="21-区别">2.1 区别<a hidden class="anchor" aria-hidden="true" href="#21-区别">#</a></h2>
+<ul>
+<li>普通函数调用时，参数可以发生自动类型转换（隐式转换）</li>
+<li>函数模板，在<strong>自动类型推导</strong>形式下，不会自动类型转换。</li>
+<li>函数模板，在<strong>指定类型</strong>形式下，会发生自动类型转换。</li>
+</ul>
+<h2 id="22-调用规则">2.2 调用规则<a hidden class="anchor" aria-hidden="true" href="#22-调用规则">#</a></h2>
+<ul>
+<li>如果普通函数和函数模板同时存在，则会调用<strong>普通函数</strong>，如果普通函数只有声明，没有实现，<strong>那也不会去调用函数模板，会直接报错</strong></li>
+<li>可以用过空模板参数列表，强制调用函数模板</li>
+<li>函数模板也可以重载</li>
+<li>如果函数模板可以更好的匹配调用，会优先调用<strong>函数模板</strong></li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">fuc</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">	<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;普通&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">fuc</span><span class="p">(</span><span class="n">T</span> <span class="n">a</span><span class="p">,</span> <span class="n">T</span> <span class="n">b</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">	<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;模板&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>   <span class="c1">// 重载函数模板 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="n">fuc</span><span class="p">(</span><span class="n">T</span> <span class="n">a</span><span class="p">,</span> <span class="n">T</span> <span class="n">b</span><span class="p">,</span> <span class="n">T</span> <span class="n">c</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">	<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;模板 重载&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">test</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">fuc</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">);</span> <span class="c1">// 调用普通函数 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">fuc</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">);</span>  <span class="c1">// 空模板参数列表，调用函数模板 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">fuc</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> <span class="c1">// 模板 重载 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="kt">char</span> <span class="n">c1</span> <span class="o">=</span> <span class="sc">&#39;a&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">char</span> <span class="n">c2</span> <span class="o">=</span> <span class="sc">&#39;s&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">fuc</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">);</span>  <span class="c1">// 传入char型，普通函数需要做自动类型转换，而函数模板不需要转换，所以优先调用函数模板。 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">	<span class="n">test</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> 
+</span></span></code></pre></div><h1 id="3-模板的局限性">3. 模板的局限性<a hidden class="anchor" aria-hidden="true" href="#3-模板的局限性">#</a></h1>
+<p>比如模板是一个赋值操作，那么传入的是数组的话，就不正确了。
+再比如，比较两个对象的大小关系，类型不确定，比较方式也不确定。</p>
+<p>为了解决上边问题，C++提供了模板的重载，可以为<strong>特定的类型提供具体化的模板</strong>（当然，也可以在重载特定类型的运算符）</p>
+<p>语法：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">fuc</span><span class="p">(</span><span class="n">T</span> <span class="n">a</span><span class="p">,</span> <span class="n">T</span> <span class="n">b</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">	<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;原模板&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// test是自定义的数据类型
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 这里将函数模板为test数据类型具体化，如果传入是test类型的话，优先调用具体化的模板
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">template</span><span class="o">&lt;&gt;</span> <span class="kt">void</span> <span class="n">fuc</span><span class="p">(</span><span class="n">test</span> <span class="n">a</span><span class="p">,</span> <span class="n">test</span> <span class="n">b</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// ...  code 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span> 
+</span></span></code></pre></div><h1 id="4-类模板">4. 类模板<a hidden class="anchor" aria-hidden="true" href="#4-类模板">#</a></h1>
+<p>作用：建立一个通用类，类的成员的数据类型可以不指定，用一个<strong>虚拟的类型</strong>来代表。
+语法：和函数模板一样</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span> 
+</span></span><span class="line"><span class="cl"><span class="err">类</span>
+</span></span></code></pre></div><p>例程：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">nameType</span><span class="p">,</span> <span class="k">class</span> <span class="nc">ageType</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Person</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="n">Person</span><span class="p">(</span><span class="n">nameType</span> <span class="n">name</span><span class="p">,</span> <span class="n">ageType</span> <span class="n">age</span><span class="p">)</span> <span class="o">:</span> <span class="n">m_name</span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="n">m_age</span><span class="p">(</span><span class="n">age</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">		
+</span></span><span class="line"><span class="cl">	<span class="p">};</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="kt">void</span> <span class="nf">print</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">		<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">m_name</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">m_age</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="n">string</span> <span class="n">m_name</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">m_age</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span> 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">	<span class="n">Person</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">a</span><span class="p">(</span><span class="s">&#34;张三&#34;</span><span class="p">,</span> <span class="mi">18</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">a</span><span class="p">.</span><span class="n">print</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h1 id="5-类模板与函数模板区别">5. 类模板与函数模板区别<a hidden class="anchor" aria-hidden="true" href="#5-类模板与函数模板区别">#</a></h1>
+<ul>
+<li>类模板没有自动类型推导，<strong>必须</strong>指定类型。</li>
+<li>类模板在参数列表中，可以有默认参数，在C++11标准以后，函数模板也可以有默认参数了。</li>
+</ul>
+<p>上边的代码可以改成这：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">nameType</span> <span class="o">=</span> <span class="n">string</span><span class="p">,</span> <span class="k">class</span> <span class="nc">ageType</span> <span class="o">=</span> <span class="kt">int</span><span class="o">&gt;</span>
+</span></span></code></pre></div><h1 id="6-类模板中成员函数创建的时机">6. 类模板中成员函数创建的时机<a hidden class="anchor" aria-hidden="true" href="#6-类模板中成员函数创建的时机">#</a></h1>
+<p>类模板中的成员函数与普通类的成员函数创建时机有所区别：</p>
+<ul>
+<li>普通类的成员函数一开始就可以创建。</li>
+<li>类模板的成员函数在调用时才创建。</li>
+</ul>
+<p>类模板的成员函数在调用时才创建的原因如下：</p>
+<blockquote>
+<p>因为类中的某些类型并不确定，传入的类型到底能不能执行成员函数中的动作也不知道，所以不能提前创建。</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Person1</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">void</span> <span class="n">f1</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">		<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;f1&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Person2</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">void</span> <span class="n">f2</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">		<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;f2&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">tt</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">	<span class="n">T</span> <span class="n">obj</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="kt">void</span> <span class="nf">f1</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">		<span class="n">obj</span><span class="p">.</span><span class="n">f1</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="kt">void</span> <span class="nf">f2</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">		<span class="n">obj</span><span class="p">.</span><span class="n">f2</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">	<span class="n">tt</span><span class="o">&lt;</span><span class="n">Person1</span><span class="o">&gt;</span> <span class="n">s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">s</span><span class="p">.</span><span class="n">f1</span><span class="p">();</span> <span class="c1">// 合法 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">s</span><span class="p">.</span><span class="n">f2</span><span class="p">();</span>	<span class="c1">// 不合法 因为类模板指定的类型是Person1，而该类型没有f2的方法。 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h1 id="7-类模板实例化的对象-做-函数参数">7. 类模板实例化的对象 做 函数参数<a hidden class="anchor" aria-hidden="true" href="#7-类模板实例化的对象-做-函数参数">#</a></h1>
+<p>函数参数有三种类型进行接收：</p>
+<ul>
+<li>指定类型 ： 对象是什么类型，直接将该类型作为函数参数</li>
+<li>把类模板的参数 模板化：     将对象中的参数变为模板</li>
+<li>把 类模板整体 模板化</li>
+</ul>
+<p>第一种在实际开发中最常用，因为后两种需要函数模板配合类模板，麻烦。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T1</span><span class="p">,</span> <span class="k">class</span> <span class="nc">T2</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Person</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">	<span class="n">T1</span> <span class="n">m_name</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">T2</span> <span class="n">m_age</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="n">Person</span><span class="p">(</span><span class="n">T1</span> <span class="n">name</span><span class="p">,</span> <span class="n">T2</span> <span class="n">age</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">		<span class="n">m_name</span> <span class="o">=</span> <span class="n">name</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="n">m_age</span> <span class="o">=</span> <span class="n">age</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span> 
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="kt">void</span> <span class="nf">print</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">		<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;name : &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">m_name</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;  age : &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">m_age</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span> 
+</span></span><span class="line"><span class="cl"><span class="p">};</span> 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//1. 指定类型 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="nf">printP1</span><span class="p">(</span><span class="n">Person</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">	<span class="n">a</span><span class="p">.</span><span class="n">print</span><span class="p">();</span>	
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 2. 参数模板化
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T1</span><span class="p">,</span> <span class="k">class</span> <span class="nc">T2</span><span class="o">&gt;</span> 
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">printP2</span><span class="p">(</span><span class="n">Person</span><span class="o">&lt;</span><span class="n">T1</span><span class="p">,</span> <span class="n">T2</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">	<span class="n">a</span><span class="p">.</span><span class="n">print</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 3. 类模板 模板化
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">printP3</span><span class="p">(</span> <span class="n">T</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">	<span class="n">a</span><span class="p">.</span><span class="n">print</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">	<span class="n">Person</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">a</span><span class="p">(</span><span class="s">&#34;张三&#34;</span><span class="p">,</span> <span class="mi">33</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">printP1</span><span class="p">(</span><span class="n">a</span><span class="p">);</span> 
+</span></span><span class="line"><span class="cl">	<span class="n">printP2</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">printP3</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h1 id="8-类模板遇到继承">8. 类模板遇到继承<a hidden class="anchor" aria-hidden="true" href="#8-类模板遇到继承">#</a></h1>
+<ul>
+<li>在继承时，如果父类是一个类模板，那么必须指定父类模板的数据类型。</li>
+<li>如果想灵活继承父类模板，那么子类也需要做成类模板。</li>
+</ul>
+<h1 id="9-类模板成员函数类外实现">9. 类模板成员函数类外实现<a hidden class="anchor" aria-hidden="true" href="#9-类模板成员函数类外实现">#</a></h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T1</span><span class="p">,</span> <span class="k">class</span> <span class="nc">T2</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Person</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">	<span class="n">T1</span> <span class="n">m_name</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">T2</span> <span class="n">m_age</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="n">Person</span><span class="p">(</span><span class="n">T1</span> <span class="n">name</span><span class="p">,</span> <span class="n">T2</span> <span class="n">age</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="kt">void</span> <span class="nf">print</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span> 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T1</span><span class="p">,</span> <span class="k">class</span> <span class="nc">T2</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="n">Person</span><span class="o">&lt;</span><span class="n">T1</span><span class="p">,</span> <span class="n">T2</span><span class="o">&gt;::</span><span class="n">Person</span><span class="p">(</span><span class="n">T1</span> <span class="n">name</span><span class="p">,</span> <span class="n">T2</span> <span class="n">age</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">	<span class="n">m_name</span> <span class="o">=</span> <span class="n">name</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">m_age</span> <span class="o">=</span> <span class="n">age</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T1</span><span class="p">,</span> <span class="k">class</span> <span class="nc">T2</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">Person</span><span class="o">&lt;</span><span class="n">T1</span><span class="p">,</span> <span class="n">T2</span><span class="o">&gt;::</span><span class="n">print</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">	<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;name : &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">m_name</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;  age : &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">m_age</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> 
+</span></span></code></pre></div><h1 id="10-类模板分文件编写">10. 类模板分文件编写<a hidden class="anchor" aria-hidden="true" href="#10-类模板分文件编写">#</a></h1>
+<p>类模板的声明在.h文件中，类模板的成员函数在相关联的.cpp文件中实现。 这种情况下，如果在别的文件中（比如main.cpp）引入该 .h文件，使用该类，会无法编译（无法解析外部符号），为什么？</p>
+<blockquote>
+<p>原因是，类模板的成员函数在调用时才会创建。main.cpp引入了.h文件，该文件中只有类模板的声明，没有具体实现。</p>
+</blockquote>
+<p>为了解决这个问题，有两种解决方法：</p>
+<ul>
+<li>法1：不include类的.h文件，而是include类的.cpp文件。</li>
+<li>法2：可以将类模板的声明和实现写在同一个文件中，并且习惯上把该文件的后缀名写成 .hpp。</li>
+</ul>
+<p>实际中，第二种方法更加普遍。</p>
+<h1 id="11-类模板的友元">11. 类模板的友元<a hidden class="anchor" aria-hidden="true" href="#11-类模板的友元">#</a></h1>
+<ul>
+<li>类内定义：与普通类定义友元一样。</li>
+<li>类内声明，类外定义：类外定义的话，肯定要声明称模板，而类内的声明语句，会认为是一个普通的函数，所以，类内的声明要加上空参数列表<code>friend test&lt;&gt;(test&lt;T1, T2&gt;);</code>说明这是一个模板，并不是一个普通的函数。</li>
+</ul>
+<p>例程：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 声明有Person类  要不然test2找不到Person类
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Person</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 声明test2是个模板函数，要不然下边的Person类中找不到test2这个模板函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">test2</span><span class="p">(</span><span class="n">Person</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">a</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">a</span><span class="p">.</span><span class="n">a</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Person</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 1. 类内实现友元
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">friend</span> <span class="kt">void</span> <span class="nf">test1</span><span class="p">(){</span>   <span class="c1">// 友元函数声明 + 定义，如果不加friend的话，相当于一个普通的成员
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="mi">123</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 2. 类外实现友元  这里声明要加空参数列表 说明需要的是一个模板函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">friend</span> <span class="kt">void</span> <span class="n">test2</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="n">Person</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Person</span><span class="p">(</span><span class="n">T</span> <span class="n">age</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">a</span> <span class="o">=</span> <span class="n">age</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">T</span> <span class="n">a</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//  test1函数的声明 供main调用。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="nf">test1</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Person</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">a</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">test2</span><span class="p">(</span><span class="n">a</span><span class="p">);</span> 
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Clay-Hex.github.io/tags/c&#43;&#43;/">C&#43;&#43;</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Clay-Hex.github.io/posts/2021/06/cpp-constant-folding/">
+    <span class="title">« 上一篇</span>
+    <br>
+    <span>C&#43;&#43;学习记录(9) 常量折叠</span>
+  </a>
+  <a class="next" href="https://Clay-Hex.github.io/posts/2021/02/cpp-polymorphic/">
+    <span class="title">下一篇 »</span>
+    <br>
+    <span>C&#43;&#43;学习记录(7) 多态</span>
+  </a>
+</nav>
+
+  </footer><script>
+    function createGiscusScript(data) {
+      const giscusScript = document.createElement('script');
+  
+      
+      Object.entries(data).forEach(([key, value]) => giscusScript.setAttribute(key, value));
+  
+      
+      document.querySelector('article').appendChild(giscusScript);
+  
+      
+      const toggle = document.querySelector('label[for="switch_default"]');
+      if (toggle) {
+        toggle.addEventListener('click', function () {
+          
+          const theme = document.body.classList.contains('dark') ? 'transparent_dark' : 'light';
+          giscusScript.setAttribute('data-theme', theme);
+  
+          
+          sendMessage({ setConfig: { theme } });
+        });
+      }
+    }
+  
+    function sendMessage(message) {
+      const iframe = document.querySelector('iframe.giscus-frame');
+      if (iframe) {
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+    }
+  
+    document.addEventListener('DOMContentLoaded', function () {
+      
+      const giscusAttributes = {
+        src: 'https://giscus.app/client.js',
+        'data-repo': 'Clay-Hex/BlogComments',
+        'data-repo-id': 'R_kgDOLexoRQ',
+        'data-category': 'Announcements',
+        'data-category-id': 'DIC_kwDOLexoRc4Cd5Ao',
+        'data-mapping': 'pathname',
+        'data-strict': '1',
+        'data-reactions-enabled': '1',
+        'data-emit-metadata': '0',
+        'data-input-position': 'top',
+        'data-lang': 'zh-CN',
+        crossorigin: 'anonymous',
+        async: '',
+      };
+  
+      
+      giscusAttributes['data-theme'] = document.body.classList.contains('dark')
+        ? 'transparent_dark'
+        : 'light';
+  
+      
+      createGiscusScript(giscusAttributes);
+  
+      
+      const bodyObserver = new MutationObserver(() => {
+        const theme = document.body.classList.contains('dark') ? 'transparent_dark' : 'light';
+        sendMessage({ setConfig: { theme } });
+      });
+  
+      bodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    });
+  </script>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://Clay-Hex.github.io/">Clay&#39;s Blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <span class="topInner">
+        <svg class="topSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z"/>
+        </svg>
+        <span id="read_progress"></span>
+    </span>
+</a>
+
+<script>
+    document.addEventListener('scroll', function (e) {
+        const readProgress = document.getElementById("read_progress");
+        const scrollHeight = document.documentElement.scrollHeight;
+        const clientHeight = document.documentElement.clientHeight;
+        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        readProgress.innerText = ((scrollTop / (scrollHeight - clientHeight)).toFixed(2) * 100).toFixed(0);
+    })
+</script>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = '复制';
+
+        function copyingDone() {
+            copybutton.innerHTML = '已复制';
+            setTimeout(() => {
+                copybutton.innerHTML = '复制';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        let language = codeblock.className.replaceAll("language-", "")
+        let macTool = document.createElement("div")
+        let macTool1 = document.createElement("div")
+        let macTool2 = document.createElement("div")
+        let macTool3 = document.createElement("div")
+        let languageType = document.createElement("div")
+        languageType.innerText = language
+        macTool.setAttribute('class', 'mac-tool')
+        macTool1.setAttribute('class', 'mac bb1')
+        macTool2.setAttribute('class', 'mac bb2')
+        macTool3.setAttribute('class', 'mac bb3')
+        languageType.setAttribute('class', 'language-type')
+        macTool.appendChild(macTool1)
+        macTool.appendChild(macTool2)
+        macTool.appendChild(macTool3)
+        macTool.appendChild(languageType)
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+            container.appendChild(macTool)
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+            container.appendChild(macTool)
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+            container.appendChild(macTool)
+        }
+    });
+</script>
+</body>
+
+</html>

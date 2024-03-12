@@ -1,11 +1,26 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Tags on Clay-Hex&#39;s Blog</title>
+    <title>📛 标签 on Clay&#39;s Blog</title>
     <link>https://Clay-Hex.github.io/tags/</link>
-    <description>Recent content in Tags on Clay-Hex&#39;s Blog</description>
+    <description>Recent content in 📛 标签 on Clay&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
+    <lastBuildDate>Fri, 18 Nov 2022 00:39:31 +0800</lastBuildDate>
     <atom:link href="https://Clay-Hex.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>C&#43;&#43;</title>
+      <link>https://Clay-Hex.github.io/tags/c&#43;&#43;/</link>
+      <pubDate>Fri, 18 Nov 2022 00:39:31 +0800</pubDate>
+      <guid>https://Clay-Hex.github.io/tags/c&#43;&#43;/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>数据结构与算法</title>
+      <link>https://Clay-Hex.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/</link>
+      <pubDate>Mon, 20 Dec 2021 20:04:26 +0800</pubDate>
+      <guid>https://Clay-Hex.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/</guid>
+      <description></description>
+    </item>
   </channel>
 </rss>
