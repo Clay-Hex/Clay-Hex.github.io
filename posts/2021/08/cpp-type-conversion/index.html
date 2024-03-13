@@ -106,7 +106,7 @@
   "keywords": [
     "C++"
   ],
-  "articleBody": " 0. 必要性 C语言中的类型转换，没有安全检查，安全性需要程序猿来保证，C++提供了4种类型转换的方法，在一定程度上保证转换的安全性。\n重点是 dynamic_cast\n1. const_cast 仅用于去除类型的const属性，也是四种类型转换中，唯一可以去掉const限制的方法。\n只能转换 指针、引用、this（在类内的时候用）。 2. static_cast 隐式转换能转的，它都能转，但是也有例外（父类指针 转 子类指针）。\n低风险的都可以转：\n整数与浮点数 整数与字符 void指针转其他类型指针 转换运算符（类内必须提供转换运算符，eg : operator int() { }） 高风险的不允许转：\n整数与指针 （eg：int *p = static_cast (a);） 注意：父类转子类，是不安全的，因为转换后的子类指针有可能越界访问资源。隐式转换中，这种转换是不允许的，但是static_cast可以做这种向下转换，但是，转换后的使用安全，需要程序猿来保证。 这种向下转换的不安全，可以使用dynamic_cast来保证。\n3. dynamic_cast 用于 具有多态类类型的向下转换时，必须使用。 在转换过程中，如果dynamic_cast发现这种转换不安全，会返回null，转换成功会返回转换后的指针。\n那么，它如何发现父类转子类是不安全的？ 因为它内部使用了RTTI技术，运行时类型识别。RTTI依赖于虚函数表，虚函数表上边有一个type_info的指针，指向了这个类的继承链。 所有，dynamic_cast 需要转换的类型有虚函数，才会检测安全性。\n因为RTTI有开销，所以，除非必要，否则不会使用dynamic_cast 总结：\n基类必须要有虚函数（使用了RTTI，RTTI依赖虚函数表） 运行时类型识别，转换不成功会返回NULL RTTI有额外的开销，一般情况下不使用它做类型转换。 4. interpret_cast 与C语言中的强制类型转换几乎无异。 可以用于各种高危险的类型转换. 不存在类型检查。\n",
+  "articleBody": " 0. 必要性 C语言中的类型转换，没有安全检查，安全性需要程序猿来保证，C++提供了4种类型转换的方法，在一定程度上保证转换的安全性。\n重点是 dynamic_cast\n1. const_cast 仅用于去除类型的const属性，也是四种类型转换中，唯一可以去掉const限制的方法。\n只能转换 指针、引用、this（在类内的时候用）。 2. static_cast 隐式转换能转的，它都能转，但是也有例外（父类指针 转 子类指针）。\n低风险的都可以转：\n整数与浮点数 整数与字符 void指针转其他类型指针 转换运算符（类内必须提供转换运算符，eg : operator int() { }） 高风险的不允许转：\n整数与指针 （eg：int *p = static_cast (a);） 注意：父类转子类，是不安全的，因为转换后的子类指针有可能越界访问资源。隐式转换中，这种转换是不允许的，但是static_cast可以做这种向下转换，但是，转换后的使用安全，需要程序猿来保证。\n这种向下转换的不安全，可以使用dynamic_cast来保证。\n3. dynamic_cast 用于 具有多态类类型的向下转换时，必须使用。\n在转换过程中，如果dynamic_cast发现这种转换不安全，会返回null，转换成功会返回转换后的指针。\n那么，它如何发现父类转子类是不安全的？\n因为它内部使用了RTTI技术，运行时类型识别。RTTI依赖于虚函数表，虚函数表上边有一个type_info的指针，指向了这个类的继承链。\n所有，dynamic_cast 需要转换的类型有虚函数，才会检测安全性。\n因为RTTI有开销，所以，除非必要，否则不会使用dynamic_cast 总结：\n基类必须要有虚函数（使用了RTTI，RTTI依赖虚函数表） 运行时类型识别，转换不成功会返回NULL RTTI有额外的开销，一般情况下不使用它做类型转换。 4. interpret_cast 与C语言中的强制类型转换几乎无异。\n可以用于各种高危险的类型转换.\n不存在类型检查。\n",
   "wordCount" : "739",
   "inLanguage": "zh",
   "datePublished": "2021-08-02T21:07:40+08:00",
@@ -362,13 +362,13 @@
 <ul>
 <li>整数与指针 （eg：<code>int *p = static_cast&lt;int *&gt; (a);</code>）</li>
 </ul>
-<p><code>注意：</code>父类转子类，是不安全的，因为转换后的子类指针有可能越界访问资源。隐式转换中，这种转换是不允许的，但是<code>static_cast</code>可以做这种<code>向下转换</code>，但是，转换后的使用安全，需要程序猿来保证。
+<p><code>注意：</code>父类转子类，是不安全的，因为转换后的子类指针有可能越界访问资源。隐式转换中，这种转换是不允许的，但是<code>static_cast</code>可以做这种<code>向下转换</code>，但是，转换后的使用安全，需要程序猿来保证。<br>
 这种<code>向下转换</code>的不安全，可以使用<code>dynamic_cast</code>来保证。</p>
 <h1 id="3-dynamic_cast">3. dynamic_cast<a hidden class="anchor" aria-hidden="true" href="#3-dynamic_cast">#</a></h1>
-<p>用于 <code>具有多态类类型的向下转换</code>时，必须使用。
+<p>用于 <code>具有多态类类型的向下转换</code>时，必须使用。<br>
 在转换过程中，如果<code>dynamic_cast</code>发现这种转换不安全，会返回null，转换成功会返回转换后的指针。</p>
-<p><strong>那么，它如何发现父类转子类是不安全的？</strong>
-因为它内部使用了<code>RTTI</code>技术，运行时类型识别。<code>RTTI</code>依赖于虚函数表，虚函数表上边有一个<code>type_info</code>的指针，指向了这个类的继承链。
+<p><strong>那么，它如何发现父类转子类是不安全的？</strong><br>
+因为它内部使用了<code>RTTI</code>技术，运行时类型识别。<code>RTTI</code>依赖于虚函数表，虚函数表上边有一个<code>type_info</code>的指针，指向了这个类的继承链。<br>
 所有，<code>dynamic_cast</code> 需要转换的类型有虚函数，才会检测安全性。</p>
 <ul>
 <li>因为<code>RTTI</code>有开销，所以，除非必要，否则不会使用<code>dynamic_cast</code></li>
@@ -380,8 +380,8 @@
 <li>RTTI有额外的开销，一般情况下不使用它做类型转换。</li>
 </ul>
 <h1 id="4-interpret_cast">4. interpret_cast<a hidden class="anchor" aria-hidden="true" href="#4-interpret_cast">#</a></h1>
-<p>与C语言中的强制类型转换几乎无异。
-可以用于各种高危险的类型转换.
+<p>与C语言中的强制类型转换几乎无异。<br>
+可以用于各种高危险的类型转换.<br>
 不存在类型检查。</p>
 
 
@@ -392,10 +392,10 @@
       <li><a href="https://Clay-Hex.github.io/tags/c&#43;&#43;/">C&#43;&#43;</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://Clay-Hex.github.io/posts/2021/08/cpp-new-and-delete/">
+  <a class="prev" href="https://Clay-Hex.github.io/posts/2021/08/floating-point-and-fixed-point-storage-method/">
     <span class="title">« 上一篇</span>
     <br>
-    <span>C&#43;&#43;学习记录(13) new与delete</span>
+    <span>小数在计算机中的存储方式</span>
   </a>
   <a class="next" href="https://Clay-Hex.github.io/posts/2021/07/cpp-smart-pointers/">
     <span class="title">下一篇 »</span>
@@ -469,6 +469,18 @@
   
       bodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
     });
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
   </script>
 </article>
     </main>

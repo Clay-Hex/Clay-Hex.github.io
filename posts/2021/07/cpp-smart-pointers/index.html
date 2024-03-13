@@ -106,7 +106,7 @@
   "keywords": [
     "C++"
   ],
-  "articleBody": "1. 什么是智能指针 简而言之，为了更安全的使用指针。 实现方式简单来说，就是用一个模板类把一般的指针包装起来。用这个类来维护内部指针的释放操作。 std中有四种智能指针。\nauto_ptr（已弃用） unique_ptr shared_ptr weak_ptr 2. auto_ptr 比较简单的智能指针，实现逻辑如下代码。 实现的原则是：内存空间只能由一个指针所拥有。 存在的问题：拷贝和赋值后，原对象内部的指针会为空，有风险。\ntemplate\u003cclass T\u003e class autoPtr{ public: autoPtr(T *a):m_ptr(a){ } ~autoPtr(){ if(m_ptr){ delete m_ptr; m_ptr = nullptr; } } // 拷贝构造 权限转移 autoPtr(autoPtr\u003cT\u003e \u0026a):m_ptr(a.m_ptr) { a.m_ptr = nullptr; } // 赋值 权限转移 autoPtr\u0026 operator= (autoPtr\u003cT\u003e \u0026a){ if(this != \u0026a){ if(m_ptr) delete m_ptr; m_ptr = a.m_ptr; a.m_ptr = nullptr; } return *this; } T* operator-\u003e(){ return m_ptr; } T\u0026 operator* (){ return *m_ptr; } private: T *m_ptr; }; 3. unique_ptr 是对auto_ptr的改进，实现逻辑如下代码。 实现的原则是：内存空间只能由一个指针所拥有，但是禁止了拷贝和赋值。 在C++中unique_ptr的进制拷贝有一个特例，如果一个unique_ptr是将亡值的话，是允许的，比如unique_ptr作为函数的返回值时，是允许的。\n// uniquePtr 对于autoPtr来说 禁止了拷贝和赋值 template\u003cclass T\u003e class uniquePtr{ public: uniquePtr(const T*a):m_ptr(a) { }; ~uniquePtr(){ if(m_ptr) delete m_ptr; } T\u0026 operator *(){ return *m_ptr; } T* operator-\u003e(){ return m_ptr; } T* get(){ return m_ptr; } private: T *m_ptr; // 禁止拷贝和赋值 uniquePtr(const uniquePtr\u003cT\u003e \u0026a) { }; uniquePtr\u003cT\u003e \u0026 operator = (const uniquePtr\u003cT\u003e \u0026a) { }; }; unique_ptr禁止了拷贝，那么如何把unique_ptr作为参数传递呢？\n法1：使用指针或者引用 void func(unique_ptr\u003cint\u003e \u0026a){ } *法2： 暂时转移内存的所有权，函数返回时，再把所有权交回来。\nunique_ptr\u003cint\u003e func2(unique_ptr\u003cint\u003e a){ cout \u003c\u003c *a \u003c\u003c endl; return a; } int main() { unique_ptr\u003cint\u003e a(new int(6)); // 暂时释放所有权 a = func2(unique_ptr\u003cint\u003e(a.release())); return 0; } 法3：move语义 void func1(unique_ptr\u003cint\u003e a) { cout \u003c\u003c *a \u003c\u003c endl; } int main() { unique_ptr\u003cint\u003e a(new int(6)); func1(std::move(a)); return 0; } 4. shared_ptr 实现逻辑如下代码。 实现的原则是：内存空间可以由多个指针所拥有，但是要控制内存释放的时机，这个时机由“引用计数”来实现。 存在为问题：会存在循环引用问题，导致内存无法正常释放。\ntemplate\u003cclass T\u003e class sharedPtr{ public: sharedPtr(T *a):m_ptr(a), m_count(new int(1)) { }; ~sharedPtr(){ if(--(*m_count) == 0){ delete m_ptr; delete m_count; m_ptr = nullptr; m_count = nullptr; } } T\u0026 operator *(){ return *m_ptr; } T* operator-\u003e(){ return m_ptr; } // 拷贝构造 sharedPtr(const sharedPtr\u003cT\u003e \u0026a):m_ptr(a.m_ptr),m_count(a.m_count) { ++(*m_count); } // 赋值函数 sharedPtr\u003cT\u003e \u0026 operator=(const sharedPtr\u003cT\u003e \u0026a){ if(m_ptr != a.m_ptr){ // this 原来的那个区域处理 if(--(*m_count) == 0){ // 这里不仅仅是检查，也会引用计数减1 delete m_ptr; delete m_count; m_ptr = nullptr; m_count = nullptr; } m_ptr = a.m_ptr; m_count = a.m_count; ++(*m_count); } return *this; } int use_count(){ return *m_count; } int * use_countPtr(){ return m_count; } T* get(){ return m_ptr; } private: T *m_ptr; int *m_count; }; shared_ptr会产生循环引用问题，如下代码\ntemplate\u003cclass T\u003e class sharedPtr{ public: sharedPtr(T *a):m_ptr(a), m_count(new int(1)) { }; ~sharedPtr(){ if(--(*m_count) == 0){ delete m_ptr; delete m_count; m_ptr = nullptr; m_count = nullptr; } } T\u0026 operator *(){ return *m_ptr; } T* operator-\u003e(){ return m_ptr; } // 拷贝构造 sharedPtr(const sharedPtr\u003cT\u003e \u0026a):m_ptr(a.m_ptr),m_count(a.m_count) { ++(*m_count); } // 赋值函数 sharedPtr\u003cT\u003e \u0026 operator=(const sharedPtr\u003cT\u003e \u0026a){ if(m_ptr != a.m_ptr){ // this 原来的那个区域处理 if(--(*m_count) == 0){ // 这里不仅仅是检查，也会引用计数减1 delete m_ptr; delete m_count; m_ptr = nullptr; m_count = nullptr; } m_ptr = a.m_ptr; m_count = a.m_count; ++(*m_count); } return *this; } int use_count(){ return *m_count; } int * use_countPtr(){ return m_count; } T* get(){ return m_ptr; } private: T *m_ptr; int *m_count; }; int main() { struct Node{ Node():pre(nullptr), next(nullptr) { } int data; sharedPtr\u003cNode\u003e pre; sharedPtr\u003cNode\u003e next; }; int *c1 = nullptr; int *c2 = nullptr; { // 这里一个花括号，限制了作用域 sharedPtr\u003cNode\u003e a(new Node); sharedPtr\u003cNode\u003e b(new Node); a-\u003enext = b; b-\u003epre = a; // 把各自的m_count取出来 c1 = a.use_countPtr(); c2 = b.use_countPtr(); cout \u003c\u003c *c1 \u003c\u003cendl; cout \u003c\u003c *c2 \u003c\u003cendl; } // 因为上边a 和 b在析构时，没有释放m_ptr和m_count，所以，下边两行可以访问，并且为1 cout \u003c\u003c *c1 \u003c\u003cendl; cout \u003c\u003c *c2 \u003c\u003cendl; return 0; } 对象a和b本身为sharedPtr类型，内部各包含一个Node*并且开辟了内存。为了方便后续描述，a中申请的这块内存称之为A_Node*，b中的这块内存称之为B_Node*。\na和b初始化时，内部的引用计数均为1，因为这个时候只有自己使用自己内部的这块内存空间。 当执行了\na-\u003enext = b; b-\u003epre = a; 这两行代码以后，a和b内部的引用技术均为2。此时对于a来说，不仅仅自己使用A_Node*，同时b中的一个sharedPtr类型（与a同类型）的pre，也使用A_Node*，所以a中的引用计数为2，b中pre内部的引用计数也为2。\n对于b来说，同理，不仅仅自己使用B_Node*，同时a中的一个sharedPtr类型（与b同类型）的next，也使用B_Node*，所以b中的引用计数为2，a中next内部的引用计数也为2。\n重点来了，当程序执行到花括号外边的时候，a和b两个对象的生命周期到了，要执行各自的析构函数。但是！执行a的析构函数时，由于引用计数为2，减去1之后不为0，所以，不会释放a内部的m_ptr和m_count，只不过把m_count变为了1，由于引用计数机制的存在，此时b中的pre，这个智能指针内部的引用计数也会变为1。总结一下，就是a这个对象被析构了，但是 A_Node* 没释放。\n同理，执行b的析构函数时，由于引用计数为2，减去1之后不为0，所以，不会释放b内部的m_ptr和m_count，只不过把m_count变为了1，由于引用计数机制的存在，此时a中的next，这个智能指针内部的引用计数也会变为1。总结一下，就是b这个对象被析构了，但是 B_Node* 没释放。\n经过了a和b两个对象的析构函数，现在的情况是怎么样的？\nA_Node*中的next指向B_Node*。 B_Node*中的pre指向A_Node*。\n此时呢，形成了环。\n在没有人为干预的情况下，想释放A_Node*，就必须先释放 B_Node*。\n因为一旦B_Node*释放，会触发B_Node*内部pre指针的析构函数，因此这时pre内部的引用计数为1，减1之后变为0，所以，可以释放掉pre所指向的内存空间，也就是会释放掉A_Node*，然后接着会触发A_Node*内部next指针的析构函数，同理，next指针会把自己指向的B_Node*给释放掉，这样，A_Node*和B_Node*这两块被a和b遗留下来的内存空间就可以正常被释放。\n但是！！！问题来了，想释放B_Node*，就必须先释放 A_Node*。\n二者互相等待，都等待对方先释放，这个就是循环引用。\n解决办法 把Node中的两个shared_ptr换成weak_ptr即可，这样，a和b的引用计数均为1，可以正常是释放。\n5. weak_ptr 是对shared_ptr的修改，实现逻辑如下代码。 实现的原则是：允许一块内存由多个指针拥有，与shared_ptr不同的是，不使用引用计数。 存在的问题：适用性不如shared_ptr广，因为一个weak_ptr释放的时候，就会把自己指向的区域释放掉，可能会重复释放。\n// weak ptr ，与sharedPtr的不同在于，没有引用计数，总是，weakPtr，共享，但不计数，直接释放 template\u003cclass T\u003e class weakPtr{ public: weakPtr(T *a):m_ptr(a){ } ~weakPtr(){ if(m_ptr) { delete m_ptr; m_ptr = nullptr; } } // 赋值 weakPtr\u003cT\u003e \u0026 operator= (const weakPtr\u003cT\u003e \u0026a){ if(m_ptr) delete m_ptr; m_ptr = a.m_ptr; return *this; } weakPtr\u003cT\u003e \u0026 operator= (T *a){ m_ptr = a; return *this; } T\u0026 operator *(){ return *m_ptr; } T* operator-\u003e(){ return m_ptr; } private: T *m_ptr; }; ",
+  "articleBody": "1. 什么是智能指针 简而言之，为了更安全的使用指针。\n实现方式简单来说，就是用一个模板类把一般的指针包装起来。用这个类来维护内部指针的释放操作。\nstd中有四种智能指针。\nauto_ptr（已弃用） unique_ptr shared_ptr weak_ptr 2. auto_ptr 比较简单的智能指针，实现逻辑如下代码。\n实现的原则是：内存空间只能由一个指针所拥有。\n存在的问题：拷贝和赋值后，原对象内部的指针会为空，有风险。\ntemplate\u003cclass T\u003e class autoPtr{ public: autoPtr(T *a):m_ptr(a){ } ~autoPtr(){ if(m_ptr){ delete m_ptr; m_ptr = nullptr; } } // 拷贝构造 权限转移 autoPtr(autoPtr\u003cT\u003e \u0026a):m_ptr(a.m_ptr) { a.m_ptr = nullptr; } // 赋值 权限转移 autoPtr\u0026 operator= (autoPtr\u003cT\u003e \u0026a){ if(this != \u0026a){ if(m_ptr) delete m_ptr; m_ptr = a.m_ptr; a.m_ptr = nullptr; } return *this; } T* operator-\u003e(){ return m_ptr; } T\u0026 operator* (){ return *m_ptr; } private: T *m_ptr; }; 3. unique_ptr 是对auto_ptr的改进，实现逻辑如下代码。\n实现的原则是：内存空间只能由一个指针所拥有，但是禁止了拷贝和赋值。\n在C++中unique_ptr的进制拷贝有一个特例，如果一个unique_ptr是将亡值的话，是允许的，比如unique_ptr作为函数的返回值时，是允许的。\n// uniquePtr 对于autoPtr来说 禁止了拷贝和赋值 template\u003cclass T\u003e class uniquePtr{ public: uniquePtr(const T*a):m_ptr(a) { }; ~uniquePtr(){ if(m_ptr) delete m_ptr; } T\u0026 operator *(){ return *m_ptr; } T* operator-\u003e(){ return m_ptr; } T* get(){ return m_ptr; } private: T *m_ptr; // 禁止拷贝和赋值 uniquePtr(const uniquePtr\u003cT\u003e \u0026a) { }; uniquePtr\u003cT\u003e \u0026 operator = (const uniquePtr\u003cT\u003e \u0026a) { }; }; unique_ptr禁止了拷贝，那么如何把unique_ptr作为参数传递呢？\n法1：使用指针或者引用 void func(unique_ptr\u003cint\u003e \u0026a){ } *法2： 暂时转移内存的所有权，函数返回时，再把所有权交回来。\nunique_ptr\u003cint\u003e func2(unique_ptr\u003cint\u003e a){ cout \u003c\u003c *a \u003c\u003c endl; return a; } int main() { unique_ptr\u003cint\u003e a(new int(6)); // 暂时释放所有权 a = func2(unique_ptr\u003cint\u003e(a.release())); return 0; } 法3：move语义 void func1(unique_ptr\u003cint\u003e a) { cout \u003c\u003c *a \u003c\u003c endl; } int main() { unique_ptr\u003cint\u003e a(new int(6)); func1(std::move(a)); return 0; } 4. shared_ptr 实现逻辑如下代码。\n实现的原则是：内存空间可以由多个指针所拥有，但是要控制内存释放的时机，这个时机由“引用计数”来实现。\n存在为问题：会存在循环引用问题，导致内存无法正常释放。\ntemplate\u003cclass T\u003e class sharedPtr{ public: sharedPtr(T *a):m_ptr(a), m_count(new int(1)) { }; ~sharedPtr(){ if(--(*m_count) == 0){ delete m_ptr; delete m_count; m_ptr = nullptr; m_count = nullptr; } } T\u0026 operator *(){ return *m_ptr; } T* operator-\u003e(){ return m_ptr; } // 拷贝构造 sharedPtr(const sharedPtr\u003cT\u003e \u0026a):m_ptr(a.m_ptr),m_count(a.m_count) { ++(*m_count); } // 赋值函数 sharedPtr\u003cT\u003e \u0026 operator=(const sharedPtr\u003cT\u003e \u0026a){ if(m_ptr != a.m_ptr){ // this 原来的那个区域处理 if(--(*m_count) == 0){ // 这里不仅仅是检查，也会引用计数减1 delete m_ptr; delete m_count; m_ptr = nullptr; m_count = nullptr; } m_ptr = a.m_ptr; m_count = a.m_count; ++(*m_count); } return *this; } int use_count(){ return *m_count; } int * use_countPtr(){ return m_count; } T* get(){ return m_ptr; } private: T *m_ptr; int *m_count; }; shared_ptr会产生循环引用问题，如下代码\ntemplate\u003cclass T\u003e class sharedPtr{ public: sharedPtr(T *a):m_ptr(a), m_count(new int(1)) { }; ~sharedPtr(){ if(--(*m_count) == 0){ delete m_ptr; delete m_count; m_ptr = nullptr; m_count = nullptr; } } T\u0026 operator *(){ return *m_ptr; } T* operator-\u003e(){ return m_ptr; } // 拷贝构造 sharedPtr(const sharedPtr\u003cT\u003e \u0026a):m_ptr(a.m_ptr),m_count(a.m_count) { ++(*m_count); } // 赋值函数 sharedPtr\u003cT\u003e \u0026 operator=(const sharedPtr\u003cT\u003e \u0026a){ if(m_ptr != a.m_ptr){ // this 原来的那个区域处理 if(--(*m_count) == 0){ // 这里不仅仅是检查，也会引用计数减1 delete m_ptr; delete m_count; m_ptr = nullptr; m_count = nullptr; } m_ptr = a.m_ptr; m_count = a.m_count; ++(*m_count); } return *this; } int use_count(){ return *m_count; } int * use_countPtr(){ return m_count; } T* get(){ return m_ptr; } private: T *m_ptr; int *m_count; }; int main() { struct Node{ Node():pre(nullptr), next(nullptr) { } int data; sharedPtr\u003cNode\u003e pre; sharedPtr\u003cNode\u003e next; }; int *c1 = nullptr; int *c2 = nullptr; { // 这里一个花括号，限制了作用域 sharedPtr\u003cNode\u003e a(new Node); sharedPtr\u003cNode\u003e b(new Node); a-\u003enext = b; b-\u003epre = a; // 把各自的m_count取出来 c1 = a.use_countPtr(); c2 = b.use_countPtr(); cout \u003c\u003c *c1 \u003c\u003cendl; cout \u003c\u003c *c2 \u003c\u003cendl; } // 因为上边a 和 b在析构时，没有释放m_ptr和m_count，所以，下边两行可以访问，并且为1 cout \u003c\u003c *c1 \u003c\u003cendl; cout \u003c\u003c *c2 \u003c\u003cendl; return 0; } 对象a和b本身为sharedPtr类型，内部各包含一个Node*并且开辟了内存。为了方便后续描述，a中申请的这块内存称之为A_Node*，b中的这块内存称之为B_Node*。\na和b初始化时，内部的引用计数均为1，因为这个时候只有自己使用自己内部的这块内存空间。\n当执行了\na-\u003enext = b; b-\u003epre = a; 这两行代码以后，a和b内部的引用技术均为2。此时对于a来说，不仅仅自己使用A_Node*，同时b中的一个sharedPtr类型（与a同类型）的pre，也使用A_Node*，所以a中的引用计数为2，b中pre内部的引用计数也为2。\n对于b来说，同理，不仅仅自己使用B_Node*，同时a中的一个sharedPtr类型（与b同类型）的next，也使用B_Node*，所以b中的引用计数为2，a中next内部的引用计数也为2。\n重点来了，当程序执行到花括号外边的时候，a和b两个对象的生命周期到了，要执行各自的析构函数。但是！执行a的析构函数时，由于引用计数为2，减去1之后不为0，所以，不会释放a内部的m_ptr和m_count，只不过把m_count变为了1，由于引用计数机制的存在，此时b中的pre，这个智能指针内部的引用计数也会变为1。总结一下，就是a这个对象被析构了，但是 A_Node* 没释放。\n同理，执行b的析构函数时，由于引用计数为2，减去1之后不为0，所以，不会释放b内部的m_ptr和m_count，只不过把m_count变为了1，由于引用计数机制的存在，此时a中的next，这个智能指针内部的引用计数也会变为1。总结一下，就是b这个对象被析构了，但是 B_Node* 没释放。\n经过了a和b两个对象的析构函数，现在的情况是怎么样的？\nA_Node*中的next指向B_Node*。\nB_Node*中的pre指向A_Node*。\n此时呢，形成了环。\n在没有人为干预的情况下，想释放A_Node*，就必须先释放 B_Node*。\n因为一旦B_Node*释放，会触发B_Node*内部pre指针的析构函数，因此这时pre内部的引用计数为1，减1之后变为0，所以，可以释放掉pre所指向的内存空间，也就是会释放掉A_Node*，然后接着会触发A_Node*内部next指针的析构函数，同理，next指针会把自己指向的B_Node*给释放掉，这样，A_Node*和B_Node*这两块被a和b遗留下来的内存空间就可以正常被释放。\n但是！！！问题来了，想释放B_Node*，就必须先释放 A_Node*。\n二者互相等待，都等待对方先释放，这个就是循环引用。\n解决办法\n把Node中的两个shared_ptr换成weak_ptr即可，这样，a和b的引用计数均为1，可以正常是释放。\n5. weak_ptr 是对shared_ptr的修改，实现逻辑如下代码。\n实现的原则是：允许一块内存由多个指针拥有，与shared_ptr不同的是，不使用引用计数。\n存在的问题：适用性不如shared_ptr广，因为一个weak_ptr释放的时候，就会把自己指向的区域释放掉，可能会重复释放。\n// weak ptr ，与sharedPtr的不同在于，没有引用计数，总是，weakPtr，共享，但不计数，直接释放 template\u003cclass T\u003e class weakPtr{ public: weakPtr(T *a):m_ptr(a){ } ~weakPtr(){ if(m_ptr) { delete m_ptr; m_ptr = nullptr; } } // 赋值 weakPtr\u003cT\u003e \u0026 operator= (const weakPtr\u003cT\u003e \u0026a){ if(m_ptr) delete m_ptr; m_ptr = a.m_ptr; return *this; } weakPtr\u003cT\u003e \u0026 operator= (T *a){ m_ptr = a; return *this; } T\u0026 operator *(){ return *m_ptr; } T* operator-\u003e(){ return m_ptr; } private: T *m_ptr; }; ",
   "wordCount" : "2502",
   "inLanguage": "zh",
   "datePublished": "2021-07-10T22:26:24+08:00",
@@ -338,8 +338,8 @@
     }
 </script>
   <div class="post-content"><h1 id="1-什么是智能指针">1. 什么是智能指针<a hidden class="anchor" aria-hidden="true" href="#1-什么是智能指针">#</a></h1>
-<p>简而言之，为了更安全的使用指针。
-实现方式简单来说，就是用一个模板类把一般的指针包装起来。用这个类来维护内部指针的释放操作。
+<p>简而言之，为了更安全的使用指针。<br>
+实现方式简单来说，就是用一个模板类把一般的指针包装起来。用这个类来维护内部指针的释放操作。<br>
 std中有四种智能指针。</p>
 <ul>
 <li>auto_ptr（已弃用）</li>
@@ -348,8 +348,8 @@ std中有四种智能指针。</p>
 <li>weak_ptr</li>
 </ul>
 <h1 id="2-auto_ptr">2. auto_ptr<a hidden class="anchor" aria-hidden="true" href="#2-auto_ptr">#</a></h1>
-<p>比较简单的智能指针，实现逻辑如下代码。
-实现的原则是：内存空间只能由一个指针所拥有。
+<p>比较简单的智能指针，实现逻辑如下代码。<br>
+实现的原则是：内存空间只能由一个指针所拥有。<br>
 存在的问题：拷贝和赋值后，原对象内部的指针会为空，有风险。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">autoPtr</span><span class="p">{</span>
@@ -399,8 +399,8 @@ std中有四种智能指针。</p>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span></code></pre></div><h1 id="3-unique_ptr">3. unique_ptr<a hidden class="anchor" aria-hidden="true" href="#3-unique_ptr">#</a></h1>
-<p>是对auto_ptr的改进，实现逻辑如下代码。
-实现的原则是：内存空间只能由一个指针所拥有，但是禁止了拷贝和赋值。
+<p>是对auto_ptr的改进，实现逻辑如下代码。<br>
+实现的原则是：内存空间只能由一个指针所拥有，但是禁止了拷贝和赋值。<br>
 在C++中unique_ptr的进制拷贝有一个特例，如果一个unique_ptr是将亡值的话，是允许的，比如unique_ptr作为函数的返回值时，是允许的。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// uniquePtr  对于autoPtr来说 禁止了拷贝和赋值
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
@@ -465,8 +465,8 @@ std中有四种智能指针。</p>
 </span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><h1 id="4-shared_ptr">4. shared_ptr<a hidden class="anchor" aria-hidden="true" href="#4-shared_ptr">#</a></h1>
-<p>实现逻辑如下代码。
-实现的原则是：内存空间可以由多个指针所拥有，但是要控制内存释放的时机，这个时机由“<code>引用计数</code>”来实现。
+<p>实现逻辑如下代码。<br>
+实现的原则是：内存空间可以由多个指针所拥有，但是要控制内存释放的时机，这个时机由“<code>引用计数</code>”来实现。<br>
 存在为问题：会存在循环引用问题，导致内存无法正常释放。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">sharedPtr</span><span class="p">{</span>
@@ -654,7 +654,7 @@ std中有四种智能指针。</p>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>对象a和b本身为sharedPtr类型，内部各包含一个<code>Node*</code>并且开辟了内存。为了方便后续描述，a中申请的这块内存称之为<code>A_Node*</code>，b中的这块内存称之为<code>B_Node*</code>。</p>
-<p>a和b初始化时，内部的引用计数均为<code>1</code>，因为这个时候只有自己使用自己内部的这块内存空间。
+<p>a和b初始化时，内部的引用计数均为<code>1</code>，因为这个时候只有自己使用自己内部的这块内存空间。<br>
 当执行了</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">a</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">b</span><span class="o">-&gt;</span><span class="n">pre</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
@@ -663,18 +663,18 @@ std中有四种智能指针。</p>
 <p>重点来了，当程序执行到<code>花括号</code>外边的时候，a和b两个对象的生命周期到了，要执行各自的析构函数。但是！执行a的析构函数时，由于引用计数为2，减去1之后不为0，所以，<code>不会释放a内部的m_ptr和m_count</code>，只不过把<code>m_count</code>变为了1，由于引用计数机制的存在，此时b中的pre，这个智能指针内部的引用计数也会变为1。<code>总结一下，就是a这个对象被析构了，但是 A_Node* 没释放。</code></p>
 <p>同理，执行b的析构函数时，由于引用计数为2，减去1之后不为0，所以，<code>不会释放b内部的m_ptr和m_count</code>，只不过把<code>m_count</code>变为了1，由于引用计数机制的存在，此时a中的next，这个智能指针内部的引用计数也会变为1。<code>总结一下，就是b这个对象被析构了，但是 B_Node* 没释放。</code></p>
 <p>经过了a和b两个对象的析构函数，现在的情况是怎么样的？</p>
-<p><code>A_Node*</code>中的next指向<code>B_Node*</code>。
+<p><code>A_Node*</code>中的next指向<code>B_Node*</code>。<br>
 <code>B_Node*</code>中的pre指向<code>A_Node*</code>。</p>
 <p>此时呢，形成了环。</p>
 <p>在没有人为干预的情况下，<strong>想释放<code>A_Node*</code>，就必须先释放 <code>B_Node*</code>。</strong></p>
 <p>因为一旦<code>B_Node*</code>释放，会触发<code>B_Node*</code>内部pre指针的析构函数，因此这时pre内部的引用计数为1，减1之后变为0，所以，可以释放掉pre所指向的内存空间，也就是会释放掉<code>A_Node*</code>，然后接着会触发<code>A_Node*</code>内部next指针的析构函数，同理，next指针会把自己指向的<code>B_Node*</code>给释放掉，这样，<code>A_Node*和B_Node*</code>这两块被a和b遗留下来的内存空间就可以正常被释放。</p>
 <p>但是！！！问题来了，<strong>想释放<code>B_Node*</code>，就必须先释放 <code>A_Node*</code>。</strong></p>
 <p>二者互相等待，都等待对方先释放，这个就是<code>循环引用</code>。</p>
-<p><strong>解决办法</strong>
+<p><strong>解决办法</strong><br>
 把Node中的两个<code>shared_ptr</code>换成<code>weak_ptr</code>即可，这样，a和b的引用计数均为1，可以正常是释放。</p>
 <h1 id="5-weak_ptr">5. weak_ptr<a hidden class="anchor" aria-hidden="true" href="#5-weak_ptr">#</a></h1>
-<p>是对shared_ptr的修改，实现逻辑如下代码。
-实现的原则是：允许一块内存由多个指针拥有，与shared_ptr不同的是，不使用引用计数。
+<p>是对shared_ptr的修改，实现逻辑如下代码。<br>
+实现的原则是：允许一块内存由多个指针拥有，与shared_ptr不同的是，不使用引用计数。<br>
 存在的问题：适用性不如shared_ptr广，因为一个weak_ptr释放的时候，就会把自己指向的区域释放掉，可能会重复释放。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// weak ptr ，与sharedPtr的不同在于，没有引用计数，总是，weakPtr，共享，但不计数，直接释放
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
@@ -730,10 +730,10 @@ std中有四种智能指针。</p>
     <br>
     <span>C&#43;&#43;学习记录(12) 类型转换</span>
   </a>
-  <a class="next" href="https://Clay-Hex.github.io/posts/2021/06/cpp-memory-alignment/">
+  <a class="next" href="https://Clay-Hex.github.io/posts/2021/07/wireshark-tcp-handshake-wave/">
     <span class="title">下一篇 »</span>
     <br>
-    <span>C&#43;&#43;学习记录(10) 内存对齐</span>
+    <span>Wireshark配合TCP调试工具理解TCP三次握手和四次挥手过程</span>
   </a>
 </nav>
 
@@ -802,6 +802,18 @@ std中有四种智能指针。</p>
   
       bodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
     });
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
   </script>
 </article>
     </main>

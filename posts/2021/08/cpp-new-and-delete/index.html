@@ -106,7 +106,7 @@
   "keywords": [
     "C++"
   ],
-  "articleBody": "0. placement new 即 原地构造。 用法：\nint *p = new int(10); // new operator new(p) int(1000); // 在 p 指向的内存上 构造一个int对象，即placement new // 此时 *P 为 1000。 因为是在一个已有的空间上构造对象，所以，空间的释放，就由free或者delete负责了。\n0.1 重载placement new 与后边的 3 ：operator new的重载无异，就是可以多增加几个函数，但是，第一个参数必须是std::size_t 类型，这个参数接收的是 new 后边类型的大小，不用显式传参，默认会传递。 重载示例：\n#include using std::cout, std::endl; class base{ public: base(){ cout \u003c\u003c \"ctor\" \u003c\u003c endl; } ~base(){ cout \u003c\u003c \"dtor\" \u003c\u003c endl; } // 标准库中的 placement new, 这里什么都没做，只是返回原来的指针。 void * operator new(std::size_t size, void *p){ cout \u003c\u003c \"std placement new\" \u003c\u003c endl; return p; } //重载 placement new，附加了一个参数 a，参数size会默认传递，不用显式传参。 void * operator new(std::size_t size, int a){ cout \u003c\u003c \"a = \" \u003c\u003c a \u003c\u003c endl; return malloc(size); } void * operator new(std::size_t size){ cout \u003c\u003c \"new diy\" \u003c\u003c endl; return malloc(size); } void operator delete(void *p){ cout \u003c\u003c \"delete diy\" \u003c\u003c endl; free(p); } private: int a, b, c; }; int main(){ base p; new(\u0026p) base; new(4) base; return 0; } 运行结果：\nctor // 对象默认的构造函数输出的 std placement new // 默认placement new 输出的 ctor // 默认placement new 输出的 a = 4 // 重载的placement new 输出的 ctor // 重载的placement new 输出的 dtor // 析构 1. new operator 一般情况下，我们使用的new都是new operator。 用法：\nint *p = new int(3); 其实底层有两个过程： 第一个过程：开辟空间 第二个过程：构造对象\n2. delete operator delete operator就是平时常用的delete，与new 搭配成对使用。 用法：\nint *p = new int; delete p; 3. operator new 是全局的库函数。\n用法：\nvoid* operator new(size_t size); 其实，operator new底层调用的是malloc（调用形式也挺像的，传入一个开辟的Byte数，返回一个void *）。\n注意，operator new 支持重载！当然了，如果重载了，那就要重载对应的operator delete 4. operator delete 是全局的库函数，与operator new搭配使用。\n用法：\nint *p = new int; operator delete(p); 底层调用的是free。\n支持重载。 5. new 做了哪些事情？ new 操作可以大致的认为包含了两个过程： 第一个过程：开辟相应的空间（使用operator new）。 第二个过程：在刚开辟的空间内构造一个对象（placement new）。\n模拟new操作。\nint *p = static_cast\u003cint*\u003e( operator new(sizeof(int)) ); // new operator 开辟空间 new(p) int(100); // placement new 在p指向的内存上构造一个对象 上边说到operator new和operator delete支持重载，重载可以为我们自己的类类型定制化的分配内存。 只需要在类内重载operator new和operator delete。\n编译器遇到new和delete时，首先看对应的类类型中是否有重载的operator new和operator delete，如果有，则优先调用重载的版本去分配内存，然后再原地构造。如果没有重载版本，就调用全局的库函数。\n如果一个类内有重载的operator new和operator delete，会优先调用重载版本，代码如下：\n#include using std::cout, std::endl; class base{ public: base(){ cout \u003c\u003c \"ctor\" \u003c\u003c endl; } ~base(){ cout \u003c\u003c \"dtor\" \u003c\u003c endl; } void * operator new(std::size_t size){ cout \u003c\u003c \"new diy\" \u003c\u003c endl; void *resPtr = malloc(size); return resPtr; } void operator delete(void *p){ cout \u003c\u003c \"delete diy\" \u003c\u003c endl; free(p); } private: int a, b, c; }; int main(){ base *p = new base; delete p; return 0; } 运行结果：\nnew diy ctor dtor delete diy 也可以显式的使用全局的库函数来new一个对象出来，把main函数中的new和delete换成全局的库函数，如下：\nbase *p = ::new base; ::delete p; 运行结果：\nctor dtor 显式的调用了全局的库函数，而没有调用类类型重载的版本。\n当然，如果不在类内进行重载，在全局进行重载，也是可以的。\n这个两个函数，在类内重载，必须是静态的，即有static修饰，因为调用这两个方法时，对象还没创建（调用new时）或者已经析构（调用delete时），this指针此时是无效的，再想去通过this调用一个方法，这是不可能的，所以必须是静态的。\n上边的代码中，没有加static修饰，也可以完成操作，是因为编译器替我们加上了static。\n6. array new 与 array delete int *p = new int[10]; delete[] p; array new即是用new申请一个数组空间，此时 p 指向第一个元素的起始位置，释放时必须使用对应的array delete，也就是delete[ ]。\n对于基本数据类型来说，如果把上边的delete[] p 改成 delete p，没什么问题，不会造成内存泄漏。但如果是自定义的类，并且类中有在堆上开辟内存空间的话，就会造成内存泄漏。 因为delete p 只会调用一个元素的析构函数，然后释放对应的空间，数组中的其余元素，虽然元素（类对象）本身的空间释放了，但是该对象原本来堆上开辟的内存空间，并没有释放掉（因为他的析构函数没有被调用），由此造成内存泄漏。\n与上边的new 和 delete一样，array版本的new和delete也支持重载。 示例如下：\n#include using std::cout, std::endl; class base{ public: base(){ cout \u003c\u003c \"ctor\" \u003c\u003c endl; } ~base(){ cout \u003c\u003c \"dtor\" \u003c\u003c endl; } void * operator new[](std::size_t size){ cout \u003c\u003c \"new[] diy\" \u003c\u003c endl; void *resPtr = malloc(size); return resPtr; } void operator delete[](void *p){ cout \u003c\u003c \"delete[] diy\" \u003c\u003c endl; free(p); } private: int a, b, c; }; int main(){ base *p = new base[2]; delete[] p; return 0; } 运行结果：\nnew[] diy ctor ctor dtor dtor delete[] diy 7. delete[ ] 为什么能够释放数组？ 在使用new创建一个数组时，所开辟的实际内存大小比要申请的大小要大一些，在申请到的数组空间的上下都有额外的开销，来记录这块数组空间的相关信息，其中就包括数组空间的长度，每个元素的长度。所以 delete[ ] 可以顺利的知道数组的长度，并且可以成功的调用所有元素的析构函数。\n",
+  "articleBody": "0. placement new 即 原地构造。\n用法：\nint *p = new int(10); // new operator new(p) int(1000); // 在 p 指向的内存上 构造一个int对象，即placement new // 此时 *P 为 1000。 因为是在一个已有的空间上构造对象，所以，空间的释放，就由free或者delete负责了。\n0.1 重载placement new 与后边的 3 ：operator new的重载无异，就是可以多增加几个函数，但是，第一个参数必须是std::size_t 类型，这个参数接收的是 new 后边类型的大小，不用显式传参，默认会传递。\n重载示例：\n#include using std::cout, std::endl; class base{ public: base(){ cout \u003c\u003c \"ctor\" \u003c\u003c endl; } ~base(){ cout \u003c\u003c \"dtor\" \u003c\u003c endl; } // 标准库中的 placement new, 这里什么都没做，只是返回原来的指针。 void * operator new(std::size_t size, void *p){ cout \u003c\u003c \"std placement new\" \u003c\u003c endl; return p; } //重载 placement new，附加了一个参数 a，参数size会默认传递，不用显式传参。 void * operator new(std::size_t size, int a){ cout \u003c\u003c \"a = \" \u003c\u003c a \u003c\u003c endl; return malloc(size); } void * operator new(std::size_t size){ cout \u003c\u003c \"new diy\" \u003c\u003c endl; return malloc(size); } void operator delete(void *p){ cout \u003c\u003c \"delete diy\" \u003c\u003c endl; free(p); } private: int a, b, c; }; int main(){ base p; new(\u0026p) base; new(4) base; return 0; } 运行结果：\nctor // 对象默认的构造函数输出的 std placement new // 默认placement new 输出的 ctor // 默认placement new 输出的 a = 4 // 重载的placement new 输出的 ctor // 重载的placement new 输出的 dtor // 析构 1. new operator 一般情况下，我们使用的new都是new operator。\n用法：\nint *p = new int(3); 其实底层有两个过程：\n第一个过程：开辟空间\n第二个过程：构造对象\n2. delete operator delete operator就是平时常用的delete，与new 搭配成对使用。\n用法：\nint *p = new int; delete p; 3. operator new 是全局的库函数。\n用法：\nvoid* operator new(size_t size); 其实，operator new底层调用的是malloc（调用形式也挺像的，传入一个开辟的Byte数，返回一个void *）。\n注意，operator new 支持重载！当然了，如果重载了，那就要重载对应的operator delete 4. operator delete 是全局的库函数，与operator new搭配使用。\n用法：\nint *p = new int; operator delete(p); 底层调用的是free。\n支持重载。 5. new 做了哪些事情？ new 操作可以大致的认为包含了两个过程：\n第一个过程：开辟相应的空间（使用operator new）。\n第二个过程：在刚开辟的空间内构造一个对象（placement new）。\n模拟new操作。\nint *p = static_cast\u003cint*\u003e( operator new(sizeof(int)) ); // new operator 开辟空间 new(p) int(100); // placement new 在p指向的内存上构造一个对象 上边说到operator new和operator delete支持重载，重载可以为我们自己的类类型定制化的分配内存。\n只需要在类内重载operator new和operator delete。\n编译器遇到new和delete时，首先看对应的类类型中是否有重载的operator new和operator delete，如果有，则优先调用重载的版本去分配内存，然后再原地构造。如果没有重载版本，就调用全局的库函数。\n如果一个类内有重载的operator new和operator delete，会优先调用重载版本，代码如下：\n#include using std::cout, std::endl; class base{ public: base(){ cout \u003c\u003c \"ctor\" \u003c\u003c endl; } ~base(){ cout \u003c\u003c \"dtor\" \u003c\u003c endl; } void * operator new(std::size_t size){ cout \u003c\u003c \"new diy\" \u003c\u003c endl; void *resPtr = malloc(size); return resPtr; } void operator delete(void *p){ cout \u003c\u003c \"delete diy\" \u003c\u003c endl; free(p); } private: int a, b, c; }; int main(){ base *p = new base; delete p; return 0; } 运行结果：\nnew diy ctor dtor delete diy 也可以显式的使用全局的库函数来new一个对象出来，把main函数中的new和delete换成全局的库函数，如下：\nbase *p = ::new base; ::delete p; 运行结果：\nctor dtor 显式的调用了全局的库函数，而没有调用类类型重载的版本。\n当然，如果不在类内进行重载，在全局进行重载，也是可以的。\n这个两个函数，在类内重载，必须是静态的，即有static修饰，因为调用这两个方法时，对象还没创建（调用new时）或者已经析构（调用delete时），this指针此时是无效的，再想去通过this调用一个方法，这是不可能的，所以必须是静态的。\n上边的代码中，没有加static修饰，也可以完成操作，是因为编译器替我们加上了static。\n6. array new 与 array delete int *p = new int[10]; delete[] p; array new即是用new申请一个数组空间，此时 p 指向第一个元素的起始位置，释放时必须使用对应的array delete，也就是delete[ ]。\n对于基本数据类型来说，如果把上边的delete[] p 改成 delete p，没什么问题，不会造成内存泄漏。但如果是自定义的类，并且类中有在堆上开辟内存空间的话，就会造成内存泄漏。\n因为delete p 只会调用一个元素的析构函数，然后释放对应的空间，数组中的其余元素，虽然元素（类对象）本身的空间释放了，但是该对象原本来堆上开辟的内存空间，并没有释放掉（因为他的析构函数没有被调用），由此造成内存泄漏。\n与上边的new 和 delete一样，array版本的new和delete也支持重载。\n示例如下：\n#include using std::cout, std::endl; class base{ public: base(){ cout \u003c\u003c \"ctor\" \u003c\u003c endl; } ~base(){ cout \u003c\u003c \"dtor\" \u003c\u003c endl; } void * operator new[](std::size_t size){ cout \u003c\u003c \"new[] diy\" \u003c\u003c endl; void *resPtr = malloc(size); return resPtr; } void operator delete[](void *p){ cout \u003c\u003c \"delete[] diy\" \u003c\u003c endl; free(p); } private: int a, b, c; }; int main(){ base *p = new base[2]; delete[] p; return 0; } 运行结果：\nnew[] diy ctor ctor dtor dtor delete[] diy 7. delete[ ] 为什么能够释放数组？ 在使用new创建一个数组时，所开辟的实际内存大小比要申请的大小要大一些，在申请到的数组空间的上下都有额外的开销，来记录这块数组空间的相关信息，其中就包括数组空间的长度，每个元素的长度。所以 delete[ ] 可以顺利的知道数组的长度，并且可以成功的调用所有元素的析构函数。\n",
   "wordCount" : "2064",
   "inLanguage": "zh",
   "datePublished": "2021-08-20T22:23:55+08:00",
@@ -348,14 +348,14 @@
     }
 </script>
   <div class="post-content"><h1 id="0-placement-new">0. placement new<a hidden class="anchor" aria-hidden="true" href="#0-placement-new">#</a></h1>
-<p>即 <code>原地构造</code>。
+<p>即 <code>原地构造</code>。<br>
 用法：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>  <span class="c1">// new operator
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">new</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="kt">int</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>   <span class="c1">// 在 p 指向的内存上 构造一个int对象，即placement new
 </span></span></span><span class="line"><span class="cl"><span class="c1">// 此时 *P 为 1000。
 </span></span></span></code></pre></div><p>因为是在一个已有的空间上构造对象，所以，空间的释放，就由<code>free</code>或者<code>delete</code>负责了。</p>
 <h2 id="01-重载placement-new">0.1 重载placement new<a hidden class="anchor" aria-hidden="true" href="#01-重载placement-new">#</a></h2>
-<p>与后边的 3 ：<code>operator new</code>的重载无异，就是可以多增加几个函数，但是，第一个参数必须是<code>std::size_t</code> 类型，这个参数接收的是 new 后边类型的大小，<code>不用显式传参</code>，默认会传递。
+<p>与后边的 3 ：<code>operator new</code>的重载无异，就是可以多增加几个函数，但是，第一个参数必须是<code>std::size_t</code> 类型，这个参数接收的是 new 后边类型的大小，<code>不用显式传参</code>，默认会传递。<br>
 重载示例：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
 </span></span></span><span class="line"><span class="cl"><span class="cp"></span>
@@ -414,14 +414,14 @@
 </span></span><span class="line"><span class="cl">ctor  // 重载的placement new 输出的
 </span></span><span class="line"><span class="cl">dtor  // 析构
 </span></span></code></pre></div><h1 id="1-new-operator">1. new operator<a hidden class="anchor" aria-hidden="true" href="#1-new-operator">#</a></h1>
-<p>一般情况下，我们使用的<code>new</code>都是<code>new operator</code>。
+<p>一般情况下，我们使用的<code>new</code>都是<code>new operator</code>。<br>
 用法：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
-</span></span></code></pre></div><p>其实底层有两个过程：
-第一个过程：开辟空间
+</span></span></code></pre></div><p>其实底层有两个过程：<br>
+第一个过程：开辟空间<br>
 第二个过程：构造对象</p>
 <h1 id="2-delete-operator">2. delete operator<a hidden class="anchor" aria-hidden="true" href="#2-delete-operator">#</a></h1>
-<p><code>delete operator</code>就是平时常用的<code>delete</code>，与<code>new</code> 搭配成对使用。
+<p><code>delete operator</code>就是平时常用的<code>delete</code>，与<code>new</code> 搭配成对使用。<br>
 用法：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="k">delete</span> <span class="n">p</span><span class="p">;</span>
@@ -443,13 +443,13 @@
 <li>支持重载。</li>
 </ul>
 <h1 id="5-new-做了哪些事情">5. new 做了哪些事情？<a hidden class="anchor" aria-hidden="true" href="#5-new-做了哪些事情">#</a></h1>
-<p><code>new</code> 操作可以大致的认为包含了两个过程：
-第一个过程：开辟相应的空间（使用<code>operator new</code>）。
+<p><code>new</code> 操作可以大致的认为包含了两个过程：<br>
+第一个过程：开辟相应的空间（使用<code>operator new</code>）。<br>
 第二个过程：在刚开辟的空间内构造一个对象（<code>placement new</code>）。</p>
 <p>模拟<code>new</code>操作。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">*&gt;</span><span class="p">(</span> <span class="k">operator</span> <span class="k">new</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">))</span> <span class="p">);</span>   <span class="c1">// new operator 开辟空间
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">new</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="kt">int</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>  <span class="c1">// placement new 在p指向的内存上构造一个对象
-</span></span></span></code></pre></div><p>上边说到<code>operator new</code>和<code>operator delete</code>支持重载，重载可以为我们自己的类类型定制化的分配内存。
+</span></span></span></code></pre></div><p>上边说到<code>operator new</code>和<code>operator delete</code>支持重载，重载可以为我们自己的类类型定制化的分配内存。<br>
 只需要在类内重载<code>operator new</code>和<code>operator delete</code>。</p>
 <p>编译器遇到new和delete时，首先看对应的类类型中是否有重载的<code>operator new</code>和<code>operator delete</code>，如果有，则优先调用重载的版本去分配内存，然后再原地构造。如果没有重载版本，就调用全局的库函数。</p>
 <p>如果一个类内有重载的<code>operator new</code>和<code>operator delete</code>，会优先调用重载版本，代码如下：</p>
@@ -512,9 +512,9 @@
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span>
 </span></span><span class="line"><span class="cl"><span class="k">delete</span><span class="p">[]</span> <span class="n">p</span><span class="p">;</span>
 </span></span></code></pre></div><p><code>array new</code>即是用<code>new</code>申请一个数组空间，此时 p 指向第一个元素的起始位置，释放时必须使用对应的<code>array delete</code>，也就是<code>delete[ ]</code>。</p>
-<p>对于基本数据类型来说，如果把上边的<code>delete[] p</code> 改成 <code>delete p</code>，没什么问题，不会造成内存泄漏。但如果是自定义的类，并且类中有在堆上开辟内存空间的话，就会造成内存泄漏。
+<p>对于基本数据类型来说，如果把上边的<code>delete[] p</code> 改成 <code>delete p</code>，没什么问题，不会造成内存泄漏。但如果是自定义的类，并且类中有在堆上开辟内存空间的话，就会造成内存泄漏。<br>
 因为<code>delete p</code> 只会调用一个元素的析构函数，然后释放对应的空间，数组中的其余元素，虽然元素（类对象）本身的空间释放了，但是该对象原本来堆上开辟的内存空间，并没有释放掉（因为他的析构函数没有被调用），由此造成内存泄漏。</p>
-<p><strong>与上边的new 和 delete一样，array版本的new和delete也支持重载。</strong>
+<p><strong>与上边的new 和 delete一样，array版本的new和delete也支持重载。</strong><br>
 示例如下：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
 </span></span></span><span class="line"><span class="cl"><span class="cp"></span>
@@ -570,15 +570,15 @@
       <li><a href="https://Clay-Hex.github.io/tags/c&#43;&#43;/">C&#43;&#43;</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://Clay-Hex.github.io/posts/2021/12/sorting-algorithm-stability/">
+  <a class="prev" href="https://Clay-Hex.github.io/posts/2021/10/2c4t-4c4t-compute-intensive-task/">
     <span class="title">« 上一篇</span>
     <br>
-    <span>常见排序算法及稳定性</span>
+    <span>2C4T与4C4T在计算密集型任务下的效率对比</span>
   </a>
-  <a class="next" href="https://Clay-Hex.github.io/posts/2021/08/cpp-type-conversion/">
+  <a class="next" href="https://Clay-Hex.github.io/posts/2021/08/floating-point-and-fixed-point-storage-method/">
     <span class="title">下一篇 »</span>
     <br>
-    <span>C&#43;&#43;学习记录(12) 类型转换</span>
+    <span>小数在计算机中的存储方式</span>
   </a>
 </nav>
 
@@ -647,6 +647,18 @@
   
       bodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
     });
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
   </script>
 </article>
     </main>

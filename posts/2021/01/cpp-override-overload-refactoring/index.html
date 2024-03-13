@@ -106,7 +106,7 @@
   "keywords": [
     "C++"
   ],
-  "articleBody": "0. 重构 重构是对程序内部的架构的调整。 重构强调的是在不改变\"软件外部可观察的行为\"前提下，对内部结构进行调整，使得从程序的外部功能上看，没有任何变化。 如下例子： 重构前代码如下：\n#include class child { private: public: child(){}; void func(){ std::cout \u003c\u003c 123 \u003c\u003c std::endl; } }; int main(int argc, char const *argv[]) { child a; a.func(); return 0; } 程序运行后，输出123. 重构后的代码如下：\n#include class child { private: public: child(){}; void f1(){std::cout \u003c\u003c 1;} void f2(){std::cout \u003c\u003c 2;} void f3(){std::cout \u003c\u003c 3;} void func(){ f1(); f2(); f3(); std::cout \u003c\u003c std::endl; } }; int main(int argc, char const *argv[]) { child a; a.func(); return 0; } main函数执行的时候，依然是调用a的func方法，程序的输出也是123，对于外部来说没有任何改变，但是func内部的实现方式已经改变。\n1. 重写 重写（override）也叫覆盖。\n明确一个概念：“函数签名”，函数签名不仅仅包括函数名，还包括函数的参数、参数的个数、参数的顺序、所在命名空间等信息。但是函数签名不包括函数的返回值类型，如果两个函数除了返回值类型不同以外，其他都一模一样，这在C++中是不被允许的。\n重写是指不改变函数签名，改变的是一个函数内部。如下代码：\n#include class parent { private: public: parent(){}; virtual void func(){ std::cout \u003c\u003c 123 \u003c\u003c std::endl; } }; class child : parent{ public: void func(){ std::cout \u003c\u003c 456 \u003c\u003c std::endl; } }; int main(int argc, char const *argv[]) { child a; a.func(); return 0; } child继承parent类，重写了类内的func方法，没有改变函数签名，只改变函数内部代码。\n2. 重载 重载是指不改变函数名，但改变函数的参数、参数个数、参数顺序。重载改变了函数的签名。\n两个同名函数要在同一个作用域下 两个函数只有返回值不同，这是不允许的 重载函数有默认参数的时候，语法上是可以通过的，但是调用函数可能会出现二义性，编译不允许。 代码如下：\n#include class parent { private: public: parent(){}; virtual void func(){ std::cout \u003c\u003c 123 \u003c\u003c std::endl; } }; class child : parent{ public: void func(int a){ std::cout \u003c\u003c 456 \u003c\u003c std::endl; } }; int main(int argc, char const *argv[]) { child a; a.func(12); return 0; } child继承parent类，重载了类内的func方法，改变了函数签名（增加了一个参数），方法内部代码可以改变也可以不改变，但是不改变。\n",
+  "articleBody": "0. 重构 重构是对程序内部的架构的调整。\n重构强调的是在不改变\"软件外部可观察的行为\"前提下，对内部结构进行调整，使得从程序的外部功能上看，没有任何变化。\n如下例子：\n重构前代码如下：\n#include class child { private: public: child(){}; void func(){ std::cout \u003c\u003c 123 \u003c\u003c std::endl; } }; int main(int argc, char const *argv[]) { child a; a.func(); return 0; } 程序运行后，输出123.\n重构后的代码如下：\n#include class child { private: public: child(){}; void f1(){std::cout \u003c\u003c 1;} void f2(){std::cout \u003c\u003c 2;} void f3(){std::cout \u003c\u003c 3;} void func(){ f1(); f2(); f3(); std::cout \u003c\u003c std::endl; } }; int main(int argc, char const *argv[]) { child a; a.func(); return 0; } main函数执行的时候，依然是调用a的func方法，程序的输出也是123，对于外部来说没有任何改变，但是func内部的实现方式已经改变。\n1. 重写 重写（override）也叫覆盖。\n明确一个概念：“函数签名”，函数签名不仅仅包括函数名，还包括函数的参数、参数的个数、参数的顺序、所在命名空间等信息。但是函数签名不包括函数的返回值类型，如果两个函数除了返回值类型不同以外，其他都一模一样，这在C++中是不被允许的。\n重写是指不改变函数签名，改变的是一个函数内部。如下代码：\n#include class parent { private: public: parent(){}; virtual void func(){ std::cout \u003c\u003c 123 \u003c\u003c std::endl; } }; class child : parent{ public: void func(){ std::cout \u003c\u003c 456 \u003c\u003c std::endl; } }; int main(int argc, char const *argv[]) { child a; a.func(); return 0; } child继承parent类，重写了类内的func方法，没有改变函数签名，只改变函数内部代码。\n2. 重载 重载是指不改变函数名，但改变函数的参数、参数个数、参数顺序。重载改变了函数的签名。\n两个同名函数要在同一个作用域下 两个函数只有返回值不同，这是不允许的 重载函数有默认参数的时候，语法上是可以通过的，但是调用函数可能会出现二义性，编译不允许。 代码如下：\n#include class parent { private: public: parent(){}; virtual void func(){ std::cout \u003c\u003c 123 \u003c\u003c std::endl; } }; class child : parent{ public: void func(int a){ std::cout \u003c\u003c 456 \u003c\u003c std::endl; } }; int main(int argc, char const *argv[]) { child a; a.func(12); return 0; } child继承parent类，重载了类内的func方法，改变了函数签名（增加了一个参数），方法内部代码可以改变也可以不改变，但是不改变。\n",
   "wordCount" : "754",
   "inLanguage": "zh",
   "datePublished": "2021-01-28T12:33:10+08:00",
@@ -334,9 +334,9 @@
     }
 </script>
   <div class="post-content"><h1 id="0-重构">0. 重构<a hidden class="anchor" aria-hidden="true" href="#0-重构">#</a></h1>
-<p>重构是对程序内部的架构的调整。
-重构强调的是在不改变&quot;软件外部可观察的行为&quot;前提下，对内部结构进行调整，使得从程序的外部功能上看，没有任何变化。
-如下例子：
+<p>重构是对程序内部的架构的调整。<br>
+重构强调的是在不改变&quot;软件外部可观察的行为&quot;前提下，对内部结构进行调整，使得从程序的外部功能上看，没有任何变化。<br>
+如下例子：<br>
 重构前代码如下：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
 </span></span></span><span class="line"><span class="cl"><span class="cp"></span>
@@ -357,7 +357,7 @@
 </span></span><span class="line"><span class="cl">    <span class="n">a</span><span class="p">.</span><span class="n">func</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p>程序运行后，输出123.
+</span></span></code></pre></div><p>程序运行后，输出123.<br>
 重构后的代码如下：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
 </span></span></span><span class="line"><span class="cl"><span class="cp"></span>
@@ -541,6 +541,18 @@
   
       bodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
     });
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
   </script>
 </article>
     </main>

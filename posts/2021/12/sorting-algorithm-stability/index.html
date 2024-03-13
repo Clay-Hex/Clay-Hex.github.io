@@ -106,7 +106,7 @@
   "keywords": [
     "数据结构与算法"
   ],
-  "articleBody": "1. 代码 /* * @Brief: 常见排序算法汇总 * @Author: * @Date: 2021-07-01 */ #include #include #include #include using namespace std; void printArray(int *a, int len){ for(int i = 0; i \u003c len; i++) cout \u003c\u003c a[i] \u003c\u003c \" \"; cout \u003c\u003c endl \u003c\u003c endl; } void bubbleSort(int *a, int len){ for(int i = 0; i \u003c len - 1; i++){ for(int j = 0; j \u003c len - i; j++){ if(a[j] \u003e a[j+1]) swap(a[j], a[j+1]); } } } void selectSort(int *a, int len){ for(int i = 0; i \u003c len; i++){ int mi = i; for(int j = i; j \u003c len; j++){ if(a[j] \u003c a[mi]) mi = j; } if(i != mi) swap(a[i], a[mi]); } } void insertionSort(int *a, int len){ for(int i = 0; i \u003c len; i++){ int key = a[i]; int j = i; while(j \u003e= 1 \u0026\u0026 a[j - 1] \u003e key) a[j] = a[j-1], j--; a[j] = key; } } void shellSort(int *a, int len){ // cout \u003c\u003c \"原始数组\" \u003c\u003c endl; // printArray(a, len); for(int d = len / 2; d \u003e= 1; d /= 2){ // 插入排序 for(int i = 0; i \u003c len; i += d){ int key = a[i]; int j = i; while(j \u003e= d \u0026\u0026 a[j-d] \u003e key) a[j] = a[j-d], j -= d; a[j] = key; } // cout \u003c\u003c \"d = \" \u003c\u003c d \u003c\u003c \" 排序结果\" \u003c\u003c endl; // printArray(a, len); } } void quickSort(int *a, int len, int l, int r){ if(l \u003e= r) return ; int x = a[l + (r - l) / 2]; int i = l - 1, j = r + 1; while(i \u003c j){ while(a[++i] \u003c x); while(a[--j] \u003e x); if(i \u003c j) swap(a[i], a[j]); } quickSort(a, len, l, j); quickSort(a, len, j + 1, r); } void mergeSort(int *a, int len, int l, int r){ if(l \u003e= r) return ; int mid = l + (r - l) / 2; mergeSort(a, len, l, mid); mergeSort(a, len, mid + 1, r); int i = l, j = mid + 1, k = 0; int *tmp = new int[r - l + 1]; while(i \u003c= mid \u0026\u0026 j \u003c= r){ if(a[i] \u003c a[j]) tmp[k++] = a[i++]; else tmp[k++] = a[j++]; } // 处理尾巴 while(i \u003c= mid) tmp[k++] = a[i++]; while(j \u003c= r) tmp[k++] = a[j++]; // 复制回原数组中 for(i = l, k = 0; i \u003c= r; i++, k++) a[i] = tmp[k]; delete tmp; // 回收内存 } // 堆排序 namespace heapSort{ int *heap = nullptr; int ss = 0; // 堆的现有节点数 从下标是1的节点开始存 int n = 0; // 数组长度 void down(int u){ // 小顶堆 int t = u; if(u * 2 \u003c= ss \u0026\u0026 heap[u * 2] \u003c heap[t]) t = u * 2; if(u * 2 + 1 \u003c= ss \u0026\u0026 heap[u * 2 + 1] \u003c heap[t]) t = u * 2 + 1; if(t != u){ swap(heap[t], heap[u]); down(t); } } void heapSort(int *a, int len){ heap = new int[len + 5]; n = len; for(int i = 0; i \u003c len; i++) heap[++ss] = a[i]; for(int i = n / 2; i ; i--) down(i); for(int i = 0; i \u003c len; i++){ a[i] = heap[1]; heap[1] = heap[ss--]; down(1); } delete heap; } }; int main(){ int a[10] = {8, 4, 2, 5, 7, 3, 1, 9, 0, 6}; int len = 10; //bubbleSort(a, len); //selectSort(a, len); //insertionSort(a, len); //quickSort(a, len, 0, len - 1); //mergeSort(a, len, 0, len - 1); //shellSort(a, len); //heapSort::heapSort(a, len); printArray(a, len); return 0; } 2. 稳定性 稳定排序算法：如果两数相等的话，排序以后先后位置是否会改变，如果不改变，就是稳定的。\n冒泡：相邻两个元素比较，有不等关系才进行交换，两元素相等，不交换。所以是稳定的。 选择：例如 x, x, x-1 三个数，每次选择最小的，第一轮就把第一个x和x-1交换位置了，明显两个x的先后顺序改变了。所以是不稳定的。 插入：从后往前遍历有序序列，找到第一个 \u003c= x 的，如果这个数和x相等，很明显不用交换。所以是稳定的。 希尔：一次插入排序是稳定的，但是希尔用了多次，可能引起相等的数交换位置，所以，是不稳定的。 快排：根据快排的代码就可以知道，当两侧的i和j对应元素相等时，也会交换位置，所以是不稳定的。 归并：可以保证原先在前边的还在前边，后边的还在后边，所以是稳定的。 堆排：不稳定。 基数排序：稳定。\n综上：\n稳定的有：冒泡、插入、归并、基数。 不稳定的有：除上述4个都不稳定。 ",
+  "articleBody": "1. 代码 /* * @Brief: 常见排序算法汇总 * @Author: * @Date: 2021-07-01 */ #include #include #include #include using namespace std; void printArray(int *a, int len){ for(int i = 0; i \u003c len; i++) cout \u003c\u003c a[i] \u003c\u003c \" \"; cout \u003c\u003c endl \u003c\u003c endl; } void bubbleSort(int *a, int len){ for(int i = 0; i \u003c len - 1; i++){ for(int j = 0; j \u003c len - i; j++){ if(a[j] \u003e a[j+1]) swap(a[j], a[j+1]); } } } void selectSort(int *a, int len){ for(int i = 0; i \u003c len; i++){ int mi = i; for(int j = i; j \u003c len; j++){ if(a[j] \u003c a[mi]) mi = j; } if(i != mi) swap(a[i], a[mi]); } } void insertionSort(int *a, int len){ for(int i = 0; i \u003c len; i++){ int key = a[i]; int j = i; while(j \u003e= 1 \u0026\u0026 a[j - 1] \u003e key) a[j] = a[j-1], j--; a[j] = key; } } void shellSort(int *a, int len){ // cout \u003c\u003c \"原始数组\" \u003c\u003c endl; // printArray(a, len); for(int d = len / 2; d \u003e= 1; d /= 2){ // 插入排序 for(int i = 0; i \u003c len; i += d){ int key = a[i]; int j = i; while(j \u003e= d \u0026\u0026 a[j-d] \u003e key) a[j] = a[j-d], j -= d; a[j] = key; } // cout \u003c\u003c \"d = \" \u003c\u003c d \u003c\u003c \" 排序结果\" \u003c\u003c endl; // printArray(a, len); } } void quickSort(int *a, int len, int l, int r){ if(l \u003e= r) return ; int x = a[l + (r - l) / 2]; int i = l - 1, j = r + 1; while(i \u003c j){ while(a[++i] \u003c x); while(a[--j] \u003e x); if(i \u003c j) swap(a[i], a[j]); } quickSort(a, len, l, j); quickSort(a, len, j + 1, r); } void mergeSort(int *a, int len, int l, int r){ if(l \u003e= r) return ; int mid = l + (r - l) / 2; mergeSort(a, len, l, mid); mergeSort(a, len, mid + 1, r); int i = l, j = mid + 1, k = 0; int *tmp = new int[r - l + 1]; while(i \u003c= mid \u0026\u0026 j \u003c= r){ if(a[i] \u003c a[j]) tmp[k++] = a[i++]; else tmp[k++] = a[j++]; } // 处理尾巴 while(i \u003c= mid) tmp[k++] = a[i++]; while(j \u003c= r) tmp[k++] = a[j++]; // 复制回原数组中 for(i = l, k = 0; i \u003c= r; i++, k++) a[i] = tmp[k]; delete tmp; // 回收内存 } // 堆排序 namespace heapSort{ int *heap = nullptr; int ss = 0; // 堆的现有节点数 从下标是1的节点开始存 int n = 0; // 数组长度 void down(int u){ // 小顶堆 int t = u; if(u * 2 \u003c= ss \u0026\u0026 heap[u * 2] \u003c heap[t]) t = u * 2; if(u * 2 + 1 \u003c= ss \u0026\u0026 heap[u * 2 + 1] \u003c heap[t]) t = u * 2 + 1; if(t != u){ swap(heap[t], heap[u]); down(t); } } void heapSort(int *a, int len){ heap = new int[len + 5]; n = len; for(int i = 0; i \u003c len; i++) heap[++ss] = a[i]; for(int i = n / 2; i ; i--) down(i); for(int i = 0; i \u003c len; i++){ a[i] = heap[1]; heap[1] = heap[ss--]; down(1); } delete heap; } }; int main(){ int a[10] = {8, 4, 2, 5, 7, 3, 1, 9, 0, 6}; int len = 10; //bubbleSort(a, len); //selectSort(a, len); //insertionSort(a, len); //quickSort(a, len, 0, len - 1); //mergeSort(a, len, 0, len - 1); //shellSort(a, len); //heapSort::heapSort(a, len); printArray(a, len); return 0; } 2. 稳定性 稳定排序算法：如果两数相等的话，排序以后先后位置是否会改变，如果不改变，就是稳定的。\n冒泡：相邻两个元素比较，有不等关系才进行交换，两元素相等，不交换。所以是稳定的。\n选择：例如 x, x, x-1 三个数，每次选择最小的，第一轮就把第一个x和x-1交换位置了，明显两个x的先后顺序改变了。所以是不稳定的。\n插入：从后往前遍历有序序列，找到第一个 \u003c= x 的，如果这个数和x相等，很明显不用交换。所以是稳定的。\n希尔：一次插入排序是稳定的，但是希尔用了多次，可能引起相等的数交换位置，所以，是不稳定的。\n快排：根据快排的代码就可以知道，当两侧的i和j对应元素相等时，也会交换位置，所以是不稳定的。\n归并：可以保证原先在前边的还在前边，后边的还在后边，所以是稳定的。\n堆排：不稳定。\n基数排序：稳定。\n综上：\n稳定的有：冒泡、插入、归并、基数。 不稳定的有：除上述4个都不稳定。 ",
   "wordCount" : "1023",
   "inLanguage": "zh",
   "datePublished": "2021-12-20T20:04:26+08:00",
@@ -494,13 +494,13 @@
 </span></span></code></pre></div><h1 id="2-稳定性">2. 稳定性<a hidden class="anchor" aria-hidden="true" href="#2-稳定性">#</a></h1>
 <p>稳定排序算法：如果两数相等的话，排序以后先后位置是否会改变，如果不改变，就是稳定的。</p>
 <hr>
-<p>冒泡：相邻两个元素比较，有不等关系才进行交换，两元素相等，不交换。所以是<code>稳定</code>的。
-选择：例如 x, x, x-1 三个数，每次选择最小的，第一轮就把第一个x和x-1交换位置了，明显两个x的先后顺序改变了。所以是不稳定的。
-插入：从后往前遍历有序序列，找到第一个 &lt;= x 的，如果这个数和x相等，很明显不用交换。所以是稳定的。
-希尔：一次插入排序是稳定的，但是希尔用了多次，可能引起相等的数交换位置，所以，是不稳定的。
-快排：根据快排的代码就可以知道，当两侧的i和j对应元素相等时，也会交换位置，所以是不稳定的。
-归并：可以保证原先在前边的还在前边，后边的还在后边，所以是稳定的。
-堆排：不稳定。
+<p>冒泡：相邻两个元素比较，有不等关系才进行交换，两元素相等，不交换。所以是<code>稳定</code>的。<br>
+选择：例如 x, x, x-1 三个数，每次选择最小的，第一轮就把第一个x和x-1交换位置了，明显两个x的先后顺序改变了。所以是不稳定的。<br>
+插入：从后往前遍历有序序列，找到第一个 &lt;= x 的，如果这个数和x相等，很明显不用交换。所以是稳定的。<br>
+希尔：一次插入排序是稳定的，但是希尔用了多次，可能引起相等的数交换位置，所以，是不稳定的。<br>
+快排：根据快排的代码就可以知道，当两侧的i和j对应元素相等时，也会交换位置，所以是不稳定的。<br>
+归并：可以保证原先在前边的还在前边，后边的还在后边，所以是稳定的。<br>
+堆排：不稳定。<br>
 基数排序：稳定。</p>
 <hr>
 <p>综上：</p>
@@ -522,10 +522,10 @@
     <br>
     <span>C&#43;&#43;学习记录(14) 构造函数与析构函数</span>
   </a>
-  <a class="next" href="https://Clay-Hex.github.io/posts/2021/08/cpp-new-and-delete/">
+  <a class="next" href="https://Clay-Hex.github.io/posts/2021/10/2c4t-4c4t-compute-intensive-task/">
     <span class="title">下一篇 »</span>
     <br>
-    <span>C&#43;&#43;学习记录(13) new与delete</span>
+    <span>2C4T与4C4T在计算密集型任务下的效率对比</span>
   </a>
 </nav>
 
@@ -594,6 +594,18 @@
   
       bodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
     });
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
   </script>
 </article>
     </main>

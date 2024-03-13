@@ -16,6 +16,34 @@
       <description>c&#43;&#43;中的条件变量与互斥锁</description>
     </item>
     <item>
+      <title>QT中线程启动方式和操作的注意问题</title>
+      <link>https://Clay-Hex.github.io/posts/2022/11/qt-thread/</link>
+      <pubDate>Tue, 15 Nov 2022 09:52:46 +0800</pubDate>
+      <guid>https://Clay-Hex.github.io/posts/2022/11/qt-thread/</guid>
+      <description>0. QT中线程启动的方式 0.1 继承QThread 继承QThread时，子类必须重写run方法，保证线程在手动结束之前持续运行。 当子类使用start方法启动后，run方法会在生命周期内循环执行。 .h文件 #ifndef CLASS1_H #define CLASS1_H #include &amp;lt;QObject&amp;gt; #include &amp;lt;QThread&amp;gt; // 继承QTQThread class Class1 : public QThread { Q_OBJECT public: explicit Class1(QThread *parent = 0); ~Class1(); void run() override; public slots: void testFunc(); }; #endif</description>
+    </item>
+    <item>
+      <title>Python3.6环境使用ERS超像素分割算法</title>
+      <link>https://Clay-Hex.github.io/posts/2022/05/python3-ers-superpixel-segmentation/</link>
+      <pubDate>Wed, 04 May 2022 12:50:00 +0800</pubDate>
+      <guid>https://Clay-Hex.github.io/posts/2022/05/python3-ers-superpixel-segmentation/</guid>
+      <description>0. ERS算法 xxx 1. 问题 原本ERS算法的作者提供了python接口，但是是基于Python2的，在python3.6中调用的话，会出现缺失DLL的错误，如下图： 2. 解决方案 作者提供了ERS算法的C语言源代码，所以基于Python3.6重新编译一下即可。 2.1 安装vs 我安装的是VS2017社</description>
+    </item>
+    <item>
+      <title>算术表达式计算方法</title>
+      <link>https://Clay-Hex.github.io/posts/2022/05/cpp-arithmetic-expression/</link>
+      <pubDate>Mon, 02 May 2022 10:52:27 +0800</pubDate>
+      <guid>https://Clay-Hex.github.io/posts/2022/05/cpp-arithmetic-expression/</guid>
+      <description>0. 表达式树 在一颗树中，叶子节点都是操作数，所有的非叶子节点都是运算符，这样的树叫做表达式树。 如图: 1. 后缀表达式计算 后缀表达式：也叫逆波兰表达式，是表达式树的后序遍历。 在计算时，不用还原出整棵树，可用一个栈来辅助计算。 leetcode 150. 逆波兰表达式求值 class Solution { public: int evalRPN(vector&amp;lt;string&amp;gt;&amp;amp; tokens) { int st[10005]; int tt = 0; for( auto &amp;amp;x : tokens){ if(x == &amp;#34;+&amp;#34;</description>
+    </item>
+    <item>
+      <title>Cityscapes DataSet 数据集</title>
+      <link>https://Clay-Hex.github.io/posts/2022/04/cityscapes-dataset/</link>
+      <pubDate>Thu, 28 Apr 2022 08:58:44 +0800</pubDate>
+      <guid>https://Clay-Hex.github.io/posts/2022/04/cityscapes-dataset/</guid>
+      <description>0. 数据集概述 Cityscapes 数据集专注于对城市街景的语义理解。 1. 特点 多边形的标签 实例分割车辆和人 30个类别 5000张精细标注的图 20000张粗略标注的图 leftImg8bit_trainvaltest.zip (11GB) left 8-bit images - train, val, and test sets (5000 images) https://www.cityscapes-dataset.com/file-handling/?packageID=3 rightImg8bit_trainvaltest.zip (11GB) right 8-bit images - train, val, and test sets (5000 images) https://www.cityscapes-dataset.com/file-handling/?packageID=5 disparity_trainvaltest.zip (3.5GB) precomputed depth maps using SGM for train, val, and test sets (5000 images) https://www.cityscapes-dataset.com/file-handling/?packageID=7 camera_trainvaltest.zip (2MB) [md5] intrinsic and extrinsic camera parameters for train, val, and test sets https://www.cityscapes-dataset.com/file-handling/?packageID=8 脚本安装 1. 使用githu</description>
+    </item>
+    <item>
       <title>C&#43;&#43;学习记录(14) 构造函数与析构函数</title>
       <link>https://Clay-Hex.github.io/posts/2022/04/cpp-constructors-destructors/</link>
       <pubDate>Tue, 26 Apr 2022 11:48:13 +0800</pubDate>
@@ -37,11 +65,25 @@
       <description>I&amp;rsquo;m Clay. 能力不高，水平有限，但TM总想写点什么。 这是第N次搭博客，希望不会有N+1次。 2024年3月·上海</description>
     </item>
     <item>
+      <title>2C4T与4C4T在计算密集型任务下的效率对比</title>
+      <link>https://Clay-Hex.github.io/posts/2021/10/2c4t-4c4t-compute-intensive-task/</link>
+      <pubDate>Sun, 03 Oct 2021 20:45:51 +0800</pubDate>
+      <guid>https://Clay-Hex.github.io/posts/2021/10/2c4t-4c4t-compute-intensive-task/</guid>
+      <description>1. 环境 机器1：Intel(R) Core(TM) i5-4200H CPU @ 2.80GHz，双核四线程，win10 x64，16G内存 机器2：Intel(R) Core(TM) i3-9100T CPU @ 3.10GHz，四核四线程。wn10 x64，8G内存 目的：大概测试一下2C4T与4C4T在计算密集型任务下的效率提升对比，内存大小、频率暂且忽略。 方法：使</description>
+    </item>
+    <item>
       <title>C&#43;&#43;学习记录(13) new与delete</title>
       <link>https://Clay-Hex.github.io/posts/2021/08/cpp-new-and-delete/</link>
       <pubDate>Fri, 20 Aug 2021 22:23:55 +0800</pubDate>
       <guid>https://Clay-Hex.github.io/posts/2021/08/cpp-new-and-delete/</guid>
       <description>c&#43;&#43;中的new与delete</description>
+    </item>
+    <item>
+      <title>小数在计算机中的存储方式</title>
+      <link>https://Clay-Hex.github.io/posts/2021/08/floating-point-and-fixed-point-storage-method/</link>
+      <pubDate>Tue, 17 Aug 2021 23:16:06 +0800</pubDate>
+      <guid>https://Clay-Hex.github.io/posts/2021/08/floating-point-and-fixed-point-storage-method/</guid>
+      <description>0. 小数在计算机中的存储 两种方法： 定点 浮点 1. 定点数 顾名思义，小数点的位置固定的。 也就是说，用固定数量的bit存储整数部分，也用固定数量的bit存储小数部分，另外再用一个bit存储符号位。 计算时，将三个部分拼接起来，加个小数点即可。 优点：小数点位置固定，方便计算。 缺点：表示输的范围受</description>
     </item>
     <item>
       <title>C&#43;&#43;学习记录(12) 类型转换</title>
@@ -58,6 +100,13 @@
       <description>c&#43;&#43;中的智能指针</description>
     </item>
     <item>
+      <title>Wireshark配合TCP调试工具理解TCP三次握手和四次挥手过程</title>
+      <link>https://Clay-Hex.github.io/posts/2021/07/wireshark-tcp-handshake-wave/</link>
+      <pubDate>Tue, 06 Jul 2021 15:22:40 +0800</pubDate>
+      <guid>https://Clay-Hex.github.io/posts/2021/07/wireshark-tcp-handshake-wave/</guid>
+      <description>0. 原材料 抓包工具：wireshark 许多文章都是使用浏览器去访问一个网站，抓http的包，进而分析下层的tcp协议过程，但是数据比较多，不清晰，所以我采用了TCP调试助手，这样的话，没有http数据的干预，比较清晰。 1. 环境 借用www.huawei.com的ip地址183.66.1</description>
+    </item>
+    <item>
       <title>C&#43;&#43;学习记录(10) 内存对齐</title>
       <link>https://Clay-Hex.github.io/posts/2021/06/cpp-memory-alignment/</link>
       <pubDate>Fri, 25 Jun 2021 21:26:00 +0800</pubDate>
@@ -70,6 +119,13 @@
       <pubDate>Thu, 24 Jun 2021 09:09:56 +0800</pubDate>
       <guid>https://Clay-Hex.github.io/posts/2021/06/cpp-constant-folding/</guid>
       <description>关于c&#43;&#43;中的常量折叠问题</description>
+    </item>
+    <item>
+      <title>Windows环境下配置MQTT服务器(mosquitto)</title>
+      <link>https://Clay-Hex.github.io/posts/2021/04/windows-mqtt-server-mosquitto/</link>
+      <pubDate>Sat, 10 Apr 2021 20:30:52 +0800</pubDate>
+      <guid>https://Clay-Hex.github.io/posts/2021/04/windows-mqtt-server-mosquitto/</guid>
+      <description>Windows环境下配置MQTT服务器</description>
     </item>
     <item>
       <title>C&#43;&#43;学习记录(8) 模板</title>

@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="zh" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>QT中线程启动方式和操作的注意问题 | Clay&#39;s Blog</title>
+<meta name="keywords" content="qt, thread, QThread">
+<meta name="description" content="0. QT中线程启动的方式 0.1 继承QThread 继承QThread时，子类必须重写run方法，保证线程在手动结束之前持续运行。 当子类使用start方法启动后，run方法会在生命周期内循环执行。 .h文件 #ifndef CLASS1_H #define CLASS1_H #include &lt;QObject&gt; #include &lt;QThread&gt; // 继承QTQThread class Class1 : public QThread { Q_OBJECT public: explicit Class1(QThread *parent = 0); ~Class1(); void run() override; public slots: void testFunc(); }; #endif">
+<meta name="author" content="Clay">
+<link rel="canonical" href="https://Clay-Hex.github.io/posts/2022/11/qt-thread/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.js" onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://Clay-Hex.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Clay-Hex.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Clay-Hex.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Clay-Hex.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Clay-Hex.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="zh" href="https://Clay-Hex.github.io/posts/2022/11/qt-thread/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><meta property="og:title" content="QT中线程启动方式和操作的注意问题" />
+<meta property="og:description" content="0. QT中线程启动的方式 0.1 继承QThread 继承QThread时，子类必须重写run方法，保证线程在手动结束之前持续运行。 当子类使用start方法启动后，run方法会在生命周期内循环执行。 .h文件 #ifndef CLASS1_H #define CLASS1_H #include &lt;QObject&gt; #include &lt;QThread&gt; // 继承QTQThread class Class1 : public QThread { Q_OBJECT public: explicit Class1(QThread *parent = 0); ~Class1(); void run() override; public slots: void testFunc(); }; #endif" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://Clay-Hex.github.io/posts/2022/11/qt-thread/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-11-15T09:52:46+08:00" />
+<meta property="article:modified_time" content="2022-11-15T09:52:46+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="QT中线程启动方式和操作的注意问题"/>
+<meta name="twitter:description" content="0. QT中线程启动的方式 0.1 继承QThread 继承QThread时，子类必须重写run方法，保证线程在手动结束之前持续运行。 当子类使用start方法启动后，run方法会在生命周期内循环执行。 .h文件 #ifndef CLASS1_H #define CLASS1_H #include &lt;QObject&gt; #include &lt;QThread&gt; // 继承QTQThread class Class1 : public QThread { Q_OBJECT public: explicit Class1(QThread *parent = 0); ~Class1(); void run() override; public slots: void testFunc(); }; #endif"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "📒 记录",
+      "item": "https://Clay-Hex.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "📚 学习",
+      "item": "https://Clay-Hex.github.io/posts/learn/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "QT中线程启动方式和操作的注意问题",
+      "item": "https://Clay-Hex.github.io/posts/2022/11/qt-thread/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "QT中线程启动方式和操作的注意问题",
+  "name": "QT中线程启动方式和操作的注意问题",
+  "description": "0. QT中线程启动的方式 0.1 继承QThread 继承QThread时，子类必须重写run方法，保证线程在手动结束之前持续运行。 当子类使用start方法启动后，run方法会在生命周期内循环执行。 .h文件 #ifndef CLASS1_H #define CLASS1_H #include \u0026lt;QObject\u0026gt; #include \u0026lt;QThread\u0026gt; // 继承QTQThread class Class1 : public QThread { Q_OBJECT public: explicit Class1(QThread *parent = 0); ~Class1(); void run() override; public slots: void testFunc(); }; #endif",
+  "keywords": [
+    "qt", "thread", "QThread"
+  ],
+  "articleBody": "0. QT中线程启动的方式 0.1 继承QThread 继承QThread时，子类必须重写run方法，保证线程在手动结束之前持续运行。\n当子类使用start方法启动后，run方法会在生命周期内循环执行。\n.h文件\n#ifndef CLASS1_H #define CLASS1_H #include #include // 继承QTQThread class Class1 : public QThread { Q_OBJECT public: explicit Class1(QThread *parent = 0); ~Class1(); void run() override; public slots: void testFunc(); }; #endif // CLASS1_H .cpp文件\n#include \"class1.h\" #include Class1::Class1(QThread *parent) : QThread(parent) { } Class1::~Class1() { } void Class1::run() { qDebug() \u003c\u003c \"class 1 run threadID : \" \u003c\u003c currentThreadId(); while(1){ // 测试代码，写成了死循环，实际中应该避免这样写 msleep(5); } } void Class1::testFunc() { qDebug() \u003c\u003c \"class1 testFunc threadID : \" \u003c\u003c currentThreadId(); } 0.2 使用moveToThread启动 这种方式较为简单，正常写自己的类即可，为了保证其方法可以在线程上执行，需要继承QObject类。\n在使用时首先生成子类对象，同时new一个QThread出来，然后使用子类的moveToThread方法，将子类放到刚刚new出来的QThread上，再启动该线程即可。\n.h文件\n#ifndef CLASS2_H #define CLASS2_H #include // 使用moveToThread class Class2 : public QObject { Q_OBJECT public: explicit Class2(QObject *parent = nullptr); ~Class2(); public slots: void testFunc(); }; #endif // CLASS2_H .cpp文件\n#include \"class2.h\" #include #include Class2::Class2(QObject *parent) : QObject(parent) { } Class2::~Class2() { } void Class2::testFunc() { qDebug() \u003c\u003c \"class2 testFunc threadID : \" \u003c\u003c QThread::currentThreadId(); } 0.3 使用QtConcurrent启动 QtConcurrent方式通常用于在当前线程中启动一个耗时的方法，将该方法单独放在一个线程上执行。只需要一行代码即可。\n启动后，当前线程不会阻塞，继续向下执行。可以配合QFuture类获取异步执行的结果。\n1. 对象方法调用时的坑 1.1 对象方法调用方式 有两种。\n直接调用，object.func()或者object-\u003efunc 使用QT中的信号槽方式， 1.2 坑 使用继承QThread的方式时，只有run方法和run调用的方法会在子线程上执行。\n当主线程直接调用该类的某个方法时，该方法由主线程负责执行。 当主线程使用信号槽的方式调用该类的某个方法时，该方法由主线程负责执行。 使用moveToThread的方式时，具有更好的灵活性。\n当主线程直接调用该类的某个方法时，该方法由主线程负责执行。 当主线程使用信号槽的方式调用该类的某个方法时，由主线程执行还是由子线程执行，根据信号槽的连接方式确定。 2. 信号槽的5种连接方式 在Qt的信号槽机制当中，有5种连接方式。\n在代码中使用信号槽机制的时候，通常只需要下边的一行代码\nconnect(sender, signal, receiver, slot)\nconnect方法除了信号发送者、信号、信号接收者、槽函数之外，还有第五个参数：这对信号槽的连接方式。\n2.1 直接连接 Qt::DirectConnection\n槽函数在信号发送者所在的线程中执行，效果就像是在信号发射位置直接调用槽函数。\n2.2 队列连接 Qt::QueuedConnection\n槽函数在信号接收者所在线程中执行，但是，该槽函数不会立即被执行，是放入到信号接收者线程中的槽函数队列内，等到该槽函数前边的任务都执行完毕，才会执行该槽函数。\n可见，如果槽函数接收者线程中有死循环槽函数被执行的话，那么在死循环之后的槽函数就永远都不会被执行。\n使用这种方式时，信号发送者信号发出后，当前线程不会阻塞，会继续向下执行。\n2.3 阻塞队列连接 Qt::BlockingQueuedConnection\n与队列连接类似，但：在使用阻塞队列连接方式，发送信号后，当前线程会进入到阻塞状态，直到槽函数执行完毕才恢复。\n可见：使用这种方式时，如果信号和槽函数在同一个线程中，会造成死锁。\n2.4 自动连接 一般情况下，或者刚接触Qt开发时，都是使用的这种方式进行连接。\n在自动连接方式中：\n如果信号发送者和接收者在同一个线程中，则使用直接连接Qt::DirectConnection 如果信号发送者和接收者在不同线程中，则使用队列连接Qt::QueuedConnection 2.5 单一连接 Qt::UniqueConnection\n其实，这个不算连接方式，该值可以确保当前信号和当前槽函数的连接仅进行一次，不可以进行重复的相同连接。\n可以通过或运算，与其他4种方式结合使用。\n3. 测试代码 创建Qt工程，创建界面如下：\n在ui类中添加class1和class2两个类的指针（上边有代码），class1使用继承QThread的方式，class2使用moveToThread的方式。\n界面中的4个按钮都是调用class1和class2对象中的testFunc方法输出对象方法的执行线程ID。但调用方式不同。\nTestClass1和TestClass2按钮直接调用，其余两个使用信号槽的方式调用。\n代码如下：\n.h 文件\n#ifndef MAINWINDOW_H #define MAINWINDOW_H #include #include #include #include #include \"class1.h\" #include \"class2.h\" namespace Ui { class MainWindow; } class MainWindow : public QMainWindow { Q_OBJECT public: explicit MainWindow(QWidget *parent = nullptr); ~MainWindow(); signals: void signal_test1_func(); void signal_test2_func(); private slots: void on_pushButton_test1_clicked(); void on_pushButton_test1s_clicked(); void on_pushButton_test2_clicked(); void on_pushButton_test2s_clicked(); private: Ui::MainWindow *ui; Class1 *m_c1Thread = nullptr; // 继承QThread的 Class2 *m_c2 = nullptr; // 使用moveToThread QThread *m_c2Thread = nullptr; }; #endif // MAINWINDOW_H .cpp 文件\n#include \"mainwindow.h\" #include \"ui_mainwindow.h\" MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) { ui-\u003esetupUi(this); qDebug() \u003c\u003c \"main threadID : \" \u003c\u003c QThread::currentThreadId(); m_c1Thread = new Class1; m_c2 = new Class2; m_c2Thread = new QThread(this); m_c2-\u003emoveToThread(m_c2Thread); connect(this, \u0026MainWindow::signal_test1_func, m_c1Thread, \u0026Class1::testFunc); connect(this, \u0026MainWindow::signal_test2_func, m_c2, \u0026Class2::testFunc); // 这里的连接方式一会要做修改 m_c1Thread-\u003estart(); m_c2Thread-\u003estart(); } MainWindow::~MainWindow() { m_c1Thread-\u003equit(); m_c1Thread-\u003ewait(); m_c2Thread-\u003equit(); m_c2Thread-\u003ewait(); delete m_c1Thread; delete m_c2Thread; delete m_c2; delete ui; } void MainWindow::on_pushButton_test1_clicked() { // m_c1Thread 继承自 QThread m_c1Thread-\u003etestFunc(); } void MainWindow::on_pushButton_test1s_clicked() { // m_c1Thread 继承自 QThread emit signal_test1_func(); } void MainWindow::on_pushButton_test2_clicked() { // m_c2 使用 moveToThread 启动 m_c2-\u003etestFunc(); } void MainWindow::on_pushButton_test2s_clicked() { // m_c2 使用 moveToThread 启动 emit signal_test2_func(); } 注意代码中的\nconnect(this, \u0026MainWindow::signal_test2_func, m_c2, \u0026Class2::testFunc); 这里，class2对象的连接方式使用默认的方式，即自动连接。\n程序运行后，按第一行、第二行的顺序点击4个按钮，输出结果如下：\n仅有第四个按钮（使用moveToThread启动线程，信号槽方式调用对象方法）在子线程上执行。可见，class2对象的连接方式此时是队列连接。\n当修改class2对象的连接方式为队列\nconnect(this, \u0026MainWindow::signal_test2_func, m_c2, \u0026Class2::testFunc, Qt::QueuedConnection); 再次执行，得到结果如下：\n四个按钮的方法都在主线程上执行了，印证了1.2节中的描述。\n",
+  "wordCount" : "2117",
+  "inLanguage": "zh",
+  "datePublished": "2022-11-15T09:52:46+08:00",
+  "dateModified": "2022-11-15T09:52:46+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "Clay"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Clay-Hex.github.io/posts/2022/11/qt-thread/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Clay's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Clay-Hex.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://Clay-Hex.github.io/" accesskey="h" title="Clay&#39;s Blog (Alt + H)">
+                <img src="https://Clay-Hex.github.io/img/avatar.jpg" alt="" aria-label="logo"
+                    height="35">Clay&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch">
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://Clay-Hex.github.io/search" title="🔍 搜索 (Alt &#43; /)" accesskey=/>
+                    <span>🔍 搜索</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/" title="🏡 主页">
+                    <span>🏡 主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/posts" title="📒 记录">
+                    <span>📒 记录</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/tags" title="📛 标签">
+                    <span>📛 标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/archives/" title="📁 归档">
+                    <span>📁 归档</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/about" title="📖 关于">
+                    <span>📖 关于</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://Clay-Hex.github.io/">主页</a>&nbsp;»&nbsp;<a href="https://Clay-Hex.github.io/posts/">📒 记录</a>&nbsp;»&nbsp;<a href="https://Clay-Hex.github.io/posts/learn/">📚 学习</a></div>
+    <h1 class="post-title entry-hint-parent">
+      QT中线程启动方式和操作的注意问题
+    </h1>
+    <div class="post-meta"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2022-11-15
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>2117字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+</span>
+
+</div>
+  </header> <aside id="toc-container" class="toc-container wide">
+    <div class="toc">
+        <details  open>
+            <summary accesskey="c" title="(Alt + C)">
+                <span class="details">目录</span>
+            </summary>
+
+            <div class="inner"><ul>
+                    <li>
+                        <a href="#0-qt%e4%b8%ad%e7%ba%bf%e7%a8%8b%e5%90%af%e5%8a%a8%e7%9a%84%e6%96%b9%e5%bc%8f" aria-label="0. QT中线程启动的方式">0. QT中线程启动的方式</a><ul>
+                            
+                    <li>
+                        <a href="#01-%e7%bb%a7%e6%89%bfqthread" aria-label="0.1 继承QThread">0.1 继承QThread</a></li>
+                    <li>
+                        <a href="#02-%e4%bd%bf%e7%94%a8movetothread%e5%90%af%e5%8a%a8" aria-label="0.2 使用moveToThread启动">0.2 使用moveToThread启动</a></li>
+                    <li>
+                        <a href="#03-%e4%bd%bf%e7%94%a8qtconcurrent%e5%90%af%e5%8a%a8" aria-label="0.3 使用QtConcurrent启动">0.3 使用QtConcurrent启动</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#1-%e5%af%b9%e8%b1%a1%e6%96%b9%e6%b3%95%e8%b0%83%e7%94%a8%e6%97%b6%e7%9a%84%e5%9d%91" aria-label="1. 对象方法调用时的坑">1. 对象方法调用时的坑</a><ul>
+                            
+                    <li>
+                        <a href="#11-%e5%af%b9%e8%b1%a1%e6%96%b9%e6%b3%95%e8%b0%83%e7%94%a8%e6%96%b9%e5%bc%8f" aria-label="1.1 对象方法调用方式">1.1 对象方法调用方式</a></li>
+                    <li>
+                        <a href="#12-%e5%9d%91" aria-label="1.2 坑">1.2 坑</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#2-%e4%bf%a1%e5%8f%b7%e6%a7%bd%e7%9a%845%e7%a7%8d%e8%bf%9e%e6%8e%a5%e6%96%b9%e5%bc%8f" aria-label="2. 信号槽的5种连接方式">2. 信号槽的5种连接方式</a><ul>
+                            
+                    <li>
+                        <a href="#21-%e7%9b%b4%e6%8e%a5%e8%bf%9e%e6%8e%a5" aria-label="2.1 直接连接">2.1 直接连接</a></li>
+                    <li>
+                        <a href="#22-%e9%98%9f%e5%88%97%e8%bf%9e%e6%8e%a5" aria-label="2.2 队列连接">2.2 队列连接</a></li>
+                    <li>
+                        <a href="#23-%e9%98%bb%e5%a1%9e%e9%98%9f%e5%88%97%e8%bf%9e%e6%8e%a5" aria-label="2.3 阻塞队列连接">2.3 阻塞队列连接</a></li>
+                    <li>
+                        <a href="#24-%e8%87%aa%e5%8a%a8%e8%bf%9e%e6%8e%a5" aria-label="2.4 自动连接">2.4 自动连接</a></li>
+                    <li>
+                        <a href="#25-%e5%8d%95%e4%b8%80%e8%bf%9e%e6%8e%a5" aria-label="2.5 单一连接">2.5 单一连接</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#3-%e6%b5%8b%e8%af%95%e4%bb%a3%e7%a0%81" aria-label="3. 测试代码">3. 测试代码</a>
+                    </li>
+                </ul>
+            </div>
+        </details>
+    </div>
+</aside>
+<script>
+    let activeElement;
+    let elements;
+    window.addEventListener('DOMContentLoaded', function (event) {
+        checkTocPosition();
+
+        elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+         
+         activeElement = elements[0];
+         const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+         document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+     }, false);
+
+    window.addEventListener('resize', function(event) {
+        checkTocPosition();
+    }, false);
+
+    window.addEventListener('scroll', () => {
+        
+        activeElement = Array.from(elements).find((element) => {
+            if ((getOffsetTop(element) - window.pageYOffset) > 0 && 
+                (getOffsetTop(element) - window.pageYOffset) < window.innerHeight/2) {
+                return element;
+            }
+        }) || activeElement
+
+        elements.forEach(element => {
+             const id = encodeURI(element.getAttribute('id')).toLowerCase();
+             if (element === activeElement){
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+             } else {
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.remove('active');
+             }
+         })
+     }, false);
+
+    const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+    const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+    const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+    function checkTocPosition() {
+        const width = document.body.scrollWidth;
+
+        if (width - main - (toc * 2) - (gap * 4) > 0) {
+            document.getElementById("toc-container").classList.add("wide");
+        } else {
+            document.getElementById("toc-container").classList.remove("wide");
+        }
+    }
+
+    function getOffsetTop(element) {
+        if (!element.getClientRects().length) {
+            return 0;
+        }
+        let rect = element.getBoundingClientRect();
+        let win = element.ownerDocument.defaultView;
+        return rect.top + win.pageYOffset;   
+    }
+</script>
+  <div class="post-content"><h1 id="0-qt中线程启动的方式">0. QT中线程启动的方式<a hidden class="anchor" aria-hidden="true" href="#0-qt中线程启动的方式">#</a></h1>
+<h2 id="01-继承qthread">0.1 继承QThread<a hidden class="anchor" aria-hidden="true" href="#01-继承qthread">#</a></h2>
+<p>继承QThread时，子类必须重写run方法，保证线程在手动结束之前持续运行。<br>
+当子类使用start方法启动后，run方法会在生命周期内循环执行。</p>
+<p>.h文件</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#ifndef CLASS1_H
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define CLASS1_H
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;QObject&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;QThread&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 继承QTQThread
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Class1</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QThread</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Q_OBJECT</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">explicit</span> <span class="n">Class1</span><span class="p">(</span><span class="n">QThread</span> <span class="o">*</span><span class="n">parent</span> <span class="o">=</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">~</span><span class="n">Class1</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">run</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl"><span class="k">public</span> <span class="nl">slots</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="n">testFunc</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#endif </span><span class="c1">// CLASS1_H
+</span></span></span></code></pre></div><p>.cpp文件</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;class1.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;QDebug&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="n">Class1</span><span class="o">::</span><span class="n">Class1</span><span class="p">(</span><span class="n">QThread</span> <span class="o">*</span><span class="n">parent</span><span class="p">)</span> <span class="o">:</span> <span class="n">QThread</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">Class1</span><span class="o">::~</span><span class="n">Class1</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">Class1</span><span class="o">::</span><span class="n">run</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">qDebug</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;class 1 run threadID : &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">currentThreadId</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span>   <span class="c1">// 测试代码，写成了死循环，实际中应该避免这样写
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">msleep</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">Class1</span><span class="o">::</span><span class="n">testFunc</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">qDebug</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;class1 testFunc threadID : &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">currentThreadId</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="02-使用movetothread启动">0.2 使用moveToThread启动<a hidden class="anchor" aria-hidden="true" href="#02-使用movetothread启动">#</a></h2>
+<p>这种方式较为简单，正常写自己的类即可，为了保证其方法可以在线程上执行，需要继承<code>QObject</code>类。<br>
+在使用时首先生成子类对象，同时new一个QThread出来，然后使用子类的<code>moveToThread</code>方法，将子类放到刚刚new出来的QThread上，再启动该线程即可。</p>
+<p>.h文件</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#ifndef CLASS2_H
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define CLASS2_H
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;QObject&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 使用moveToThread
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Class2</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QObject</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Q_OBJECT</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">explicit</span> <span class="n">Class2</span><span class="p">(</span><span class="n">QObject</span> <span class="o">*</span><span class="n">parent</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">~</span><span class="n">Class2</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">public</span> <span class="nl">slots</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="n">testFunc</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#endif </span><span class="c1">// CLASS2_H
+</span></span></span></code></pre></div><p>.cpp文件</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;class2.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;QDebug&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;QThread&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="n">Class2</span><span class="o">::</span><span class="n">Class2</span><span class="p">(</span><span class="n">QObject</span> <span class="o">*</span><span class="n">parent</span><span class="p">)</span> <span class="o">:</span> <span class="n">QObject</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">Class2</span><span class="o">::~</span><span class="n">Class2</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">Class2</span><span class="o">::</span><span class="n">testFunc</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">qDebug</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;class2 testFunc threadID : &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">QThread</span><span class="o">::</span><span class="n">currentThreadId</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="03-使用qtconcurrent启动">0.3 使用QtConcurrent启动<a hidden class="anchor" aria-hidden="true" href="#03-使用qtconcurrent启动">#</a></h2>
+<p>QtConcurrent方式通常用于在当前线程中启动一个耗时的方法，将该方法单独放在一个线程上执行。只需要一行代码即可。<br>
+启动后，当前线程不会阻塞，继续向下执行。可以配合QFuture类获取异步执行的结果。</p>
+<h1 id="1-对象方法调用时的坑">1. 对象方法调用时的坑<a hidden class="anchor" aria-hidden="true" href="#1-对象方法调用时的坑">#</a></h1>
+<h2 id="11-对象方法调用方式">1.1 对象方法调用方式<a hidden class="anchor" aria-hidden="true" href="#11-对象方法调用方式">#</a></h2>
+<p>有两种。</p>
+<ol>
+<li>直接调用，<code>object.func()</code>或者<code>object-&gt;func</code></li>
+<li>使用QT中的信号槽方式，</li>
+</ol>
+<h2 id="12-坑">1.2 坑<a hidden class="anchor" aria-hidden="true" href="#12-坑">#</a></h2>
+<p>使用<code>继承QThread</code>的方式时，只有run方法和run调用的方法会在子线程上执行。</p>
+<ul>
+<li>当主线程<code>直接</code>调用该类的某个方法时，该方法由主线程负责执行。</li>
+<li>当主线程使用信号槽的方式调用该类的某个方法时，该方法由<code>主线程</code>负责执行。</li>
+</ul>
+<p>使用<code>moveToThread</code>的方式时，具有更好的灵活性。</p>
+<ul>
+<li>当主线程<code>直接</code>调用该类的某个方法时，该方法由主线程负责执行。</li>
+<li>当主线程使用信号槽的方式调用该类的某个方法时，由主线程执行还是由子线程执行，<code>根据信号槽的连接方式确定</code>。</li>
+</ul>
+<h1 id="2-信号槽的5种连接方式">2. 信号槽的5种连接方式<a hidden class="anchor" aria-hidden="true" href="#2-信号槽的5种连接方式">#</a></h1>
+<p>在Qt的信号槽机制当中，有5种连接方式。<br>
+在代码中使用信号槽机制的时候，通常只需要下边的一行代码<br>
+<code>connect(sender, signal, receiver, slot)</code><br>
+<code>connect</code>方法除了信号发送者、信号、信号接收者、槽函数之外，还有第五个参数：这对信号槽的连接方式。</p>
+<center><figure>
+    <img loading="lazy" src="pic1.png" width="60%"/> 
+</figure>
+</center>
+<h2 id="21-直接连接">2.1 直接连接<a hidden class="anchor" aria-hidden="true" href="#21-直接连接">#</a></h2>
+<p><code>Qt::DirectConnection</code><br>
+槽函数在信号发送者所在的线程中执行，效果就像是在信号发射位置直接调用槽函数。</p>
+<h2 id="22-队列连接">2.2 队列连接<a hidden class="anchor" aria-hidden="true" href="#22-队列连接">#</a></h2>
+<p><code>Qt::QueuedConnection</code><br>
+槽函数在信号接收者所在线程中执行，<code>但是，该槽函数不会立即被执行</code>，是放入到信号接收者线程中的槽函数队列内，等到该槽函数前边的任务都执行完毕，才会执行该槽函数。</p>
+<p>可见，如果槽函数接收者线程中有死循环槽函数被执行的话，那么在死循环之后的槽函数就永远都不会被执行。</p>
+<p>使用这种方式时，信号发送者信号发出后，当前线程不会阻塞，会继续向下执行。</p>
+<h2 id="23-阻塞队列连接">2.3 阻塞队列连接<a hidden class="anchor" aria-hidden="true" href="#23-阻塞队列连接">#</a></h2>
+<p><code>Qt::BlockingQueuedConnection</code><br>
+与队列连接类似，但：在使用阻塞队列连接方式，发送信号后，当前线程会进入到阻塞状态，直到槽函数执行完毕才恢复。</p>
+<p>可见：使用这种方式时，如果信号和槽函数在同一个线程中，会造成死锁。</p>
+<h2 id="24-自动连接">2.4 自动连接<a hidden class="anchor" aria-hidden="true" href="#24-自动连接">#</a></h2>
+<p>一般情况下，或者刚接触Qt开发时，都是使用的这种方式进行连接。<br>
+在自动连接方式中：</p>
+<ul>
+<li>如果信号发送者和接收者在同一个线程中，则使用直接连接<code>Qt::DirectConnection</code></li>
+<li>如果信号发送者和接收者在不同线程中，则使用队列连接<code>Qt::QueuedConnection</code></li>
+</ul>
+<h2 id="25-单一连接">2.5 单一连接<a hidden class="anchor" aria-hidden="true" href="#25-单一连接">#</a></h2>
+<p><code>Qt::UniqueConnection</code><br>
+其实，这个不算连接方式，该值可以确保当前信号和当前槽函数的连接仅进行一次，不可以进行重复的相同连接。<br>
+可以通过<code>或</code>运算，与其他4种方式结合使用。</p>
+<h1 id="3-测试代码">3. 测试代码<a hidden class="anchor" aria-hidden="true" href="#3-测试代码">#</a></h1>
+<p>创建Qt工程，创建界面如下：</p>
+<center><figure>
+    <img loading="lazy" src="pic2.png" width="60%"/> 
+</figure>
+</center>
+<p>在ui类中添加class1和class2两个类的指针（上边有代码），class1使用<code>继承QThread</code>的方式，class2使用<code>moveToThread</code>的方式。</p>
+<p>界面中的4个按钮都是调用class1和class2对象中的<code>testFunc</code>方法输出对象方法的执行线程ID。但调用方式不同。<br>
+TestClass1和TestClass2按钮直接调用，其余两个使用信号槽的方式调用。</p>
+<p>代码如下：<br>
+.h 文件</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#ifndef MAINWINDOW_H
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define MAINWINDOW_H
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;QMainWindow&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;QDebug&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;QThread&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;QTime&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;class1.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;class2.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">namespace</span> <span class="n">Ui</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">MainWindow</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">MainWindow</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QMainWindow</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Q_OBJECT</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">explicit</span> <span class="n">MainWindow</span><span class="p">(</span><span class="n">QWidget</span> <span class="o">*</span><span class="n">parent</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">~</span><span class="n">MainWindow</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nl">signals</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="n">signal_test1_func</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">signal_test2_func</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">private</span> <span class="nl">slots</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="n">on_pushButton_test1_clicked</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">on_pushButton_test1s_clicked</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">on_pushButton_test2_clicked</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">on_pushButton_test2s_clicked</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">private</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Ui</span><span class="o">::</span><span class="n">MainWindow</span> <span class="o">*</span><span class="n">ui</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">Class1</span> <span class="o">*</span><span class="n">m_c1Thread</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>  <span class="c1">// 继承QThread的
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="n">Class2</span> <span class="o">*</span><span class="n">m_c2</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span> <span class="c1">// 使用moveToThread
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">QThread</span> <span class="o">*</span><span class="n">m_c2Thread</span>  <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#endif </span><span class="c1">// MAINWINDOW_H
+</span></span></span></code></pre></div><p>.cpp 文件</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;mainwindow.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;ui_mainwindow.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="n">MainWindow</span><span class="o">::</span><span class="n">MainWindow</span><span class="p">(</span><span class="n">QWidget</span> <span class="o">*</span><span class="n">parent</span><span class="p">)</span> <span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">QMainWindow</span><span class="p">(</span><span class="n">parent</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ui</span><span class="p">(</span><span class="k">new</span> <span class="n">Ui</span><span class="o">::</span><span class="n">MainWindow</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ui</span><span class="o">-&gt;</span><span class="n">setupUi</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">qDebug</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;main threadID : &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">QThread</span><span class="o">::</span><span class="n">currentThreadId</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">m_c1Thread</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Class1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">m_c2</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Class2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">m_c2Thread</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QThread</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">m_c2</span><span class="o">-&gt;</span><span class="n">moveToThread</span><span class="p">(</span><span class="n">m_c2Thread</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">connect</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">MainWindow</span><span class="o">::</span><span class="n">signal_test1_func</span><span class="p">,</span> <span class="n">m_c1Thread</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">Class1</span><span class="o">::</span><span class="n">testFunc</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">connect</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">MainWindow</span><span class="o">::</span><span class="n">signal_test2_func</span><span class="p">,</span> <span class="n">m_c2</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">Class2</span><span class="o">::</span><span class="n">testFunc</span><span class="p">);</span>  <span class="c1">// 这里的连接方式一会要做修改
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="n">m_c1Thread</span><span class="o">-&gt;</span><span class="n">start</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">m_c2Thread</span><span class="o">-&gt;</span><span class="n">start</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">MainWindow</span><span class="o">::~</span><span class="n">MainWindow</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">m_c1Thread</span><span class="o">-&gt;</span><span class="n">quit</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">m_c1Thread</span><span class="o">-&gt;</span><span class="n">wait</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">m_c2Thread</span><span class="o">-&gt;</span><span class="n">quit</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">m_c2Thread</span><span class="o">-&gt;</span><span class="n">wait</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">delete</span> <span class="n">m_c1Thread</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">delete</span> <span class="n">m_c2Thread</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">delete</span> <span class="n">m_c2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">delete</span> <span class="n">ui</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">MainWindow</span><span class="o">::</span><span class="n">on_pushButton_test1_clicked</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// m_c1Thread 继承自 QThread
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">m_c1Thread</span><span class="o">-&gt;</span><span class="n">testFunc</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">MainWindow</span><span class="o">::</span><span class="n">on_pushButton_test1s_clicked</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// m_c1Thread 继承自 QThread
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">emit</span> <span class="nf">signal_test1_func</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">MainWindow</span><span class="o">::</span><span class="n">on_pushButton_test2_clicked</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// m_c2 使用 moveToThread 启动
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">m_c2</span><span class="o">-&gt;</span><span class="n">testFunc</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">MainWindow</span><span class="o">::</span><span class="n">on_pushButton_test2s_clicked</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// m_c2 使用 moveToThread 启动
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">emit</span> <span class="nf">signal_test2_func</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>注意代码中的</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">connect</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">MainWindow</span><span class="o">::</span><span class="n">signal_test2_func</span><span class="p">,</span> <span class="n">m_c2</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">Class2</span><span class="o">::</span><span class="n">testFunc</span><span class="p">);</span>
+</span></span></code></pre></div><p>这里，class2对象的连接方式使用默认的方式，即<code>自动连接</code>。<br>
+程序运行后，按第一行、第二行的顺序点击4个按钮，输出结果如下：</p>
+<center><figure>
+    <img loading="lazy" src="pic3.png" width="100%"/> 
+</figure>
+</center>
+<p>仅有第四个按钮（使用moveToThread启动线程，信号槽方式调用对象方法）在子线程上执行。可见，class2对象的连接方式此时是<code>队列连接</code>。</p>
+<p>当修改class2对象的连接方式为队列</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">connect</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">MainWindow</span><span class="o">::</span><span class="n">signal_test2_func</span><span class="p">,</span> <span class="n">m_c2</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">Class2</span><span class="o">::</span><span class="n">testFunc</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">QueuedConnection</span><span class="p">);</span>
+</span></span></code></pre></div><p>再次执行，得到结果如下：</p>
+<center><figure>
+    <img loading="lazy" src="pic4.png" width="100%"/> 
+</figure>
+</center>
+<p>四个按钮的方法都在主线程上执行了，印证了1.2节中的描述。</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Clay-Hex.github.io/posts/2022/11/cpp-conditional-variables-lock/">
+    <span class="title">« 上一篇</span>
+    <br>
+    <span>C&#43;&#43;学习记录(15) 条件变量与互斥锁</span>
+  </a>
+  <a class="next" href="https://Clay-Hex.github.io/posts/2022/05/python3-ers-superpixel-segmentation/">
+    <span class="title">下一篇 »</span>
+    <br>
+    <span>Python3.6环境使用ERS超像素分割算法</span>
+  </a>
+</nav>
+
+  </footer><script>
+    function createGiscusScript(data) {
+      const giscusScript = document.createElement('script');
+  
+      
+      Object.entries(data).forEach(([key, value]) => giscusScript.setAttribute(key, value));
+  
+      
+      document.querySelector('article').appendChild(giscusScript);
+  
+      
+      const toggle = document.querySelector('label[for="switch_default"]');
+      if (toggle) {
+        toggle.addEventListener('click', function () {
+          
+          const theme = document.body.classList.contains('dark') ? 'transparent_dark' : 'light';
+          giscusScript.setAttribute('data-theme', theme);
+  
+          
+          sendMessage({ setConfig: { theme } });
+        });
+      }
+    }
+  
+    function sendMessage(message) {
+      const iframe = document.querySelector('iframe.giscus-frame');
+      if (iframe) {
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+    }
+  
+    document.addEventListener('DOMContentLoaded', function () {
+      
+      const giscusAttributes = {
+        src: 'https://giscus.app/client.js',
+        'data-repo': 'Clay-Hex/BlogComments',
+        'data-repo-id': 'R_kgDOLexoRQ',
+        'data-category': 'Announcements',
+        'data-category-id': 'DIC_kwDOLexoRc4Cd5Ao',
+        'data-mapping': 'pathname',
+        'data-strict': '1',
+        'data-reactions-enabled': '1',
+        'data-emit-metadata': '0',
+        'data-input-position': 'top',
+        'data-lang': 'zh-CN',
+        crossorigin: 'anonymous',
+        async: '',
+      };
+  
+      
+      giscusAttributes['data-theme'] = document.body.classList.contains('dark')
+        ? 'transparent_dark'
+        : 'light';
+  
+      
+      createGiscusScript(giscusAttributes);
+  
+      
+      const bodyObserver = new MutationObserver(() => {
+        const theme = document.body.classList.contains('dark') ? 'transparent_dark' : 'light';
+        sendMessage({ setConfig: { theme } });
+      });
+  
+      bodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    });
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+  </script>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://Clay-Hex.github.io/">Clay&#39;s Blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <span class="topInner">
+        <svg class="topSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z"/>
+        </svg>
+        <span id="read_progress"></span>
+    </span>
+</a>
+
+<script>
+    document.addEventListener('scroll', function (e) {
+        const readProgress = document.getElementById("read_progress");
+        const scrollHeight = document.documentElement.scrollHeight;
+        const clientHeight = document.documentElement.clientHeight;
+        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        readProgress.innerText = ((scrollTop / (scrollHeight - clientHeight)).toFixed(2) * 100).toFixed(0);
+    })
+</script>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = '复制';
+
+        function copyingDone() {
+            copybutton.innerHTML = '已复制';
+            setTimeout(() => {
+                copybutton.innerHTML = '复制';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        let language = codeblock.className.replaceAll("language-", "")
+        let macTool = document.createElement("div")
+        let macTool1 = document.createElement("div")
+        let macTool2 = document.createElement("div")
+        let macTool3 = document.createElement("div")
+        let languageType = document.createElement("div")
+        languageType.innerText = language
+        macTool.setAttribute('class', 'mac-tool')
+        macTool1.setAttribute('class', 'mac bb1')
+        macTool2.setAttribute('class', 'mac bb2')
+        macTool3.setAttribute('class', 'mac bb3')
+        languageType.setAttribute('class', 'language-type')
+        macTool.appendChild(macTool1)
+        macTool.appendChild(macTool2)
+        macTool.appendChild(macTool3)
+        macTool.appendChild(languageType)
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+            container.appendChild(macTool)
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+            container.appendChild(macTool)
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+            container.appendChild(macTool)
+        }
+    });
+</script>
+</body>
+
+</html>

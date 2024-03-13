@@ -24,6 +24,18 @@
     <loc>https://Clay-Hex.github.io/</loc>
     <lastmod>2022-11-18T00:39:31+08:00</lastmod>
   </url><url>
+    <loc>https://Clay-Hex.github.io/posts/2022/11/qt-thread/</loc>
+    <lastmod>2022-11-15T09:52:46+08:00</lastmod>
+  </url><url>
+    <loc>https://Clay-Hex.github.io/posts/2022/05/python3-ers-superpixel-segmentation/</loc>
+    <lastmod>2022-05-04T12:50:00+08:00</lastmod>
+  </url><url>
+    <loc>https://Clay-Hex.github.io/posts/2022/05/cpp-arithmetic-expression/</loc>
+    <lastmod>2022-05-02T10:52:27+08:00</lastmod>
+  </url><url>
+    <loc>https://Clay-Hex.github.io/posts/2022/04/cityscapes-dataset/</loc>
+    <lastmod>2022-04-28T08:58:44+08:00</lastmod>
+  </url><url>
     <loc>https://Clay-Hex.github.io/posts/2022/04/cpp-constructors-destructors/</loc>
     <lastmod>2022-04-26T11:48:13+08:00</lastmod>
   </url><url>
@@ -36,8 +48,14 @@
     <loc>https://Clay-Hex.github.io/about/</loc>
     <lastmod>2021-11-06T14:57:28+08:00</lastmod>
   </url><url>
+    <loc>https://Clay-Hex.github.io/posts/2021/10/2c4t-4c4t-compute-intensive-task/</loc>
+    <lastmod>2021-10-03T20:45:51+08:00</lastmod>
+  </url><url>
     <loc>https://Clay-Hex.github.io/posts/2021/08/cpp-new-and-delete/</loc>
     <lastmod>2021-08-20T22:23:55+08:00</lastmod>
+  </url><url>
+    <loc>https://Clay-Hex.github.io/posts/2021/08/floating-point-and-fixed-point-storage-method/</loc>
+    <lastmod>2021-08-17T23:16:06+08:00</lastmod>
   </url><url>
     <loc>https://Clay-Hex.github.io/posts/2021/08/cpp-type-conversion/</loc>
     <lastmod>2021-08-02T21:07:40+08:00</lastmod>
@@ -45,11 +63,20 @@
     <loc>https://Clay-Hex.github.io/posts/2021/07/cpp-smart-pointers/</loc>
     <lastmod>2021-07-10T22:26:24+08:00</lastmod>
   </url><url>
+    <loc>https://Clay-Hex.github.io/tags/tcp/</loc>
+    <lastmod>2021-07-06T15:22:40+08:00</lastmod>
+  </url><url>
+    <loc>https://Clay-Hex.github.io/posts/2021/07/wireshark-tcp-handshake-wave/</loc>
+    <lastmod>2021-07-06T15:22:40+08:00</lastmod>
+  </url><url>
     <loc>https://Clay-Hex.github.io/posts/2021/06/cpp-memory-alignment/</loc>
     <lastmod>2021-06-25T21:26:00+08:00</lastmod>
   </url><url>
     <loc>https://Clay-Hex.github.io/posts/2021/06/cpp-constant-folding/</loc>
     <lastmod>2021-06-24T09:09:56+08:00</lastmod>
+  </url><url>
+    <loc>https://Clay-Hex.github.io/posts/2021/04/windows-mqtt-server-mosquitto/</loc>
+    <lastmod>2021-04-10T20:30:52+08:00</lastmod>
   </url><url>
     <loc>https://Clay-Hex.github.io/posts/2021/02/cpp-template/</loc>
     <lastmod>2021-02-20T14:25:23+08:00</lastmod>

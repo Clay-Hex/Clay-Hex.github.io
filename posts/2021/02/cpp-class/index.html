@@ -106,7 +106,7 @@
   "keywords": [
     "C++"
   ],
-  "articleBody": "0. 类的4个默认函数 4个函数：构造函数、析构函数、拷贝构造函数、赋值号重载函数。 在定义类时，如果没有自定义这些函数，编译器会提供默认的函数，在默认的函数中，构造函数、析构函数默认空实现，拷贝构造函数、赋值号重载函数默认是浅拷贝。\n拷贝构造函数作用：\n参数是一个同类型的对象，直接拷贝这个参数的所有属性，注意，这个拷贝默认是浅拷贝，需要深拷贝的话需要重载拷贝构造函数。 【注】\n如果在实例化一个对象的时候，后边加了一个空括号，编译器会认为这是一个函数声明而不是实例化，所以，如果一个类的构造函数没有参数的时候，实例化时不用附加空括号. Person a(); // 这样会认为是一个函数声明 Person a; // 应该这样 不要用拷贝构造函数去初始化一个匿名对象，否则从编译器会认为这是重定义。\n可以像这样给构造函数传参Person aaa = 10; 隐式转换法。\n如果没有自定义构造函数的话，C++会自动分配空的构造函数和 只会浅拷贝的拷贝构造函数\n1. 类的访问说明符（访问权限） public：可以被该类中的函数、子类的函数、友元函数访问，也可以由该类的对象访问； protected：可以被该类中的函数、子类的函数、友元函数访问，但不可以由该类的对象访问； private：可以被该类中的函数、友元函数访问，但不可以由子类的函数、该类的对象访问。 三者都允许友元访问。 protected和public的区别就在于类的类外可不可以调用。 protected和private的区别就在于子类是否可以访问，private权限给的最小，子类都不可以访问。 总结：按照类的对象是否可以访问，可以将后两个分成一类，按照子类是否可以访问，可以将前两个分成一类。\n2. 友元 对于不完全开放的protected和private中的成员，类 可以为友元函数（类）提供单独的访问权限。\n全局函数可以做友元 类可以做友元 类的成员函数可以做友元 友元函数的声明必须在类内，最好是在类的开始位置。但是友元函数的定义或者说实现即可在在类内，也可以在类外。\n友元的声明仅仅指定了访问权限，而非通常意义上的函数声明，如果我们希望类的用户可以调用某个友元函数，那么我们就必须在友元声明之外，再专门对该函数进行一次声明（提供给用户）。\n为了方便，通常把友元的声明与类本身放置在同一个头文件中（类的外部单独对该函数声明，以备外部调用方便）。\n类内进行友元函数定义，相当于定义了一个全局函数。 参考代码：\n#include using namespace std; class Person{ friend void test(){ // 友元函数声明 + 定义，如果不加friend的话，相当于一个普通的成员 cout \u003c\u003c 123 \u003c\u003c endl; } public: int a; }; // test函数的定义在Person类的内部，现在想使用它，必须单独进行声明，告诉编译器，我已经定义了test函数，直接调用没问题。 void test(); int main(){ test(); return 0; } 3. 内联函数 一般来说，内联机制用于优化规模较小、流程简单、频繁调用的函数。 在编译时，直接把内联函数替换到调用它的地方，这样就省去了运行时调用函数的开销。\n类内定义的成员函数默认都是inline的。 类外定义的成员函数默认都不是inline的，想使用的话，可以加上inline说明。同时，需要把类的定义和该类外定义的成员函数 放在同一个文件中，否则编译时找不到内联函数。 4. 深拷贝与浅拷贝 如果没有自定义构造函数的话，C++会自动分配空的构造函数和 只会浅拷贝的拷贝构造函数\n在执行拷贝构造函数的时候，如果第一个对象 a1 在堆上开了一个指针 p 指向的地址是0x0011，a2使用a1进行初始化（使用拷贝构造函数复制a1的值）。所有属性完全复制，所以a2中的p所指的地址也是0x0011，并没有重新开辟一个堆的空间。所以如果a1先被释放了的话，a2再使用这个指针进行操作，就会产生异常了。\n#include #include #include using namespace std; class TEST{ public: TEST(int a){ age = new int(a); } ~TEST(){ if(age != nullptr){ delete age; age = nullptr; } } int *age = nullptr; }; int main(){ TEST a1(10); TEST a2(a1); cout \u003c\u003c *a1.age \u003c\u003c endl; //a1.~TEST(); cout \u003c\u003c *a2.age \u003c\u003c endl; return 0; } 编译器默认给的拷贝构造函数就是只会浅拷贝，想实现深拷贝，需要自己动手。\n5. 类a作为类b的成员 先构造成员类 a， 再构造 b。 先析构b，再析构成员类a，也就是说析构的顺序与构造的顺序相反。\n6. 静态成员 静态成员：用static修饰的成员变量或函数，也是可以设置public、private等访问权限的。 特点：类内声明，类外初始化。 静态成员变量：\n所有实例化后的对象共享一份数据 在编译阶段分配内存 类内声明，类外初始化int test::age = 10; 静态成员函数：\n所有实例化后的对象共享一个函数 静态成员函数只能访问静态成员变量（因为静态成员函数只有一份，这个类可能实例化出来好多对象，如果调用的不是静态成员变量（每个对象都会拷贝出来一个），它根本不知道去访问哪一个对象的变量）。 静态的成员（包括变量和函数）都可以不实例化对象直接进行访问和调用\n#include using namespace std; class test{ public: // 这里如果是private，那么外部就不可以访问了，只能在类中操作 static int a; }; int test::a = 10; int main(){ test a; cout \u003c\u003c test::a \u003c\u003c endl; // private修饰下不允许访问 cout \u003c\u003c a.a \u003c\u003c endl; // private修饰下不允许访问 return 0; } 7. 对象模型和this指针 类中的变量和函数是分开存储的，类通过一些办法将他们组织到一起，构成了一个类。\n变量、函数、静态变量、静态函数四者中，只有变量是属于类的对象上的，其他三个都不属于类的对象上。 原因： 每一个非静态成员函数其实只有一份。各个实例化了的对象调用自己的这个成员函数时，this指针指向该对象，该成员函数通过 this 指针区分是哪个对象调用了它。可以使用 *this返回对象自己。\n#include using namespace std; class test{ public: test(int a){ age = a; } test \u0026add( int a){ // 注意这里 返回是引用 否则返回的就是原始对象本身了 就是原始对象的一个拷贝，就不能满足链式编程的思想 age += a; return *this; } int age; }; int main(){ test a(10); // 这也是链式编程的思想 a.add(3).add(3); cout \u003c\u003c a.age \u003c\u003c endl; // 输出16 return 0; } 一个空的指针也是可以访问类内函数的，但是要注意，此时类内的this指针也是null，所以，如果用空指针调用类内函数，并且类内函数访问了成员变量（完整形式是 this -\u003e 成员变量），就相当于对null进行访问，程序就会出错。 8. const修饰成员函数 常函数：\n是用const修饰的成员函数 常函数不可修改成员属性（除了mutable的属性） 常对象：\n使用const修饰一个实例化的对象，即为常对象 常对象只能调用常函数 为什么const修饰过的函数（常函数）不能修改成员属性？\n修改成员属性实际上是this下的属性，this指针实际上是指针常量(* const )，一旦实例化了一个对象，this指针就指向了它，且不能再更改了。 在成员函数参数列表后边加上const进行修饰，相当于说：在本函数中，this指向的空间也是const的了，也不允许通过this进行修改了。 #include using namespace std; class test{ public: // this 指针相当于指针常量 test * const this // 函数后加了一个const 修饰的其实是this所指的空间 即 const test * const this // 即加了const，在本函数内 this所指的空间 不允许通过this进行改变了 void fuc1() const { this -\u003e a = 10; // 编译器报错 } int a; }; int main(){ test p; p.fuc1(); return 0; } 为什么常对象只允许调用常函数？\n可以这样理解：常对象本身的意思就是只读，如果调用了一个非常函数，万一这个函数对自己的属性进行了修改怎么办？所以，直接在根本上拒绝这样危险的操作，直接限定常对象只允许调用常函数，因为常函数肯定修改不了自己的属性。 9. 重载运算符 9.1 基本运算符重载 以加法为例，就相当于自己在类里边写了一个做加法的函数，但是函数名统一成operator +了，可以通过这个函数名像普通成员函数那样调用a.operator+( b )，但是，也可以简写为 a + b。\n运算符重载，也可以发生函数重载，比如加法运算，可以是两个类做相加，也可以是一个类和一个整数相加。 9.2 左移运算符重载 作用：输出自定义的数据类型eg: cout \u003c\u003c class\n如果在类内定义左移重载运算符的话类本身就默认作为左操作数了，那么cout就只能在右边，比如class \u003c\u003c cout，可见这是不符合预期的，所以左移运算符的重载，一般不写在类中，都写成全局函数的形式。 为了满足链式编程，返回值也要是输出流的引用。 inline ostream \u0026operator\u003c\u003c (ostream \u0026out, test \u0026s){ out \u003c\u003c s.a; return out; } 此时，重载运算符的函数是定义在全局函数中的，是如法访问类中的private成员的，还需要进行友元申明，给它访问权限。 9.3 递增递减运算符重载 重载运算符函数中空参数，可以理解为将this作为右操作数。 后置++运算符重载，需要一个int占位，来区分前置和后置的重载。 要注意前置和后置两种重载的返回类型。 class test{ friend inline ostream\u0026 operator\u003c\u003c (ostream \u0026out, test a); public: test(){ age = 10; } // 重载前置++ 必须要返回引用 test\u0026 operator++(){ // 没有占位的就当作this是右操作数 age++; return *this; } // 重载后置++，不用返回引用，因为返回去可能就看一下值是多少，this本身还是做了+1的。 test operator++ (int){ // this本身作为左值了， 右侧搞一个int来占位 test tmp = *this; age++; return tmp; } private: int age; }; inline ostream\u0026 operator\u003c\u003c (ostream \u0026out, test a){ out \u003c\u003c a.age; return out; } 9.4 赋值运算符重载 c++编译器至少添加4个默认的函数。\n默认构造函数、析构函数、拷贝构造函数、赋值运算符（对属性进行浅拷贝）。\n要注意如果有堆区数据的话，在重载赋值运算符的时候需要对堆取数据进行深拷贝。\n要注意a = b = c的情况，也就是赋值运算符的重载函数需要有一个返回值引用。\ntest\u0026 operator= (test \u0026a) { if(age != nullptr){ delete age; age = nullptr; } // 深拷贝 age = new int(*a.age); return *this; // 连续赋值 } 9.5 关系运算符重载 没什么特殊的\n9.6 函数调用运算符重载 函数调用运算符：就是小括号（），也可以重载。 由于重载后使用的方式非常像函数的调用，因此也称仿函数（STL中使用的较多）。 仿函数没有固定写法，非常灵活。\n10. 转换函数 目的：将一个类转换成其他类型。 转换函数通常不会修改自身的数据，一般要加上const修饰。\nclass person{ public: operator int() const { return int(1.0); } // 不用写返回类型，因为函数名就是返回的类型。 // 一般都加上const修饰 }; person f; int a = 4 + f; // 尝试将f转换为int型。调用了类中的重载函数。 // int a = f + 4; // 这句话则是尝试将4转换成person的类型，需要用到转换构造函数。 11.转换构造函数 真实名字叫non-explicit-one-argument-constructor\n",
+  "articleBody": "0. 类的4个默认函数 4个函数：构造函数、析构函数、拷贝构造函数、赋值号重载函数。\n在定义类时，如果没有自定义这些函数，编译器会提供默认的函数，在默认的函数中，构造函数、析构函数默认空实现，拷贝构造函数、赋值号重载函数默认是浅拷贝。\n拷贝构造函数作用：\n参数是一个同类型的对象，直接拷贝这个参数的所有属性，注意，这个拷贝默认是浅拷贝，需要深拷贝的话需要重载拷贝构造函数。 【注】\n如果在实例化一个对象的时候，后边加了一个空括号，编译器会认为这是一个函数声明而不是实例化，所以，如果一个类的构造函数没有参数的时候，实例化时不用附加空括号. Person a(); // 这样会认为是一个函数声明 Person a; // 应该这样 不要用拷贝构造函数去初始化一个匿名对象，否则从编译器会认为这是重定义。\n可以像这样给构造函数传参Person aaa = 10; 隐式转换法。\n如果没有自定义构造函数的话，C++会自动分配空的构造函数和 只会浅拷贝的拷贝构造函数\n1. 类的访问说明符（访问权限） public：可以被该类中的函数、子类的函数、友元函数访问，也可以由该类的对象访问； protected：可以被该类中的函数、子类的函数、友元函数访问，但不可以由该类的对象访问； private：可以被该类中的函数、友元函数访问，但不可以由子类的函数、该类的对象访问。 三者都允许友元访问。 protected和public的区别就在于类的类外可不可以调用。 protected和private的区别就在于子类是否可以访问，private权限给的最小，子类都不可以访问。 总结：按照类的对象是否可以访问，可以将后两个分成一类，按照子类是否可以访问，可以将前两个分成一类。\n2. 友元 对于不完全开放的protected和private中的成员，类 可以为友元函数（类）提供单独的访问权限。\n全局函数可以做友元 类可以做友元 类的成员函数可以做友元 友元函数的声明必须在类内，最好是在类的开始位置。但是友元函数的定义或者说实现即可在在类内，也可以在类外。\n友元的声明仅仅指定了访问权限，而非通常意义上的函数声明，如果我们希望类的用户可以调用某个友元函数，那么我们就必须在友元声明之外，再专门对该函数进行一次声明（提供给用户）。\n为了方便，通常把友元的声明与类本身放置在同一个头文件中（类的外部单独对该函数声明，以备外部调用方便）。\n类内进行友元函数定义，相当于定义了一个全局函数。 参考代码：\n#include using namespace std; class Person{ friend void test(){ // 友元函数声明 + 定义，如果不加friend的话，相当于一个普通的成员 cout \u003c\u003c 123 \u003c\u003c endl; } public: int a; }; // test函数的定义在Person类的内部，现在想使用它，必须单独进行声明，告诉编译器，我已经定义了test函数，直接调用没问题。 void test(); int main(){ test(); return 0; } 3. 内联函数 一般来说，内联机制用于优化规模较小、流程简单、频繁调用的函数。\n在编译时，直接把内联函数替换到调用它的地方，这样就省去了运行时调用函数的开销。\n类内定义的成员函数默认都是inline的。 类外定义的成员函数默认都不是inline的，想使用的话，可以加上inline说明。同时，需要把类的定义和该类外定义的成员函数 放在同一个文件中，否则编译时找不到内联函数。 4. 深拷贝与浅拷贝 如果没有自定义构造函数的话，C++会自动分配空的构造函数和 只会浅拷贝的拷贝构造函数\n在执行拷贝构造函数的时候，如果第一个对象 a1 在堆上开了一个指针 p 指向的地址是0x0011，a2使用a1进行初始化（使用拷贝构造函数复制a1的值）。所有属性完全复制，所以a2中的p所指的地址也是0x0011，并没有重新开辟一个堆的空间。所以如果a1先被释放了的话，a2再使用这个指针进行操作，就会产生异常了。\n#include #include #include using namespace std; class TEST{ public: TEST(int a){ age = new int(a); } ~TEST(){ if(age != nullptr){ delete age; age = nullptr; } } int *age = nullptr; }; int main(){ TEST a1(10); TEST a2(a1); cout \u003c\u003c *a1.age \u003c\u003c endl; //a1.~TEST(); cout \u003c\u003c *a2.age \u003c\u003c endl; return 0; } 编译器默认给的拷贝构造函数就是只会浅拷贝，想实现深拷贝，需要自己动手。\n5. 类a作为类b的成员 先构造成员类 a， 再构造 b。\n先析构b，再析构成员类a，也就是说析构的顺序与构造的顺序相反。\n6. 静态成员 静态成员：用static修饰的成员变量或函数，也是可以设置public、private等访问权限的。\n特点：类内声明，类外初始化。\n静态成员变量：\n所有实例化后的对象共享一份数据 在编译阶段分配内存 类内声明，类外初始化int test::age = 10; 静态成员函数：\n所有实例化后的对象共享一个函数 静态成员函数只能访问静态成员变量（因为静态成员函数只有一份，这个类可能实例化出来好多对象，如果调用的不是静态成员变量（每个对象都会拷贝出来一个），它根本不知道去访问哪一个对象的变量）。 静态的成员（包括变量和函数）都可以不实例化对象直接进行访问和调用\n#include using namespace std; class test{ public: // 这里如果是private，那么外部就不可以访问了，只能在类中操作 static int a; }; int test::a = 10; int main(){ test a; cout \u003c\u003c test::a \u003c\u003c endl; // private修饰下不允许访问 cout \u003c\u003c a.a \u003c\u003c endl; // private修饰下不允许访问 return 0; } 7. 对象模型和this指针 类中的变量和函数是分开存储的，类通过一些办法将他们组织到一起，构成了一个类。\n变量、函数、静态变量、静态函数四者中，只有变量是属于类的对象上的，其他三个都不属于类的对象上。\n原因：\n每一个非静态成员函数其实只有一份。各个实例化了的对象调用自己的这个成员函数时，this指针指向该对象，该成员函数通过 this 指针区分是哪个对象调用了它。可以使用 *this返回对象自己。\n#include using namespace std; class test{ public: test(int a){ age = a; } test \u0026add( int a){ // 注意这里 返回是引用 否则返回的就是原始对象本身了 就是原始对象的一个拷贝，就不能满足链式编程的思想 age += a; return *this; } int age; }; int main(){ test a(10); // 这也是链式编程的思想 a.add(3).add(3); cout \u003c\u003c a.age \u003c\u003c endl; // 输出16 return 0; } 一个空的指针也是可以访问类内函数的，但是要注意，此时类内的this指针也是null，所以，如果用空指针调用类内函数，并且类内函数访问了成员变量（完整形式是 this -\u003e 成员变量），就相当于对null进行访问，程序就会出错。 8. const修饰成员函数 常函数：\n是用const修饰的成员函数 常函数不可修改成员属性（除了mutable的属性） 常对象：\n使用const修饰一个实例化的对象，即为常对象 常对象只能调用常函数 为什么const修饰过的函数（常函数）不能修改成员属性？\n修改成员属性实际上是this下的属性，this指针实际上是指针常量(* const )，一旦实例化了一个对象，this指针就指向了它，且不能再更改了。 在成员函数参数列表后边加上const进行修饰，相当于说：在本函数中，this指向的空间也是const的了，也不允许通过this进行修改了。 #include using namespace std; class test{ public: // this 指针相当于指针常量 test * const this // 函数后加了一个const 修饰的其实是this所指的空间 即 const test * const this // 即加了const，在本函数内 this所指的空间 不允许通过this进行改变了 void fuc1() const { this -\u003e a = 10; // 编译器报错 } int a; }; int main(){ test p; p.fuc1(); return 0; } 为什么常对象只允许调用常函数？\n可以这样理解：常对象本身的意思就是只读，如果调用了一个非常函数，万一这个函数对自己的属性进行了修改怎么办？所以，直接在根本上拒绝这样危险的操作，直接限定常对象只允许调用常函数，因为常函数肯定修改不了自己的属性。 9. 重载运算符 9.1 基本运算符重载 以加法为例，就相当于自己在类里边写了一个做加法的函数，但是函数名统一成operator +了，可以通过这个函数名像普通成员函数那样调用a.operator+( b )，但是，也可以简写为 a + b。\n运算符重载，也可以发生函数重载，比如加法运算，可以是两个类做相加，也可以是一个类和一个整数相加。 9.2 左移运算符重载 作用：输出自定义的数据类型eg: cout \u003c\u003c class\n如果在类内定义左移重载运算符的话类本身就默认作为左操作数了，那么cout就只能在右边，比如class \u003c\u003c cout，可见这是不符合预期的，所以左移运算符的重载，一般不写在类中，都写成全局函数的形式。 为了满足链式编程，返回值也要是输出流的引用。 inline ostream \u0026operator\u003c\u003c (ostream \u0026out, test \u0026s){ out \u003c\u003c s.a; return out; } 此时，重载运算符的函数是定义在全局函数中的，是如法访问类中的private成员的，还需要进行友元申明，给它访问权限。 9.3 递增递减运算符重载 重载运算符函数中空参数，可以理解为将this作为右操作数。 后置++运算符重载，需要一个int占位，来区分前置和后置的重载。 要注意前置和后置两种重载的返回类型。 class test{ friend inline ostream\u0026 operator\u003c\u003c (ostream \u0026out, test a); public: test(){ age = 10; } // 重载前置++ 必须要返回引用 test\u0026 operator++(){ // 没有占位的就当作this是右操作数 age++; return *this; } // 重载后置++，不用返回引用，因为返回去可能就看一下值是多少，this本身还是做了+1的。 test operator++ (int){ // this本身作为左值了， 右侧搞一个int来占位 test tmp = *this; age++; return tmp; } private: int age; }; inline ostream\u0026 operator\u003c\u003c (ostream \u0026out, test a){ out \u003c\u003c a.age; return out; } 9.4 赋值运算符重载 c++编译器至少添加4个默认的函数。\n默认构造函数、析构函数、拷贝构造函数、赋值运算符（对属性进行浅拷贝）。\n要注意如果有堆区数据的话，在重载赋值运算符的时候需要对堆取数据进行深拷贝。\n要注意a = b = c的情况，也就是赋值运算符的重载函数需要有一个返回值引用。\ntest\u0026 operator= (test \u0026a) { if(age != nullptr){ delete age; age = nullptr; } // 深拷贝 age = new int(*a.age); return *this; // 连续赋值 } 9.5 关系运算符重载 没什么特殊的\n9.6 函数调用运算符重载 函数调用运算符：就是小括号（），也可以重载。\n由于重载后使用的方式非常像函数的调用，因此也称仿函数（STL中使用的较多）。\n仿函数没有固定写法，非常灵活。\n10. 转换函数 目的：将一个类转换成其他类型。\n转换函数通常不会修改自身的数据，一般要加上const修饰。\nclass person{ public: operator int() const { return int(1.0); } // 不用写返回类型，因为函数名就是返回的类型。 // 一般都加上const修饰 }; person f; int a = 4 + f; // 尝试将f转换为int型。调用了类中的重载函数。 // int a = f + 4; // 这句话则是尝试将4转换成person的类型，需要用到转换构造函数。 11.转换构造函数 真实名字叫non-explicit-one-argument-constructor\n",
   "wordCount" : "3982",
   "inLanguage": "zh",
   "datePublished": "2021-02-17T14:56:45+08:00",
@@ -366,7 +366,7 @@
     }
 </script>
   <div class="post-content"><h1 id="0-类的4个默认函数">0. 类的4个默认函数<a hidden class="anchor" aria-hidden="true" href="#0-类的4个默认函数">#</a></h1>
-<p>4个函数：构造函数、析构函数、拷贝构造函数、赋值号重载函数。
+<p>4个函数：构造函数、析构函数、拷贝构造函数、赋值号重载函数。<br>
 在定义类时，如果没有自定义这些函数，编译器会提供默认的函数，在默认的函数中，构造函数、析构函数默认空实现，拷贝构造函数、赋值号重载函数默认是浅拷贝。</p>
 <p>拷贝构造函数作用：</p>
 <ul>
@@ -443,7 +443,7 @@
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><h1 id="3-内联函数">3. 内联函数<a hidden class="anchor" aria-hidden="true" href="#3-内联函数">#</a></h1>
-<p>一般来说，内联机制用于优化规模较小、流程简单、频繁调用的函数。
+<p>一般来说，内联机制用于优化规模较小、流程简单、频繁调用的函数。<br>
 在编译时，直接把内联函数替换到调用它的地方，这样就省去了运行时调用函数的开销。</p>
 <ul>
 <li>类内定义的成员函数默认都<strong>是inline</strong>的。</li>
@@ -490,11 +490,11 @@
 </span></span><span class="line"><span class="cl"><span class="p">}</span> 
 </span></span></code></pre></div><p>编译器默认给的拷贝构造函数就是只会浅拷贝，想实现深拷贝，需要自己动手。</p>
 <h1 id="5-类a作为类b的成员">5. 类a作为类b的成员<a hidden class="anchor" aria-hidden="true" href="#5-类a作为类b的成员">#</a></h1>
-<p>先构造成员类 a， 再构造 b。
+<p>先构造成员类 a， 再构造 b。<br>
 先析构b，再析构成员类a，也就是说析构的顺序与构造的顺序相反。</p>
 <h1 id="6-静态成员">6. 静态成员<a hidden class="anchor" aria-hidden="true" href="#6-静态成员">#</a></h1>
-<p>静态成员：用static修饰的成员变量或函数，也是可以设置public、private等访问权限的。
-特点：类内声明，类外初始化。
+<p>静态成员：用static修饰的成员变量或函数，也是可以设置public、private等访问权限的。<br>
+特点：类内声明，类外初始化。<br>
 静态成员变量：</p>
 <ul>
 <li>所有实例化后的对象共享一份数据</li>
@@ -529,8 +529,8 @@
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><h1 id="7-对象模型和this指针">7. 对象模型和this指针<a hidden class="anchor" aria-hidden="true" href="#7-对象模型和this指针">#</a></h1>
 <p>类中的变量和函数是分开存储的，类通过一些办法将他们组织到一起，构成了一个类。</p>
-<p>变量、函数、静态变量、静态函数四者中，只有变量是属于类的对象上的，其他三个都不属于类的对象上。
-原因：
+<p>变量、函数、静态变量、静态函数四者中，只有变量是属于类的对象上的，其他三个都不属于类的对象上。<br>
+原因：<br>
 每一个<strong>非静态成员函数</strong>其实只有一份。各个实例化了的对象调用自己的这个成员函数时，this指针指向该对象，该成员函数通过 this 指针区分是哪个对象调用了它。可以使用 <code>*this</code>返回对象自己。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
 </span></span></span><span class="line"><span class="cl"><span class="cp"></span>
@@ -695,11 +695,11 @@
 </span></span></code></pre></div><h2 id="95-关系运算符重载">9.5 关系运算符重载<a hidden class="anchor" aria-hidden="true" href="#95-关系运算符重载">#</a></h2>
 <p>没什么特殊的</p>
 <h2 id="96-函数调用运算符重载">9.6 函数调用运算符重载<a hidden class="anchor" aria-hidden="true" href="#96-函数调用运算符重载">#</a></h2>
-<p>函数调用运算符：就是小括号（），也可以重载。
-由于重载后使用的方式非常像函数的调用，因此也称仿函数（STL中使用的较多）。
+<p>函数调用运算符：就是小括号（），也可以重载。<br>
+由于重载后使用的方式非常像函数的调用，因此也称仿函数（STL中使用的较多）。<br>
 仿函数没有固定写法，非常灵活。</p>
 <h1 id="10-转换函数">10. 转换函数<a hidden class="anchor" aria-hidden="true" href="#10-转换函数">#</a></h1>
-<p>目的：将一个类转换成其他类型。
+<p>目的：将一个类转换成其他类型。<br>
 转换函数通常不会修改自身的数据，一般要加上const修饰。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">person</span><span class="p">{</span>
 </span></span><span class="line"><span class="cl">
@@ -803,6 +803,18 @@
   
       bodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
     });
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
   </script>
 </article>
     </main>

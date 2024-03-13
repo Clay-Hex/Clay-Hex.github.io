@@ -106,7 +106,7 @@
   "keywords": [
     "C++"
   ],
-  "articleBody": "Lambda表达式 Lambda表达式\n形式 [capture](params) -\u003e return-type{ function body } 说明 capture 需要捕获的外部变量列表（这里的外部变量不包括程序的全局变量，指的是匿名函数父作用域内的变量）。 如果这个匿名函数需要调用本匿名函数以外的变量，那么就需要在这个[ ] 中进行捕获，捕获包括捕获的变量名称和捕获的方式（值和引用）。 例如：\n[ ] 表示不捕获外部的任何变量 [=] 表示捕获外部的所有变量（父作用域内），是以值的方式捕获（不可修改）。 [\u0026] 表示捕获外部的所有变量（父作用域内），是以引用的方式捕获（可修改）。 [=, \u0026x, \u0026y] 表示捕获外部的所有变量（父作用域内），其中x和y以引用的方式捕获，其他变量以值的方式捕获。 [\u0026, x, y] 表示捕获外部的所有变量（父作用域内），其中x和y以值的方式捕获，其他变量以引用的方式捕获。 capture注意事项 如果不进行变量捕获，那么在匿名函数内，不可以使用外部变量。 捕获列表内，不允许重复捕获。比如 [=, a]，=已经说明所有的变量（包括a）以值的方式捕获，后边的a又进行了一次说明，这是不允许的。 捕获任何非父作用域内变量或者程序的全局变量，都会出错。 [this]只能以值的方式捕获\nparams 参数列表，就是和一般的函数一样的参数列表。\nreturn-type 匿名函数的返回类型。 返回类型可以省略，c++11可以根据函数体内部的return 自动判断，当然，也可以指定返回类型。\n总结 如果需要用到匿名函数外部的变量，就必须要进行捕获，需要注意捕获方式（值和引用），其他方面和一般的函数没有太大区别。\n",
+  "articleBody": "Lambda表达式 Lambda表达式\n形式 [capture](params) -\u003e return-type{ function body } 说明 capture 需要捕获的外部变量列表（这里的外部变量不包括程序的全局变量，指的是匿名函数父作用域内的变量）。\n如果这个匿名函数需要调用本匿名函数以外的变量，那么就需要在这个[ ] 中进行捕获，捕获包括捕获的变量名称和捕获的方式（值和引用）。\n例如：\n[ ] 表示不捕获外部的任何变量 [=] 表示捕获外部的所有变量（父作用域内），是以值的方式捕获（不可修改）。 [\u0026] 表示捕获外部的所有变量（父作用域内），是以引用的方式捕获（可修改）。 [=, \u0026x, \u0026y] 表示捕获外部的所有变量（父作用域内），其中x和y以引用的方式捕获，其他变量以值的方式捕获。 [\u0026, x, y] 表示捕获外部的所有变量（父作用域内），其中x和y以值的方式捕获，其他变量以引用的方式捕获。 capture注意事项 如果不进行变量捕获，那么在匿名函数内，不可以使用外部变量。\n捕获列表内，不允许重复捕获。比如 [=, a]，=已经说明所有的变量（包括a）以值的方式捕获，后边的a又进行了一次说明，这是不允许的。\n捕获任何非父作用域内变量或者程序的全局变量，都会出错。\n[this]只能以值的方式捕获\nparams 参数列表，就是和一般的函数一样的参数列表。\nreturn-type 匿名函数的返回类型。\n返回类型可以省略，c++11可以根据函数体内部的return 自动判断，当然，也可以指定返回类型。\n总结 如果需要用到匿名函数外部的变量，就必须要进行捕获，需要注意捕获方式（值和引用），其他方面和一般的函数没有太大区别。\n",
   "wordCount" : "607",
   "inLanguage": "zh",
   "datePublished": "2021-01-28T17:27:47+08:00",
@@ -355,8 +355,8 @@
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><h1 id="说明">说明<a hidden class="anchor" aria-hidden="true" href="#说明">#</a></h1>
 <h2 id="capture">capture<a hidden class="anchor" aria-hidden="true" href="#capture">#</a></h2>
-<p>需要捕获的外部变量列表（这里的外部变量不包括程序的全局变量，指的是匿名函数父作用域内的变量）。
-如果这个匿名函数需要调用<strong>本匿名函数以外</strong>的变量，那么就需要在这个[ ] 中进行捕获，捕获包括捕获的变量名称和捕获的方式（值和引用）。
+<p>需要捕获的外部变量列表（这里的外部变量不包括程序的全局变量，指的是匿名函数父作用域内的变量）。<br>
+如果这个匿名函数需要调用<strong>本匿名函数以外</strong>的变量，那么就需要在这个[ ] 中进行捕获，捕获包括捕获的变量名称和捕获的方式（值和引用）。<br>
 例如：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">[ ] 表示不捕获外部的任何变量
 </span></span><span class="line"><span class="cl">[=] 表示捕获外部的所有变量（父作用域内），是以值的方式捕获（不可修改）。
@@ -364,14 +364,14 @@
 </span></span><span class="line"><span class="cl">[=, &amp;x, &amp;y] 表示捕获外部的所有变量（父作用域内），其中x和y以引用的方式捕获，其他变量以值的方式捕获。
 </span></span><span class="line"><span class="cl">[&amp;, x, y]  表示捕获外部的所有变量（父作用域内），其中x和y以值的方式捕获，其他变量以引用的方式捕获。
 </span></span></code></pre></div><h3 id="capture注意事项">capture注意事项<a hidden class="anchor" aria-hidden="true" href="#capture注意事项">#</a></h3>
-<p>如果不进行变量捕获，那么在匿名函数内，不可以使用外部变量。
-捕获列表内，不允许重复捕获。比如 [=, a]，=已经说明所有的变量（包括a）以值的方式捕获，后边的a又进行了一次说明，这是不允许的。
-捕获任何<strong>非父作用域内变量</strong>或者<strong>程序的全局变量</strong>，都会出错。
+<p>如果不进行变量捕获，那么在匿名函数内，不可以使用外部变量。<br>
+捕获列表内，不允许重复捕获。比如 [=, a]，=已经说明所有的变量（包括a）以值的方式捕获，后边的a又进行了一次说明，这是不允许的。<br>
+捕获任何<strong>非父作用域内变量</strong>或者<strong>程序的全局变量</strong>，都会出错。<br>
 [this]只能以值的方式捕获</p>
 <h2 id="params">params<a hidden class="anchor" aria-hidden="true" href="#params">#</a></h2>
 <p>参数列表，就是和一般的函数一样的参数列表。</p>
 <h2 id="return-type">return-type<a hidden class="anchor" aria-hidden="true" href="#return-type">#</a></h2>
-<p>匿名函数的返回类型。
+<p>匿名函数的返回类型。<br>
 返回类型可以省略，c++11可以根据函数体内部的return 自动判断，当然，也可以指定返回类型。</p>
 <h1 id="总结">总结<a hidden class="anchor" aria-hidden="true" href="#总结">#</a></h1>
 <p>如果需要用到匿名函数外部的变量，就必须要进行捕获，需要注意捕获方式（值和引用），其他方面和一般的函数没有太大区别。</p>
@@ -461,6 +461,18 @@
   
       bodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
     });
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
   </script>
 </article>
     </main>
