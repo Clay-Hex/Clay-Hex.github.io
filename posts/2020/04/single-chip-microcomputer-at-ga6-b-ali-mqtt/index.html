@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="zh" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>单片机AT指令操作GA6-B短信模块连接阿里云MQTT服务器（双向通信） | Clay&#39;s Blog</title>
+<meta name="keywords" content="stm32, 单片机, AT指令, GA6-B, MQTT">
+<meta name="description" content="0. 前言 网上这种东西不太多，我也是看了不少资料弄出来了，觉得应该写点东西出来。 我用的板子不是arduino，用的是stm32，开发工具是Arduino IDE，因为Arduino IDE集成了较多的函数库，我们不用管底层的一些东西，都封装好了，写着方便一些。 当然，不管你板子是什么，这篇">
+<meta name="author" content="Clay">
+<link rel="canonical" href="https://Clay-Hex.github.io/posts/2020/04/single-chip-microcomputer-at-ga6-b-ali-mqtt/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.js" onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://Clay-Hex.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Clay-Hex.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Clay-Hex.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Clay-Hex.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Clay-Hex.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="zh" href="https://Clay-Hex.github.io/posts/2020/04/single-chip-microcomputer-at-ga6-b-ali-mqtt/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><meta property="og:title" content="单片机AT指令操作GA6-B短信模块连接阿里云MQTT服务器（双向通信）" />
+<meta property="og:description" content="0. 前言 网上这种东西不太多，我也是看了不少资料弄出来了，觉得应该写点东西出来。 我用的板子不是arduino，用的是stm32，开发工具是Arduino IDE，因为Arduino IDE集成了较多的函数库，我们不用管底层的一些东西，都封装好了，写着方便一些。 当然，不管你板子是什么，这篇" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://Clay-Hex.github.io/posts/2020/04/single-chip-microcomputer-at-ga6-b-ali-mqtt/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-04-30T20:14:44+08:00" />
+<meta property="article:modified_time" content="2020-04-30T20:14:44+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="单片机AT指令操作GA6-B短信模块连接阿里云MQTT服务器（双向通信）"/>
+<meta name="twitter:description" content="0. 前言 网上这种东西不太多，我也是看了不少资料弄出来了，觉得应该写点东西出来。 我用的板子不是arduino，用的是stm32，开发工具是Arduino IDE，因为Arduino IDE集成了较多的函数库，我们不用管底层的一些东西，都封装好了，写着方便一些。 当然，不管你板子是什么，这篇"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "📒 记录",
+      "item": "https://Clay-Hex.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "📚 学习",
+      "item": "https://Clay-Hex.github.io/posts/learn/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "单片机AT指令操作GA6-B短信模块连接阿里云MQTT服务器（双向通信）",
+      "item": "https://Clay-Hex.github.io/posts/2020/04/single-chip-microcomputer-at-ga6-b-ali-mqtt/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "单片机AT指令操作GA6-B短信模块连接阿里云MQTT服务器（双向通信）",
+  "name": "单片机AT指令操作GA6-B短信模块连接阿里云MQTT服务器（双向通信）",
+  "description": "0. 前言 网上这种东西不太多，我也是看了不少资料弄出来了，觉得应该写点东西出来。 我用的板子不是arduino，用的是stm32，开发工具是Arduino IDE，因为Arduino IDE集成了较多的函数库，我们不用管底层的一些东西，都封装好了，写着方便一些。 当然，不管你板子是什么，这篇",
+  "keywords": [
+    "stm32", "单片机", "AT指令", "GA6-B", "MQTT"
+  ],
+  "articleBody": "0. 前言 网上这种东西不太多，我也是看了不少资料弄出来了，觉得应该写点东西出来。\n我用的板子不是arduino，用的是stm32，开发工具是Arduino IDE，因为Arduino IDE集成了较多的函数库，我们不用管底层的一些东西，都封装好了，写着方便一些。\n当然，不管你板子是什么，这篇文章主要讲的不是板子的问题，而是如何通过串口的AT指令控制GA6-B这种支持GPRS的短信模块来实现MQTT协议，以及微信小程序显示单片机发布的数据。\n1. 快速弄懂MQTT协议 我觉得学习一个新东西，最有效的办法就是先快速的实现他，先看到预期的结果，再慢慢深入进去，这样会比较快。\n弄这个小项目之前，我没有了解过MQTT协议，看了看也比较蒙，因为有人用的是json格式发送数据，有人还用TCP报文，所以我就不太明白了，最后还是找一些例子直接上手操作，如果你之前没有接触过MQTT协议的话，不太明白他是怎么回事，你可以先按照我下边的步骤，弄清楚他的流程，我这里用的都是弄的TCP报文，至于其他的我也不太明白。\n需要工具：\nTCP测试工具 MQTT.fx 测试平台阿里云IOT 1.1 在阿里云平台创建测试设备 首先到https://iot.console.aliyun.com/，没有注册的自己注册。\n登录上去以后，点击左侧“设备管理”-“产品”。然后点击“创建产品”\n我的配置如下：\n注意，这里的数据格式一定要选“透传/自定义”，连网方式随意，但是为了和后边讲短信模块的操作一致，就先选择蜂窝吧。都选择好了以后，点击下边的“保存”。\n注：产品，是一个种类，他包括很多个设备，比如说某款手机，比如说小米6手机，那这就是一款产品，你不能说它是一个设备，但是如果具体到某个实物了，也就是你手里握着的那个，那个就是一个设备，总之，一个产品包括好多个设备。\n产品新建好了以后，需要添加设备。\n点击“确认”，一个设备就新建好了。新建好的设备，你看他的状态，会显示未激活，那是因为这个设备还没有登录过，上线一次就会显示“在线/离线”了。一个设备，我们需要获得它的三个关键信息，也就是大多数人说的“三元组”，点击“查看”。\n再点击“查看”\n出来的三个数据就是该设备的三元组了，一会要用到。\n至此，一个设备就创建成功了。\n1.2 Topic说明 在MQTT协议中，不允许两个用户之间直接通信，任何两个用户之间通信，需要MQTT服务器作中间人，来回“传话”，意思是这样，但不是真正的传话。MQTT协议采用“发布/订阅”模式，顾名思义，发布，就是把消息散发出去，你理解为客户端把数据发送给MQTT服务器就可以了。订阅的意思就是说，我想要收到某个用户的数据，我在你服务器这里订阅了这个消息，如果我订阅的那个用户有消息发出来了，那你一定要发送给我看。\n在刚刚新建的设备那里，点击Topic列表\n阿里云IOT平台给出了三种Topic，我们点击自定义Topic\n其实，所有的Topic都可以用来通信，只不过用的地方不同，具体你想用到哪里，你可以自己定。打个比方，比如图里的这个第一个，后缀是update，你可以用它来上传传感器数据，当然也可以用来上报错误信息，再看第二个Topic，后缀是error，好像是用来上报错误信息的，但是你非要拿他来上报传感器数据，也是可以的。后边我们就用我图上圈起来的两个进行操作。\n1.3 使用MQTT.fx工具进行通信 上边说完了基础的一些东西，设备也建好了，下边该进行最关心的通信测试了，我们只有先打通整个流程，能够直观看到数据通信成功了，才知道MQTT是怎么回事，要不然总是云里雾里。好了，继续。\n1.3.1 登录信息填写 打开MQTT测试工具MQTT.fx，先点击下图的按钮配置连接信息\n这里要注意，这里信息不能错，错了就连接不上MQTT服务器了，这个界面里最主要的就是图中边框发红的那三个输入框，其他的默认就可以。\nBroker Address填入服务器的地址，填写规则如下：\n格式：*.iot-as-mqtt.cn-shanghai.aliyuncs.com\n*表示自己账号的ProductKey注意替换\n我的ProductKey 是a1aExJDxQRT，那么我的这个地址就是a1aExJDxQRT.iot-as-mqtt.cn-shanghai.aliyuncs.com\nBroker Port是服务器的端口号，填入1883\nClient ID是客户端ID，填写规则如下：\n格式：*|securemode=3,signmethod=hmacsha1|\n*代表设备名称 注意替换\n我的设备名称是tcp_client，所以客户端ID就是tcp_client|securemode=3,signmethod=hmacsha1|\n填写好以后先别点击确定，先点击下图选项卡\n填写登录的用户名和密码。\n用户名规则如下\n格式：*\u0026# *代表设备名称 #代表ProductKey\n所以我的就是tcp_client\u0026a1aExJDxQRT\n密码的规则如下：\n用三元组中的DeviceSecret做为秘钥对clientId*deviceName*productKey#进行hmacsha1加密后的结果就是登录密码\n*代表设备名称 #代表ProductKey 注意替换\n有很多可以在线加密的网址，随便找一个加密一下就可以了。\n我的加密结果是14f0e4037fd1ec3d7cf61902d4352c8bd82d2603\n1.3.2 客户端发布数据 都填写好了以后，点击下边的应用，然后关闭该窗口，回到主界面后点击连接，如果信息没有填错的话，应该是连接成功了，如下图。\n登录成功以后，找到上边提到的两个Topic中的那个发布的Topic，把地址复制下来，填写到下图的位置。\n先别点击发布，我们在阿里云IOT平台上，点击日志服务，再点击前往查看。\n在这里可以看到一些关于该设备的信息，因为刚才只登录了，所以这里只有online或者offline的信息。\n回到MQTT.fx界面，点击“Publish”发布一条消息，内容为test\n再回到刚刚阿里云IOT的日志界面，点击搜索，可以看到有数据传上来了。\n点击蓝色的那个数字，查看消息内容。\n这个过程就是设备上传的过程，只不过在嵌入式开发的时候，我们就不是用MQTT.fx这种工具来操作了，需要手动实现MQTT.fx刚才的动作。下边来看客户端怎么获得服务器下发的消息。\n1.3.3 客户端订阅数据 在阿里云IOT网页里，我们回到“设备详情”界面下，点击“Topic” - “自定义Topic”，我们尝试下发一个数据给已经登录的MQTT客户端。\n将“订阅”的这个Topic复制下来，粘贴到MQTT.fx的订阅选项卡界面里边，如下图：\n点击“Subscribe”订阅该Topic，此时，我们回到阿里云IOT的网页，点击那个Topic后边的“下发消息”，填入一条数据，点击“确认”\n这个时候MQTT.fx中就可以收到这个消息了\n至此，就完成了客户端订阅消息的流程，这只是帮助你了解MQTT通信的过程，在下边的项目中，订阅消息是由小程序做的。\n1.4 MQTT双向通信 上边我们说了一个设备的“发布和订阅”，那么在一个项目中，设备端（数据采集的这端）和小程序端如果都用同一个阿里云的设备，会挤掉线的，也就是说阿里云IOT的一个设备不能同时在两个地方登陆，那我们要想实现采集器的数据发给小程序，该怎么做呢？答案就是我们需要建两个阿里云IOT的设备，一个设备是采集器，一个设备是小程序，采集器只发布数据，小程序只订阅数据，那么这样一来，好像可以了，但实际不可以，因为每一个阿里云IOT的设备只能订阅和发布自己的Topic，不能订阅别的设备的。所以我们还需要做数据的转发，**将采集器用于发布的Topic获得的数据 转发 给小程序订阅的Topic。**而中间的这个转发过程，阿里云IOT平台可以自动完成，这样来看，整个过程可以实现了，下边来操作。\n新建两个设备，这里不赘述了，都是一模一样的，两个设备建立在一个产品里就可以，不用两个产品。建立好了以后再往下看。\n点击阿里云平台左侧的云产品流动\n创建一个规则，规则名称随意，数据格式选择二进制，然后进入到规则编辑界面，点击“编写SQL”\n字段填入一个*号，*号是通配符，表示转发所有的数据。\n因为是从采集器转发到小程序，所以这里要选择采集器这个设备的“发布的Topic”，也就是user/update，点击确定。\n在点击下图按钮，添加一个数据转发的目的地\n注意这里的Topic别选错，因为微信端是要订阅，点击确定。\n至此，可以实现两个设备间单向通信了，你可以开两个MQTT.fx工具进行模拟操作，一个模拟采集器发布数据，一个模拟小程序订阅数据，测试下是否可以正常收到订阅信息，在这我就不写了。\n需要说明的是，到这里我们只是对MQTT协议的通信模式有了一些直观的感受，但是具体底层是怎么做的，承载MQTT协议的TCP到底是怎么构造的还没有说，这些将在第3节展开说。\n2. GA6-B短信模块使用的AT指令 其实用到的AT指令只有两个，一个是连接TCP的，还有一个是发送TCP数据的。至于具体指令是什么，你直接查看你模块的开发文档就好了。\n3. 单片机构造MQTT报文 MQTT是应用层的协议，运输层采用TCP进行承载，但是GA6-B模块呢，只支持TCP和UDP两种运输层的协议，好在MQTT官方有说明怎么构造TCP报文，具体的文件内容看这里。https://mcxiaoke.gitbooks.io/mqtt-cn/content/mqtt/03-ControlPackets.html\n协议的格式，官方已经说的很清楚了，如果你想测试的话，想验证一下这个协议的构成呢，可以按照下边的方法验证，或者说实践。\n在1.3中，我们使用MQTT.fx软件进行登录和其他的操作，但是点击登录按钮以后，程序发出的TCP报文是什么样子的呢?我们怎么才能看到？这也好办，我们只需要搭建一个TCP服务器就可以了，在MQTT.fx中配置登录信息的时候，把服务器ip地址写成127.0.0.1，然后其他的信息不变。此时，我们用下载好的TCP测试工具，创建一个服务器，端口号为1883\n启动服务器后，在MQTT.fx中链接服务器，在TCP测试工具中就可以看到MQTT.fx发出的登录数据包了，当然要以16进制查看才可以。\n看到这些16进制数据，你应该就会明白了，上边给出的开发文档中说的那些什么字节啊什么的都是什么意思了，都摆在你眼前了，也就可以自己构造TCP报文了。当然，在这，有的人可能会问，这只是看到了登录的报文，那如果想查看发布或者订阅的怎么办呢？我这还没登录成功呢，就不能发布或者订阅啊？\n解决办法：MQTT.fx连接服务器，只是发送了请求，那我们模拟出来的这个TCP服务器还没做出回应啊，我们回应一个它登录成功的报文不就好了么，根据官方文档，成功登录的报文16进制是 20 02 00 00这四个字节，我们在模拟的TCP服务器中按照16进制回复一下，就可以在MQTT.fx中看到登录成功了。\n说大这，其实你应该已经知道了怎么构造报文了，只需要按照官方给出的那个格式弄就可以了，用刚才查看模拟TCP的办法，检验一下自己构造的正确与否就可以了。网上有人整理好了，我这里借用一下代码：\n#define u8 unsigned char #define u16 unsigned short #define u32 unsigned int /*************构造MQTT连接包*******************/ u8 mqtt_connect_message(u8 *mqtt_message, char *client_id, char *username, char *password) { u8 client_id_length = strlen(client_id); u8 username_length = strlen(username); u8 password_length = strlen(password); u8 packetLen; u8 i, baseIndex; packetLen = 12 + 2 + client_id_length; if (username_length \u003e 0) packetLen = packetLen + 2 + username_length; if (password_length \u003e 0) packetLen = packetLen + 2 + password_length; mqtt_message[0] = 16; //0x10 // MQTT Message Type CONNECT mqtt_message[1] = packetLen - 2; // baseIndex = 2; if (packetLen \u003e 127) { mqtt_message[2] = 1; //packetLen/127; baseIndex = 3; } mqtt_message[baseIndex++] = 0; // Protocol Name Length MSB mqtt_message[baseIndex++] = 4; // Protocol Name Length LSB mqtt_message[baseIndex++] = 77; // ASCII Code for M mqtt_message[baseIndex++] = 81; // ASCII Code for Q mqtt_message[baseIndex++] = 84; // ASCII Code for T mqtt_message[baseIndex++] = 84; // ASCII Code for T mqtt_message[baseIndex++] = 4; // MQTT Protocol version = 4 mqtt_message[baseIndex++] = 194; // conn flags mqtt_message[baseIndex++] = 0; // Keep-alive Time Length MSB mqtt_message[baseIndex++] = 300; // Keep-alive Time Length LSB mqtt_message[baseIndex++] = (0xff00 \u0026 client_id_length) \u003e\u003e 8; // Client ID length MSB mqtt_message[baseIndex++] = 0xff \u0026 client_id_length; // Client ID length LSB // Client ID for (i = 0; i \u003c client_id_length; i++) { mqtt_message[baseIndex + i] = *(client_id + i); } baseIndex = baseIndex + client_id_length; if (username_length \u003e 0) { //username mqtt_message[baseIndex++] = (0xff00 \u0026 username_length) \u003e\u003e 8; //username length MSB mqtt_message[baseIndex++] = 0xff \u0026 username_length; //username length LSB for (i = 0; i \u003c username_length ; i++) { mqtt_message[baseIndex + i] = *(username + i); } baseIndex = baseIndex + username_length; } if (password_length \u003e 0) { //password mqtt_message[baseIndex++] = (0xff00 \u0026 password_length) \u003e\u003e 8; //password length MSB mqtt_message[baseIndex++] = 0xff \u0026 password_length; //password length LSB for (i = 0; i \u003c password_length ; i++) { mqtt_message[baseIndex + i] = *(password + i); } baseIndex += password_length; } return baseIndex; } /*********MQTT发布消息包******************************/ u8 mqtt_publish_message(u8 *mqtt_message, char * topic, char * message, u8 qos) { u16 topic_length = strlen(topic); u16 message_length = strlen(message); u16 i, index = 0; static u16 id = 0; mqtt_message[index++] = 48; //0x30 // MQTT Message Type PUBLISH if (qos) mqtt_message[index++] = 2 + topic_length + 2 + message_length; else mqtt_message[index++] = 2 + topic_length + message_length; // Remaining length mqtt_message[index++] = (0xff00 \u0026 topic_length) \u003e\u003e 8; mqtt_message[index++] = 0xff \u0026 topic_length; // Topic for (i = 0; i \u003c topic_length; i++) { mqtt_message[index + i] = *(topic + i); } index += topic_length; if (qos) { mqtt_message[index++] = (0xff00 \u0026 id) \u003e\u003e 8; mqtt_message[index++] = 0xff \u0026 id; id++; } // Message for (i = 0; i \u003c message_length; i++) { mqtt_message[index + i] = *(message + i); } index += message_length; return index; } /*****************发布确认包****************************/ u8 mqtt_puback_message(u8 *mqtt_message) { static u16 id = 0; mqtt_message[0] = 64; //0x40 PUBACK mqtt_message[1] = 2; mqtt_message[2] = (0xff00 \u0026 id) \u003e\u003e 8; mqtt_message[3] = 0xff \u0026 id; id++; return 4; } /*********构建订阅请求*********/ u16 mqtt_subscribe_message(u8 *mqtt_message, char *topic, u8 qos, u8 whether) { u16 topic_len = strlen(topic); u16 i, index = 0; static u16 id = 0; id++; if (whether) mqtt_message[index++] = 130; else mqtt_message[index++] = 162; mqtt_message[index++] = topic_len + 5; mqtt_message[index++] = (0xff00 \u0026 id) \u003e\u003e 8; mqtt_message[index++] = 0xff \u0026 id; mqtt_message[index++] = (0xff00 \u0026 topic_len) \u003e\u003e 8; mqtt_message[index++] = 0xff \u0026 topic_len; for (i = 0; i \u003c topic_len; i++) { mqtt_message[index + i] = *(topic + i); } index += topic_len; if (whether) { mqtt_message[index] = qos;//QoS index++; } return index; } /***********构建MQTT请求PING包********************/ u8 mqtt_ping_message(u8 *mqtt_message) { mqtt_message[0] = 192; //0xC0 PING mqtt_message[1] = 0; // return 2; } /************构建断开包******************/ u8 mqtt_disconnect_message(u8 *mqtt_message) { mqtt_message[0] = 224; //0xE0 DISCONNECT mqtt_message[1] = 0; // return 2; } 至于怎么调用，就很简单了，你自己琢磨琢磨就可以了。单片机内构造好报文，然后通过串口让GA6-B发送出去就可以了。\n4. 微信小程序使用MQTT协议 这个网上有介绍的比较详细的文章了，自行查找吧，可以解决的。\n综上，可以完成采集器到小程序整个MQTT通信了，完结，撒花。\n",
+  "wordCount" : "5509",
+  "inLanguage": "zh",
+  "datePublished": "2020-04-30T20:14:44+08:00",
+  "dateModified": "2020-04-30T20:14:44+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "Clay"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Clay-Hex.github.io/posts/2020/04/single-chip-microcomputer-at-ga6-b-ali-mqtt/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Clay's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Clay-Hex.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://Clay-Hex.github.io/" accesskey="h" title="Clay&#39;s Blog (Alt + H)">
+                <img src="https://Clay-Hex.github.io/img/avatar.jpg" alt="" aria-label="logo"
+                    height="35">Clay&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch">
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://Clay-Hex.github.io/search" title="🔍 搜索 (Alt &#43; /)" accesskey=/>
+                    <span>🔍 搜索</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/" title="🏡 主页">
+                    <span>🏡 主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/posts" title="📒 记录">
+                    <span>📒 记录</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/tags" title="📛 标签">
+                    <span>📛 标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/archives/" title="📁 归档">
+                    <span>📁 归档</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/about" title="📖 关于">
+                    <span>📖 关于</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://Clay-Hex.github.io/">主页</a>&nbsp;»&nbsp;<a href="https://Clay-Hex.github.io/posts/">📒 记录</a>&nbsp;»&nbsp;<a href="https://Clay-Hex.github.io/posts/learn/">📚 学习</a></div>
+    <h1 class="post-title entry-hint-parent">
+      单片机AT指令操作GA6-B短信模块连接阿里云MQTT服务器（双向通信）
+    </h1>
+    <div class="post-meta"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2020-04-30
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>5509字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+</span>
+
+</div>
+  </header> <aside id="toc-container" class="toc-container wide">
+    <div class="toc">
+        <details  open>
+            <summary accesskey="c" title="(Alt + C)">
+                <span class="details">目录</span>
+            </summary>
+
+            <div class="inner"><ul>
+                    <li>
+                        <a href="#0-%e5%89%8d%e8%a8%80" aria-label="0. 前言">0. 前言</a></li>
+                    <li>
+                        <a href="#1-%e5%bf%ab%e9%80%9f%e5%bc%84%e6%87%82mqtt%e5%8d%8f%e8%ae%ae" aria-label="1. 快速弄懂MQTT协议">1. 快速弄懂MQTT协议</a><ul>
+                            
+                    <li>
+                        <a href="#11-%e5%9c%a8%e9%98%bf%e9%87%8c%e4%ba%91%e5%b9%b3%e5%8f%b0%e5%88%9b%e5%bb%ba%e6%b5%8b%e8%af%95%e8%ae%be%e5%a4%87" aria-label="1.1 在阿里云平台创建测试设备">1.1 在阿里云平台创建测试设备</a></li>
+                    <li>
+                        <a href="#12-topic%e8%af%b4%e6%98%8e" aria-label="1.2 Topic说明">1.2 Topic说明</a></li>
+                    <li>
+                        <a href="#13-%e4%bd%bf%e7%94%a8mqttfx%e5%b7%a5%e5%85%b7%e8%bf%9b%e8%a1%8c%e9%80%9a%e4%bf%a1" aria-label="1.3 使用MQTT.fx工具进行通信">1.3 使用MQTT.fx工具进行通信</a><ul>
+                            
+                    <li>
+                        <a href="#131-%e7%99%bb%e5%bd%95%e4%bf%a1%e6%81%af%e5%a1%ab%e5%86%99" aria-label="1.3.1 登录信息填写">1.3.1 登录信息填写</a></li>
+                    <li>
+                        <a href="#132-%e5%ae%a2%e6%88%b7%e7%ab%af%e5%8f%91%e5%b8%83%e6%95%b0%e6%8d%ae" aria-label="1.3.2 客户端发布数据">1.3.2 客户端发布数据</a></li>
+                    <li>
+                        <a href="#133-%e5%ae%a2%e6%88%b7%e7%ab%af%e8%ae%a2%e9%98%85%e6%95%b0%e6%8d%ae" aria-label="1.3.3 客户端订阅数据">1.3.3 客户端订阅数据</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#14-mqtt%e5%8f%8c%e5%90%91%e9%80%9a%e4%bf%a1" aria-label="1.4 MQTT双向通信">1.4 MQTT双向通信</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#2-ga6-b%e7%9f%ad%e4%bf%a1%e6%a8%a1%e5%9d%97%e4%bd%bf%e7%94%a8%e7%9a%84at%e6%8c%87%e4%bb%a4" aria-label="2. GA6-B短信模块使用的AT指令">2. GA6-B短信模块使用的AT指令</a></li>
+                    <li>
+                        <a href="#3-%e5%8d%95%e7%89%87%e6%9c%ba%e6%9e%84%e9%80%a0mqtt%e6%8a%a5%e6%96%87" aria-label="3. 单片机构造MQTT报文">3. 单片机构造MQTT报文</a></li>
+                    <li>
+                        <a href="#4-%e5%be%ae%e4%bf%a1%e5%b0%8f%e7%a8%8b%e5%ba%8f%e4%bd%bf%e7%94%a8mqtt%e5%8d%8f%e8%ae%ae" aria-label="4. 微信小程序使用MQTT协议">4. 微信小程序使用MQTT协议</a>
+                    </li>
+                </ul>
+            </div>
+        </details>
+    </div>
+</aside>
+<script>
+    let activeElement;
+    let elements;
+    window.addEventListener('DOMContentLoaded', function (event) {
+        checkTocPosition();
+
+        elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+         
+         activeElement = elements[0];
+         const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+         document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+     }, false);
+
+    window.addEventListener('resize', function(event) {
+        checkTocPosition();
+    }, false);
+
+    window.addEventListener('scroll', () => {
+        
+        activeElement = Array.from(elements).find((element) => {
+            if ((getOffsetTop(element) - window.pageYOffset) > 0 && 
+                (getOffsetTop(element) - window.pageYOffset) < window.innerHeight/2) {
+                return element;
+            }
+        }) || activeElement
+
+        elements.forEach(element => {
+             const id = encodeURI(element.getAttribute('id')).toLowerCase();
+             if (element === activeElement){
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+             } else {
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.remove('active');
+             }
+         })
+     }, false);
+
+    const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+    const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+    const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+    function checkTocPosition() {
+        const width = document.body.scrollWidth;
+
+        if (width - main - (toc * 2) - (gap * 4) > 0) {
+            document.getElementById("toc-container").classList.add("wide");
+        } else {
+            document.getElementById("toc-container").classList.remove("wide");
+        }
+    }
+
+    function getOffsetTop(element) {
+        if (!element.getClientRects().length) {
+            return 0;
+        }
+        let rect = element.getBoundingClientRect();
+        let win = element.ownerDocument.defaultView;
+        return rect.top + win.pageYOffset;   
+    }
+</script>
+  <div class="post-content"><h1 id="0-前言">0. 前言<a hidden class="anchor" aria-hidden="true" href="#0-前言">#</a></h1>
+<p>网上这种东西不太多，我也是看了不少资料弄出来了，觉得应该写点东西出来。<br>
+我用的板子不是arduino，用的是stm32，开发工具是Arduino IDE，因为Arduino IDE集成了较多的函数库，我们不用管底层的一些东西，都封装好了，写着方便一些。<br>
+当然，不管你板子是什么，这篇文章主要讲的不是板子的问题，而是如何通过串口的AT指令控制GA6-B这种支持GPRS的短信模块来实现MQTT协议，以及微信小程序显示单片机发布的数据。</p>
+<h1 id="1-快速弄懂mqtt协议">1. 快速弄懂MQTT协议<a hidden class="anchor" aria-hidden="true" href="#1-快速弄懂mqtt协议">#</a></h1>
+<p>我觉得学习一个新东西，最有效的办法就是先快速的实现他，先看到预期的结果，再慢慢深入进去，这样会比较快。<br>
+弄这个小项目之前，我没有了解过MQTT协议，看了看也比较蒙，因为有人用的是json格式发送数据，有人还用TCP报文，所以我就不太明白了，最后还是找一些例子直接上手操作，如果你之前没有接触过MQTT协议的话，不太明白他是怎么回事，你可以先按照我下边的步骤，弄清楚他的流程，我这里用的都是弄的TCP报文，至于其他的我也不太明白。</p>
+<blockquote>
+<p>需要工具：</p>
+<ol>
+<li>TCP测试工具</li>
+<li>MQTT.fx</li>
+<li>测试平台阿里云IOT</li>
+</ol>
+</blockquote>
+<h2 id="11-在阿里云平台创建测试设备">1.1 在阿里云平台创建测试设备<a hidden class="anchor" aria-hidden="true" href="#11-在阿里云平台创建测试设备">#</a></h2>
+<p>首先到<a href="https://iot.console.aliyun.com/" target="_blank" rel="noopener" style="color:#42b983";>https://iot.console.aliyun.com/</a>，没有注册的自己注册。</p>
+<p>登录上去以后，点击左侧“设备管理”-“产品”。然后点击“创建产品”</p>
+<center><figure>
+    <img loading="lazy" src="20200430181924463.png" width="100%"/> 
+</figure>
+</center>
+<p>我的配置如下：</p>
+<center><figure>
+    <img loading="lazy" src="20200430182017361.png" width="100%"/> 
+</figure>
+</center>
+<p>注意，这里的数据格式一定要选“透传/自定义”，连网方式随意，但是为了和后边讲短信模块的操作一致，就先选择蜂窝吧。都选择好了以后，点击下边的“保存”。<br>
+<strong>注：产品，是一个种类，他包括很多个设备，比如说某款手机，比如说小米6手机，那这就是一款产品，你不能说它是一个设备，但是如果具体到某个实物了，也就是你手里握着的那个，那个就是一个设备，总之，一个产品包括好多个设备。</strong></p>
+<p>产品新建好了以后，需要添加设备。</p>
+<center><figure>
+    <img loading="lazy" src="20200430182505894.png" width="100%"/> 
+</figure>
+</center>
+<center><figure>
+    <img loading="lazy" src="20200430182525837.png" width="100%"/> 
+</figure>
+</center>
+<center><figure>
+    <img loading="lazy" src="20200430182615891.png" width="100%"/> 
+</figure>
+</center>
+<p>点击“确认”，一个设备就新建好了。新建好的设备，你看他的状态，会显示未激活，那是因为这个设备还没有登录过，上线一次就会显示“在线/离线”了。一个设备，我们需要获得它的三个关键信息，也就是大多数人说的“三元组”，点击“查看”。</p>
+<center><figure>
+    <img loading="lazy" src="20200430182819607.png" width="100%"/> 
+</figure>
+</center>
+<p>再点击“查看”</p>
+<center><figure>
+    <img loading="lazy" src="20200430182840870.png" width="100%"/> 
+</figure>
+</center>
+<p>出来的三个数据就是该设备的三元组了，一会要用到。</p>
+<center><figure>
+    <img loading="lazy" src="20200430182859954.png" width="100%"/> 
+</figure>
+</center>
+<p>至此，一个设备就创建成功了。</p>
+<h2 id="12-topic说明">1.2 Topic说明<a hidden class="anchor" aria-hidden="true" href="#12-topic说明">#</a></h2>
+<p>在MQTT协议中，不允许两个用户之间直接通信，任何两个用户之间通信，需要MQTT服务器作中间人，来回“传话”，意思是这样，但不是真正的传话。MQTT协议采用“发布/订阅”模式，顾名思义，发布，就是把消息散发出去，你理解为客户端把数据发送给MQTT服务器就可以了。订阅的意思就是说，我想要收到某个用户的数据，我在你服务器这里订阅了这个消息，如果我订阅的那个用户有消息发出来了，那你一定要发送给我看。<br>
+在刚刚新建的设备那里，点击Topic列表</p>
+<center><figure>
+    <img loading="lazy" src="20200430183512804.png" width="100%"/> 
+</figure>
+</center>
+<p>阿里云IOT平台给出了三种Topic，我们点击自定义Topic</p>
+<center><figure>
+    <img loading="lazy" src="20200430183621716.png" width="100%"/> 
+</figure>
+</center>
+<p>其实，所有的Topic都可以用来通信，只不过用的地方不同，具体你想用到哪里，你可以自己定。打个比方，比如图里的这个第一个，后缀是update，你可以用它来上传传感器数据，当然也可以用来上报错误信息，再看第二个Topic，后缀是error，好像是用来上报错误信息的，但是你非要拿他来上报传感器数据，也是可以的。后边我们就用我图上圈起来的两个进行操作。</p>
+<h2 id="13-使用mqttfx工具进行通信">1.3 使用MQTT.fx工具进行通信<a hidden class="anchor" aria-hidden="true" href="#13-使用mqttfx工具进行通信">#</a></h2>
+<p>上边说完了基础的一些东西，设备也建好了，下边该进行最关心的通信测试了，我们只有先打通整个流程，能够直观看到数据通信成功了，才知道MQTT是怎么回事，要不然总是云里雾里。好了，继续。</p>
+<h3 id="131-登录信息填写">1.3.1 登录信息填写<a hidden class="anchor" aria-hidden="true" href="#131-登录信息填写">#</a></h3>
+<p>打开MQTT测试工具MQTT.fx，先点击下图的按钮配置连接信息</p>
+<center><figure>
+    <img loading="lazy" src="20200430184320970.png" width="100%"/> 
+</figure>
+</center>
+<center><figure>
+    <img loading="lazy" src="20200430184453116.png" width="100%"/> 
+</figure>
+</center>
+<p>这里要注意，这里信息不能错，错了就连接不上MQTT服务器了，这个界面里最主要的就是图中边框发红的那三个输入框，其他的默认就可以。<br>
+Broker Address填入服务器的地址，填写规则如下：</p>
+<blockquote>
+<p>格式：*.iot-as-mqtt.cn-shanghai.aliyuncs.com<br>
+*表示自己账号的ProductKey注意替换<br>
+我的ProductKey 是a1aExJDxQRT，那么我的这个地址就是a1aExJDxQRT.iot-as-mqtt.cn-shanghai.aliyuncs.com</p>
+</blockquote>
+<p>Broker Port是服务器的端口号，填入1883<br>
+Client ID是客户端ID，填写规则如下：</p>
+<blockquote>
+<p>格式：*|securemode=3,signmethod=hmacsha1|<br>
+*代表设备名称 注意替换<br>
+我的设备名称是tcp_client，所以客户端ID就是tcp_client|securemode=3,signmethod=hmacsha1|</p>
+</blockquote>
+<p>填写好以后先别点击确定，先点击下图选项卡</p>
+<center><figure>
+    <img loading="lazy" src="2020043018521278.png" width="100%"/> 
+</figure>
+</center>
+<p>填写登录的用户名和密码。<br>
+用户名规则如下</p>
+<blockquote>
+<p>格式：*&amp;# <br>
+*代表设备名称 #代表ProductKey<br>
+所以我的就是tcp_client&amp;a1aExJDxQRT</p>
+</blockquote>
+<p>密码的规则如下：</p>
+<blockquote>
+<p>用三元组中的DeviceSecret做为秘钥对clientId*deviceName*productKey#进行hmacsha1加密后的结果就是登录密码<br>
+*代表设备名称 #代表ProductKey 注意替换<br>
+有很多可以在线加密的网址，随便找一个加密一下就可以了。<br>
+我的加密结果是14f0e4037fd1ec3d7cf61902d4352c8bd82d2603</p>
+</blockquote>
+<h3 id="132-客户端发布数据">1.3.2 客户端发布数据<a hidden class="anchor" aria-hidden="true" href="#132-客户端发布数据">#</a></h3>
+<p>都填写好了以后，点击下边的应用，然后关闭该窗口，回到主界面后点击连接，如果信息没有填错的话，应该是连接成功了，如下图。</p>
+<center><figure>
+    <img loading="lazy" src="20200430185801719.png" width="100%"/> 
+</figure>
+</center>
+<p>登录成功以后，找到上边提到的两个Topic中的那个发布的Topic，把地址复制下来，填写到下图的位置。</p>
+<center><figure>
+    <img loading="lazy" src="20200430185945904.png" width="100%"/> 
+</figure>
+</center>
+<p>先别点击发布，我们在阿里云IOT平台上，点击日志服务，再点击前往查看。</p>
+<center><figure>
+    <img loading="lazy" src="20200430190030447.png" width="100%"/> 
+</figure>
+</center>
+<p>在这里可以看到一些关于该设备的信息，因为刚才只登录了，所以这里只有online或者offline的信息。</p>
+<center><figure>
+    <img loading="lazy" src="20200430190129923.png" width="100%"/> 
+</figure>
+</center>
+<p>回到MQTT.fx界面，点击“Publish”发布一条消息，内容为test</p>
+<center><figure>
+    <img loading="lazy" src="20200430190229614.png" width="100%"/> 
+</figure>
+</center>
+<p>再回到刚刚阿里云IOT的日志界面，点击搜索，可以看到有数据传上来了。</p>
+<center><figure>
+    <img loading="lazy" src="20200430190332173.png" width="100%"/> 
+</figure>
+</center>
+<p>点击蓝色的那个数字，查看消息内容。</p>
+<center><figure>
+    <img loading="lazy" src="20200430190358451.png" width="100%"/> 
+</figure>
+</center>
+<p>这个过程就是设备上传的过程，只不过在嵌入式开发的时候，我们就不是用MQTT.fx这种工具来操作了，需要手动实现MQTT.fx刚才的动作。下边来看客户端怎么获得服务器下发的消息。</p>
+<h3 id="133-客户端订阅数据">1.3.3 客户端订阅数据<a hidden class="anchor" aria-hidden="true" href="#133-客户端订阅数据">#</a></h3>
+<p>在阿里云IOT网页里，我们回到“设备详情”界面下，点击“Topic” - “自定义Topic”，我们尝试下发一个数据给已经登录的MQTT客户端。</p>
+<center><figure>
+    <img loading="lazy" src="20200430190749404.png" width="100%"/> 
+</figure>
+</center>
+<p>将“订阅”的这个Topic复制下来，粘贴到MQTT.fx的订阅选项卡界面里边，如下图：</p>
+<center><figure>
+    <img loading="lazy" src="20200430191023335.png" width="100%"/> 
+</figure>
+</center>
+<p>点击“Subscribe”订阅该Topic，此时，我们回到阿里云IOT的网页，点击那个Topic后边的“下发消息”，填入一条数据，点击“确认”</p>
+<center><figure>
+    <img loading="lazy" src="20200430190835477.png" width="100%"/> 
+</figure>
+</center>
+<p>这个时候MQTT.fx中就可以收到这个消息了</p>
+<center><figure>
+    <img loading="lazy" src="20200430191230205.png" width="100%"/> 
+</figure>
+</center>
+<p>至此，就完成了客户端订阅消息的流程，这只是帮助你了解MQTT通信的过程，在下边的项目中，订阅消息是由小程序做的。</p>
+<h2 id="14-mqtt双向通信">1.4 MQTT双向通信<a hidden class="anchor" aria-hidden="true" href="#14-mqtt双向通信">#</a></h2>
+<p>上边我们说了一个设备的“发布和订阅”，那么在一个项目中，设备端（数据采集的这端）和小程序端如果都用同一个阿里云的设备，会挤掉线的，也就是说阿里云IOT的一个设备不能同时在两个地方登陆，那我们要想实现采集器的数据发给小程序，该怎么做呢？答案就是我们需要建两个阿里云IOT的设备，一个设备是采集器，一个设备是小程序，采集器只发布数据，小程序只订阅数据，那么这样一来，好像可以了，但实际不可以，因为每一个阿里云IOT的设备只能订阅和发布自己的Topic，不能订阅别的设备的。所以我们还需要做数据的转发，**将采集器用于发布的Topic获得的数据  转发  给小程序订阅的Topic。**而中间的这个转发过程，阿里云IOT平台可以自动完成，这样来看，整个过程可以实现了，下边来操作。<br>
+新建两个设备，这里不赘述了，都是一模一样的，两个设备建立在一个产品里就可以，不用两个产品。建立好了以后再往下看。</p>
+<center><figure>
+    <img loading="lazy" src="2020043019251212.png" width="100%"/> 
+</figure>
+</center>
+<p>点击阿里云平台左侧的云产品流动</p>
+<center><figure>
+    <img loading="lazy" src="20200430192306718.png" width="50%"/> 
+</figure>
+</center>
+<p>创建一个规则，规则名称随意，数据格式选择<strong>二进制</strong>，然后进入到规则编辑界面，点击“编写SQL”</p>
+<center><figure>
+    <img loading="lazy" src="20200430192614298.png" width="100%"/> 
+</figure>
+</center>
+<p><strong>字段填入一个*号</strong>，*号是通配符，表示转发所有的数据。</p>
+<center><figure>
+    <img loading="lazy" src="20200430192741553.png" width="100%"/> 
+</figure>
+</center>
+<p>因为是从采集器转发到小程序，所以这里要选择采集器这个设备的“发布的Topic”，也就是user/update，点击确定。<br>
+在点击下图按钮，添加一个数据转发的目的地</p>
+<center><figure>
+    <img loading="lazy" src="2020043019284473.png" width="100%"/> 
+</figure>
+</center>
+<center><figure>
+    <img loading="lazy" src="20200430192911530.png" width="100%"/> 
+</figure>
+</center>
+<p>注意这里的Topic别选错，因为微信端是要订阅，点击确定。<br>
+至此，可以实现两个设备间单向通信了，你可以开两个MQTT.fx工具进行模拟操作，一个模拟采集器发布数据，一个模拟小程序订阅数据，测试下是否可以正常收到订阅信息，在这我就不写了。<br>
+需要说明的是，到这里我们只是对MQTT协议的通信模式有了一些直观的感受，但是具体底层是怎么做的，承载MQTT协议的TCP到底是怎么构造的还没有说，这些将在第3节展开说。</p>
+<h1 id="2-ga6-b短信模块使用的at指令">2. GA6-B短信模块使用的AT指令<a hidden class="anchor" aria-hidden="true" href="#2-ga6-b短信模块使用的at指令">#</a></h1>
+<p>其实用到的AT指令只有两个，一个是连接TCP的，还有一个是发送TCP数据的。至于具体指令是什么，你直接查看你模块的开发文档就好了。</p>
+<h1 id="3-单片机构造mqtt报文">3. 单片机构造MQTT报文<a hidden class="anchor" aria-hidden="true" href="#3-单片机构造mqtt报文">#</a></h1>
+<p>MQTT是应用层的协议，运输层采用TCP进行承载，但是GA6-B模块呢，只支持TCP和UDP两种运输层的协议，好在MQTT官方有说明怎么构造TCP报文，具体的文件内容看这里。<a href="https://mcxiaoke.gitbooks.io/mqtt-cn/content/mqtt/03-ControlPackets.html" target="_blank" rel="noopener" style="color:#42b983";>https://mcxiaoke.gitbooks.io/mqtt-cn/content/mqtt/03-ControlPackets.html</a><br>
+协议的格式，官方已经说的很清楚了，如果你想测试的话，想验证一下这个协议的构成呢，可以按照下边的方法验证，或者说实践。<br>
+在1.3中，我们使用MQTT.fx软件进行登录和其他的操作，但是点击登录按钮以后，程序发出的TCP报文是什么样子的呢?我们怎么才能看到？这也好办，我们只需要搭建一个TCP服务器就可以了，在MQTT.fx中配置登录信息的时候，把服务器ip地址写成127.0.0.1，然后其他的信息不变。此时，我们用下载好的TCP测试工具，创建一个服务器，端口号为1883</p>
+<center><figure>
+    <img loading="lazy" src="20200430195629920.png" width="100%"/> 
+</figure>
+</center>
+<p>启动服务器后，在MQTT.fx中链接服务器，在TCP测试工具中就可以看到MQTT.fx发出的登录数据包了，当然要以16进制查看才可以。</p>
+<center><figure>
+    <img loading="lazy" src="20200430195800780.png" width="100%"/> 
+</figure>
+</center>
+<p>看到这些16进制数据，你应该就会明白了，上边给出的开发文档中说的那些什么字节啊什么的都是什么意思了，都摆在你眼前了，也就可以自己构造TCP报文了。当然，在这，有的人可能会问，这只是看到了登录的报文，那如果想查看发布或者订阅的怎么办呢？我这还没登录成功呢，就不能发布或者订阅啊？<br>
+解决办法：MQTT.fx连接服务器，只是发送了请求，那我们模拟出来的这个TCP服务器还没做出回应啊，我们回应一个它登录成功的报文不就好了么，根据官方文档，成功登录的报文16进制是 20 02 00 00这四个字节，我们在模拟的TCP服务器中按照16进制回复一下，就可以在MQTT.fx中看到登录成功了。</p>
+<center><figure>
+    <img loading="lazy" src="20200430200255501.png" width="100%"/> 
+</figure>
+</center>
+<center><figure>
+    <img loading="lazy" src="20200430200312218.png" width="100%"/> 
+</figure>
+</center>
+<p>说大这，其实你应该已经知道了怎么构造报文了，只需要按照官方给出的那个格式弄就可以了，用刚才查看模拟TCP的办法，检验一下自己构造的正确与否就可以了。网上有人整理好了，我这里借用一下代码：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#define    u8   unsigned char
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define    u16   unsigned short
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define    u32  unsigned int
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/*************构造MQTT连接包*******************/</span>
+</span></span><span class="line"><span class="cl"><span class="n">u8</span> <span class="nf">mqtt_connect_message</span><span class="p">(</span><span class="n">u8</span> <span class="o">*</span><span class="n">mqtt_message</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">client_id</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">username</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">password</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">u8</span> <span class="n">client_id_length</span> <span class="o">=</span> <span class="n">strlen</span><span class="p">(</span><span class="n">client_id</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">u8</span> <span class="n">username_length</span> <span class="o">=</span> <span class="n">strlen</span><span class="p">(</span><span class="n">username</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">u8</span> <span class="n">password_length</span> <span class="o">=</span> <span class="n">strlen</span><span class="p">(</span><span class="n">password</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">u8</span> <span class="n">packetLen</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">u8</span> <span class="n">i</span><span class="p">,</span> <span class="n">baseIndex</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">packetLen</span> <span class="o">=</span> <span class="mi">12</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">client_id_length</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">username_length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">packetLen</span> <span class="o">=</span> <span class="n">packetLen</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">username_length</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">password_length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">packetLen</span> <span class="o">=</span> <span class="n">packetLen</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">password_length</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">mqtt_message</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">16</span><span class="p">;</span>       <span class="c1">//0x10 // MQTT Message Type CONNECT
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">mqtt_message</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">packetLen</span> <span class="o">-</span> <span class="mi">2</span><span class="p">;</span>  <span class="c1">//
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">baseIndex</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">packetLen</span> <span class="o">&gt;</span> <span class="mi">127</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">mqtt_message</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>      <span class="c1">//packetLen/127;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">baseIndex</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="n">mqtt_message</span><span class="p">[</span><span class="n">baseIndex</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>    <span class="c1">// Protocol Name Length MSB
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">mqtt_message</span><span class="p">[</span><span class="n">baseIndex</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>    <span class="c1">// Protocol Name Length LSB
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">mqtt_message</span><span class="p">[</span><span class="n">baseIndex</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="mi">77</span><span class="p">;</span>   <span class="c1">// ASCII Code for M
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">mqtt_message</span><span class="p">[</span><span class="n">baseIndex</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="mi">81</span><span class="p">;</span>   <span class="c1">// ASCII Code for Q
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">mqtt_message</span><span class="p">[</span><span class="n">baseIndex</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="mi">84</span><span class="p">;</span>   <span class="c1">// ASCII Code for T
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">mqtt_message</span><span class="p">[</span><span class="n">baseIndex</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="mi">84</span><span class="p">;</span>   <span class="c1">// ASCII Code for T
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">mqtt_message</span><span class="p">[</span><span class="n">baseIndex</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>    <span class="c1">// MQTT Protocol version = 4
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">mqtt_message</span><span class="p">[</span><span class="n">baseIndex</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="mi">194</span><span class="p">;</span>    <span class="c1">// conn flags
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">mqtt_message</span><span class="p">[</span><span class="n">baseIndex</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>    <span class="c1">// Keep-alive Time Length MSB
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">mqtt_message</span><span class="p">[</span><span class="n">baseIndex</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="mi">300</span><span class="p">;</span>   <span class="c1">// Keep-alive Time Length LSB
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">mqtt_message</span><span class="p">[</span><span class="n">baseIndex</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0xff00</span> <span class="o">&amp;</span> <span class="n">client_id_length</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">;</span> <span class="c1">// Client ID length MSB
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">mqtt_message</span><span class="p">[</span><span class="n">baseIndex</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xff</span> <span class="o">&amp;</span> <span class="n">client_id_length</span><span class="p">;</span> <span class="c1">// Client ID length LSB
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// Client ID
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">client_id_length</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">mqtt_message</span><span class="p">[</span><span class="n">baseIndex</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">client_id</span> <span class="o">+</span> <span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="n">baseIndex</span> <span class="o">=</span> <span class="n">baseIndex</span> <span class="o">+</span> <span class="n">client_id_length</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">username_length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">//username
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">mqtt_message</span><span class="p">[</span><span class="n">baseIndex</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0xff00</span> <span class="o">&amp;</span> <span class="n">username_length</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">;</span> <span class="c1">//username length MSB
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">mqtt_message</span><span class="p">[</span><span class="n">baseIndex</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xff</span> <span class="o">&amp;</span> <span class="n">username_length</span><span class="p">;</span> <span class="c1">//username length LSB
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">username_length</span> <span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">mqtt_message</span><span class="p">[</span><span class="n">baseIndex</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">username</span> <span class="o">+</span> <span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">baseIndex</span> <span class="o">=</span> <span class="n">baseIndex</span> <span class="o">+</span> <span class="n">username_length</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">password_length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">//password
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">mqtt_message</span><span class="p">[</span><span class="n">baseIndex</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0xff00</span> <span class="o">&amp;</span> <span class="n">password_length</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">;</span> <span class="c1">//password length MSB
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">mqtt_message</span><span class="p">[</span><span class="n">baseIndex</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xff</span> <span class="o">&amp;</span> <span class="n">password_length</span><span class="p">;</span> <span class="c1">//password length LSB
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">password_length</span> <span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">mqtt_message</span><span class="p">[</span><span class="n">baseIndex</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">password</span> <span class="o">+</span> <span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">baseIndex</span> <span class="o">+=</span> <span class="n">password_length</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">baseIndex</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/*********MQTT发布消息包******************************/</span>
+</span></span><span class="line"><span class="cl"><span class="n">u8</span> <span class="nf">mqtt_publish_message</span><span class="p">(</span><span class="n">u8</span> <span class="o">*</span><span class="n">mqtt_message</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">topic</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">message</span><span class="p">,</span> <span class="n">u8</span> <span class="n">qos</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">u16</span> <span class="n">topic_length</span> <span class="o">=</span> <span class="n">strlen</span><span class="p">(</span><span class="n">topic</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">u16</span> <span class="n">message_length</span> <span class="o">=</span> <span class="n">strlen</span><span class="p">(</span><span class="n">message</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">u16</span> <span class="n">i</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">static</span> <span class="n">u16</span> <span class="n">id</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">mqtt_message</span><span class="p">[</span><span class="n">index</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="mi">48</span><span class="p">;</span> <span class="c1">//0x30 // MQTT Message Type PUBLISH
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">if</span> <span class="p">(</span><span class="n">qos</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">mqtt_message</span><span class="p">[</span><span class="n">index</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">topic_length</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">message_length</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">else</span>
+</span></span><span class="line"><span class="cl">    <span class="n">mqtt_message</span><span class="p">[</span><span class="n">index</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">topic_length</span> <span class="o">+</span> <span class="n">message_length</span><span class="p">;</span>   <span class="c1">// Remaining length
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">mqtt_message</span><span class="p">[</span><span class="n">index</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0xff00</span> <span class="o">&amp;</span> <span class="n">topic_length</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">mqtt_message</span><span class="p">[</span><span class="n">index</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xff</span> <span class="o">&amp;</span> <span class="n">topic_length</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// Topic
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">topic_length</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">mqtt_message</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">topic</span> <span class="o">+</span> <span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="n">index</span> <span class="o">+=</span> <span class="n">topic_length</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">qos</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">mqtt_message</span><span class="p">[</span><span class="n">index</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0xff00</span> <span class="o">&amp;</span> <span class="n">id</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">mqtt_message</span><span class="p">[</span><span class="n">index</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xff</span> <span class="o">&amp;</span> <span class="n">id</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">id</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// Message
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">message_length</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">mqtt_message</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">message</span> <span class="o">+</span> <span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="n">index</span> <span class="o">+=</span> <span class="n">message_length</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">index</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*****************发布确认包****************************/</span>
+</span></span><span class="line"><span class="cl"><span class="n">u8</span> <span class="nf">mqtt_puback_message</span><span class="p">(</span><span class="n">u8</span> <span class="o">*</span><span class="n">mqtt_message</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">static</span> <span class="n">u16</span> <span class="n">id</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">mqtt_message</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">64</span><span class="p">;</span>       <span class="c1">//0x40  PUBACK
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">mqtt_message</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">mqtt_message</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0xff00</span> <span class="o">&amp;</span> <span class="n">id</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">mqtt_message</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xff</span> <span class="o">&amp;</span> <span class="n">id</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">id</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="mi">4</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*********构建订阅请求*********/</span>
+</span></span><span class="line"><span class="cl"><span class="n">u16</span> <span class="nf">mqtt_subscribe_message</span><span class="p">(</span><span class="n">u8</span> <span class="o">*</span><span class="n">mqtt_message</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">topic</span><span class="p">,</span> <span class="n">u8</span> <span class="n">qos</span><span class="p">,</span> <span class="n">u8</span> <span class="n">whether</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">u16</span> <span class="n">topic_len</span> <span class="o">=</span> <span class="n">strlen</span><span class="p">(</span><span class="n">topic</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">u16</span> <span class="n">i</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">static</span> <span class="n">u16</span> <span class="n">id</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">id</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">whether</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">mqtt_message</span><span class="p">[</span><span class="n">index</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="mi">130</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">else</span>
+</span></span><span class="line"><span class="cl">    <span class="n">mqtt_message</span><span class="p">[</span><span class="n">index</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="mi">162</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">mqtt_message</span><span class="p">[</span><span class="n">index</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="n">topic_len</span> <span class="o">+</span> <span class="mi">5</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">mqtt_message</span><span class="p">[</span><span class="n">index</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0xff00</span> <span class="o">&amp;</span> <span class="n">id</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">mqtt_message</span><span class="p">[</span><span class="n">index</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xff</span> <span class="o">&amp;</span> <span class="n">id</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">mqtt_message</span><span class="p">[</span><span class="n">index</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0xff00</span> <span class="o">&amp;</span> <span class="n">topic_len</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">mqtt_message</span><span class="p">[</span><span class="n">index</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xff</span> <span class="o">&amp;</span> <span class="n">topic_len</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">topic_len</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">mqtt_message</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">topic</span> <span class="o">+</span> <span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="n">index</span> <span class="o">+=</span> <span class="n">topic_len</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">whether</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">mqtt_message</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">qos</span><span class="p">;</span><span class="c1">//QoS
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">index</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">index</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/***********构建MQTT请求PING包********************/</span>
+</span></span><span class="line"><span class="cl"><span class="n">u8</span> <span class="nf">mqtt_ping_message</span><span class="p">(</span><span class="n">u8</span> <span class="o">*</span><span class="n">mqtt_message</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">mqtt_message</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">192</span><span class="p">;</span>  <span class="c1">//0xC0  PING
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">mqtt_message</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">//
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">return</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/************构建断开包******************/</span>
+</span></span><span class="line"><span class="cl"><span class="n">u8</span> <span class="nf">mqtt_disconnect_message</span><span class="p">(</span><span class="n">u8</span> <span class="o">*</span><span class="n">mqtt_message</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">mqtt_message</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">224</span><span class="p">;</span>  <span class="c1">//0xE0  DISCONNECT
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">mqtt_message</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">//
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">return</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>至于怎么调用，就很简单了，你自己琢磨琢磨就可以了。单片机内构造好报文，然后通过串口让GA6-B发送出去就可以了。</p>
+<h1 id="4-微信小程序使用mqtt协议">4. 微信小程序使用MQTT协议<a hidden class="anchor" aria-hidden="true" href="#4-微信小程序使用mqtt协议">#</a></h1>
+<p>这个网上有介绍的比较详细的文章了，自行查找吧，可以解决的。</p>
+<p>综上，可以完成采集器到小程序整个MQTT通信了，完结，撒花。</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Clay-Hex.github.io/posts/2020/09/exgcd-cpp-code/">
+    <span class="title">« 上一篇</span>
+    <br>
+    <span>扩展欧几里得算法详解及C&#43;&#43;代码实现</span>
+  </a>
+  <a class="next" href="https://Clay-Hex.github.io/posts/2020/03/quick-power/">
+    <span class="title">下一篇 »</span>
+    <br>
+    <span>对快速幂代码的理解</span>
+  </a>
+</nav>
+
+  </footer><script>
+    function createGiscusScript(data) {
+      const giscusScript = document.createElement('script');
+  
+      
+      Object.entries(data).forEach(([key, value]) => giscusScript.setAttribute(key, value));
+  
+      
+      document.querySelector('article').appendChild(giscusScript);
+  
+      
+      const toggle = document.querySelector('label[for="switch_default"]');
+      if (toggle) {
+        toggle.addEventListener('click', function () {
+          
+          const theme = document.body.classList.contains('dark') ? 'transparent_dark' : 'light';
+          giscusScript.setAttribute('data-theme', theme);
+  
+          
+          sendMessage({ setConfig: { theme } });
+        });
+      }
+    }
+  
+    function sendMessage(message) {
+      const iframe = document.querySelector('iframe.giscus-frame');
+      if (iframe) {
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+    }
+  
+    document.addEventListener('DOMContentLoaded', function () {
+      
+      const giscusAttributes = {
+        src: 'https://giscus.app/client.js',
+        'data-repo': 'Clay-Hex/BlogComments',
+        'data-repo-id': 'R_kgDOLexoRQ',
+        'data-category': 'Announcements',
+        'data-category-id': 'DIC_kwDOLexoRc4Cd5Ao',
+        'data-mapping': 'pathname',
+        'data-strict': '1',
+        'data-reactions-enabled': '1',
+        'data-emit-metadata': '0',
+        'data-input-position': 'top',
+        'data-lang': 'zh-CN',
+        crossorigin: 'anonymous',
+        async: '',
+      };
+  
+      
+      giscusAttributes['data-theme'] = document.body.classList.contains('dark')
+        ? 'transparent_dark'
+        : 'light';
+  
+      
+      createGiscusScript(giscusAttributes);
+  
+      
+      const bodyObserver = new MutationObserver(() => {
+        const theme = document.body.classList.contains('dark') ? 'transparent_dark' : 'light';
+        sendMessage({ setConfig: { theme } });
+      });
+  
+      bodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    });
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+  </script>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://Clay-Hex.github.io/">Clay&#39;s Blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <span class="topInner">
+        <svg class="topSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z"/>
+        </svg>
+        <span id="read_progress"></span>
+    </span>
+</a>
+
+<script>
+    document.addEventListener('scroll', function (e) {
+        const readProgress = document.getElementById("read_progress");
+        const scrollHeight = document.documentElement.scrollHeight;
+        const clientHeight = document.documentElement.clientHeight;
+        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        readProgress.innerText = ((scrollTop / (scrollHeight - clientHeight)).toFixed(2) * 100).toFixed(0);
+    })
+</script>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = '复制';
+
+        function copyingDone() {
+            copybutton.innerHTML = '已复制';
+            setTimeout(() => {
+                copybutton.innerHTML = '复制';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        let language = codeblock.className.replaceAll("language-", "")
+        let macTool = document.createElement("div")
+        let macTool1 = document.createElement("div")
+        let macTool2 = document.createElement("div")
+        let macTool3 = document.createElement("div")
+        let languageType = document.createElement("div")
+        languageType.innerText = language
+        macTool.setAttribute('class', 'mac-tool')
+        macTool1.setAttribute('class', 'mac bb1')
+        macTool2.setAttribute('class', 'mac bb2')
+        macTool3.setAttribute('class', 'mac bb3')
+        languageType.setAttribute('class', 'language-type')
+        macTool.appendChild(macTool1)
+        macTool.appendChild(macTool2)
+        macTool.appendChild(macTool3)
+        macTool.appendChild(languageType)
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+            container.appendChild(macTool)
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+            container.appendChild(macTool)
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+            container.appendChild(macTool)
+        }
+    });
+</script>
+</body>
+
+</html>

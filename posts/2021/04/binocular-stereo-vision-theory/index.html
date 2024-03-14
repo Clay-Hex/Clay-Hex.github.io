@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="zh" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>双目立体视觉的成像原理及相关问题 | Clay&#39;s Blog</title>
+<meta name="keywords" content="立体视觉, 双目视觉, 相机成像原理, 相机坐标系, 像素坐标系, 图像坐标系">
+<meta name="description" content="序： 记录学习过程中自己的理解以及遇到的问题，慢慢补充。 若有错误，还希望各位大佬不吝赐教。 0. 零零散散 0.1 公开数据集 Middlebury：https://vision.middlebury.edu/stereo/data/(室内) KITTI：http://www.cvlibs.net/">
+<meta name="author" content="Clay">
+<link rel="canonical" href="https://Clay-Hex.github.io/posts/2021/04/binocular-stereo-vision-theory/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.js" onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://Clay-Hex.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://Clay-Hex.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://Clay-Hex.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://Clay-Hex.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://Clay-Hex.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="zh" href="https://Clay-Hex.github.io/posts/2021/04/binocular-stereo-vision-theory/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.css" integrity="sha384-bYdxxUwYipFNohQlHt0bjN/LCpueqWz13HufFEV1SUatKs1cm4L6fFgCi1jT643X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.js" integrity="sha384-Qsn9KnoKISj6dI8g7p1HBlNpVx0I8p1SvlwOldgi3IorMle61nQy4zEahWYtljaz" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+          
+          
+          delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false},
+              {left: '\\(', right: '\\)', display: false},
+              {left: '\\[', right: '\\]', display: true}
+          ],
+          
+          throwOnError : false
+        });
+    });
+</script>
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><meta property="og:title" content="双目立体视觉的成像原理及相关问题" />
+<meta property="og:description" content="序： 记录学习过程中自己的理解以及遇到的问题，慢慢补充。 若有错误，还希望各位大佬不吝赐教。 0. 零零散散 0.1 公开数据集 Middlebury：https://vision.middlebury.edu/stereo/data/(室内) KITTI：http://www.cvlibs.net/" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://Clay-Hex.github.io/posts/2021/04/binocular-stereo-vision-theory/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-04-25T22:00:07+08:00" />
+<meta property="article:modified_time" content="2021-04-25T22:00:07+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="双目立体视觉的成像原理及相关问题"/>
+<meta name="twitter:description" content="序： 记录学习过程中自己的理解以及遇到的问题，慢慢补充。 若有错误，还希望各位大佬不吝赐教。 0. 零零散散 0.1 公开数据集 Middlebury：https://vision.middlebury.edu/stereo/data/(室内) KITTI：http://www.cvlibs.net/"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "📒 记录",
+      "item": "https://Clay-Hex.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "📚 学习",
+      "item": "https://Clay-Hex.github.io/posts/learn/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "双目立体视觉的成像原理及相关问题",
+      "item": "https://Clay-Hex.github.io/posts/2021/04/binocular-stereo-vision-theory/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "双目立体视觉的成像原理及相关问题",
+  "name": "双目立体视觉的成像原理及相关问题",
+  "description": "序： 记录学习过程中自己的理解以及遇到的问题，慢慢补充。 若有错误，还希望各位大佬不吝赐教。 0. 零零散散 0.1 公开数据集 Middlebury：https://vision.middlebury.edu/stereo/data/(室内) KITTI：http://www.cvlibs.net/",
+  "keywords": [
+    "立体视觉", "双目视觉", "相机成像原理", "相机坐标系", "像素坐标系", "图像坐标系"
+  ],
+  "articleBody": "序： 记录学习过程中自己的理解以及遇到的问题，慢慢补充。\n若有错误，还希望各位大佬不吝赐教。\n0. 零零散散 0.1 公开数据集 Middlebury：https://vision.middlebury.edu/stereo/data/(室内)\nKITTI：http://www.cvlibs.net/datasets/kitti/stereo(室外驾驶)\nSceneFlow：https://lmb.informatik.uni-freiburg.de/resources/datasets\n0.2 左、右手坐标系 左手、右手坐标系\n伸出大拇指，食指和中指，自然摆成三指互相垂直的状态。\n中指：X轴\n大拇指：Y轴\n食指：Z轴\n左手建成的坐标系就是左手坐标系，右手建成的坐标系就是右手坐标系。\n1. 四个经典的坐标系 1.1 世界坐标系 暂时不重要\n1.2 相机坐标系 图中的（Oc-XcYcZc）。\n1.3 图像坐标系 图中的（o-xy）\n1.4 像素坐标系 图中的（ouv-uv）\n2. 理想的单目成像模型 三维空间点P，在相机坐标系下的坐标为P(Xc, Yc, Zc)，它在图像坐标系下的成像点为p(x, y)。\n这里存在两组相似三角形：△ABOc ∽ △oCOc 和 △PBOc ∽ △pCOc\n（1） 由△ABOc ∽ △oCOc，可知：\n$$ \\frac{AB}{oC} = \\frac{AO_c}{oO_c} = \\frac{BO_c}{CO_c} $$ （2） 由△PBOc ∽ △pCOc，可知：\n$$ \\frac{PB}{pC} = \\frac{PO_c}{pO_c} = \\frac{BO_c}{CO_c} $$ 联立上边两个等式，可以得到：\n$$ \\frac{AB}{oC} = \\frac{AO_c}{oO_c} = \\frac{PB}{pC} $$ 根据点的坐标，可以将上式转换为：\n$$ \\frac{X_c}{x} = \\frac{Z_c}{f} = \\frac{Y_c}{y} $$ 变一下型可以得到：\n$$ x = f \\frac{X_c}{Z_c}，y = f \\frac{Y_c}{Z_c} $$ 写成矩阵的形式，并且用齐次坐标的话，就可以写成常见的那个矩阵关系：\n$$ Z_c\\left[ \\begin{matrix} x \\\\ y \\\\ 1 \\end{matrix} \\right] = \\left[ \\begin{matrix} f \u0026 0 \u0026 0 \u0026 0 \\\\ 0 \u0026 f \u0026 0 \u0026 0 \\\\ 0 \u0026 0 \u0026 1 \u0026 0 \\end{matrix} \\right] \\left[ \\begin{matrix} X_c \\\\ Y_c \\\\ Z_c \\\\ 1 \\end{matrix} \\right] $$ 3. 理想的双目成像模型 在上边的单目成像模型中，式子\n$$ x = f \\frac{X_c}{Z_c}，y = f \\frac{Y_c}{Z_c} $$ 可以变形为：\n$$ X_c = \\frac{Z_c}{f}x，Y_c = \\frac{Z_c}{f}y $$ 式中，x和y都是图像坐标系下的坐标，将x和y转成像素坐标系下的坐标，代入像素坐标转图像坐标公式可以得到：\n$$ X_c = \\frac{Z_c}{f}d_x(u-u_0)，Y_c = \\frac{Z_c}{f}d_y(v-v_0) $$ 至此，可以得到点P的Xc和Yc的表达式，式中除了Zc都是已知量。\n此时，引入下图中的理想双目成像模型：\n点P在两个平面上的投影点分别为$P_L$和$P_R$，b为基线长度，$X_L$和$X_R$分别是两个成像点距离各自所在成像平面左边的距离，两个成像平面的像主点在 X 方向上的坐标为X0L和X0R 则可以得到点P在左右相机中的视差：\n$$ d = X_L - X_R（如果计算左图视差，就是左减右，计算右图视差就是右减左） $$ 两个成像点$P_L$和$P_R$之间的物理距离为：\n$$ P_LP_R = b-(X_L - X_{0L}) - (X_{0R} -X_R ) = b - X_L + X_{0L} -X_{0R} + X_R = b - d + X_{0L} - X_{0R} $$ 上图中存在一组相似三角形：△PPLPR ∽ △POLOR。可以得到下式：\n$$ \\frac{P_LP_R}{Z_c-f} = \\frac{b}{Z_c} $$ 代入$P_LP_R$，可以得到：\n$$ \\frac{ b - d + X_{0L} - X_{0R} }{Z_c-f} = \\frac{b}{Z_c} $$ 变形，可以得到:\n$$ Z_c = \\frac{b f}{ d + X_{0R} - X_{0L} } $$ 当$X_{0R} 与 X_{0L}相等时$，上式简化为：\n$$ Z_c = \\frac{b f}{ d } $$ 至此，Zc也得到了，物点P的三维坐标都得到了：\n$$ \\left\\{ \\begin{aligned} X_c \u0026 = \u0026 \\frac{Z_c}{f}d_x(u-u_0) \\\\ Y_c \u0026 = \u0026 \\frac{Z_c}{f}d_y(v-v_0) \\\\ Z_c \u0026 = \u0026 \\frac{b f}{ d + X_{0R} - X_{0L} } \\end{aligned} \\right. $$ 式中的$f、b、d_x、d_y、u_0、v_0、X_{0L}、X_{0R}$都是可以通过标定得到的，$u$和$v$是该点在左图中的像素坐标，视差$d$可以通过立体匹配得到。所以，点P的相机坐标可以得到。\n注：\nopencv中使用函数stereoRectify()时，如果参数flags设置为CV_CALIB_ZERO_DISPARITY ，则该函数会让两幅校正后的图像的主点有相同的像素坐标，也就是上边的$X_{0R}$ 与 $X_{0L}$相等，否则该函数会水平或垂直的移动图像，以使得其有用的范围最大。\n上式当中焦距 f 的单位 mm，不便于后边计算，所有在双目视觉领域中，出现了“等效焦距\"，也就是经常见到的$f_x = \\frac{f}{dx}和f_y = \\frac{f}{dy}$。\n其中，$d_x$表示一个像素在 x 方向有多少mm，$d_y$表示一个像素在 y 方向有多少mm。而且，在标定的结果当中，一般也是直接得到$f_x$和f$_y$。一般的工业相机会在详细的资料介绍中，会给出$d_x$和$d_y$的值，可以手动计算验证一下。\n引入等效焦距后，物点P的三维坐标可以写成：\n$$ \\left\\{ \\begin{aligned} X_c \u0026 = \u0026 \\frac{Z_c}{f_x}(u-u_0) \\\\ Y_c \u0026 = \u0026 \\frac{Z_c}{f_y}(v-v_0) \\\\ Z_c \u0026 = \u0026 \\frac{b f}{ d + X_{0R} - X_{0L} } \\end{aligned} \\right. $$ 4. 非理想的双目成像模型 上边都是理想的情况，而现实的情况是，两个相机各自都存在畸变，并且在安装双目时，既做不到让两个相机的光轴完全平行，也做不到让两个相机的成像平面平行。\n4.1 存在畸变，怎么办？ 通过标定得到畸变系数，采集到双目图像后，通过畸变校正，在一定程度上消除畸变，得到较为理想的左图和右图。\n4.2 无法做到共面行对准，怎么办？ 在畸变校正之后，通过使用立体校正算法，将两幅非共面行对准的图像 校正成为 共面行对准的左右图像。\n5. 为什么距离越远，误差越大？ 深度的公式：\n$$ Z_c = \\frac{b f}{ d } $$ 可以的得出两个结论：\n视差与深度成反比 同样的视差间隔，距离越远，两个视差所对应的深度间隔越大。 对于第二点，可以举例：\n假定，$bf=1000$，\n$$ \\left\\{ \\begin{aligned} Z_c \u0026 = \u0026 \\frac{1000}{1} \u0026 = 1000.0\\\\ Z_c \u0026 = \u0026 \\frac{1000}{2} \u0026 = 500.0\\\\ Z_c \u0026 = \u0026 \\frac{1000}{79} \u0026 = 12.6582 \\\\ Z_c \u0026 = \u0026 \\frac{1000}{80} \u0026 = 12.5 \\\\ \\end{aligned} \\right. $$ 1和2，79和80，两组数，都是间隔1个像素的视差，但是第一组的深度相差了500,第二组的深度差了0.1582。目标物离相机越远时，视差越小，对应第一组数据的情形，所以说，同样的视差间隔，距离越远，两个视差所对应的深度间隔越大。所以在距离较远时，视差引起的误差更大。\nOpenCV中的一些操作 1. 基本数据 首先由双目标定，可以得到左相机的内参M1和畸变系数D1，可以得到右相机的内参M2和畸变系数D2，以及两个相机之间的旋转矩阵R和平移矩阵T。\n2.立体校正 使用stereoRectify函数主要包含两个步骤：畸变校正、立体矫正，还有一些方便后续计算的矩阵R1、R2、P1、P2、Q。\nCV_EXPORTS_W void stereoRectify( InputArray cameraMatrix1, InputArray distCoeffs1, InputArray cameraMatrix2, InputArray distCoeffs2, Size imageSize, InputArray R, InputArray T, OutputArray R1, OutputArray R2, OutputArray P1, OutputArray P2, OutputArray Q, int flags = CALIB_ZERO_DISPARITY, double alpha = -1, Size newImageSize = Size(), CV_OUT Rect* validPixROI1 = 0, CV_OUT Rect* validPixROI2 = 0 ); cameraMatrix1、distCoeffs1为相机1的内参数M1和畸变系数D1。\ncameraMatrix2、distCoeffs2为相机2的内参数M2和畸变系数D2。\nimageSize为用于校正的图像尺寸。\nR1、R2为两个相机进行共面行对准时所用的旋转矩阵（使用这两个旋转矩阵，相当于把两个实际的相机坐标系转换到理想的两个坐标系了），换一种说法：R1和R2分别为左右相机消除畸变后的像平面投影到公共像平面的旋转矩阵。\nP1，P2为两个相机的理想投影矩阵，可以将相机坐标系（O-XcYcZc）投影到像素坐标系(O-uv)，这两个坐标系都是校正后的，理想的。\nP1,P2分别为左右相机的投影矩阵，其作用是将世界坐标系的点转换到像素坐标系下(左相机光心为世界坐标系原点，所以，这里可以直接认为是完成相机坐标系转像素坐标系):\nQ为重投影矩阵，可以把像素坐标系重投影为世界坐标系（相机坐标系，因为此时，世界坐标系与相机坐标系重合），这两个坐标系都是校正后的，理想的。\n。。。。 P1和P2的验证\n（挖坑， 待填）\n。。。 。 Q矩阵的用法\n（挖坑， 待填）\nP1和P2在理想状态下，其实内部只差一个数字，P2比P1多了一个$-b·f$，\n其他一些注意点 MATLAB标定结果中。\n",
+  "wordCount" : "3012",
+  "inLanguage": "zh",
+  "datePublished": "2021-04-25T22:00:07+08:00",
+  "dateModified": "2021-04-25T22:00:07+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "Clay"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://Clay-Hex.github.io/posts/2021/04/binocular-stereo-vision-theory/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Clay's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://Clay-Hex.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://Clay-Hex.github.io/" accesskey="h" title="Clay&#39;s Blog (Alt + H)">
+                <img src="https://Clay-Hex.github.io/img/avatar.jpg" alt="" aria-label="logo"
+                    height="35">Clay&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch">
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://Clay-Hex.github.io/search" title="🔍 搜索 (Alt &#43; /)" accesskey=/>
+                    <span>🔍 搜索</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/" title="🏡 主页">
+                    <span>🏡 主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/posts" title="📒 记录">
+                    <span>📒 记录</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/tags" title="📛 标签">
+                    <span>📛 标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/archives/" title="📁 归档">
+                    <span>📁 归档</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://Clay-Hex.github.io/about" title="📖 关于">
+                    <span>📖 关于</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://Clay-Hex.github.io/">主页</a>&nbsp;»&nbsp;<a href="https://Clay-Hex.github.io/posts/">📒 记录</a>&nbsp;»&nbsp;<a href="https://Clay-Hex.github.io/posts/learn/">📚 学习</a></div>
+    <h1 class="post-title entry-hint-parent">
+      双目立体视觉的成像原理及相关问题
+    </h1>
+    <div class="post-meta"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2021-04-25
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>3012字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    <span id="post_meta_style_6">
+        <span class="fa fa-tags" style="opacity: 0.8"></span>
+        <span>
+            <span class="post-tags-meta">
+                <a href="https://Clay-Hex.github.io/tags/%E5%8F%8C%E7%9B%AE%E8%A7%86%E8%A7%89/" style="color: var(--secondary)!important;">双目视觉</a>
+            </span>
+        </span>
+    </span>
+</span>
+
+</div>
+  </header> <aside id="toc-container" class="toc-container wide">
+    <div class="toc">
+        <details  open>
+            <summary accesskey="c" title="(Alt + C)">
+                <span class="details">目录</span>
+            </summary>
+
+            <div class="inner"><ul>
+                    <li>
+                        <a href="#%e5%ba%8f" aria-label="序：">序：</a></li>
+                    <li>
+                        <a href="#0-%e9%9b%b6%e9%9b%b6%e6%95%a3%e6%95%a3" aria-label="0. 零零散散">0. 零零散散</a><ul>
+                            
+                    <li>
+                        <a href="#01-%e5%85%ac%e5%bc%80%e6%95%b0%e6%8d%ae%e9%9b%86" aria-label="0.1 公开数据集">0.1 公开数据集</a></li>
+                    <li>
+                        <a href="#02-%e5%b7%a6%e5%8f%b3%e6%89%8b%e5%9d%90%e6%a0%87%e7%b3%bb" aria-label="0.2 左、右手坐标系">0.2 左、右手坐标系</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#1-%e5%9b%9b%e4%b8%aa%e7%bb%8f%e5%85%b8%e7%9a%84%e5%9d%90%e6%a0%87%e7%b3%bb" aria-label="1. 四个经典的坐标系">1. 四个经典的坐标系</a><ul>
+                            
+                    <li>
+                        <a href="#11-%e4%b8%96%e7%95%8c%e5%9d%90%e6%a0%87%e7%b3%bb" aria-label="1.1 世界坐标系">1.1 世界坐标系</a></li>
+                    <li>
+                        <a href="#12-%e7%9b%b8%e6%9c%ba%e5%9d%90%e6%a0%87%e7%b3%bb" aria-label="1.2 相机坐标系">1.2 相机坐标系</a></li>
+                    <li>
+                        <a href="#13-%e5%9b%be%e5%83%8f%e5%9d%90%e6%a0%87%e7%b3%bb" aria-label="1.3 图像坐标系">1.3 图像坐标系</a></li>
+                    <li>
+                        <a href="#14-%e5%83%8f%e7%b4%a0%e5%9d%90%e6%a0%87%e7%b3%bb" aria-label="1.4 像素坐标系">1.4 像素坐标系</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#2-%e7%90%86%e6%83%b3%e7%9a%84%e5%8d%95%e7%9b%ae%e6%88%90%e5%83%8f%e6%a8%a1%e5%9e%8b" aria-label="2. 理想的单目成像模型">2. 理想的单目成像模型</a></li>
+                    <li>
+                        <a href="#3-%e7%90%86%e6%83%b3%e7%9a%84%e5%8f%8c%e7%9b%ae%e6%88%90%e5%83%8f%e6%a8%a1%e5%9e%8b" aria-label="3. 理想的双目成像模型">3. 理想的双目成像模型</a></li>
+                    <li>
+                        <a href="#4-%e9%9d%9e%e7%90%86%e6%83%b3%e7%9a%84%e5%8f%8c%e7%9b%ae%e6%88%90%e5%83%8f%e6%a8%a1%e5%9e%8b" aria-label="4. 非理想的双目成像模型">4. 非理想的双目成像模型</a><ul>
+                            
+                    <li>
+                        <a href="#41-%e5%ad%98%e5%9c%a8%e7%95%b8%e5%8f%98%e6%80%8e%e4%b9%88%e5%8a%9e" aria-label="4.1 存在畸变，怎么办？">4.1 存在畸变，怎么办？</a></li>
+                    <li>
+                        <a href="#42-%e6%97%a0%e6%b3%95%e5%81%9a%e5%88%b0%e5%85%b1%e9%9d%a2%e8%a1%8c%e5%af%b9%e5%87%86%e6%80%8e%e4%b9%88%e5%8a%9e" aria-label="4.2 无法做到共面行对准，怎么办？">4.2 无法做到共面行对准，怎么办？</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#5-%e4%b8%ba%e4%bb%80%e4%b9%88%e8%b7%9d%e7%a6%bb%e8%b6%8a%e8%bf%9c%e8%af%af%e5%b7%ae%e8%b6%8a%e5%a4%a7" aria-label="5. 为什么距离越远，误差越大？">5. 为什么距离越远，误差越大？</a></li>
+                    <li>
+                        <a href="#opencv%e4%b8%ad%e7%9a%84%e4%b8%80%e4%ba%9b%e6%93%8d%e4%bd%9c" aria-label="OpenCV中的一些操作">OpenCV中的一些操作</a><ul>
+                            
+                    <li>
+                        <a href="#1-%e5%9f%ba%e6%9c%ac%e6%95%b0%e6%8d%ae" aria-label="1. 基本数据">1. 基本数据</a></li>
+                    <li>
+                        <a href="#2%e7%ab%8b%e4%bd%93%e6%a0%a1%e6%ad%a3" aria-label="2.立体校正">2.立体校正</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#%e5%85%b6%e4%bb%96%e4%b8%80%e4%ba%9b%e6%b3%a8%e6%84%8f%e7%82%b9" aria-label="其他一些注意点">其他一些注意点</a>
+                    </li>
+                </ul>
+            </div>
+        </details>
+    </div>
+</aside>
+<script>
+    let activeElement;
+    let elements;
+    window.addEventListener('DOMContentLoaded', function (event) {
+        checkTocPosition();
+
+        elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+         
+         activeElement = elements[0];
+         const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+         document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+     }, false);
+
+    window.addEventListener('resize', function(event) {
+        checkTocPosition();
+    }, false);
+
+    window.addEventListener('scroll', () => {
+        
+        activeElement = Array.from(elements).find((element) => {
+            if ((getOffsetTop(element) - window.pageYOffset) > 0 && 
+                (getOffsetTop(element) - window.pageYOffset) < window.innerHeight/2) {
+                return element;
+            }
+        }) || activeElement
+
+        elements.forEach(element => {
+             const id = encodeURI(element.getAttribute('id')).toLowerCase();
+             if (element === activeElement){
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+             } else {
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.remove('active');
+             }
+         })
+     }, false);
+
+    const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+    const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+    const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+    function checkTocPosition() {
+        const width = document.body.scrollWidth;
+
+        if (width - main - (toc * 2) - (gap * 4) > 0) {
+            document.getElementById("toc-container").classList.add("wide");
+        } else {
+            document.getElementById("toc-container").classList.remove("wide");
+        }
+    }
+
+    function getOffsetTop(element) {
+        if (!element.getClientRects().length) {
+            return 0;
+        }
+        let rect = element.getBoundingClientRect();
+        let win = element.ownerDocument.defaultView;
+        return rect.top + win.pageYOffset;   
+    }
+</script>
+  <div class="post-content"><h1 id="序">序：<a hidden class="anchor" aria-hidden="true" href="#序">#</a></h1>
+<p>记录学习过程中自己的理解以及遇到的问题，慢慢补充。<br>
+若有错误，还希望各位大佬不吝赐教。</p>
+<h1 id="0-零零散散">0. 零零散散<a hidden class="anchor" aria-hidden="true" href="#0-零零散散">#</a></h1>
+<h2 id="01-公开数据集">0.1 公开数据集<a hidden class="anchor" aria-hidden="true" href="#01-公开数据集">#</a></h2>
+<p>Middlebury：https://vision.middlebury.edu/stereo/data/(室内)<br>
+KITTI：http://www.cvlibs.net/datasets/kitti/stereo(室外驾驶)<br>
+SceneFlow：https://lmb.informatik.uni-freiburg.de/resources/datasets</p>
+<h2 id="02-左右手坐标系">0.2 左、右手坐标系<a hidden class="anchor" aria-hidden="true" href="#02-左右手坐标系">#</a></h2>
+<p>左手、右手坐标系<br>
+伸出大拇指，食指和中指，自然摆成三指互相垂直的状态。<br>
+中指：X轴<br>
+大拇指：Y轴<br>
+食指：Z轴</p>
+<p>左手建成的坐标系就是左手坐标系，右手建成的坐标系就是右手坐标系。</p>
+<h1 id="1-四个经典的坐标系">1. 四个经典的坐标系<a hidden class="anchor" aria-hidden="true" href="#1-四个经典的坐标系">#</a></h1>
+<center><figure>
+    <img loading="lazy" src="20210425203747718.png" width="100%"/> 
+</figure>
+</center>
+<h2 id="11-世界坐标系">1.1 世界坐标系<a hidden class="anchor" aria-hidden="true" href="#11-世界坐标系">#</a></h2>
+<p>暂时不重要</p>
+<h2 id="12-相机坐标系">1.2 相机坐标系<a hidden class="anchor" aria-hidden="true" href="#12-相机坐标系">#</a></h2>
+<p>图中的（O<sub>c</sub>-X<sub>c</sub>Y<sub>c</sub>Z<sub>c</sub>）。</p>
+<h2 id="13-图像坐标系">1.3 图像坐标系<a hidden class="anchor" aria-hidden="true" href="#13-图像坐标系">#</a></h2>
+<p>图中的（o-xy）</p>
+<h2 id="14-像素坐标系">1.4 像素坐标系<a hidden class="anchor" aria-hidden="true" href="#14-像素坐标系">#</a></h2>
+<p>图中的（o<sub>uv</sub>-uv）</p>
+<h1 id="2-理想的单目成像模型">2. 理想的单目成像模型<a hidden class="anchor" aria-hidden="true" href="#2-理想的单目成像模型">#</a></h1>
+<p>三维空间点P，在相机坐标系下的坐标为P(X<sub>c</sub>, Y<sub>c</sub>, Z<sub>c</sub>)，它在图像坐标系下的成像点为p(x, y)。</p>
+<p>这里存在两组相似三角形：△ABO<sub>c</sub> ∽ △oCO<sub>c</sub> 和 △PBO<sub>c</sub> ∽ △pCO<sub>c</sub></p>
+<p>（1） 由△ABO<sub>c</sub> ∽ △oCO<sub>c</sub>，可知：<br>
+</p>
+$$
+\frac{AB}{oC} = \frac{AO_c}{oO_c} =   \frac{BO_c}{CO_c}
+$$
+<p><br>
+（2） 由△PBO<sub>c</sub> ∽ △pCO<sub>c</sub>，可知：<br>
+</p>
+$$
+\frac{PB}{pC} = \frac{PO_c}{pO_c} =   \frac{BO_c}{CO_c}
+$$
+<p>联立上边两个等式，可以得到：<br>
+</p>
+$$
+\frac{AB}{oC} = \frac{AO_c}{oO_c} = \frac{PB}{pC} 
+$$
+<p>根据点的坐标，可以将上式转换为：<br>
+</p>
+$$
+\frac{X_c}{x} = \frac{Z_c}{f} = \frac{Y_c}{y} 
+$$
+<p>变一下型可以得到：<br>
+</p>
+$$
+x = f \frac{X_c}{Z_c}，y = f \frac{Y_c}{Z_c}
+$$
+<p><br>
+写成矩阵的形式，并且用齐次坐标的话，就可以写成常见的那个矩阵关系：</p>
+$$
+Z_c\left[ \begin{matrix} x \\ y \\ 1 \end{matrix} \right] 
+= \left[ \begin{matrix} f & 0 & 0 & 0 \\ 0 & f & 0 & 0 \\ 0 & 0 & 1 & 0 \end{matrix} \right]
+\left[ \begin{matrix} X_c \\ Y_c \\ Z_c \\ 1 \end{matrix} \right]
+$$
+<h1 id="3-理想的双目成像模型">3. 理想的双目成像模型<a hidden class="anchor" aria-hidden="true" href="#3-理想的双目成像模型">#</a></h1>
+<p>在上边的单目成像模型中，式子<br>
+</p>
+$$
+x = f \frac{X_c}{Z_c}，y = f \frac{Y_c}{Z_c}
+$$
+<p><br>
+可以变形为：<br>
+</p>
+$$
+X_c = \frac{Z_c}{f}x，Y_c = \frac{Z_c}{f}y
+$$
+<p>式中，x和y都是图像坐标系下的坐标，将x和y转成像素坐标系下的坐标，代入<strong>像素坐标转图像坐标公式</strong>可以得到：<br>
+</p>
+$$
+X_c = \frac{Z_c}{f}d_x(u-u_0)，Y_c = \frac{Z_c}{f}d_y(v-v_0)
+$$
+<p><br>
+至此，可以得到点P的X<sub>c</sub>和Y<sub>c</sub>的表达式，式中除了Z<sub>c</sub>都是已知量。</p>
+<p>此时，引入下图中的理想双目成像模型：</p>
+<center><figure>
+    <img loading="lazy" src="20210426184152271.png" width="100%"/> 
+</figure>
+</center>
+<p>点P在两个平面上的投影点分别为$P_L$和$P_R$，b为基线长度，$X_L$和$X_R$分别是两个成像点距离各自所在成像平面左边的距离，两个成像平面的像主点在 X 方向上的坐标为X<sub>0L</sub>和X<sub>0R</sub> 则可以得到点P在左右相机中的视差：<br>
+</p>
+$$
+d = X_L - X_R（如果计算左图视差，就是左减右，计算右图视差就是右减左）
+$$
+<p><br>
+两个成像点$P_L$和$P_R$之间的物理距离为：<br>
+</p>
+$$
+P_LP_R = b-(X_L - X_{0L}) - (X_{0R} -X_R ) = b - X_L + X_{0L} -X_{0R} + X_R = b - d + X_{0L} - X_{0R}
+$$
+<p><br>
+上图中存在一组相似三角形：△PP<sub>L</sub>P<sub>R</sub> ∽ △PO<sub>L</sub>O<sub>R</sub>。可以得到下式：<br>
+</p>
+$$
+\frac{P_LP_R}{Z_c-f}  =  \frac{b}{Z_c}
+$$
+<p><br>
+代入$P_LP_R$，可以得到：<br>
+</p>
+$$
+\frac{ b - d + X_{0L} - X_{0R} }{Z_c-f}  =  \frac{b}{Z_c}
+$$
+<p><br>
+变形，可以得到:<br>
+</p>
+$$
+Z_c = \frac{b f}{ d + X_{0R} - X_{0L} }
+$$
+<p>当$X_{0R} 与 X_{0L}相等时$，上式简化为：<br>
+</p>
+$$
+Z_c = \frac{b f}{ d  }
+$$
+<p>至此，Z<sub>c</sub>也得到了，物点P的三维坐标都得到了：<br>
+</p>
+$$
+\left\{
+\begin{aligned}
+X_c & = & \frac{Z_c}{f}d_x(u-u_0) \\
+Y_c & = & \frac{Z_c}{f}d_y(v-v_0) \\
+Z_c & = & \frac{b f}{ d + X_{0R} - X_{0L} }
+\end{aligned}
+\right.
+$$
+<p>式中的$f、b、d_x、d_y、u_0、v_0、X_{0L}、X_{0R}$都是可以通过标定得到的，$u$和$v$是该点在左图中的像素坐标，视差$d$可以通过立体匹配得到。所以，点P的相机坐标可以得到。</p>
+<p>注：</p>
+<blockquote>
+<p>opencv中使用函数<code>stereoRectify()</code>时，如果参数<code>flags</code>设置为<code>CV_CALIB_ZERO_DISPARITY </code>，则该函数会让两幅校正后的图像的主点有相同的像素坐标，也就是上边的$X_{0R}$ 与 $X_{0L}$相等，否则该函数会水平或垂直的移动图像，以使得其有用的范围最大。</p>
+</blockquote>
+<p>上式当中焦距 f 的单位 mm，不便于后边计算，所有在双目视觉领域中，出现了“等效焦距&quot;，也就是经常见到的$f_x = \frac{f}{dx}和f_y = \frac{f}{dy}$。</p>
+<p>其中，$d_x$表示一个像素在 x 方向有多少mm，$d_y$表示一个像素在 y 方向有多少mm。而且，在标定的结果当中，一般也是直接得到$f_x$和f$_y$。一般的工业相机会在详细的资料介绍中，会给出$d_x$和$d_y$的值，可以手动计算验证一下。</p>
+<p>引入等效焦距后，物点P的三维坐标可以写成：<br>
+</p>
+$$
+\left\{
+\begin{aligned}
+X_c & = & \frac{Z_c}{f_x}(u-u_0) \\
+Y_c & = & \frac{Z_c}{f_y}(v-v_0) \\
+Z_c & = & \frac{b f}{ d + X_{0R} - X_{0L} }
+\end{aligned}
+\right.
+$$
+<h1 id="4-非理想的双目成像模型">4. 非理想的双目成像模型<a hidden class="anchor" aria-hidden="true" href="#4-非理想的双目成像模型">#</a></h1>
+<p>上边都是理想的情况，而现实的情况是，两个相机各自都存在畸变，并且在安装双目时，既做不到让两个相机的光轴完全平行，也做不到让两个相机的成像平面平行。</p>
+<h2 id="41-存在畸变怎么办">4.1 存在畸变，怎么办？<a hidden class="anchor" aria-hidden="true" href="#41-存在畸变怎么办">#</a></h2>
+<p>通过标定得到畸变系数，采集到双目图像后，通过畸变校正，在一定程度上消除畸变，得到较为理想的左图和右图。</p>
+<h2 id="42-无法做到共面行对准怎么办">4.2 无法做到共面行对准，怎么办？<a hidden class="anchor" aria-hidden="true" href="#42-无法做到共面行对准怎么办">#</a></h2>
+<p>在畸变校正之后，通过使用立体校正算法，将两幅非共面行对准的图像 校正成为 共面行对准的左右图像。</p>
+<h1 id="5-为什么距离越远误差越大">5. 为什么距离越远，误差越大？<a hidden class="anchor" aria-hidden="true" href="#5-为什么距离越远误差越大">#</a></h1>
+<p>深度的公式：<br>
+</p>
+$$
+Z_c = \frac{b f}{ d  }
+$$
+<p><br>
+可以的得出两个结论：</p>
+<ul>
+<li>视差与深度成反比</li>
+<li>同样的视差间隔，距离越远，两个视差所对应的深度间隔越大。</li>
+</ul>
+<p>对于第二点，可以举例：<br>
+假定，$bf=1000$，<br>
+</p>
+$$
+\left\{
+\begin{aligned}
+Z_c & = & \frac{1000}{1} & =  1000.0\\
+Z_c & = & \frac{1000}{2} & = 500.0\\
+Z_c & = & \frac{1000}{79} & = 12.6582 \\
+Z_c & = & \frac{1000}{80} & = 12.5 \\
+\end{aligned}
+\right.
+$$
+<p><br>
+1和2，79和80，两组数，都是间隔1个像素的视差，但是第一组的深度相差了500,第二组的深度差了0.1582。目标物离相机越远时，视差越小，对应第一组数据的情形，所以说，同样的视差间隔，距离越远，两个视差所对应的深度间隔越大。所以在距离较远时，视差引起的误差更大。</p>
+<h1 id="opencv中的一些操作">OpenCV中的一些操作<a hidden class="anchor" aria-hidden="true" href="#opencv中的一些操作">#</a></h1>
+<h2 id="1-基本数据">1. 基本数据<a hidden class="anchor" aria-hidden="true" href="#1-基本数据">#</a></h2>
+<p>首先由双目标定，可以得到左相机的内参M1和畸变系数D1，可以得到右相机的内参M2和畸变系数D2，以及两个相机之间的旋转矩阵R和平移矩阵T。</p>
+<h2 id="2立体校正">2.立体校正<a hidden class="anchor" aria-hidden="true" href="#2立体校正">#</a></h2>
+<p>使用stereoRectify函数主要包含两个步骤：畸变校正、立体矫正，还有一些方便后续计算的矩阵R1、R2、P1、P2、Q。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">CV_EXPORTS_W</span> <span class="kt">void</span> <span class="nf">stereoRectify</span><span class="p">(</span> <span class="n">InputArray</span> <span class="n">cameraMatrix1</span><span class="p">,</span> <span class="n">InputArray</span> <span class="n">distCoeffs1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                 <span class="n">InputArray</span> <span class="n">cameraMatrix2</span><span class="p">,</span> <span class="n">InputArray</span> <span class="n">distCoeffs2</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                 <span class="n">Size</span> <span class="n">imageSize</span><span class="p">,</span> <span class="n">InputArray</span> <span class="n">R</span><span class="p">,</span> <span class="n">InputArray</span> <span class="n">T</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                 <span class="n">OutputArray</span> <span class="n">R1</span><span class="p">,</span> <span class="n">OutputArray</span> <span class="n">R2</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                 <span class="n">OutputArray</span> <span class="n">P1</span><span class="p">,</span> <span class="n">OutputArray</span> <span class="n">P2</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                 <span class="n">OutputArray</span> <span class="n">Q</span><span class="p">,</span> <span class="kt">int</span> <span class="n">flags</span> <span class="o">=</span> <span class="n">CALIB_ZERO_DISPARITY</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                 <span class="kt">double</span> <span class="n">alpha</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">Size</span> <span class="n">newImageSize</span> <span class="o">=</span> <span class="n">Size</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl">                                 <span class="n">CV_OUT</span> <span class="n">Rect</span><span class="o">*</span> <span class="n">validPixROI1</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">CV_OUT</span> <span class="n">Rect</span><span class="o">*</span> <span class="n">validPixROI2</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">);</span>
+</span></span></code></pre></div><p>cameraMatrix1、distCoeffs1为相机1的内参数M1和畸变系数D1。</p>
+<p>cameraMatrix2、distCoeffs2为相机2的内参数M2和畸变系数D2。</p>
+<p>imageSize为用于校正的图像尺寸。</p>
+<p>R1、R2为两个相机进行共面行对准时所用的旋转矩阵（使用这两个旋转矩阵，相当于把两个实际的相机坐标系转换到理想的两个坐标系了），换一种说法：R1和R2分别为左右相机消除畸变后的像平面投影到公共像平面的旋转矩阵。</p>
+<p>P1，P2为两个相机的理想投影矩阵，可以将相机坐标系（O-XcYcZc）投影到像素坐标系(O-uv)，这两个坐标系都是校正后的，理想的。</p>
+<blockquote>
+<p>P1,P2分别为左右相机的投影矩阵，其作用是将世界坐标系的点转换到像素坐标系下(左相机光心为世界坐标系原点，所以，这里可以直接认为是完成相机坐标系转像素坐标系):</p>
+</blockquote>
+<p>Q为重投影矩阵，可以把像素坐标系重投影为世界坐标系（相机坐标系，因为此时，世界坐标系与相机坐标系重合），这两个坐标系都是校正后的，理想的。</p>
+<p>。。。。 P1和P2的验证<br>
+（挖坑， 待填）</p>
+<p>。。。 。 Q矩阵的用法<br>
+（挖坑， 待填）</p>
+<blockquote>
+<p>P1和P2在理想状态下，其实内部只差一个数字，P2比P1多了一个$-b·f$，</p>
+</blockquote>
+<h1 id="其他一些注意点">其他一些注意点<a hidden class="anchor" aria-hidden="true" href="#其他一些注意点">#</a></h1>
+<p>MATLAB标定结果中。</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://Clay-Hex.github.io/tags/%E5%8F%8C%E7%9B%AE%E8%A7%86%E8%A7%89/">双目视觉</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://Clay-Hex.github.io/posts/2021/06/cpp-constant-folding/">
+    <span class="title">« 上一篇</span>
+    <br>
+    <span>C&#43;&#43;学习记录(9) 常量折叠</span>
+  </a>
+  <a class="next" href="https://Clay-Hex.github.io/posts/2021/04/windows-libsgm/">
+    <span class="title">下一篇 »</span>
+    <br>
+    <span>SGM算法开源库libSGM在windows下的编译和使用</span>
+  </a>
+</nav>
+
+  </footer><script>
+    function createGiscusScript(data) {
+      const giscusScript = document.createElement('script');
+  
+      
+      Object.entries(data).forEach(([key, value]) => giscusScript.setAttribute(key, value));
+  
+      
+      document.querySelector('article').appendChild(giscusScript);
+  
+      
+      const toggle = document.querySelector('label[for="switch_default"]');
+      if (toggle) {
+        toggle.addEventListener('click', function () {
+          
+          const theme = document.body.classList.contains('dark') ? 'transparent_dark' : 'light';
+          giscusScript.setAttribute('data-theme', theme);
+  
+          
+          sendMessage({ setConfig: { theme } });
+        });
+      }
+    }
+  
+    function sendMessage(message) {
+      const iframe = document.querySelector('iframe.giscus-frame');
+      if (iframe) {
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+    }
+  
+    document.addEventListener('DOMContentLoaded', function () {
+      
+      const giscusAttributes = {
+        src: 'https://giscus.app/client.js',
+        'data-repo': 'Clay-Hex/BlogComments',
+        'data-repo-id': 'R_kgDOLexoRQ',
+        'data-category': 'Announcements',
+        'data-category-id': 'DIC_kwDOLexoRc4Cd5Ao',
+        'data-mapping': 'pathname',
+        'data-strict': '1',
+        'data-reactions-enabled': '1',
+        'data-emit-metadata': '0',
+        'data-input-position': 'top',
+        'data-lang': 'zh-CN',
+        crossorigin: 'anonymous',
+        async: '',
+      };
+  
+      
+      giscusAttributes['data-theme'] = document.body.classList.contains('dark')
+        ? 'transparent_dark'
+        : 'light';
+  
+      
+      createGiscusScript(giscusAttributes);
+  
+      
+      const bodyObserver = new MutationObserver(() => {
+        const theme = document.body.classList.contains('dark') ? 'transparent_dark' : 'light';
+        sendMessage({ setConfig: { theme } });
+      });
+  
+      bodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    });
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+  </script>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://Clay-Hex.github.io/">Clay&#39;s Blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <span class="topInner">
+        <svg class="topSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z"/>
+        </svg>
+        <span id="read_progress"></span>
+    </span>
+</a>
+
+<script>
+    document.addEventListener('scroll', function (e) {
+        const readProgress = document.getElementById("read_progress");
+        const scrollHeight = document.documentElement.scrollHeight;
+        const clientHeight = document.documentElement.clientHeight;
+        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        readProgress.innerText = ((scrollTop / (scrollHeight - clientHeight)).toFixed(2) * 100).toFixed(0);
+    })
+</script>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = '复制';
+
+        function copyingDone() {
+            copybutton.innerHTML = '已复制';
+            setTimeout(() => {
+                copybutton.innerHTML = '复制';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        let language = codeblock.className.replaceAll("language-", "")
+        let macTool = document.createElement("div")
+        let macTool1 = document.createElement("div")
+        let macTool2 = document.createElement("div")
+        let macTool3 = document.createElement("div")
+        let languageType = document.createElement("div")
+        languageType.innerText = language
+        macTool.setAttribute('class', 'mac-tool')
+        macTool1.setAttribute('class', 'mac bb1')
+        macTool2.setAttribute('class', 'mac bb2')
+        macTool3.setAttribute('class', 'mac bb3')
+        languageType.setAttribute('class', 'language-type')
+        macTool.appendChild(macTool1)
+        macTool.appendChild(macTool2)
+        macTool.appendChild(macTool3)
+        macTool.appendChild(languageType)
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+            container.appendChild(macTool)
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+            container.appendChild(macTool)
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+            container.appendChild(macTool)
+        }
+    });
+</script>
+</body>
+
+</html>

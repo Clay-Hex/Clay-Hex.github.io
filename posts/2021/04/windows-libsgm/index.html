@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Windows环境下配置MQTT服务器(mosquitto) | Clay&#39;s Blog</title>
-<meta name="keywords" content="">
-<meta name="description" content="Windows环境下配置MQTT服务器">
+<title>SGM算法开源库libSGM在windows下的编译和使用 | Clay&#39;s Blog</title>
+<meta name="keywords" content="SGM, libSGM">
+<meta name="description" content="0. 原材料 libSGM开源库是一个使用CUDA对半全局匹配算法SGM的加速实现版本。 英伟达显卡（算力 &gt;= 3.5） cuda环境（我的版本是cuda 10.0） OpenCV（版本 &gt;= 3.0） Cmake（版本&gt;=3.1） 1. 源码下载和编译 1.0 代码clone 开源库地址： https://github.com/fixstars/libSGM 先把代码clone到本">
 <meta name="author" content="Clay">
-<link rel="canonical" href="https://Clay-Hex.github.io/posts/2021/04/windows-mqtt-server-mosquitto/">
+<link rel="canonical" href="https://Clay-Hex.github.io/posts/2021/04/windows-libsgm/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.js" onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://Clay-Hex.github.io/favicon.ico">
@@ -19,7 +19,7 @@
 <link rel="mask-icon" href="https://Clay-Hex.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="zh" href="https://Clay-Hex.github.io/posts/2021/04/windows-mqtt-server-mosquitto/">
+<link rel="alternate" hreflang="zh" href="https://Clay-Hex.github.io/posts/2021/04/windows-libsgm/">
 <noscript>
     <style>
         #theme-toggle,
@@ -58,16 +58,16 @@
     </style>
 </noscript>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><meta property="og:title" content="Windows环境下配置MQTT服务器(mosquitto)" />
-<meta property="og:description" content="Windows环境下配置MQTT服务器" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><meta property="og:title" content="SGM算法开源库libSGM在windows下的编译和使用" />
+<meta property="og:description" content="0. 原材料 libSGM开源库是一个使用CUDA对半全局匹配算法SGM的加速实现版本。 英伟达显卡（算力 &gt;= 3.5） cuda环境（我的版本是cuda 10.0） OpenCV（版本 &gt;= 3.0） Cmake（版本&gt;=3.1） 1. 源码下载和编译 1.0 代码clone 开源库地址： https://github.com/fixstars/libSGM 先把代码clone到本" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://Clay-Hex.github.io/posts/2021/04/windows-mqtt-server-mosquitto/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2021-04-10T20:30:52+08:00" />
-<meta property="article:modified_time" content="2021-04-10T20:30:52+08:00" />
+<meta property="og:url" content="https://Clay-Hex.github.io/posts/2021/04/windows-libsgm/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-04-23T17:06:35+08:00" />
+<meta property="article:modified_time" content="2021-04-23T17:06:35+08:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Windows环境下配置MQTT服务器(mosquitto)"/>
-<meta name="twitter:description" content="Windows环境下配置MQTT服务器"/>
+<meta name="twitter:title" content="SGM算法开源库libSGM在windows下的编译和使用"/>
+<meta name="twitter:description" content="0. 原材料 libSGM开源库是一个使用CUDA对半全局匹配算法SGM的加速实现版本。 英伟达显卡（算力 &gt;= 3.5） cuda环境（我的版本是cuda 10.0） OpenCV（版本 &gt;= 3.0） Cmake（版本&gt;=3.1） 1. 源码下载和编译 1.0 代码clone 开源库地址： https://github.com/fixstars/libSGM 先把代码clone到本"/>
 
 
 <script type="application/ld+json">
@@ -90,8 +90,8 @@
     {
       "@type": "ListItem",
       "position":  3 ,
-      "name": "Windows环境下配置MQTT服务器(mosquitto)",
-      "item": "https://Clay-Hex.github.io/posts/2021/04/windows-mqtt-server-mosquitto/"
+      "name": "SGM算法开源库libSGM在windows下的编译和使用",
+      "item": "https://Clay-Hex.github.io/posts/2021/04/windows-libsgm/"
     }
   ]
 }
@@ -100,24 +100,24 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "Windows环境下配置MQTT服务器(mosquitto)",
-  "name": "Windows环境下配置MQTT服务器(mosquitto)",
-  "description": "Windows环境下配置MQTT服务器",
+  "headline": "SGM算法开源库libSGM在windows下的编译和使用",
+  "name": "SGM算法开源库libSGM在windows下的编译和使用",
+  "description": "0. 原材料 libSGM开源库是一个使用CUDA对半全局匹配算法SGM的加速实现版本。 英伟达显卡（算力 \u0026gt;= 3.5） cuda环境（我的版本是cuda 10.0） OpenCV（版本 \u0026gt;= 3.0） Cmake（版本\u0026gt;=3.1） 1. 源码下载和编译 1.0 代码clone 开源库地址： https://github.com/fixstars/libSGM 先把代码clone到本",
   "keywords": [
-    
+    "SGM", "libSGM"
   ],
-  "articleBody": "0. 原料 windows系统的主机 mosquitto软件 1. 下载和安装mosquitto mosquitto可以自己到GitHub上下载源码根据自己实际需求进行编译，也可以直接使用官方提供的二进制文件，我这里直接用的官方二进制文件。\n到http://mosquitto.org/files/binary/下载对应windows版本的mqtt服务端软件。\n我下载了这一版。\n2. 配置mosquitto 只需要配置mosquitto.conf文件。\n根据我的实际需求，要开启匿名登录和远程访问。\n2.1 开启匿名访问 在配置文件中搜索allow_anonymous，去掉该行前边的#，将false改成true。\n2.2 开启监听和远程访问 在配置文件中搜索listener port-number，根据提示# listener port-number [ip address/host name/unix socket path]修改。\n添加一行port 1883，在1883端口使用mqtt协议。\n如果还要开启websockets访问方式，需要再添加两行代码\nlistener 1884\nprotocol websockets\n用1884服务于websockets协议\n注：我最开始安装的版本是2.0.0，开启ws后会异常，用1883端口时，1884端口会断，用1884端口时，1883端口会断，所以换到了旧版本（1.6.10） 3. 运行mqtt 在mosquitto的安装目录下执行mosquitto.exe -c mosquitto.conf，执行修改后配置文件。\n4. 测试MQTT 使用MQTT.fx进行测试。\n5. 开机自启 上边运行mqtt程序是通过命令行手动执行，此外，也可以通过服务自启。\n打开服务：\n修改服务的属性：\n将启动类型修改为自动 启动参数填写-c mosquitto.conf，目的是在启动时加载刚刚修改的那个配置文件。（不填写也行，好像默认也可以找得到那个文件？） 6. 注意事项 在阿里云等服务器上搭建的时候，外网想要访问mqtt，需要在服务器的安全组中开启TCP协议的1883端口访问权限，否则访问不了。 新旧版本的配置文件略有不同，参考conf文件中的说明配置就好。 ",
-  "wordCount" : "820",
+  "articleBody": "0. 原材料 libSGM开源库是一个使用CUDA对半全局匹配算法SGM的加速实现版本。\n英伟达显卡（算力 \u003e= 3.5） cuda环境（我的版本是cuda 10.0） OpenCV（版本 \u003e= 3.0） Cmake（版本\u003e=3.1） 1. 源码下载和编译 1.0 代码clone 开源库地址：\nhttps://github.com/fixstars/libSGM\n先把代码clone到本地来。\n1.1 新建文件夹 建立build目录和install目录。\n1.2 配置cmake 我在windows环境下，使用的cmake-gui，版本是3.11.3。\n选择好最上边的源码路径和build路径。\n然后点击Configure按钮，根据自己情况配置，我选择的vs2017 x64。\n然后开始加载cmake相关的配置，加载完成如下：\n修改一下CMAKE_INSTALL_PREFIX为刚刚建立的install路径。\n然后再点击Configure按钮，生成项目。\n然后使用vs打开该工程，我选择了Release x64的方案配置。\n注意，用管理员权限打开vs，否则后边可能会出问题。 右键ALL_BUILD，选择生成，等待生成结束。\n然后右键INSTALL，选择仅用于项目 - 仅生成INSTALL。\n生成install结束后，install文件夹内容如下：\n2. 调用 源码中附带了几个例程，可以按照作者的方法直接编译运行。\n也可以在vs中自己配置环境（cuda和opencv），也可以。\n3. 结果 随便搞了几个参数去跑，速度还是挺快的，毕竟上了gpu了。但是测试时发现，如果图片尺寸太大的话，会out of memory错误。所以我直接把图片resize了。\n",
+  "wordCount" : "639",
   "inLanguage": "zh",
-  "datePublished": "2021-04-10T20:30:52+08:00",
-  "dateModified": "2021-04-10T20:30:52+08:00",
+  "datePublished": "2021-04-23T17:06:35+08:00",
+  "dateModified": "2021-04-23T17:06:35+08:00",
   "author":{
     "@type": "Person",
     "name": "Clay"
   },
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://Clay-Hex.github.io/posts/2021/04/windows-mqtt-server-mosquitto/"
+    "@id": "https://Clay-Hex.github.io/posts/2021/04/windows-libsgm/"
   },
   "publisher": {
     "@type": "Organization",
@@ -214,14 +214,11 @@
   <header class="post-header">
     <div class="breadcrumbs"><a href="https://Clay-Hex.github.io/">主页</a>&nbsp;»&nbsp;<a href="https://Clay-Hex.github.io/posts/">📒 记录</a>&nbsp;»&nbsp;<a href="https://Clay-Hex.github.io/posts/learn/">📚 学习</a></div>
     <h1 class="post-title entry-hint-parent">
-      Windows环境下配置MQTT服务器(mosquitto)
+      SGM算法开源库libSGM在windows下的编译和使用
     </h1>
-    <div class="post-description">
-      Windows环境下配置MQTT服务器
-    </div>
     <div class="post-meta"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
-        <span>2021-04-10
+        <span>2021-04-23
             &nbsp;&nbsp;
         </span>
     </span>
@@ -234,13 +231,21 @@
     
     <span id="post_meta_style_3">
         <span class="fa fa-file-word-o"></span>
-        <span>820字
+        <span>639字
             &nbsp;&nbsp;
         </span>
     </span><span id="post_meta_style_5">
         <span class="fa fa-user-o"></span>
         <span>Clay
             &nbsp;&nbsp;
+        </span>
+    </span>
+    <span id="post_meta_style_6">
+        <span class="fa fa-tags" style="opacity: 0.8"></span>
+        <span>
+            <span class="post-tags-meta">
+                <a href="https://Clay-Hex.github.io/tags/%E5%8F%8C%E7%9B%AE%E8%A7%86%E8%A7%89/" style="color: var(--secondary)!important;">双目视觉</a>
+            </span>
         </span>
     </span>
 </span>
@@ -255,25 +260,21 @@
 
             <div class="inner"><ul>
                     <li>
-                        <a href="#0-%e5%8e%9f%e6%96%99" aria-label="0. 原料">0. 原料</a></li>
+                        <a href="#0-%e5%8e%9f%e6%9d%90%e6%96%99" aria-label="0. 原材料">0. 原材料</a></li>
                     <li>
-                        <a href="#1-%e4%b8%8b%e8%bd%bd%e5%92%8c%e5%ae%89%e8%a3%85mosquitto" aria-label="1. 下载和安装mosquitto">1. 下载和安装mosquitto</a></li>
-                    <li>
-                        <a href="#2-%e9%85%8d%e7%bd%aemosquitto" aria-label="2. 配置mosquitto">2. 配置mosquitto</a><ul>
+                        <a href="#1-%e6%ba%90%e7%a0%81%e4%b8%8b%e8%bd%bd%e5%92%8c%e7%bc%96%e8%af%91" aria-label="1. 源码下载和编译">1. 源码下载和编译</a><ul>
                             
                     <li>
-                        <a href="#21-%e5%bc%80%e5%90%af%e5%8c%bf%e5%90%8d%e8%ae%bf%e9%97%ae" aria-label="2.1 开启匿名访问">2.1 开启匿名访问</a></li>
+                        <a href="#10-%e4%bb%a3%e7%a0%81clone" aria-label="1.0 代码clone">1.0 代码clone</a></li>
                     <li>
-                        <a href="#22-%e5%bc%80%e5%90%af%e7%9b%91%e5%90%ac%e5%92%8c%e8%bf%9c%e7%a8%8b%e8%ae%bf%e9%97%ae" aria-label="2.2 开启监听和远程访问">2.2 开启监听和远程访问</a></li></ul>
+                        <a href="#11-%e6%96%b0%e5%bb%ba%e6%96%87%e4%bb%b6%e5%a4%b9" aria-label="1.1 新建文件夹">1.1 新建文件夹</a></li>
+                    <li>
+                        <a href="#12-%e9%85%8d%e7%bd%aecmake" aria-label="1.2 配置cmake">1.2 配置cmake</a></li></ul>
                     </li>
                     <li>
-                        <a href="#3-%e8%bf%90%e8%a1%8cmqtt" aria-label="3. 运行mqtt">3. 运行mqtt</a></li>
+                        <a href="#2-%e8%b0%83%e7%94%a8" aria-label="2. 调用">2. 调用</a></li>
                     <li>
-                        <a href="#4-%e6%b5%8b%e8%af%95mqtt" aria-label="4. 测试MQTT">4. 测试MQTT</a></li>
-                    <li>
-                        <a href="#5-%e5%bc%80%e6%9c%ba%e8%87%aa%e5%90%af" aria-label="5. 开机自启">5. 开机自启</a></li>
-                    <li>
-                        <a href="#6-%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9" aria-label="6. 注意事项">6. 注意事项</a>
+                        <a href="#3-%e7%bb%93%e6%9e%9c" aria-label="3. 结果">3. 结果</a>
                     </li>
                 </ul>
             </div>
@@ -339,92 +340,98 @@
         return rect.top + win.pageYOffset;   
     }
 </script>
-  <div class="post-content"><h1 id="0-原料">0. 原料<a hidden class="anchor" aria-hidden="true" href="#0-原料">#</a></h1>
+  <div class="post-content"><h1 id="0-原材料">0. 原材料<a hidden class="anchor" aria-hidden="true" href="#0-原材料">#</a></h1>
+<p>libSGM开源库是一个使用CUDA对半全局匹配算法SGM的加速实现版本。</p>
 <ul>
-<li>windows系统的主机</li>
-<li>mosquitto软件</li>
+<li>英伟达显卡（算力 &gt;= 3.5）</li>
+<li>cuda环境（我的版本是cuda 10.0）</li>
+<li>OpenCV（版本 &gt;= 3.0）</li>
+<li>Cmake（版本&gt;=3.1）</li>
 </ul>
-<h1 id="1-下载和安装mosquitto">1. 下载和安装mosquitto<a hidden class="anchor" aria-hidden="true" href="#1-下载和安装mosquitto">#</a></h1>
-<p>mosquitto可以自己到GitHub上下载源码根据自己实际需求进行编译，也可以直接使用官方提供的二进制文件，我这里直接用的官方二进制文件。</p>
-<p>到<a href="http://mosquitto.org/files/binary/" target="_blank" rel="noopener" style="color:#42b983";>http://mosquitto.org/files/binary/</a>下载对应windows版本的mqtt服务端软件。<br>
-我下载了这一版。</p>
+<h1 id="1-源码下载和编译">1. 源码下载和编译<a hidden class="anchor" aria-hidden="true" href="#1-源码下载和编译">#</a></h1>
+<h2 id="10-代码clone">1.0 代码clone<a hidden class="anchor" aria-hidden="true" href="#10-代码clone">#</a></h2>
+<p>开源库地址：<br>
+<a href="https://github.com/fixstars/libSGM" target="_blank" rel="noopener" style="color:#42b983";>https://github.com/fixstars/libSGM</a></p>
+<p>先把代码clone到本地来。</p>
 <center><figure>
-    <img loading="lazy" src="pic1.png" width="100%"/> 
+    <img loading="lazy" src="20210423151011485.png" width="100%"/> 
 </figure>
 </center>
-<h1 id="2-配置mosquitto">2. 配置mosquitto<a hidden class="anchor" aria-hidden="true" href="#2-配置mosquitto">#</a></h1>
-<p>只需要配置<code>mosquitto.conf</code>文件。<br>
-根据我的实际需求，要开启匿名登录和远程访问。</p>
-<h2 id="21-开启匿名访问">2.1 开启匿名访问<a hidden class="anchor" aria-hidden="true" href="#21-开启匿名访问">#</a></h2>
-<p>在配置文件中搜索<code>allow_anonymous</code>，去掉该行前边的<code>#</code>，将<code>false</code>改成<code>true</code>。</p>
+<h2 id="11-新建文件夹">1.1 新建文件夹<a hidden class="anchor" aria-hidden="true" href="#11-新建文件夹">#</a></h2>
+<p>建立build目录和install目录。</p>
 <center><figure>
-    <img loading="lazy" src="pic2.png" width="100%"/> 
+    <img loading="lazy" src="20210423151111942.png" width="100%"/> 
 </figure>
 </center>
-<h2 id="22-开启监听和远程访问">2.2 开启监听和远程访问<a hidden class="anchor" aria-hidden="true" href="#22-开启监听和远程访问">#</a></h2>
-<p>在配置文件中搜索<code>listener port-number</code>，根据提示<code># listener port-number [ip address/host name/unix socket path]</code>修改。<br>
-添加一行<code>port 1883</code>，在1883端口使用mqtt协议。</p>
+<h2 id="12-配置cmake">1.2 配置cmake<a hidden class="anchor" aria-hidden="true" href="#12-配置cmake">#</a></h2>
+<p>我在windows环境下，使用的cmake-gui，版本是3.11.3。<br>
+选择好最上边的源码路径和build路径。<br>
+然后点击<code>Configure</code>按钮，根据自己情况配置，我选择的vs2017 x64。</p>
 <center><figure>
-    <img loading="lazy" src="pic3.png" width="100%"/> 
+    <img loading="lazy" src="20210423152524863.png" width="100%"/> 
 </figure>
 </center>
-<p>如果还要开启websockets访问方式，需要再添加两行代码<br>
-<code>listener 1884</code><br>
-<code>protocol websockets</code><br>
-用1884服务于websockets协议</p>
+<p>然后开始加载cmake相关的配置，加载完成如下：</p>
 <center><figure>
-    <img loading="lazy" src="pic4.png" width="60%"/> 
+    <img loading="lazy" src="20210423152555199.png" width="100%"/> 
 </figure>
 </center>
+<p>修改一下<code>CMAKE_INSTALL_PREFIX</code>为刚刚建立的install路径。</p>
+<center><figure>
+    <img loading="lazy" src="20210423152716410.png" width="100%"/> 
+</figure>
+</center>
+<p>然后再点击<code>Configure</code>按钮，生成项目。</p>
+<p>然后使用vs打开该工程，我选择了<code>Release x64</code>的方案配置。</p>
 <ul>
-<li>注：我最开始安装的版本是2.0.0，开启ws后会异常，用1883端口时，1884端口会断，用1884端口时，1883端口会断，所以换到了旧版本（1.6.10）</li>
-</ul>
-<h1 id="3-运行mqtt">3. 运行mqtt<a hidden class="anchor" aria-hidden="true" href="#3-运行mqtt">#</a></h1>
-<p>在<code>mosquitto</code>的安装目录下执行<code>mosquitto.exe -c mosquitto.conf</code>，执行修改后配置文件。</p>
-<h1 id="4-测试mqtt">4. 测试MQTT<a hidden class="anchor" aria-hidden="true" href="#4-测试mqtt">#</a></h1>
-<p>使用MQTT.fx进行测试。</p>
-<center><figure>
-    <img loading="lazy" src="pic5.png" width="100%"/> 
-</figure>
-</center>
-<h1 id="5-开机自启">5. 开机自启<a hidden class="anchor" aria-hidden="true" href="#5-开机自启">#</a></h1>
-<p>上边运行mqtt程序是通过命令行手动执行，此外，也可以通过服务自启。<br>
-打开服务：</p>
-<center><figure>
-    <img loading="lazy" src="pic6.png" width="100%"/> 
-</figure>
-</center>
-<p>修改服务的属性：</p>
-<ul>
-<li>将<code>启动类型</code>修改为<code>自动</code></li>
-<li><code>启动参数</code>填写<code>-c mosquitto.conf</code>，目的是在启动时加载刚刚修改的那个配置文件。（不填写也行，好像默认也可以找得到那个文件？）</li>
+<li>注意，用管理员权限打开vs，否则后边可能会出问题。</li>
 </ul>
 <center><figure>
-    <img loading="lazy" src="pic7.png" width="100%"/> 
+    <img loading="lazy" src="2021042315190782.png" width="100%"/> 
 </figure>
 </center>
-<h1 id="6-注意事项">6. 注意事项<a hidden class="anchor" aria-hidden="true" href="#6-注意事项">#</a></h1>
-<ul>
-<li>在阿里云等服务器上搭建的时候，外网想要访问mqtt，需要在服务器的安全组中开启TCP协议的1883端口访问权限，否则访问不了。</li>
-<li>新旧版本的配置文件略有不同，参考conf文件中的说明配置就好。</li>
-</ul>
+<p>右键<code>ALL_BUILD</code>，选择<code>生成</code>，等待生成结束。</p>
+<center><figure>
+    <img loading="lazy" src="20210423152103587.png" width="100%"/> 
+</figure>
+</center>
+<p>然后右键<code>INSTALL</code>，选择<code>仅用于项目</code> - <code>仅生成INSTALL</code>。</p>
+<center><figure>
+    <img loading="lazy" src="2021042315334198.png" width="100%"/> 
+</figure>
+</center>
+<p>生成install结束后，install文件夹内容如下：</p>
+<center><figure>
+    <img loading="lazy" src="20210423153534344.png" width="100%"/> 
+</figure>
+</center>
+<h1 id="2-调用">2. 调用<a hidden class="anchor" aria-hidden="true" href="#2-调用">#</a></h1>
+<p>源码中附带了几个例程，可以按照作者的方法直接编译运行。<br>
+也可以在vs中自己配置环境（cuda和opencv），也可以。</p>
+<h1 id="3-结果">3. 结果<a hidden class="anchor" aria-hidden="true" href="#3-结果">#</a></h1>
+<center><figure>
+    <img loading="lazy" src="20210423170440181.png" width="100%"/> 
+</figure>
+</center>
+<p>随便搞了几个参数去跑，速度还是挺快的，毕竟上了gpu了。但是测试时发现，如果图片尺寸太大的话，会<code>out of memory</code>错误。所以我直接把图片resize了。</p>
 
 
   </div>
 
   <footer class="post-footer">
     <ul class="post-tags">
+      <li><a href="https://Clay-Hex.github.io/tags/%E5%8F%8C%E7%9B%AE%E8%A7%86%E8%A7%89/">双目视觉</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://Clay-Hex.github.io/posts/2021/04/windows-libsgm/">
+  <a class="prev" href="https://Clay-Hex.github.io/posts/2021/04/binocular-stereo-vision-theory/">
     <span class="title">« 上一篇</span>
     <br>
-    <span>SGM算法开源库libSGM在windows下的编译和使用</span>
+    <span>双目立体视觉的成像原理及相关问题</span>
   </a>
-  <a class="next" href="https://Clay-Hex.github.io/posts/2021/02/cpp-template/">
+  <a class="next" href="https://Clay-Hex.github.io/posts/2021/04/windows-mqtt-server-mosquitto/">
     <span class="title">下一篇 »</span>
     <br>
-    <span>C&#43;&#43;学习记录(8) 模板</span>
+    <span>Windows环境下配置MQTT服务器(mosquitto)</span>
   </a>
 </nav>
 

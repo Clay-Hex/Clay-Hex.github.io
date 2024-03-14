@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Windows环境下配置MQTT服务器(mosquitto) | Clay&#39;s Blog</title>
-<meta name="keywords" content="">
-<meta name="description" content="Windows环境下配置MQTT服务器">
+<title>VS2017 OpenCV4.4.0使用Openvino加速dnn模块推理速度 | Clay&#39;s Blog</title>
+<meta name="keywords" content="vs2017, openvino, opencv, dnn">
+<meta name="description" content="Step0 准备文件 opencv-4.4.0.zip opencv_contrib-4.4.0.zip cmake-3.19.1-win64-x64_2.msi w_openvino_toolkit_p_2020.4.287.exe Step1 解压文件 安装cmake-3.19.1-win64-x64_2.msi和w_openvino_toolkit_p_2020.4.287.exe，都默认就好。 将opencv-4.4.0.zip解压到文件夹opencv440中 将opencv_contrib-4.4.">
 <meta name="author" content="Clay">
-<link rel="canonical" href="https://Clay-Hex.github.io/posts/2021/04/windows-mqtt-server-mosquitto/">
+<link rel="canonical" href="https://Clay-Hex.github.io/posts/2020/12/vs2017-openvino-opencv-dnn-forword/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.js" onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://Clay-Hex.github.io/favicon.ico">
@@ -19,7 +19,7 @@
 <link rel="mask-icon" href="https://Clay-Hex.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="zh" href="https://Clay-Hex.github.io/posts/2021/04/windows-mqtt-server-mosquitto/">
+<link rel="alternate" hreflang="zh" href="https://Clay-Hex.github.io/posts/2020/12/vs2017-openvino-opencv-dnn-forword/">
 <noscript>
     <style>
         #theme-toggle,
@@ -58,16 +58,16 @@
     </style>
 </noscript>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><meta property="og:title" content="Windows环境下配置MQTT服务器(mosquitto)" />
-<meta property="og:description" content="Windows环境下配置MQTT服务器" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><meta property="og:title" content="VS2017 OpenCV4.4.0使用Openvino加速dnn模块推理速度" />
+<meta property="og:description" content="Step0 准备文件 opencv-4.4.0.zip opencv_contrib-4.4.0.zip cmake-3.19.1-win64-x64_2.msi w_openvino_toolkit_p_2020.4.287.exe Step1 解压文件 安装cmake-3.19.1-win64-x64_2.msi和w_openvino_toolkit_p_2020.4.287.exe，都默认就好。 将opencv-4.4.0.zip解压到文件夹opencv440中 将opencv_contrib-4.4." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://Clay-Hex.github.io/posts/2021/04/windows-mqtt-server-mosquitto/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2021-04-10T20:30:52+08:00" />
-<meta property="article:modified_time" content="2021-04-10T20:30:52+08:00" />
+<meta property="og:url" content="https://Clay-Hex.github.io/posts/2020/12/vs2017-openvino-opencv-dnn-forword/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-12-15T20:22:37+08:00" />
+<meta property="article:modified_time" content="2020-12-15T20:22:37+08:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Windows环境下配置MQTT服务器(mosquitto)"/>
-<meta name="twitter:description" content="Windows环境下配置MQTT服务器"/>
+<meta name="twitter:title" content="VS2017 OpenCV4.4.0使用Openvino加速dnn模块推理速度"/>
+<meta name="twitter:description" content="Step0 准备文件 opencv-4.4.0.zip opencv_contrib-4.4.0.zip cmake-3.19.1-win64-x64_2.msi w_openvino_toolkit_p_2020.4.287.exe Step1 解压文件 安装cmake-3.19.1-win64-x64_2.msi和w_openvino_toolkit_p_2020.4.287.exe，都默认就好。 将opencv-4.4.0.zip解压到文件夹opencv440中 将opencv_contrib-4.4."/>
 
 
 <script type="application/ld+json">
@@ -90,8 +90,8 @@
     {
       "@type": "ListItem",
       "position":  3 ,
-      "name": "Windows环境下配置MQTT服务器(mosquitto)",
-      "item": "https://Clay-Hex.github.io/posts/2021/04/windows-mqtt-server-mosquitto/"
+      "name": "VS2017 OpenCV4.4.0使用Openvino加速dnn模块推理速度",
+      "item": "https://Clay-Hex.github.io/posts/2020/12/vs2017-openvino-opencv-dnn-forword/"
     }
   ]
 }
@@ -100,24 +100,24 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "Windows环境下配置MQTT服务器(mosquitto)",
-  "name": "Windows环境下配置MQTT服务器(mosquitto)",
-  "description": "Windows环境下配置MQTT服务器",
+  "headline": "VS2017 OpenCV4.4.0使用Openvino加速dnn模块推理速度",
+  "name": "VS2017 OpenCV4.4.0使用Openvino加速dnn模块推理速度",
+  "description": "Step0 准备文件 opencv-4.4.0.zip opencv_contrib-4.4.0.zip cmake-3.19.1-win64-x64_2.msi w_openvino_toolkit_p_2020.4.287.exe Step1 解压文件 安装cmake-3.19.1-win64-x64_2.msi和w_openvino_toolkit_p_2020.4.287.exe，都默认就好。 将opencv-4.4.0.zip解压到文件夹opencv440中 将opencv_contrib-4.4.",
   "keywords": [
-    
+    "vs2017", "openvino", "opencv", "dnn"
   ],
-  "articleBody": "0. 原料 windows系统的主机 mosquitto软件 1. 下载和安装mosquitto mosquitto可以自己到GitHub上下载源码根据自己实际需求进行编译，也可以直接使用官方提供的二进制文件，我这里直接用的官方二进制文件。\n到http://mosquitto.org/files/binary/下载对应windows版本的mqtt服务端软件。\n我下载了这一版。\n2. 配置mosquitto 只需要配置mosquitto.conf文件。\n根据我的实际需求，要开启匿名登录和远程访问。\n2.1 开启匿名访问 在配置文件中搜索allow_anonymous，去掉该行前边的#，将false改成true。\n2.2 开启监听和远程访问 在配置文件中搜索listener port-number，根据提示# listener port-number [ip address/host name/unix socket path]修改。\n添加一行port 1883，在1883端口使用mqtt协议。\n如果还要开启websockets访问方式，需要再添加两行代码\nlistener 1884\nprotocol websockets\n用1884服务于websockets协议\n注：我最开始安装的版本是2.0.0，开启ws后会异常，用1883端口时，1884端口会断，用1884端口时，1883端口会断，所以换到了旧版本（1.6.10） 3. 运行mqtt 在mosquitto的安装目录下执行mosquitto.exe -c mosquitto.conf，执行修改后配置文件。\n4. 测试MQTT 使用MQTT.fx进行测试。\n5. 开机自启 上边运行mqtt程序是通过命令行手动执行，此外，也可以通过服务自启。\n打开服务：\n修改服务的属性：\n将启动类型修改为自动 启动参数填写-c mosquitto.conf，目的是在启动时加载刚刚修改的那个配置文件。（不填写也行，好像默认也可以找得到那个文件？） 6. 注意事项 在阿里云等服务器上搭建的时候，外网想要访问mqtt，需要在服务器的安全组中开启TCP协议的1883端口访问权限，否则访问不了。 新旧版本的配置文件略有不同，参考conf文件中的说明配置就好。 ",
-  "wordCount" : "820",
+  "articleBody": "Step0 准备文件 opencv-4.4.0.zip opencv_contrib-4.4.0.zip cmake-3.19.1-win64-x64_2.msi w_openvino_toolkit_p_2020.4.287.exe Step1 解压文件 安装cmake-3.19.1-win64-x64_2.msi和w_openvino_toolkit_p_2020.4.287.exe，都默认就好。\n将opencv-4.4.0.zip解压到文件夹opencv440中\n将opencv_contrib-4.4.0.zip解压到文件夹opencv440/opencv_contrib中\nStep2 配置opencv和dnn模块加速 配置好openvino的环境变量\n环境变量 值 INTEL_OPENVINO_DIR C:\\Program Files (x86)\\IntelSWTools\\openvino INTEL_CVSDK_DIR %INTEL_OPENVINO_DIR% HDDL_INSTALL_DIR %INTEL_OPENVINO_DIR%\\deployment_tools\\inference_engine\\external\\hddl InferenceEngine_DIR %INTEL_OPENVINO_DIR%\\deployment_tools\\inference_engine\\share NGRAPH_DIR %INTEL_OPENVINO_DIR%\\deployment_tools\\ngraph\\cmake OpenCV_DIR %INTEL_OPENVINO_DIR%\\opencv\\cmake 然后在path中添加\nOpenCV相关的的条目可加可不加。\n%HDDL_INSTALL_DIR%\\bin %INTEL_OPENVINO_DIR%\\opencv\\bin %INTEL_OPENVINO_DIR%\\deployment_tools\\ngraph\\lib %INTEL_OPENVINO_DIR%\\deployment_tools\\inference_engine\\external\\tbb\\bin %INTEL_OPENVINO_DIR%\\deployment_tools\\inference_engine\\bin\\intel64\\Release %INTEL_OPENVINO_DIR%\\deployment_tools\\inference_engine\\bin\\intel64\\Debug 然后打开cmake_gui\n设置源文件目录为C:/Users/lenovo/Desktop/opencv440/\n设置构建文件目录为C:/Users/lenovo/Desktop/opencv440/build\n点击Configure\n配置：“VS 15 2017” x64\n点击Finish\n然后根据下表格配置选项：\n选项 内容 说明 OPENCV_EXTRA_MODULES_PATH …/opencv440/opencv_contrib/modules modules路径 BUILD_opencv_python_bindings_generator 不勾选 BUILD_opencv_world 勾选 WITH_INF_ENGINE 勾选 OPENCV_ENABLE_NONFREE 勾选 必须勾选 点击Configure\n将路径\nC:\\Program Files (x86)\\IntelSWTools\\openvino_2020.4.287\\deployment_tools\\inference_engine\\share 填入到选项InferenceEngine_DIR中。\n把选项WITH_NGRAPH选项勾上，要不然编译时候会报错\n把选项BUILD_opencv_python_bindings_generator 去掉勾选，\n再点击Configure。\n注意，点击Configure以后，可能会联网下载一些文件，如果下载不到的话，自己查资料解决一下，保证点击Configure以后不报错\nStep3 打开工程 点击Generate，点击OpenProject，这时，vs会打开此工程。\nStep4 编译 在项目中的ALL_BUILD上右键，选择生成。\nStep5 导出到install 在项目中的INSTALL上右键，选择“仅用于项目”，选择“仅生成INSTALL”。\n在install中即可找到编译好的文件。\nDebug模式的文件同理。\nStep6 加速推理 net.setPreferableBackend(DNN_BACKEND_INFERENCE_ENGINE); // 不加速时用DNN_BACKEND_OPENCV net.setPreferableTarget(DNN_TARGET_CPU); Step7 异常解决 编译之后，在代码中调用过程中，前向推理时会报错，也就是net.forward();时会报错。\n在QT中的错误代码是exited with code -1073741515\n原因：dll文件缺失。\n解决办法，到openvino安装目录下搜索两个文件\nngraph.dll tbb.dll 上边两个文件，再加上opencv_world440.dll，一共三个文件复制到工程目录下即可。\n如果复制后还是有问题，在VS中报错是InferenceEngine::GeneralError什么什么内存错误，还需要把MKLDNNPlugin.dll复制过来\n更新：OpenCV4.5以后的版本，用这个版本的OpenVINO好像不行，编译的时候会报错。最好用新版本的OpenVINO。上次编译OpenCV4.5.2的时候，用的OpenVINO版本是2021.4，仅供参考。\n",
+  "wordCount" : "1165",
   "inLanguage": "zh",
-  "datePublished": "2021-04-10T20:30:52+08:00",
-  "dateModified": "2021-04-10T20:30:52+08:00",
+  "datePublished": "2020-12-15T20:22:37+08:00",
+  "dateModified": "2020-12-15T20:22:37+08:00",
   "author":{
     "@type": "Person",
     "name": "Clay"
   },
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://Clay-Hex.github.io/posts/2021/04/windows-mqtt-server-mosquitto/"
+    "@id": "https://Clay-Hex.github.io/posts/2020/12/vs2017-openvino-opencv-dnn-forword/"
   },
   "publisher": {
     "@type": "Organization",
@@ -214,14 +214,11 @@
   <header class="post-header">
     <div class="breadcrumbs"><a href="https://Clay-Hex.github.io/">主页</a>&nbsp;»&nbsp;<a href="https://Clay-Hex.github.io/posts/">📒 记录</a>&nbsp;»&nbsp;<a href="https://Clay-Hex.github.io/posts/learn/">📚 学习</a></div>
     <h1 class="post-title entry-hint-parent">
-      Windows环境下配置MQTT服务器(mosquitto)
+      VS2017 OpenCV4.4.0使用Openvino加速dnn模块推理速度
     </h1>
-    <div class="post-description">
-      Windows环境下配置MQTT服务器
-    </div>
     <div class="post-meta"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
-        <span>2021-04-10
+        <span>2020-12-15
             &nbsp;&nbsp;
         </span>
     </span>
@@ -234,7 +231,7 @@
     
     <span id="post_meta_style_3">
         <span class="fa fa-file-word-o"></span>
-        <span>820字
+        <span>1165字
             &nbsp;&nbsp;
         </span>
     </span><span id="post_meta_style_5">
@@ -255,25 +252,21 @@
 
             <div class="inner"><ul>
                     <li>
-                        <a href="#0-%e5%8e%9f%e6%96%99" aria-label="0. 原料">0. 原料</a></li>
+                        <a href="#step0-%e5%87%86%e5%a4%87%e6%96%87%e4%bb%b6" aria-label="Step0 准备文件">Step0 准备文件</a></li>
                     <li>
-                        <a href="#1-%e4%b8%8b%e8%bd%bd%e5%92%8c%e5%ae%89%e8%a3%85mosquitto" aria-label="1. 下载和安装mosquitto">1. 下载和安装mosquitto</a></li>
+                        <a href="#step1-%e8%a7%a3%e5%8e%8b%e6%96%87%e4%bb%b6" aria-label="Step1 解压文件">Step1 解压文件</a></li>
                     <li>
-                        <a href="#2-%e9%85%8d%e7%bd%aemosquitto" aria-label="2. 配置mosquitto">2. 配置mosquitto</a><ul>
-                            
+                        <a href="#step2-%e9%85%8d%e7%bd%aeopencv%e5%92%8cdnn%e6%a8%a1%e5%9d%97%e5%8a%a0%e9%80%9f" aria-label="Step2 配置opencv和dnn模块加速">Step2 配置opencv和dnn模块加速</a></li>
                     <li>
-                        <a href="#21-%e5%bc%80%e5%90%af%e5%8c%bf%e5%90%8d%e8%ae%bf%e9%97%ae" aria-label="2.1 开启匿名访问">2.1 开启匿名访问</a></li>
+                        <a href="#step3-%e6%89%93%e5%bc%80%e5%b7%a5%e7%a8%8b" aria-label="Step3 打开工程">Step3 打开工程</a></li>
                     <li>
-                        <a href="#22-%e5%bc%80%e5%90%af%e7%9b%91%e5%90%ac%e5%92%8c%e8%bf%9c%e7%a8%8b%e8%ae%bf%e9%97%ae" aria-label="2.2 开启监听和远程访问">2.2 开启监听和远程访问</a></li></ul>
-                    </li>
+                        <a href="#step4-%e7%bc%96%e8%af%91" aria-label="Step4 编译">Step4 编译</a></li>
                     <li>
-                        <a href="#3-%e8%bf%90%e8%a1%8cmqtt" aria-label="3. 运行mqtt">3. 运行mqtt</a></li>
+                        <a href="#step5-%e5%af%bc%e5%87%ba%e5%88%b0install" aria-label="Step5 导出到install">Step5 导出到install</a></li>
                     <li>
-                        <a href="#4-%e6%b5%8b%e8%af%95mqtt" aria-label="4. 测试MQTT">4. 测试MQTT</a></li>
+                        <a href="#step6-%e5%8a%a0%e9%80%9f%e6%8e%a8%e7%90%86" aria-label="Step6 加速推理">Step6 加速推理</a></li>
                     <li>
-                        <a href="#5-%e5%bc%80%e6%9c%ba%e8%87%aa%e5%90%af" aria-label="5. 开机自启">5. 开机自启</a></li>
-                    <li>
-                        <a href="#6-%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9" aria-label="6. 注意事项">6. 注意事项</a>
+                        <a href="#step7-%e5%bc%82%e5%b8%b8%e8%a7%a3%e5%86%b3" aria-label="Step7 异常解决">Step7 异常解决</a>
                     </li>
                 </ul>
             </div>
@@ -339,75 +332,138 @@
         return rect.top + win.pageYOffset;   
     }
 </script>
-  <div class="post-content"><h1 id="0-原料">0. 原料<a hidden class="anchor" aria-hidden="true" href="#0-原料">#</a></h1>
+  <div class="post-content"><h2 id="step0-准备文件">Step0 准备文件<a hidden class="anchor" aria-hidden="true" href="#step0-准备文件">#</a></h2>
+<blockquote>
+<ol>
+<li>opencv-4.4.0.zip</li>
+<li>opencv_contrib-4.4.0.zip</li>
+<li>cmake-3.19.1-win64-x64_2.msi</li>
+<li>w_openvino_toolkit_p_2020.4.287.exe</li>
+</ol>
+</blockquote>
+<h2 id="step1-解压文件">Step1 解压文件<a hidden class="anchor" aria-hidden="true" href="#step1-解压文件">#</a></h2>
+<p>安装cmake-3.19.1-win64-x64_2.msi和w_openvino_toolkit_p_2020.4.287.exe，都默认就好。</p>
+<p>将opencv-4.4.0.zip解压到文件夹opencv440中</p>
+<p>将opencv_contrib-4.4.0.zip解压到文件夹opencv440/opencv_contrib中</p>
+<h2 id="step2-配置opencv和dnn模块加速">Step2 配置opencv和dnn模块加速<a hidden class="anchor" aria-hidden="true" href="#step2-配置opencv和dnn模块加速">#</a></h2>
+<p><strong>配置好openvino的环境变量</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">环境变量</th>
+<th style="text-align:center">值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">INTEL_OPENVINO_DIR</td>
+<td style="text-align:center">C:\Program Files (x86)\IntelSWTools\openvino</td>
+</tr>
+<tr>
+<td style="text-align:center">INTEL_CVSDK_DIR</td>
+<td style="text-align:center">%INTEL_OPENVINO_DIR%</td>
+</tr>
+<tr>
+<td style="text-align:center">HDDL_INSTALL_DIR</td>
+<td style="text-align:center">%INTEL_OPENVINO_DIR%\deployment_tools\inference_engine\external\hddl</td>
+</tr>
+<tr>
+<td style="text-align:center">InferenceEngine_DIR</td>
+<td style="text-align:center">%INTEL_OPENVINO_DIR%\deployment_tools\inference_engine\share</td>
+</tr>
+<tr>
+<td style="text-align:center">NGRAPH_DIR</td>
+<td style="text-align:center">%INTEL_OPENVINO_DIR%\deployment_tools\ngraph\cmake</td>
+</tr>
+<tr>
+<td style="text-align:center">OpenCV_DIR</td>
+<td style="text-align:center">%INTEL_OPENVINO_DIR%\opencv\cmake</td>
+</tr>
+</tbody>
+</table>
+<p>然后在<code>path</code>中添加</p>
+<p>OpenCV相关的的条目可加可不加。</p>
 <ul>
-<li>windows系统的主机</li>
-<li>mosquitto软件</li>
+<li>%HDDL_INSTALL_DIR%\bin</li>
+<li>%INTEL_OPENVINO_DIR%\opencv\bin</li>
+<li>%INTEL_OPENVINO_DIR%\deployment_tools\ngraph\lib</li>
+<li>%INTEL_OPENVINO_DIR%\deployment_tools\inference_engine\external\tbb\bin</li>
+<li>%INTEL_OPENVINO_DIR%\deployment_tools\inference_engine\bin\intel64\Release</li>
+<li>%INTEL_OPENVINO_DIR%\deployment_tools\inference_engine\bin\intel64\Debug</li>
 </ul>
-<h1 id="1-下载和安装mosquitto">1. 下载和安装mosquitto<a hidden class="anchor" aria-hidden="true" href="#1-下载和安装mosquitto">#</a></h1>
-<p>mosquitto可以自己到GitHub上下载源码根据自己实际需求进行编译，也可以直接使用官方提供的二进制文件，我这里直接用的官方二进制文件。</p>
-<p>到<a href="http://mosquitto.org/files/binary/" target="_blank" rel="noopener" style="color:#42b983";>http://mosquitto.org/files/binary/</a>下载对应windows版本的mqtt服务端软件。<br>
-我下载了这一版。</p>
-<center><figure>
-    <img loading="lazy" src="pic1.png" width="100%"/> 
-</figure>
-</center>
-<h1 id="2-配置mosquitto">2. 配置mosquitto<a hidden class="anchor" aria-hidden="true" href="#2-配置mosquitto">#</a></h1>
-<p>只需要配置<code>mosquitto.conf</code>文件。<br>
-根据我的实际需求，要开启匿名登录和远程访问。</p>
-<h2 id="21-开启匿名访问">2.1 开启匿名访问<a hidden class="anchor" aria-hidden="true" href="#21-开启匿名访问">#</a></h2>
-<p>在配置文件中搜索<code>allow_anonymous</code>，去掉该行前边的<code>#</code>，将<code>false</code>改成<code>true</code>。</p>
-<center><figure>
-    <img loading="lazy" src="pic2.png" width="100%"/> 
-</figure>
-</center>
-<h2 id="22-开启监听和远程访问">2.2 开启监听和远程访问<a hidden class="anchor" aria-hidden="true" href="#22-开启监听和远程访问">#</a></h2>
-<p>在配置文件中搜索<code>listener port-number</code>，根据提示<code># listener port-number [ip address/host name/unix socket path]</code>修改。<br>
-添加一行<code>port 1883</code>，在1883端口使用mqtt协议。</p>
-<center><figure>
-    <img loading="lazy" src="pic3.png" width="100%"/> 
-</figure>
-</center>
-<p>如果还要开启websockets访问方式，需要再添加两行代码<br>
-<code>listener 1884</code><br>
-<code>protocol websockets</code><br>
-用1884服务于websockets协议</p>
-<center><figure>
-    <img loading="lazy" src="pic4.png" width="60%"/> 
-</figure>
-</center>
-<ul>
-<li>注：我最开始安装的版本是2.0.0，开启ws后会异常，用1883端口时，1884端口会断，用1884端口时，1883端口会断，所以换到了旧版本（1.6.10）</li>
-</ul>
-<h1 id="3-运行mqtt">3. 运行mqtt<a hidden class="anchor" aria-hidden="true" href="#3-运行mqtt">#</a></h1>
-<p>在<code>mosquitto</code>的安装目录下执行<code>mosquitto.exe -c mosquitto.conf</code>，执行修改后配置文件。</p>
-<h1 id="4-测试mqtt">4. 测试MQTT<a hidden class="anchor" aria-hidden="true" href="#4-测试mqtt">#</a></h1>
-<p>使用MQTT.fx进行测试。</p>
-<center><figure>
-    <img loading="lazy" src="pic5.png" width="100%"/> 
-</figure>
-</center>
-<h1 id="5-开机自启">5. 开机自启<a hidden class="anchor" aria-hidden="true" href="#5-开机自启">#</a></h1>
-<p>上边运行mqtt程序是通过命令行手动执行，此外，也可以通过服务自启。<br>
-打开服务：</p>
-<center><figure>
-    <img loading="lazy" src="pic6.png" width="100%"/> 
-</figure>
-</center>
-<p>修改服务的属性：</p>
-<ul>
-<li>将<code>启动类型</code>修改为<code>自动</code></li>
-<li><code>启动参数</code>填写<code>-c mosquitto.conf</code>，目的是在启动时加载刚刚修改的那个配置文件。（不填写也行，好像默认也可以找得到那个文件？）</li>
-</ul>
-<center><figure>
-    <img loading="lazy" src="pic7.png" width="100%"/> 
-</figure>
-</center>
-<h1 id="6-注意事项">6. 注意事项<a hidden class="anchor" aria-hidden="true" href="#6-注意事项">#</a></h1>
-<ul>
-<li>在阿里云等服务器上搭建的时候，外网想要访问mqtt，需要在服务器的安全组中开启TCP协议的1883端口访问权限，否则访问不了。</li>
-<li>新旧版本的配置文件略有不同，参考conf文件中的说明配置就好。</li>
-</ul>
+<p>然后打开cmake_gui</p>
+<p>设置源文件目录为C:/Users/lenovo/Desktop/opencv440/</p>
+<p>设置构建文件目录为C:/Users/lenovo/Desktop/opencv440/build</p>
+<p>点击Configure</p>
+<p>配置：“VS 15 2017”    x64</p>
+<p>点击Finish</p>
+<p>然后根据下表格配置选项：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">选项</th>
+<th style="text-align:center">内容</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">OPENCV_EXTRA_MODULES_PATH</td>
+<td style="text-align:center">&hellip;/opencv440/opencv_contrib/modules</td>
+<td style="text-align:center">modules路径</td>
+</tr>
+<tr>
+<td style="text-align:center">BUILD_opencv_python_bindings_generator</td>
+<td style="text-align:center">不勾选</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">BUILD_opencv_world</td>
+<td style="text-align:center">勾选</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">WITH_INF_ENGINE</td>
+<td style="text-align:center">勾选</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">OPENCV_ENABLE_NONFREE</td>
+<td style="text-align:center">勾选</td>
+<td style="text-align:center">必须勾选</td>
+</tr>
+</tbody>
+</table>
+<p>点击Configure</p>
+<p>将路径</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-path" data-lang="path"><span class="line"><span class="cl"><span class="err">C:\Program</span> <span class="err">Files</span> <span class="err">(x86)\IntelSWTools\openvino_2020.4.287\deployment_tools\inference_engine\share</span>
+</span></span></code></pre></div><p>填入到选项InferenceEngine_DIR中。</p>
+<p>把选项WITH_NGRAPH选项勾上，要不然编译时候会报错</p>
+<p>把选项BUILD_opencv_python_bindings_generator 去掉勾选，</p>
+<p>再点击Configure。</p>
+<p><strong>注意，点击Configure以后，可能会联网下载一些文件，如果下载不到的话，自己查资料解决一下，保证点击Configure以后不报错</strong></p>
+<h2 id="step3-打开工程">Step3 打开工程<a hidden class="anchor" aria-hidden="true" href="#step3-打开工程">#</a></h2>
+<p>点击Generate，点击OpenProject，这时，vs会打开此工程。</p>
+<h2 id="step4-编译">Step4 编译<a hidden class="anchor" aria-hidden="true" href="#step4-编译">#</a></h2>
+<p>在项目中的ALL_BUILD上右键，选择生成。</p>
+<h2 id="step5-导出到install">Step5 导出到install<a hidden class="anchor" aria-hidden="true" href="#step5-导出到install">#</a></h2>
+<p>在项目中的INSTALL上右键，选择“仅用于项目”，选择“仅生成INSTALL”。</p>
+<p>在install中即可找到编译好的文件。</p>
+<p>Debug模式的文件同理。</p>
+<h2 id="step6-加速推理">Step6 加速推理<a hidden class="anchor" aria-hidden="true" href="#step6-加速推理">#</a></h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">net</span><span class="p">.</span><span class="n">setPreferableBackend</span><span class="p">(</span><span class="n">DNN_BACKEND_INFERENCE_ENGINE</span><span class="p">);</span>   <span class="c1">// 不加速时用DNN_BACKEND_OPENCV
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">net</span><span class="p">.</span><span class="n">setPreferableTarget</span><span class="p">(</span><span class="n">DNN_TARGET_CPU</span><span class="p">);</span>
+</span></span></code></pre></div><h2 id="step7-异常解决">Step7 异常解决<a hidden class="anchor" aria-hidden="true" href="#step7-异常解决">#</a></h2>
+<p>编译之后，在代码中调用过程中，前向推理时会报错，也就是net.forward();时会报错。<br>
+在QT中的错误代码是<code>exited with code -1073741515</code><br>
+原因：dll文件缺失。<br>
+解决办法，到openvino安装目录下搜索两个文件</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">ngraph</span><span class="p">.</span><span class="n">dll</span>
+</span></span><span class="line"><span class="cl"><span class="n">tbb</span><span class="p">.</span><span class="n">dll</span>
+</span></span></code></pre></div><p>上边两个文件，再加上opencv_world440.dll，一共三个文件复制到工程目录下即可。<br>
+如果复制后还是有问题，在VS中报错是<code>InferenceEngine::GeneralError什么什么内存错误</code>，还需要把<code>MKLDNNPlugin.dll</code>复制过来</p>
+<hr>
+<p>更新：OpenCV4.5以后的版本，用这个版本的OpenVINO好像不行，编译的时候会报错。最好用新版本的OpenVINO。上次编译OpenCV4.5.2的时候，用的OpenVINO版本是2021.4，仅供参考。</p>
 
 
   </div>
@@ -416,15 +472,15 @@
     <ul class="post-tags">
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://Clay-Hex.github.io/posts/2021/04/windows-libsgm/">
+  <a class="prev" href="https://Clay-Hex.github.io/posts/2021/01/cpp-override-overload-refactoring/">
     <span class="title">« 上一篇</span>
     <br>
-    <span>SGM算法开源库libSGM在windows下的编译和使用</span>
+    <span>C&#43;&#43;学习记录(1) 重写、重载、重构三者区别</span>
   </a>
-  <a class="next" href="https://Clay-Hex.github.io/posts/2021/02/cpp-template/">
+  <a class="next" href="https://Clay-Hex.github.io/posts/2020/09/exgcd-cpp-code/">
     <span class="title">下一篇 »</span>
     <br>
-    <span>C&#43;&#43;学习记录(8) 模板</span>
+    <span>扩展欧几里得算法详解及C&#43;&#43;代码实现</span>
   </a>
 </nav>
 

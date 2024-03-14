@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>📛 标签 | Clay&#39;s Blog</title>
+<title>📚 学习 | Clay&#39;s Blog</title>
 <meta name="keywords" content="">
-<meta name="description" content="Clay的博客,Clay&#39;s Blog,Clay-Hex&#39;s Blog,hugo,paperMod,c&#43;&#43;">
+<meta name="description" content="📚 学习 - Clay&#39;s Blog">
 <meta name="author" content="Clay">
-<link rel="canonical" href="https://Clay-Hex.github.io/tags/">
+<link rel="canonical" href="https://Clay-Hex.github.io/posts/learn/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://Clay-Hex.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://Clay-Hex.github.io/favicon-16x16.png">
@@ -18,8 +18,8 @@
 <link rel="mask-icon" href="https://Clay-Hex.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="https://Clay-Hex.github.io/tags/index.xml">
-<link rel="alternate" hreflang="zh" href="https://Clay-Hex.github.io/tags/">
+<link rel="alternate" type="application/rss+xml" href="https://Clay-Hex.github.io/posts/learn/index.xml">
+<link rel="alternate" hreflang="zh" href="https://Clay-Hex.github.io/posts/learn/">
 <noscript>
     <style>
         #theme-toggle,
@@ -58,15 +58,36 @@
     </style>
 </noscript>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><meta property="og:title" content="📛 标签" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><meta property="og:title" content="📚 学习" />
 <meta property="og:description" content="Clay的博客,Clay&#39;s Blog,Clay-Hex&#39;s Blog,hugo,paperMod,c&#43;&#43;" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://Clay-Hex.github.io/tags/" />
+<meta property="og:url" content="https://Clay-Hex.github.io/posts/learn/" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="📛 标签"/>
+<meta name="twitter:title" content="📚 学习"/>
 <meta name="twitter:description" content="Clay的博客,Clay&#39;s Blog,Clay-Hex&#39;s Blog,hugo,paperMod,c&#43;&#43;"/>
 
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "📒 记录",
+      "item": "https://Clay-Hex.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "📚 学习",
+      "item": "https://Clay-Hex.github.io/posts/learn/"
+    }
+  ]
+}
+</script>
 </head>
 
 <body class="list" id="top">
@@ -130,7 +151,7 @@
             </li>
             <li>
                 <a href="https://Clay-Hex.github.io/tags" title="📛 标签">
-                    <span class="active">📛 标签</span>
+                    <span>📛 标签</span>
                 </a>
             </li>
             <li>
@@ -146,25 +167,63 @@
         </ul>
     </nav>
 </header>
-<main class="main">
-<header class="page-header">
-    <h1>📛 标签</h1>
+<main class="main"> 
+<header class="page-header"><div class="breadcrumbs"><a href="https://Clay-Hex.github.io/">主页</a>&nbsp;»&nbsp;<a href="https://Clay-Hex.github.io/posts/">📒 记录</a></div>
+  <h1>
+    📚 学习
+  </h1>
 </header>
 
-<ul class="terms-tags">
-    <li>
-        <a href="https://Clay-Hex.github.io/tags/c&#43;&#43;/">C&#43;&#43; <sup><strong><sup>15</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="https://Clay-Hex.github.io/tags/tcp/">tcp <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="https://Clay-Hex.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法 <sup><strong><sup>4</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="https://Clay-Hex.github.io/tags/%E5%8F%8C%E7%9B%AE%E8%A7%86%E8%A7%89/">双目视觉 <sup><strong><sup>2</sup></strong></sup> </a>
-    </li>
-</ul>
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">对快速幂代码的理解
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>模板代码： typedef long long ll; ll quick_pow(ll a,ll b){ ll res = 1; while(b &gt; 0){ if(b &amp; 1){ res *= a; } a *= a; b &gt;&gt;= 1; } return res; } 这里以a^10为例，说一下对快速幂代码的理解。 右下角的o表示这是十进制数 这里写错了，图片中不应该是o，应该d，d表示这是十进制数 ，b表示这是二进制数。可以得到以下的几个式子，都是逐步变换得出来的。 最后一个式...</p>
+  </div>
+  <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2020-03-02
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>487字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    <span id="post_meta_style_6">
+        <span class="fa fa-tags" style="opacity: 0.8"></span>
+        <span>
+            <span class="post-tags-meta">
+                <a href="https://Clay-Hex.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" style="color: var(--secondary)!important;">数据结构与算法</a>
+            </span>
+        </span>
+    </span>
+</span></footer>
+  <a class="entry-link" aria-label="post link to 对快速幂代码的理解" href="https://Clay-Hex.github.io/posts/2020/03/quick-power/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="https://Clay-Hex.github.io/posts/learn/page/2/">
+      «&nbsp;上一篇&nbsp;
+    </a>
+  </nav>
+</footer>
     </main>
     
 <footer class="footer">
