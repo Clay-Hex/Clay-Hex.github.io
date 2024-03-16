@@ -6,8 +6,15 @@
     <description>Recent content on Clay&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Fri, 18 Nov 2022 00:39:31 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 16 Mar 2024 13:29:37 +0800</lastBuildDate>
     <atom:link href="https://Clay-Hex.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>关于闰年这事儿</title>
+      <link>https://Clay-Hex.github.io/posts/2024/03/leap-year/</link>
+      <pubDate>Sat, 16 Mar 2024 13:29:37 +0800</pubDate>
+      <guid>https://Clay-Hex.github.io/posts/2024/03/leap-year/</guid>
+      <description>0. 所谓年 一般来说，“年”指的是，地球在公转轨道上绕行一周，又回到原来位置所花费的时间，这个过程大约是365.2564天。这个数字本身没什么问题，但如果用在历法中，就会出错。因为地球自转轴的存在和变化，每过365.2564天，地球虽然在公转轨道上的位置相同，但是每次太阳对于地球上一</description>
+    </item>
     <item>
       <title>C&#43;&#43;学习记录(15) 条件变量与互斥锁</title>
       <link>https://Clay-Hex.github.io/posts/2022/11/cpp-conditional-variables-lock/</link>

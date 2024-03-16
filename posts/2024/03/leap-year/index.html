@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>C&#43;&#43;学习记录(15) 条件变量与互斥锁 | Clay&#39;s Blog</title>
-<meta name="keywords" content="C&#43;&#43;">
-<meta name="description" content="c&#43;&#43;中的条件变量与互斥锁">
+<title>关于闰年这事儿 | Clay&#39;s Blog</title>
+<meta name="keywords" content="闰年">
+<meta name="description" content="0. 所谓年 一般来说，“年”指的是，地球在公转轨道上绕行一周，又回到原来位置所花费的时间，这个过程大约是365.2564天。这个数字本身没什么问题，但如果用在历法中，就会出错。因为地球自转轴的存在和变化，每过365.2564天，地球虽然在公转轨道上的位置相同，但是每次太阳对于地球上一">
 <meta name="author" content="Clay">
-<link rel="canonical" href="https://Clay-Hex.github.io/posts/2022/11/cpp-conditional-variables-lock/">
+<link rel="canonical" href="https://Clay-Hex.github.io/posts/2024/03/leap-year/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.js" onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://Clay-Hex.github.io/favicon.ico">
@@ -19,7 +19,7 @@
 <link rel="mask-icon" href="https://Clay-Hex.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="zh" href="https://Clay-Hex.github.io/posts/2022/11/cpp-conditional-variables-lock/">
+<link rel="alternate" hreflang="zh" href="https://Clay-Hex.github.io/posts/2024/03/leap-year/">
 <noscript>
     <style>
         #theme-toggle,
@@ -57,17 +57,38 @@
 
     </style>
 </noscript>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.css" integrity="sha384-bYdxxUwYipFNohQlHt0bjN/LCpueqWz13HufFEV1SUatKs1cm4L6fFgCi1jT643X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.js" integrity="sha384-Qsn9KnoKISj6dI8g7p1HBlNpVx0I8p1SvlwOldgi3IorMle61nQy4zEahWYtljaz" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+          
+          
+          delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false},
+              {left: '\\(', right: '\\)', display: false},
+              {left: '\\[', right: '\\]', display: true}
+          ],
+          
+          throwOnError : false
+        });
+    });
+</script>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><meta property="og:title" content="C&#43;&#43;学习记录(15) 条件变量与互斥锁" />
-<meta property="og:description" content="c&#43;&#43;中的条件变量与互斥锁" />
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><meta property="og:title" content="关于闰年这事儿" />
+<meta property="og:description" content="0. 所谓年 一般来说，“年”指的是，地球在公转轨道上绕行一周，又回到原来位置所花费的时间，这个过程大约是365.2564天。这个数字本身没什么问题，但如果用在历法中，就会出错。因为地球自转轴的存在和变化，每过365.2564天，地球虽然在公转轨道上的位置相同，但是每次太阳对于地球上一" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://Clay-Hex.github.io/posts/2022/11/cpp-conditional-variables-lock/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2022-11-18T00:39:31+08:00" />
-<meta property="article:modified_time" content="2022-11-18T00:39:31+08:00" />
+<meta property="og:url" content="https://Clay-Hex.github.io/posts/2024/03/leap-year/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-03-16T13:29:37+08:00" />
+<meta property="article:modified_time" content="2024-03-16T13:29:37+08:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="C&#43;&#43;学习记录(15) 条件变量与互斥锁"/>
-<meta name="twitter:description" content="c&#43;&#43;中的条件变量与互斥锁"/>
+<meta name="twitter:title" content="关于闰年这事儿"/>
+<meta name="twitter:description" content="0. 所谓年 一般来说，“年”指的是，地球在公转轨道上绕行一周，又回到原来位置所花费的时间，这个过程大约是365.2564天。这个数字本身没什么问题，但如果用在历法中，就会出错。因为地球自转轴的存在和变化，每过365.2564天，地球虽然在公转轨道上的位置相同，但是每次太阳对于地球上一"/>
 
 
 <script type="application/ld+json">
@@ -84,14 +105,14 @@
     {
       "@type": "ListItem",
       "position":  2 ,
-      "name": "📚 学习",
-      "item": "https://Clay-Hex.github.io/posts/learn/"
+      "name": "🌈 生活",
+      "item": "https://Clay-Hex.github.io/posts/life/"
     }, 
     {
       "@type": "ListItem",
       "position":  3 ,
-      "name": "C++学习记录(15) 条件变量与互斥锁",
-      "item": "https://Clay-Hex.github.io/posts/2022/11/cpp-conditional-variables-lock/"
+      "name": "关于闰年这事儿",
+      "item": "https://Clay-Hex.github.io/posts/2024/03/leap-year/"
     }
   ]
 }
@@ -100,24 +121,24 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "C++学习记录(15) 条件变量与互斥锁",
-  "name": "C\u002b\u002b学习记录(15) 条件变量与互斥锁",
-  "description": "c++中的条件变量与互斥锁",
+  "headline": "关于闰年这事儿",
+  "name": "关于闰年这事儿",
+  "description": "0. 所谓年 一般来说，“年”指的是，地球在公转轨道上绕行一周，又回到原来位置所花费的时间，这个过程大约是365.2564天。这个数字本身没什么问题，但如果用在历法中，就会出错。因为地球自转轴的存在和变化，每过365.2564天，地球虽然在公转轨道上的位置相同，但是每次太阳对于地球上一",
   "keywords": [
-    "C++"
+    "闰年"
   ],
-  "articleBody": "0. C++ 中的锁 两种最常用的：互斥锁、条件锁，此外还有自旋锁\n1. C++ 中的条件变量 2. 生产者消费者模型 引出虚假唤醒的问题\n3. 虚假唤醒 有多个线程在wait同一个条件变量时，当条件变量发出notify_one的时候，各个线程去竞争锁，此时，只能有一个线程得到锁，但是，其他线程在收到notify_one信号时，线程已经从wait队列换到锁竞争的队列了（不再等待notify的通知了，而是等待其他线程解除对锁的占用），一旦某个线程拿到锁了，就会立刻向下执行代码，但此时，条件可能已经变了，不是预期的条件了。\n解决办法：\n把if改成while，在收到通知消息后循环判断条件是否成立。 传递一个lambda函数给wait函数的第二个参数，该lambda方法返回等待的条件。该方式可以理解为，在收到notify信号后，线程先竞争锁，得到锁后，再检查一下lambda函数的返回值，如果返回值是true，则结束wait状态，继续向下执行。如果返回false，则解锁，继续wait。本质上等价于解决办法1。 ",
-  "wordCount" : "433",
+  "articleBody": "0. 所谓年 一般来说，“年”指的是，地球在公转轨道上绕行一周，又回到原来位置所花费的时间，这个过程大约是365.2564天。这个数字本身没什么问题，但如果用在历法中，就会出错。因为地球自转轴的存在和变化，每过365.2564天，地球虽然在公转轨道上的位置相同，但是每次太阳对于地球上一个固定位置的影响是有区别的，这直接就会影响到农业生产 。人们制定历法，就是为了服务农业生产，到什么节气做什么事，都是根据经验来的。可现在，每年春分具体的时间点是有区别的，这肯定不行。\n聪明的劳动人民慢慢发现，一个春分到下一次春分所经历的时间，实际上比地球公转周期要短一些，所以，历法中采用的“年”是回归年，考虑了地球自转轴的影响，一个回归年大约是365.2422天。\n1. 为什么“闰” 一个回归年是365.2422天，但是人们过日子总不能用小数算天吧。\n今天是周一，4.8575天后又放假了，真开心。\n老王上次找我借钱，说的是30.5367天之后还我，利息是xxx。\n这好像实在不是很方便。\n所以，一年还是得按365天计算（向下取整）。那么，每年，我们就少计算了0.2422天。4年后，就会累计少计算0.9688天，为了弥补这种差距，人们每4年，增加一天，这年就有366天！这就是4年一闰。\n每4年加一天的话，这就多计算了$1 - 0.9688 = 0.0312$天，100年后，就会多计算 $ 0.0312 * 25 = 0.78 $ 天，所以，人们每100年，就再减去一天（第100年不闰）。\n这样，每100年，就会少算0.22天（100年闰的话会多算0.78天，如果最后一个年不闰的话，就减去1天）。那么400年就少算了0.88天，所以，到第400年的时候，还是得加1天把这个误差往回找找，不能偏差的太多。这样的话，虽然0.88的误差找回来的，但是这样又多计算了0.12天。\n每400年多计算0.12天，3200年就多计算了0.96天，这误差又很大了，还是得减1天往回找补找补。所以，每3200年还是不能算作闰年。\n到这，有人可能会说\n3200年 少计算了0.04天，25个3200年，也就是第80000年的时候，正好少算了1整天。那就加1天，第80000年闰一下！误差不就归零了吗！\n其实，这样往下继续算好像也没啥问题，关键是，在上边的流程中，我们每年是按365.2422天计算的，可这只是一个近似值，在较短的时间内，用它来算一算，有误差好像也不会影响太大。但拉长时间尺度后再看的话，这里微小的误差，对结果的影响应该是不可忽略的。\n再者，现在人类的平均寿命不过百年，80000年对我们来说，太过久远。\n还有，随着人类文明的发展，后边还会不会在地球上继续生活，还不好说，也许，到了另一个星球，又是另一个闰法了。\n最后，如果给定一个年份是x的话，x要满足下列条件才能算作是闰年（起码在3200年以内，这样算好像问题也不大）\nbool func(int x) { if(x % 4 != 0) return false; if(x % 3200 == 0) return false; if(x % 400 == 0) return true; if(x % 100 == 0) return false; return true; } ",
+  "wordCount" : "1193",
   "inLanguage": "zh",
-  "datePublished": "2022-11-18T00:39:31+08:00",
-  "dateModified": "2022-11-18T00:39:31+08:00",
+  "datePublished": "2024-03-16T13:29:37+08:00",
+  "dateModified": "2024-03-16T13:29:37+08:00",
   "author":{
     "@type": "Person",
     "name": "Clay"
   },
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://Clay-Hex.github.io/posts/2022/11/cpp-conditional-variables-lock/"
+    "@id": "https://Clay-Hex.github.io/posts/2024/03/leap-year/"
   },
   "publisher": {
     "@type": "Organization",
@@ -212,16 +233,13 @@
 
 <article class="post-single">
   <header class="post-header">
-    <div class="breadcrumbs"><a href="https://Clay-Hex.github.io/">主页</a>&nbsp;»&nbsp;<a href="https://Clay-Hex.github.io/posts/">📒 记录</a>&nbsp;»&nbsp;<a href="https://Clay-Hex.github.io/posts/learn/">📚 学习</a></div>
+    <div class="breadcrumbs"><a href="https://Clay-Hex.github.io/">主页</a>&nbsp;»&nbsp;<a href="https://Clay-Hex.github.io/posts/">📒 记录</a>&nbsp;»&nbsp;<a href="https://Clay-Hex.github.io/posts/life/">🌈 生活</a></div>
     <h1 class="post-title entry-hint-parent">
-      C&#43;&#43;学习记录(15) 条件变量与互斥锁
+      关于闰年这事儿
     </h1>
-    <div class="post-description">
-      c&#43;&#43;中的条件变量与互斥锁
-    </div>
     <div class="post-meta"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
-        <span>2022-11-18
+        <span>2024-03-16
             &nbsp;&nbsp;
         </span>
     </span>
@@ -234,21 +252,13 @@
     
     <span id="post_meta_style_3">
         <span class="fa fa-file-word-o"></span>
-        <span>433字
+        <span>1193字
             &nbsp;&nbsp;
         </span>
     </span><span id="post_meta_style_5">
         <span class="fa fa-user-o"></span>
         <span>Clay
             &nbsp;&nbsp;
-        </span>
-    </span>
-    <span id="post_meta_style_6">
-        <span class="fa fa-tags" style="opacity: 0.8"></span>
-        <span>
-            <span class="post-tags-meta">
-                <a href="https://Clay-Hex.github.io/tags/c&#43;&#43;/" style="color: var(--secondary)!important;">C&#43;&#43;</a>
-            </span>
         </span>
     </span>
 </span>
@@ -263,13 +273,9 @@
 
             <div class="inner"><ul>
                     <li>
-                        <a href="#0-c-%e4%b8%ad%e7%9a%84%e9%94%81" aria-label="0. C&#43;&#43; 中的锁">0. C++ 中的锁</a></li>
+                        <a href="#0-%e6%89%80%e8%b0%93%e5%b9%b4" aria-label="0. 所谓年">0. 所谓年</a></li>
                     <li>
-                        <a href="#1-c-%e4%b8%ad%e7%9a%84%e6%9d%a1%e4%bb%b6%e5%8f%98%e9%87%8f" aria-label="1. C&#43;&#43; 中的条件变量">1. C++ 中的条件变量</a></li>
-                    <li>
-                        <a href="#2-%e7%94%9f%e4%ba%a7%e8%80%85%e6%b6%88%e8%b4%b9%e8%80%85%e6%a8%a1%e5%9e%8b" aria-label="2. 生产者消费者模型">2. 生产者消费者模型</a></li>
-                    <li>
-                        <a href="#3-%e8%99%9a%e5%81%87%e5%94%a4%e9%86%92" aria-label="3. 虚假唤醒">3. 虚假唤醒</a>
+                        <a href="#1-%e4%b8%ba%e4%bb%80%e4%b9%88%e9%97%b0" aria-label="1. 为什么“闰”">1. 为什么“闰”</a>
                     </li>
                 </ul>
             </div>
@@ -335,44 +341,49 @@
         return rect.top + win.pageYOffset;   
     }
 </script>
-  <div class="post-content"><h1 id="0-c-中的锁">0. C++ 中的锁<a hidden class="anchor" aria-hidden="true" href="#0-c-中的锁">#</a></h1>
-<p>两种最常用的：互斥锁、条件锁，此外还有自旋锁</p>
-<h1 id="1-c-中的条件变量">1. C++ 中的条件变量<a hidden class="anchor" aria-hidden="true" href="#1-c-中的条件变量">#</a></h1>
-<h1 id="2-生产者消费者模型">2. 生产者消费者模型<a hidden class="anchor" aria-hidden="true" href="#2-生产者消费者模型">#</a></h1>
-<p>引出虚假唤醒的问题</p>
-<h1 id="3-虚假唤醒">3. 虚假唤醒<a hidden class="anchor" aria-hidden="true" href="#3-虚假唤醒">#</a></h1>
-<p>有多个线程在wait同一个条件变量时，当条件变量发出notify_one的时候，各个线程去竞争锁，此时，只能有一个线程得到锁，但是，其他线程在收到notify_one信号时，线程已经从wait队列换到锁竞争的队列了（不再等待notify的通知了，而是等待其他线程解除对锁的占用），一旦某个线程拿到锁了，就会立刻向下执行代码，但此时，条件可能已经变了，不是预期的条件了。</p>
-<p>解决办法：</p>
-<ul>
-<li>
-<ol>
-<li>把if改成while，在收到通知消息后循环判断条件是否成立。</li>
-</ol>
-</li>
-<li>
-<ol start="2">
-<li>传递一个lambda函数给wait函数的第二个参数，该lambda方法返回等待的条件。该方式可以理解为，在收到notify信号后，线程先竞争锁，得到锁后，再检查一下lambda函数的返回值，如果返回值是true，则结束wait状态，继续向下执行。如果返回false，则解锁，继续wait。本质上等价于解决办法1。</li>
-</ol>
-</li>
-</ul>
-
+  <div class="post-content"><h1 id="0-所谓年">0. 所谓年<a hidden class="anchor" aria-hidden="true" href="#0-所谓年">#</a></h1>
+<p>一般来说，“年”指的是，地球在公转轨道上绕行一周，又回到原来位置所花费的时间，这个过程大约是365.2564天。这个数字本身没什么问题，但如果用在历法中，就会出错。因为地球自转轴的存在和变化，每过365.2564天，地球虽然在公转轨道上的位置相同，但是每次太阳对于地球上一个固定位置的影响是有区别的，这直接就会影响到农业生产 。人们制定历法，就是为了服务农业生产，到什么节气做什么事，都是根据经验来的。可现在，每年春分具体的时间点是有区别的，这肯定不行。</p>
+<p>聪明的劳动人民慢慢发现，一个春分到下一次春分所经历的时间，实际上比地球公转周期要短一些，所以，历法中采用的“年”是回归年，考虑了地球自转轴的影响，一个回归年大约是365.2422天。</p>
+<h1 id="1-为什么闰">1. 为什么“闰”<a hidden class="anchor" aria-hidden="true" href="#1-为什么闰">#</a></h1>
+<p>一个回归年是365.2422天，但是人们过日子总不能用小数算天吧。</p>
+<blockquote>
+<p>今天是周一，4.8575天后又放假了，真开心。<br>
+老王上次找我借钱，说的是30.5367天之后还我，利息是xxx。</p>
+</blockquote>
+<p>这好像实在不是很方便。</p>
+<p>所以，一年还是得按365天计算（向下取整）。那么，每年，我们就少计算了0.2422天。4年后，就会累计少计算0.9688天，为了弥补这种差距，人们每4年，增加一天，这年就有366天！这就是4年一闰。</p>
+<p>每4年加一天的话，这就多计算了$1 - 0.9688 = 0.0312$天，100年后，就会多计算 $ 0.0312 * 25 = 0.78 $ 天，所以，人们每100年，就再减去一天（第100年不闰）。</p>
+<p>这样，每100年，就会少算0.22天（100年闰的话会多算0.78天，如果最后一个年不闰的话，就减去1天）。那么400年就少算了0.88天，所以，到第400年的时候，还是得加1天把这个误差往回找找，不能偏差的太多。这样的话，虽然0.88的误差找回来的，但是这样又多计算了0.12天。</p>
+<p>每400年多计算0.12天，3200年就多计算了0.96天，这误差又很大了，还是得减1天往回找补找补。所以，每3200年还是不能算作闰年。</p>
+<p>到这，有人可能会说</p>
+<blockquote>
+<p>3200年 少计算了0.04天，25个3200年，也就是第80000年的时候，正好少算了1整天。那就加1天，第80000年闰一下！误差不就归零了吗！</p>
+</blockquote>
+<p>其实，这样往下继续算好像也没啥问题，关键是，在上边的流程中，我们每年是按365.2422天计算的，可这只是一个近似值，在较短的时间内，用它来算一算，有误差好像也不会影响太大。但拉长时间尺度后再看的话，这里微小的误差，对结果的影响应该是不可忽略的。<br>
+再者，现在人类的平均寿命不过百年，80000年对我们来说，太过久远。<br>
+还有，随着人类文明的发展，后边还会不会在地球上继续生活，还不好说，也许，到了另一个星球，又是另一个闰法了。</p>
+<p>最后，如果给定一个年份是<code>x</code>的话，<code>x</code>要满足下列条件才能算作是闰年（起码在3200年以内，这样算好像问题也不大）</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">func</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">x</span> <span class="o">%</span> <span class="mi">4</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">x</span> <span class="o">%</span> <span class="mi">3200</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">x</span> <span class="o">%</span> <span class="mi">400</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">x</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div>
 
   </div>
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://Clay-Hex.github.io/tags/c&#43;&#43;/">C&#43;&#43;</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://Clay-Hex.github.io/posts/2024/03/leap-year/">
-    <span class="title">« 上一篇</span>
-    <br>
-    <span>关于闰年这事儿</span>
-  </a>
-  <a class="next" href="https://Clay-Hex.github.io/posts/2022/11/qt-thread/">
+  <a class="next" href="https://Clay-Hex.github.io/posts/2022/11/cpp-conditional-variables-lock/">
     <span class="title">下一篇 »</span>
     <br>
-    <span>QT中线程启动方式和操作的注意问题</span>
+    <span>C&#43;&#43;学习记录(15) 条件变量与互斥锁</span>
   </a>
 </nav>
 
