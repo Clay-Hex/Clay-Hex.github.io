@@ -9,17 +9,17 @@
 <meta name="keywords" content="qt, thread, QThread">
 <meta name="description" content="0. QT中线程启动的方式 0.1 继承QThread 继承QThread时，子类必须重写run方法，保证线程在手动结束之前持续运行。 当子类使用start方法启动后，run方法会在生命周期内循环执行。 .h文件 #ifndef CLASS1_H #define CLASS1_H #include &lt;QObject&gt; #include &lt;QThread&gt; // 继承QTQThread class Class1 : public QThread { Q_OBJECT public: explicit Class1(QThread *parent = 0); ~Class1(); void run() override; public slots: void testFunc(); }; #endif">
 <meta name="author" content="Clay">
-<link rel="canonical" href="https://Clay-Hex.github.io/posts/2022/11/qt-thread/">
+<link rel="canonical" href="https://www.ClayHex.com/posts/2022/11/qt-thread/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.js" onload="hljs.initHighlightingOnLoad();"></script>
-<link rel="icon" href="https://Clay-Hex.github.io/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://Clay-Hex.github.io/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://Clay-Hex.github.io/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://Clay-Hex.github.io/apple-touch-icon.png">
-<link rel="mask-icon" href="https://Clay-Hex.github.io/safari-pinned-tab.svg">
+<link rel="icon" href="https://www.ClayHex.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.ClayHex.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.ClayHex.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://www.ClayHex.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://www.ClayHex.com/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="zh" href="https://Clay-Hex.github.io/posts/2022/11/qt-thread/">
+<link rel="alternate" hreflang="zh" href="https://www.ClayHex.com/posts/2022/11/qt-thread/">
 <noscript>
     <style>
         #theme-toggle,
@@ -61,7 +61,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><meta property="og:title" content="QT中线程启动方式和操作的注意问题" />
 <meta property="og:description" content="0. QT中线程启动的方式 0.1 继承QThread 继承QThread时，子类必须重写run方法，保证线程在手动结束之前持续运行。 当子类使用start方法启动后，run方法会在生命周期内循环执行。 .h文件 #ifndef CLASS1_H #define CLASS1_H #include &lt;QObject&gt; #include &lt;QThread&gt; // 继承QTQThread class Class1 : public QThread { Q_OBJECT public: explicit Class1(QThread *parent = 0); ~Class1(); void run() override; public slots: void testFunc(); }; #endif" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://Clay-Hex.github.io/posts/2022/11/qt-thread/" /><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://www.ClayHex.com/posts/2022/11/qt-thread/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2022-11-15T09:52:46+08:00" />
 <meta property="article:modified_time" content="2022-11-15T09:52:46+08:00" />
 
@@ -79,19 +79,19 @@
       "@type": "ListItem",
       "position":  1 ,
       "name": "📒 记录",
-      "item": "https://Clay-Hex.github.io/posts/"
+      "item": "https://www.ClayHex.com/posts/"
     }, 
     {
       "@type": "ListItem",
       "position":  2 ,
       "name": "📚 学习",
-      "item": "https://Clay-Hex.github.io/posts/learn/"
+      "item": "https://www.ClayHex.com/posts/learn/"
     }, 
     {
       "@type": "ListItem",
       "position":  3 ,
       "name": "QT中线程启动方式和操作的注意问题",
-      "item": "https://Clay-Hex.github.io/posts/2022/11/qt-thread/"
+      "item": "https://www.ClayHex.com/posts/2022/11/qt-thread/"
     }
   ]
 }
@@ -117,14 +117,14 @@
   },
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://Clay-Hex.github.io/posts/2022/11/qt-thread/"
+    "@id": "https://www.ClayHex.com/posts/2022/11/qt-thread/"
   },
   "publisher": {
     "@type": "Organization",
     "name": "Clay's Blog",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://Clay-Hex.github.io/favicon.ico"
+      "url": "https://www.ClayHex.com/favicon.ico"
     }
   }
 }
@@ -146,8 +146,8 @@
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="https://Clay-Hex.github.io/" accesskey="h" title="Clay&#39;s Blog (Alt + H)">
-                <img src="https://Clay-Hex.github.io/img/avatar.jpg" alt="" aria-label="logo"
+            <a href="https://www.ClayHex.com/" accesskey="h" title="Clay&#39;s Blog (Alt + H)">
+                <img src="https://www.ClayHex.com/img/avatar.jpg" alt="" aria-label="logo"
                     height="35">Clay&#39;s Blog</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
@@ -176,32 +176,32 @@
         </div>
         <ul id="menu">
             <li>
-                <a href="https://Clay-Hex.github.io/search" title="🔍 搜索 (Alt &#43; /)" accesskey=/>
+                <a href="https://www.ClayHex.com/search" title="🔍 搜索 (Alt &#43; /)" accesskey=/>
                     <span>🔍 搜索</span>
                 </a>
             </li>
             <li>
-                <a href="https://Clay-Hex.github.io/" title="🏡 主页">
+                <a href="https://www.ClayHex.com/" title="🏡 主页">
                     <span>🏡 主页</span>
                 </a>
             </li>
             <li>
-                <a href="https://Clay-Hex.github.io/posts" title="📒 记录">
+                <a href="https://www.ClayHex.com/posts" title="📒 记录">
                     <span>📒 记录</span>
                 </a>
             </li>
             <li>
-                <a href="https://Clay-Hex.github.io/tags" title="📛 标签">
+                <a href="https://www.ClayHex.com/tags" title="📛 标签">
                     <span>📛 标签</span>
                 </a>
             </li>
             <li>
-                <a href="https://Clay-Hex.github.io/archives/" title="📁 归档">
+                <a href="https://www.ClayHex.com/archives/" title="📁 归档">
                     <span>📁 归档</span>
                 </a>
             </li>
             <li>
-                <a href="https://Clay-Hex.github.io/about" title="📖 关于">
+                <a href="https://www.ClayHex.com/about" title="📖 关于">
                     <span>📖 关于</span>
                 </a>
             </li>
@@ -212,7 +212,7 @@
 
 <article class="post-single">
   <header class="post-header">
-    <div class="breadcrumbs"><a href="https://Clay-Hex.github.io/">主页</a>&nbsp;»&nbsp;<a href="https://Clay-Hex.github.io/posts/">📒 记录</a>&nbsp;»&nbsp;<a href="https://Clay-Hex.github.io/posts/learn/">📚 学习</a></div>
+    <div class="breadcrumbs"><a href="https://www.ClayHex.com/">主页</a>&nbsp;»&nbsp;<a href="https://www.ClayHex.com/posts/">📒 记录</a>&nbsp;»&nbsp;<a href="https://www.ClayHex.com/posts/learn/">📚 学习</a></div>
     <h1 class="post-title entry-hint-parent">
       QT中线程启动方式和操作的注意问题
     </h1>
@@ -642,12 +642,12 @@ TestClass1和TestClass2按钮直接调用，其余两个使用信号槽的方式
     <ul class="post-tags">
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://Clay-Hex.github.io/posts/2022/11/cpp-conditional-variables-lock/">
+  <a class="prev" href="https://www.ClayHex.com/posts/2022/11/cpp-conditional-variables-lock/">
     <span class="title">« 上一篇</span>
     <br>
     <span>C&#43;&#43;学习记录(15) 条件变量与互斥锁</span>
   </a>
-  <a class="next" href="https://Clay-Hex.github.io/posts/2022/05/python3-ers-superpixel-segmentation/">
+  <a class="next" href="https://www.ClayHex.com/posts/2022/05/python3-ers-superpixel-segmentation/">
     <span class="title">下一篇 »</span>
     <br>
     <span>Python3.6环境使用ERS超像素分割算法</span>
@@ -736,7 +736,7 @@ TestClass1和TestClass2按钮直接调用，其余两个使用信号槽的方式
     </main>
     
 <footer class="footer">
-    <span>&copy; 2024 <a href="https://Clay-Hex.github.io/">Clay&#39;s Blog</a></span>
+    <span>&copy; 2024 <a href="https://www.ClayHex.com/">Clay&#39;s Blog</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &

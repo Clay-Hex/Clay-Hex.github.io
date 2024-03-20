@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>双目视觉 on Clay&#39;s Blog</title>
-    <link>https://Clay-Hex.github.io/tags/%E5%8F%8C%E7%9B%AE%E8%A7%86%E8%A7%89/</link>
+    <link>https://www.ClayHex.com/tags/%E5%8F%8C%E7%9B%AE%E8%A7%86%E8%A7%89/</link>
     <description>Recent content in 双目视觉 on Clay&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
     <lastBuildDate>Sun, 25 Apr 2021 22:00:07 +0800</lastBuildDate>
-    <atom:link href="https://Clay-Hex.github.io/tags/%E5%8F%8C%E7%9B%AE%E8%A7%86%E8%A7%89/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://www.ClayHex.com/tags/%E5%8F%8C%E7%9B%AE%E8%A7%86%E8%A7%89/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>双目立体视觉的成像原理及相关问题</title>
-      <link>https://Clay-Hex.github.io/posts/2021/04/binocular-stereo-vision-theory/</link>
+      <link>https://www.ClayHex.com/posts/2021/04/binocular-stereo-vision-theory/</link>
       <pubDate>Sun, 25 Apr 2021 22:00:07 +0800</pubDate>
-      <guid>https://Clay-Hex.github.io/posts/2021/04/binocular-stereo-vision-theory/</guid>
+      <guid>https://www.ClayHex.com/posts/2021/04/binocular-stereo-vision-theory/</guid>
       <description>序： 记录学习过程中自己的理解以及遇到的问题，慢慢补充。 若有错误，还希望各位大佬不吝赐教。 0. 零零散散 0.1 公开数据集 Middlebury：https://vision.middlebury.edu/stereo/data/(室内) KITTI：http://www.cvlibs.net/</description>
     </item>
     <item>
       <title>SGM算法开源库libSGM在windows下的编译和使用</title>
-      <link>https://Clay-Hex.github.io/posts/2021/04/windows-libsgm/</link>
+      <link>https://www.ClayHex.com/posts/2021/04/windows-libsgm/</link>
       <pubDate>Fri, 23 Apr 2021 17:06:35 +0800</pubDate>
-      <guid>https://Clay-Hex.github.io/posts/2021/04/windows-libsgm/</guid>
+      <guid>https://www.ClayHex.com/posts/2021/04/windows-libsgm/</guid>
       <description>0. 原材料 libSGM开源库是一个使用CUDA对半全局匹配算法SGM的加速实现版本。 英伟达显卡（算力 &amp;gt;= 3.5） cuda环境（我的版本是cuda 10.0） OpenCV（版本 &amp;gt;= 3.0） Cmake（版本&amp;gt;=3.1） 1. 源码下载和编译 1.0 代码clone 开源库地址： https://github.com/fixstars/libSGM 先把代码clone到本</description>
     </item>
   </channel>

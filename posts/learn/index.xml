@@ -2,227 +2,227 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>📚 学习 on Clay&#39;s Blog</title>
-    <link>https://Clay-Hex.github.io/posts/learn/</link>
+    <link>https://www.ClayHex.com/posts/learn/</link>
     <description>Recent content in 📚 学习 on Clay&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
     <lastBuildDate>Fri, 18 Nov 2022 00:39:31 +0800</lastBuildDate>
-    <atom:link href="https://Clay-Hex.github.io/posts/learn/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://www.ClayHex.com/posts/learn/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>C&#43;&#43;学习记录(15) 条件变量与互斥锁</title>
-      <link>https://Clay-Hex.github.io/posts/2022/11/cpp-conditional-variables-lock/</link>
+      <link>https://www.ClayHex.com/posts/2022/11/cpp-conditional-variables-lock/</link>
       <pubDate>Fri, 18 Nov 2022 00:39:31 +0800</pubDate>
-      <guid>https://Clay-Hex.github.io/posts/2022/11/cpp-conditional-variables-lock/</guid>
+      <guid>https://www.ClayHex.com/posts/2022/11/cpp-conditional-variables-lock/</guid>
       <description>c&#43;&#43;中的条件变量与互斥锁</description>
     </item>
     <item>
       <title>QT中线程启动方式和操作的注意问题</title>
-      <link>https://Clay-Hex.github.io/posts/2022/11/qt-thread/</link>
+      <link>https://www.ClayHex.com/posts/2022/11/qt-thread/</link>
       <pubDate>Tue, 15 Nov 2022 09:52:46 +0800</pubDate>
-      <guid>https://Clay-Hex.github.io/posts/2022/11/qt-thread/</guid>
+      <guid>https://www.ClayHex.com/posts/2022/11/qt-thread/</guid>
       <description>0. QT中线程启动的方式 0.1 继承QThread 继承QThread时，子类必须重写run方法，保证线程在手动结束之前持续运行。 当子类使用start方法启动后，run方法会在生命周期内循环执行。 .h文件 #ifndef CLASS1_H #define CLASS1_H #include &amp;lt;QObject&amp;gt; #include &amp;lt;QThread&amp;gt; // 继承QTQThread class Class1 : public QThread { Q_OBJECT public: explicit Class1(QThread *parent = 0); ~Class1(); void run() override; public slots: void testFunc(); }; #endif</description>
     </item>
     <item>
       <title>Python3.6环境使用ERS超像素分割算法</title>
-      <link>https://Clay-Hex.github.io/posts/2022/05/python3-ers-superpixel-segmentation/</link>
+      <link>https://www.ClayHex.com/posts/2022/05/python3-ers-superpixel-segmentation/</link>
       <pubDate>Wed, 04 May 2022 12:50:00 +0800</pubDate>
-      <guid>https://Clay-Hex.github.io/posts/2022/05/python3-ers-superpixel-segmentation/</guid>
+      <guid>https://www.ClayHex.com/posts/2022/05/python3-ers-superpixel-segmentation/</guid>
       <description>0. ERS算法 xxx 1. 问题 原本ERS算法的作者提供了python接口，但是是基于Python2的，在python3.6中调用的话，会出现缺失DLL的错误，如下图： 2. 解决方案 作者提供了ERS算法的C语言源代码，所以基于Python3.6重新编译一下即可。 2.1 安装vs 我安装的是VS2017社</description>
     </item>
     <item>
       <title>算术表达式计算方法</title>
-      <link>https://Clay-Hex.github.io/posts/2022/05/cpp-arithmetic-expression/</link>
+      <link>https://www.ClayHex.com/posts/2022/05/cpp-arithmetic-expression/</link>
       <pubDate>Mon, 02 May 2022 10:52:27 +0800</pubDate>
-      <guid>https://Clay-Hex.github.io/posts/2022/05/cpp-arithmetic-expression/</guid>
+      <guid>https://www.ClayHex.com/posts/2022/05/cpp-arithmetic-expression/</guid>
       <description>0. 表达式树 在一颗树中，叶子节点都是操作数，所有的非叶子节点都是运算符，这样的树叫做表达式树。 如图: 1. 后缀表达式计算 后缀表达式：也叫逆波兰表达式，是表达式树的后序遍历。 在计算时，不用还原出整棵树，可用一个栈来辅助计算。 leetcode 150. 逆波兰表达式求值 class Solution { public: int evalRPN(vector&amp;lt;string&amp;gt;&amp;amp; tokens) { int st[10005]; int tt = 0; for( auto &amp;amp;x : tokens){ if(x == &amp;#34;+&amp;#34;</description>
     </item>
     <item>
       <title>Cityscapes DataSet 数据集</title>
-      <link>https://Clay-Hex.github.io/posts/2022/04/cityscapes-dataset/</link>
+      <link>https://www.ClayHex.com/posts/2022/04/cityscapes-dataset/</link>
       <pubDate>Thu, 28 Apr 2022 08:58:44 +0800</pubDate>
-      <guid>https://Clay-Hex.github.io/posts/2022/04/cityscapes-dataset/</guid>
+      <guid>https://www.ClayHex.com/posts/2022/04/cityscapes-dataset/</guid>
       <description>0. 数据集概述 Cityscapes 数据集专注于对城市街景的语义理解。 1. 特点 多边形的标签 实例分割车辆和人 30个类别 5000张精细标注的图 20000张粗略标注的图 leftImg8bit_trainvaltest.zip (11GB) left 8-bit images - train, val, and test sets (5000 images) https://www.cityscapes-dataset.com/file-handling/?packageID=3 rightImg8bit_trainvaltest.zip (11GB) right 8-bit images - train, val, and test sets (5000 images) https://www.cityscapes-dataset.com/file-handling/?packageID=5 disparity_trainvaltest.zip (3.5GB) precomputed depth maps using SGM for train, val, and test sets (5000 images) https://www.cityscapes-dataset.com/file-handling/?packageID=7 camera_trainvaltest.zip (2MB) [md5] intrinsic and extrinsic camera parameters for train, val, and test sets https://www.cityscapes-dataset.com/file-handling/?packageID=8 脚本安装 1. 使用githu</description>
     </item>
     <item>
       <title>C&#43;&#43;学习记录(14) 构造函数与析构函数</title>
-      <link>https://Clay-Hex.github.io/posts/2022/04/cpp-constructors-destructors/</link>
+      <link>https://www.ClayHex.com/posts/2022/04/cpp-constructors-destructors/</link>
       <pubDate>Tue, 26 Apr 2022 11:48:13 +0800</pubDate>
-      <guid>https://Clay-Hex.github.io/posts/2022/04/cpp-constructors-destructors/</guid>
+      <guid>https://www.ClayHex.com/posts/2022/04/cpp-constructors-destructors/</guid>
       <description>c&#43;&#43;中的构造函数与析构函数</description>
     </item>
     <item>
       <title>常见排序算法及稳定性</title>
-      <link>https://Clay-Hex.github.io/posts/2021/12/sorting-algorithm-stability/</link>
+      <link>https://www.ClayHex.com/posts/2021/12/sorting-algorithm-stability/</link>
       <pubDate>Mon, 20 Dec 2021 20:04:26 +0800</pubDate>
-      <guid>https://Clay-Hex.github.io/posts/2021/12/sorting-algorithm-stability/</guid>
+      <guid>https://www.ClayHex.com/posts/2021/12/sorting-algorithm-stability/</guid>
       <description>常见排序算法模板及稳定性</description>
     </item>
     <item>
       <title>2C4T与4C4T在计算密集型任务下的效率对比</title>
-      <link>https://Clay-Hex.github.io/posts/2021/10/2c4t-4c4t-compute-intensive-task/</link>
+      <link>https://www.ClayHex.com/posts/2021/10/2c4t-4c4t-compute-intensive-task/</link>
       <pubDate>Sun, 03 Oct 2021 20:45:51 +0800</pubDate>
-      <guid>https://Clay-Hex.github.io/posts/2021/10/2c4t-4c4t-compute-intensive-task/</guid>
+      <guid>https://www.ClayHex.com/posts/2021/10/2c4t-4c4t-compute-intensive-task/</guid>
       <description>1. 环境 机器1：Intel(R) Core(TM) i5-4200H CPU @ 2.80GHz，双核四线程，win10 x64，16G内存 机器2：Intel(R) Core(TM) i3-9100T CPU @ 3.10GHz，四核四线程。wn10 x64，8G内存 目的：大概测试一下2C4T与4C4T在计算密集型任务下的效率提升对比，内存大小、频率暂且忽略。 方法：使</description>
     </item>
     <item>
       <title>C&#43;&#43;学习记录(13) new与delete</title>
-      <link>https://Clay-Hex.github.io/posts/2021/08/cpp-new-and-delete/</link>
+      <link>https://www.ClayHex.com/posts/2021/08/cpp-new-and-delete/</link>
       <pubDate>Fri, 20 Aug 2021 22:23:55 +0800</pubDate>
-      <guid>https://Clay-Hex.github.io/posts/2021/08/cpp-new-and-delete/</guid>
+      <guid>https://www.ClayHex.com/posts/2021/08/cpp-new-and-delete/</guid>
       <description>c&#43;&#43;中的new与delete</description>
     </item>
     <item>
       <title>小数在计算机中的存储方式</title>
-      <link>https://Clay-Hex.github.io/posts/2021/08/floating-point-and-fixed-point-storage-method/</link>
+      <link>https://www.ClayHex.com/posts/2021/08/floating-point-and-fixed-point-storage-method/</link>
       <pubDate>Tue, 17 Aug 2021 23:16:06 +0800</pubDate>
-      <guid>https://Clay-Hex.github.io/posts/2021/08/floating-point-and-fixed-point-storage-method/</guid>
+      <guid>https://www.ClayHex.com/posts/2021/08/floating-point-and-fixed-point-storage-method/</guid>
       <description>0. 小数在计算机中的存储 两种方法： 定点 浮点 1. 定点数 顾名思义，小数点的位置固定的。 也就是说，用固定数量的bit存储整数部分，也用固定数量的bit存储小数部分，另外再用一个bit存储符号位。 计算时，将三个部分拼接起来，加个小数点即可。 优点：小数点位置固定，方便计算。 缺点：表示输的范围受</description>
     </item>
     <item>
       <title>C&#43;&#43;学习记录(12) 类型转换</title>
-      <link>https://Clay-Hex.github.io/posts/2021/08/cpp-type-conversion/</link>
+      <link>https://www.ClayHex.com/posts/2021/08/cpp-type-conversion/</link>
       <pubDate>Mon, 02 Aug 2021 21:07:40 +0800</pubDate>
-      <guid>https://Clay-Hex.github.io/posts/2021/08/cpp-type-conversion/</guid>
+      <guid>https://www.ClayHex.com/posts/2021/08/cpp-type-conversion/</guid>
       <description>c&#43;&#43;中的类型转换</description>
     </item>
     <item>
       <title>C&#43;&#43;学习记录(11) 智能指针</title>
-      <link>https://Clay-Hex.github.io/posts/2021/07/cpp-smart-pointers/</link>
+      <link>https://www.ClayHex.com/posts/2021/07/cpp-smart-pointers/</link>
       <pubDate>Sat, 10 Jul 2021 22:26:24 +0800</pubDate>
-      <guid>https://Clay-Hex.github.io/posts/2021/07/cpp-smart-pointers/</guid>
+      <guid>https://www.ClayHex.com/posts/2021/07/cpp-smart-pointers/</guid>
       <description>c&#43;&#43;中的智能指针</description>
     </item>
     <item>
       <title>Wireshark配合TCP调试工具理解TCP三次握手和四次挥手过程</title>
-      <link>https://Clay-Hex.github.io/posts/2021/07/wireshark-tcp-handshake-wave/</link>
+      <link>https://www.ClayHex.com/posts/2021/07/wireshark-tcp-handshake-wave/</link>
       <pubDate>Tue, 06 Jul 2021 15:22:40 +0800</pubDate>
-      <guid>https://Clay-Hex.github.io/posts/2021/07/wireshark-tcp-handshake-wave/</guid>
+      <guid>https://www.ClayHex.com/posts/2021/07/wireshark-tcp-handshake-wave/</guid>
       <description>0. 原材料 抓包工具：wireshark 许多文章都是使用浏览器去访问一个网站，抓http的包，进而分析下层的tcp协议过程，但是数据比较多，不清晰，所以我采用了TCP调试助手，这样的话，没有http数据的干预，比较清晰。 1. 环境 借用www.huawei.com的ip地址183.66.1</description>
     </item>
     <item>
       <title>C&#43;&#43;学习记录(10) 内存对齐</title>
-      <link>https://Clay-Hex.github.io/posts/2021/06/cpp-memory-alignment/</link>
+      <link>https://www.ClayHex.com/posts/2021/06/cpp-memory-alignment/</link>
       <pubDate>Fri, 25 Jun 2021 21:26:00 +0800</pubDate>
-      <guid>https://Clay-Hex.github.io/posts/2021/06/cpp-memory-alignment/</guid>
+      <guid>https://www.ClayHex.com/posts/2021/06/cpp-memory-alignment/</guid>
       <description>c&#43;&#43;中的内存对齐问题</description>
     </item>
     <item>
       <title>C&#43;&#43;学习记录(9) 常量折叠</title>
-      <link>https://Clay-Hex.github.io/posts/2021/06/cpp-constant-folding/</link>
+      <link>https://www.ClayHex.com/posts/2021/06/cpp-constant-folding/</link>
       <pubDate>Thu, 24 Jun 2021 09:09:56 +0800</pubDate>
-      <guid>https://Clay-Hex.github.io/posts/2021/06/cpp-constant-folding/</guid>
+      <guid>https://www.ClayHex.com/posts/2021/06/cpp-constant-folding/</guid>
       <description>关于c&#43;&#43;中的常量折叠问题</description>
     </item>
     <item>
       <title>双目立体视觉的成像原理及相关问题</title>
-      <link>https://Clay-Hex.github.io/posts/2021/04/binocular-stereo-vision-theory/</link>
+      <link>https://www.ClayHex.com/posts/2021/04/binocular-stereo-vision-theory/</link>
       <pubDate>Sun, 25 Apr 2021 22:00:07 +0800</pubDate>
-      <guid>https://Clay-Hex.github.io/posts/2021/04/binocular-stereo-vision-theory/</guid>
+      <guid>https://www.ClayHex.com/posts/2021/04/binocular-stereo-vision-theory/</guid>
       <description>序： 记录学习过程中自己的理解以及遇到的问题，慢慢补充。 若有错误，还希望各位大佬不吝赐教。 0. 零零散散 0.1 公开数据集 Middlebury：https://vision.middlebury.edu/stereo/data/(室内) KITTI：http://www.cvlibs.net/</description>
     </item>
     <item>
       <title>SGM算法开源库libSGM在windows下的编译和使用</title>
-      <link>https://Clay-Hex.github.io/posts/2021/04/windows-libsgm/</link>
+      <link>https://www.ClayHex.com/posts/2021/04/windows-libsgm/</link>
       <pubDate>Fri, 23 Apr 2021 17:06:35 +0800</pubDate>
-      <guid>https://Clay-Hex.github.io/posts/2021/04/windows-libsgm/</guid>
+      <guid>https://www.ClayHex.com/posts/2021/04/windows-libsgm/</guid>
       <description>0. 原材料 libSGM开源库是一个使用CUDA对半全局匹配算法SGM的加速实现版本。 英伟达显卡（算力 &amp;gt;= 3.5） cuda环境（我的版本是cuda 10.0） OpenCV（版本 &amp;gt;= 3.0） Cmake（版本&amp;gt;=3.1） 1. 源码下载和编译 1.0 代码clone 开源库地址： https://github.com/fixstars/libSGM 先把代码clone到本</description>
     </item>
     <item>
       <title>Windows环境下配置MQTT服务器(mosquitto)</title>
-      <link>https://Clay-Hex.github.io/posts/2021/04/windows-mqtt-server-mosquitto/</link>
+      <link>https://www.ClayHex.com/posts/2021/04/windows-mqtt-server-mosquitto/</link>
       <pubDate>Sat, 10 Apr 2021 20:30:52 +0800</pubDate>
-      <guid>https://Clay-Hex.github.io/posts/2021/04/windows-mqtt-server-mosquitto/</guid>
+      <guid>https://www.ClayHex.com/posts/2021/04/windows-mqtt-server-mosquitto/</guid>
       <description>Windows环境下配置MQTT服务器</description>
     </item>
     <item>
       <title>C&#43;&#43;学习记录(8) 模板</title>
-      <link>https://Clay-Hex.github.io/posts/2021/02/cpp-template/</link>
+      <link>https://www.ClayHex.com/posts/2021/02/cpp-template/</link>
       <pubDate>Sat, 20 Feb 2021 14:25:23 +0800</pubDate>
-      <guid>https://Clay-Hex.github.io/posts/2021/02/cpp-template/</guid>
+      <guid>https://www.ClayHex.com/posts/2021/02/cpp-template/</guid>
       <description>c&#43;&#43;中的模板</description>
     </item>
     <item>
       <title>C&#43;&#43;学习记录(7) 多态</title>
-      <link>https://Clay-Hex.github.io/posts/2021/02/cpp-polymorphic/</link>
+      <link>https://www.ClayHex.com/posts/2021/02/cpp-polymorphic/</link>
       <pubDate>Wed, 17 Feb 2021 17:14:03 +0800</pubDate>
-      <guid>https://Clay-Hex.github.io/posts/2021/02/cpp-polymorphic/</guid>
+      <guid>https://www.ClayHex.com/posts/2021/02/cpp-polymorphic/</guid>
       <description>c&#43;&#43;中的多态</description>
     </item>
     <item>
       <title>C&#43;&#43;学习记录(6) 继承</title>
-      <link>https://Clay-Hex.github.io/posts/2021/02/cpp-inheritance/</link>
+      <link>https://www.ClayHex.com/posts/2021/02/cpp-inheritance/</link>
       <pubDate>Wed, 17 Feb 2021 14:56:59 +0800</pubDate>
-      <guid>https://Clay-Hex.github.io/posts/2021/02/cpp-inheritance/</guid>
+      <guid>https://www.ClayHex.com/posts/2021/02/cpp-inheritance/</guid>
       <description>c&#43;&#43;中的继承问题</description>
     </item>
     <item>
       <title>C&#43;&#43;学习记录(5) 类</title>
-      <link>https://Clay-Hex.github.io/posts/2021/02/cpp-class/</link>
+      <link>https://www.ClayHex.com/posts/2021/02/cpp-class/</link>
       <pubDate>Wed, 17 Feb 2021 14:56:45 +0800</pubDate>
-      <guid>https://Clay-Hex.github.io/posts/2021/02/cpp-class/</guid>
+      <guid>https://www.ClayHex.com/posts/2021/02/cpp-class/</guid>
       <description>c&#43;&#43;中的类</description>
     </item>
     <item>
       <title>C&#43;&#43;学习记录(4) 引用</title>
-      <link>https://Clay-Hex.github.io/posts/2021/02/cpp-reference/</link>
+      <link>https://www.ClayHex.com/posts/2021/02/cpp-reference/</link>
       <pubDate>Tue, 16 Feb 2021 19:25:59 +0800</pubDate>
-      <guid>https://Clay-Hex.github.io/posts/2021/02/cpp-reference/</guid>
+      <guid>https://www.ClayHex.com/posts/2021/02/cpp-reference/</guid>
       <description>c&#43;&#43;中的引用</description>
     </item>
     <item>
       <title>C&#43;&#43;学习记录(3) 常量指针与指针常量</title>
-      <link>https://Clay-Hex.github.io/posts/2021/02/cpp-constant-pointer-and-pointer-constant/</link>
+      <link>https://www.ClayHex.com/posts/2021/02/cpp-constant-pointer-and-pointer-constant/</link>
       <pubDate>Mon, 15 Feb 2021 22:05:41 +0800</pubDate>
-      <guid>https://Clay-Hex.github.io/posts/2021/02/cpp-constant-pointer-and-pointer-constant/</guid>
+      <guid>https://www.ClayHex.com/posts/2021/02/cpp-constant-pointer-and-pointer-constant/</guid>
       <description>c&#43;&#43;中的常量指针与指针常量</description>
     </item>
     <item>
       <title>单调栈与单调队列详解</title>
-      <link>https://Clay-Hex.github.io/posts/2021/02/monotone-stack-monotone-queue/</link>
+      <link>https://www.ClayHex.com/posts/2021/02/monotone-stack-monotone-queue/</link>
       <pubDate>Tue, 09 Feb 2021 12:58:52 +0800</pubDate>
-      <guid>https://Clay-Hex.github.io/posts/2021/02/monotone-stack-monotone-queue/</guid>
+      <guid>https://www.ClayHex.com/posts/2021/02/monotone-stack-monotone-queue/</guid>
       <description>关于单调栈与单调队列的一些问题</description>
     </item>
     <item>
       <title>C&#43;&#43;学习记录(2) Lambda表达式（匿名函数）</title>
-      <link>https://Clay-Hex.github.io/posts/2021/01/cpp-lambda-function/</link>
+      <link>https://www.ClayHex.com/posts/2021/01/cpp-lambda-function/</link>
       <pubDate>Thu, 28 Jan 2021 17:27:47 +0800</pubDate>
-      <guid>https://Clay-Hex.github.io/posts/2021/01/cpp-lambda-function/</guid>
+      <guid>https://www.ClayHex.com/posts/2021/01/cpp-lambda-function/</guid>
       <description>c&#43;&#43;中的匿名函数</description>
     </item>
     <item>
       <title>C&#43;&#43;学习记录(1) 重写、重载、重构三者区别</title>
-      <link>https://Clay-Hex.github.io/posts/2021/01/cpp-override-overload-refactoring/</link>
+      <link>https://www.ClayHex.com/posts/2021/01/cpp-override-overload-refactoring/</link>
       <pubDate>Thu, 28 Jan 2021 12:33:10 +0800</pubDate>
-      <guid>https://Clay-Hex.github.io/posts/2021/01/cpp-override-overload-refactoring/</guid>
+      <guid>https://www.ClayHex.com/posts/2021/01/cpp-override-overload-refactoring/</guid>
       <description>重写 重载 重构</description>
     </item>
     <item>
       <title>VS2017 OpenCV4.4.0使用Openvino加速dnn模块推理速度</title>
-      <link>https://Clay-Hex.github.io/posts/2020/12/vs2017-openvino-opencv-dnn-forword/</link>
+      <link>https://www.ClayHex.com/posts/2020/12/vs2017-openvino-opencv-dnn-forword/</link>
       <pubDate>Tue, 15 Dec 2020 20:22:37 +0800</pubDate>
-      <guid>https://Clay-Hex.github.io/posts/2020/12/vs2017-openvino-opencv-dnn-forword/</guid>
+      <guid>https://www.ClayHex.com/posts/2020/12/vs2017-openvino-opencv-dnn-forword/</guid>
       <description>Step0 准备文件 opencv-4.4.0.zip opencv_contrib-4.4.0.zip cmake-3.19.1-win64-x64_2.msi w_openvino_toolkit_p_2020.4.287.exe Step1 解压文件 安装cmake-3.19.1-win64-x64_2.msi和w_openvino_toolkit_p_2020.4.287.exe，都默认就好。 将opencv-4.4.0.zip解压到文件夹opencv440中 将opencv_contrib-4.4.</description>
     </item>
     <item>
       <title>扩展欧几里得算法详解及C&#43;&#43;代码实现</title>
-      <link>https://Clay-Hex.github.io/posts/2020/09/exgcd-cpp-code/</link>
+      <link>https://www.ClayHex.com/posts/2020/09/exgcd-cpp-code/</link>
       <pubDate>Sun, 06 Sep 2020 22:22:28 +0800</pubDate>
-      <guid>https://Clay-Hex.github.io/posts/2020/09/exgcd-cpp-code/</guid>
+      <guid>https://www.ClayHex.com/posts/2020/09/exgcd-cpp-code/</guid>
       <description>扩展欧几里得算法及其代码实现</description>
     </item>
     <item>
       <title>单片机AT指令操作GA6-B短信模块连接阿里云MQTT服务器（双向通信）</title>
-      <link>https://Clay-Hex.github.io/posts/2020/04/single-chip-microcomputer-at-ga6-b-ali-mqtt/</link>
+      <link>https://www.ClayHex.com/posts/2020/04/single-chip-microcomputer-at-ga6-b-ali-mqtt/</link>
       <pubDate>Thu, 30 Apr 2020 20:14:44 +0800</pubDate>
-      <guid>https://Clay-Hex.github.io/posts/2020/04/single-chip-microcomputer-at-ga6-b-ali-mqtt/</guid>
+      <guid>https://www.ClayHex.com/posts/2020/04/single-chip-microcomputer-at-ga6-b-ali-mqtt/</guid>
       <description>0. 前言 网上这种东西不太多，我也是看了不少资料弄出来了，觉得应该写点东西出来。 我用的板子不是arduino，用的是stm32，开发工具是Arduino IDE，因为Arduino IDE集成了较多的函数库，我们不用管底层的一些东西，都封装好了，写着方便一些。 当然，不管你板子是什么，这篇</description>
     </item>
     <item>
       <title>对快速幂代码的理解</title>
-      <link>https://Clay-Hex.github.io/posts/2020/03/quick-power/</link>
+      <link>https://www.ClayHex.com/posts/2020/03/quick-power/</link>
       <pubDate>Mon, 02 Mar 2020 19:33:46 +0800</pubDate>
-      <guid>https://Clay-Hex.github.io/posts/2020/03/quick-power/</guid>
+      <guid>https://www.ClayHex.com/posts/2020/03/quick-power/</guid>
       <description>关于快速幂</description>
     </item>
   </channel>
