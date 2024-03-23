@@ -174,15 +174,16 @@
   </h1>
 </header>
 
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">对快速幂代码的理解
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>模板代码： typedef long long ll; ll quick_pow(ll a,ll b){ ll res = 1; while(b &gt; 0){ if(b &amp; 1){ res *= a; } a *= a; b &gt;&gt;= 1; } return res; } 这里以a^10为例，说一下对快速幂代码的理解。 右下角的o表示这是十进制数 这里写错了，图片中不应该是o，应该d，d表示这是十进制数 ，b表示这是二进制数。可以得到以下的几个式子，都是逐步变换得出来的。 最后一个式...</p>
-  </div>
-  <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
+<article class="post-entry">
+  <div class="post-info">
+    <header class="entry-header">
+      <h2 class="entry-hint-parent">对快速幂代码的理解
+      </h2>
+    </header>
+    <div class="entry-content">
+      <p>模板代码： typedef long long ll; ll quick_pow(ll a,ll b){ ll res = 1; while(b &gt; 0){ if(b &amp; 1){ res *= a; } a *= a; b &gt;&gt;= 1; } return res; } 这里以a^10为例，说一下对快速幂代码的理解。 右下角的o表示这是十进制数 这里写错了，图片中不应该是o，应该d，d表示这是十进制数 ，b表示这是二进制数。可以得到以下的几个式子，都是逐步变换得出来的。 最后一个式...</p>
+    </div>
+    <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
         <span>2020-03-02
             &nbsp;&nbsp;
@@ -215,6 +216,8 @@
         </span>
     </span>
 </span></footer>
+  </div> 
+
   <a class="entry-link" aria-label="post link to 对快速幂代码的理解" href="https://www.clayhex.com/posts/2020/03/quick-power/"></a>
 </article>
 <footer class="page-footer">

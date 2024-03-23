@@ -153,15 +153,16 @@
   </h1>
 </header>
 
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">常见排序算法及稳定性
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>1. 代码 /* * @Brief: 常见排序算法汇总 * @Author: * @Date: 2021-07-01 */ #include &lt;iostream&gt; #include &lt;algorithm&gt; #include &lt;vector&gt; #include &lt;queue&gt; using namespace std; void printArray(int *a, int len){ for(int i = 0; i &lt; len; i&#43;&#43;) cout &lt;&lt; a[i] &lt;&lt; &#34; &#34;; cout &lt;&lt; endl &lt;&lt; endl; } void bubbleSort(int *a, int len){ for(int i = 0; i &lt; len - 1; i&#43;&#43;){ for(int j = 0; j &lt; len - i; j&#43;&#43;){ if(a[j] &gt; a[j&#43;1]) swap(a[j], a[j&#43;1]); } } } void selectSort(int *a, int len){ for(int i = 0; i &lt; len; i&#43;&#43;){ int mi = i; for(int j = i; j &lt; len; j&#43;&#43;){ if(a[j] &lt; a[mi]) mi = j; } if(i != mi) swap(a[i], a[mi]); } } void insertionSort(int *a, int len){ for(int i = 0; i &lt; len;...</p>
-  </div>
-  <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
+<article class="post-entry tag-entry">
+  <div class="post-info">
+    <header class="entry-header">
+      <h2 class="entry-hint-parent">常见排序算法及稳定性
+      </h2>
+    </header>
+    <div class="entry-content">
+      <p>1. 代码 /* * @Brief: 常见排序算法汇总 * @Author: * @Date: 2021-07-01 */ #include &lt;iostream&gt; #include &lt;algorithm&gt; #include &lt;vector&gt; #include &lt;queue&gt; using namespace std; void printArray(int *a, int len){ for(int i = 0; i &lt; len; i&#43;&#43;) cout &lt;&lt; a[i] &lt;&lt; &#34; &#34;; cout &lt;&lt; endl &lt;&lt; endl; } void bubbleSort(int *a, int len){ for(int i = 0; i &lt; len - 1; i&#43;&#43;){ for(int j = 0; j &lt; len - i; j&#43;&#43;){ if(a[j] &gt; a[j&#43;1]) swap(a[j], a[j&#43;1]); } } } void selectSort(int *a, int len){ for(int i = 0; i &lt; len; i&#43;&#43;){ int mi = i; for(int j = i; j &lt; len; j&#43;&#43;){ if(a[j] &lt; a[mi]) mi = j; } if(i != mi) swap(a[i], a[mi]); } } void insertionSort(int *a, int len){ for(int i = 0; i &lt; len;...</p>
+    </div>
+    <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
         <span>2021-12-20
             &nbsp;&nbsp;
@@ -194,18 +195,21 @@
         </span>
     </span>
 </span></footer>
+  </div> 
+
   <a class="entry-link" aria-label="post link to 常见排序算法及稳定性" href="https://www.clayhex.com/posts/2021/12/sorting-algorithm-stability/"></a>
 </article>
 
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">单调栈与单调队列详解
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>1. 单调栈 1.1 可解决的问题 单调栈的使用场景时分有限，只处理一种典型的问题，叫做 Next Greater Element。 例如：在一个数组中，每个数左边（右边）第一个比它大（小）的数是什么。 1.2 详解 直接上例子解释它。 题目：给出一个原始数组 a[3, 4, 2, 7, 5]，输出每个数左边第一个比它小的数，如果不存在则输出-1。 解释...</p>
-  </div>
-  <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
+<article class="post-entry tag-entry">
+  <div class="post-info">
+    <header class="entry-header">
+      <h2 class="entry-hint-parent">单调栈与单调队列详解
+      </h2>
+    </header>
+    <div class="entry-content">
+      <p>1. 单调栈 1.1 可解决的问题 单调栈的使用场景时分有限，只处理一种典型的问题，叫做 Next Greater Element。 例如：在一个数组中，每个数左边（右边）第一个比它大（小）的数是什么。 1.2 详解 直接上例子解释它。 题目：给出一个原始数组 a[3, 4, 2, 7, 5]，输出每个数左边第一个比它小的数，如果不存在则输出-1。 解释...</p>
+    </div>
+    <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
         <span>2021-02-09
             &nbsp;&nbsp;
@@ -238,18 +242,21 @@
         </span>
     </span>
 </span></footer>
+  </div> 
+
   <a class="entry-link" aria-label="post link to 单调栈与单调队列详解" href="https://www.clayhex.com/posts/2021/02/monotone-stack-monotone-queue/"></a>
 </article>
 
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">扩展欧几里得算法详解及C&#43;&#43;代码实现
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>0. 欧几里得算法 欧几里得算法用于求解两个数的最大公约数。代码如下: int gcd(int a, int b){ if(b == 0) return a; return gcd(b, a % b); } 当b为0时，结束递归，此时a即为a和b的最大公约数。 1. 裴蜀定理 定理内容： 如果a、b均是整数，则一定存在整数x和y，使得ax &#43; by = gcd(a, b)成立。 我们可以再深层次的理解一下式子ax &#43; by = gcd(a, b...</p>
-  </div>
-  <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
+<article class="post-entry tag-entry">
+  <div class="post-info">
+    <header class="entry-header">
+      <h2 class="entry-hint-parent">扩展欧几里得算法详解及C&#43;&#43;代码实现
+      </h2>
+    </header>
+    <div class="entry-content">
+      <p>0. 欧几里得算法 欧几里得算法用于求解两个数的最大公约数。代码如下: int gcd(int a, int b){ if(b == 0) return a; return gcd(b, a % b); } 当b为0时，结束递归，此时a即为a和b的最大公约数。 1. 裴蜀定理 定理内容： 如果a、b均是整数，则一定存在整数x和y，使得ax &#43; by = gcd(a, b)成立。 我们可以再深层次的理解一下式子ax &#43; by = gcd(a, b...</p>
+    </div>
+    <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
         <span>2020-09-06
             &nbsp;&nbsp;
@@ -282,18 +289,21 @@
         </span>
     </span>
 </span></footer>
+  </div> 
+
   <a class="entry-link" aria-label="post link to 扩展欧几里得算法详解及C&#43;&#43;代码实现" href="https://www.clayhex.com/posts/2020/09/exgcd-cpp-code/"></a>
 </article>
 
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">对快速幂代码的理解
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>模板代码： typedef long long ll; ll quick_pow(ll a,ll b){ ll res = 1; while(b &gt; 0){ if(b &amp; 1){ res *= a; } a *= a; b &gt;&gt;= 1; } return res; } 这里以a^10为例，说一下对快速幂代码的理解。 右下角的o表示这是十进制数 这里写错了，图片中不应该是o，应该d，d表示这是十进制数 ，b表示这是二进制数。可以得到以下的几个式子，都是逐步变换得出来的。 最后一个式...</p>
-  </div>
-  <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
+<article class="post-entry tag-entry">
+  <div class="post-info">
+    <header class="entry-header">
+      <h2 class="entry-hint-parent">对快速幂代码的理解
+      </h2>
+    </header>
+    <div class="entry-content">
+      <p>模板代码： typedef long long ll; ll quick_pow(ll a,ll b){ ll res = 1; while(b &gt; 0){ if(b &amp; 1){ res *= a; } a *= a; b &gt;&gt;= 1; } return res; } 这里以a^10为例，说一下对快速幂代码的理解。 右下角的o表示这是十进制数 这里写错了，图片中不应该是o，应该d，d表示这是十进制数 ，b表示这是二进制数。可以得到以下的几个式子，都是逐步变换得出来的。 最后一个式...</p>
+    </div>
+    <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
         <span>2020-03-02
             &nbsp;&nbsp;
@@ -326,6 +336,8 @@
         </span>
     </span>
 </span></footer>
+  </div> 
+
   <a class="entry-link" aria-label="post link to 对快速幂代码的理解" href="https://www.clayhex.com/posts/2020/03/quick-power/"></a>
 </article>
     </main>
