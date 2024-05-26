@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="zh" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>H264、H265码流中的SEI NALU | Clay&#39;s Blog</title>
+<meta name="keywords" content="H264 Nalu, H265 Nalu, SEI, codec">
+<meta name="description" content="H264码流 H264协议中将编码器分成两个逻辑层，就是经常见到的VCL（视频数据编码层）和NAL（网络抽象层）。VCL负责具体图像数据的编码，NAL负责组织这些编码后的数据。 既然称之为码流，那么，这些数据肯定像流一样，一位接着一位的排成一队。组织这些编码数据的方式，常见的是Ann">
+<meta name="author" content="Clay">
+<link rel="canonical" href="https://www.clayhex.com/posts/2024/05/h264-h265-stream-nalu-sei/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.js" onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://www.clayhex.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.clayhex.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.clayhex.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://www.clayhex.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://www.clayhex.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="zh" href="https://www.clayhex.com/posts/2024/05/h264-h265-stream-nalu-sei/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+  
+
+<meta property="og:title" content="H264、H265码流中的SEI NALU" />
+<meta property="og:description" content="H264码流 H264协议中将编码器分成两个逻辑层，就是经常见到的VCL（视频数据编码层）和NAL（网络抽象层）。VCL负责具体图像数据的编码，NAL负责组织这些编码后的数据。 既然称之为码流，那么，这些数据肯定像流一样，一位接着一位的排成一队。组织这些编码数据的方式，常见的是Ann" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.clayhex.com/posts/2024/05/h264-h265-stream-nalu-sei/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-05-23T21:52:28+08:00" />
+<meta property="article:modified_time" content="2024-05-26T14:10:00+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="H264、H265码流中的SEI NALU"/>
+<meta name="twitter:description" content="H264码流 H264协议中将编码器分成两个逻辑层，就是经常见到的VCL（视频数据编码层）和NAL（网络抽象层）。VCL负责具体图像数据的编码，NAL负责组织这些编码后的数据。 既然称之为码流，那么，这些数据肯定像流一样，一位接着一位的排成一队。组织这些编码数据的方式，常见的是Ann"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "📒 记录",
+      "item": "https://www.clayhex.com/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "📚 学习",
+      "item": "https://www.clayhex.com/posts/learn/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "H264、H265码流中的SEI NALU",
+      "item": "https://www.clayhex.com/posts/2024/05/h264-h265-stream-nalu-sei/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "H264、H265码流中的SEI NALU",
+  "name": "H264、H265码流中的SEI NALU",
+  "description": "H264码流 H264协议中将编码器分成两个逻辑层，就是经常见到的VCL（视频数据编码层）和NAL（网络抽象层）。VCL负责具体图像数据的编码，NAL负责组织这些编码后的数据。 既然称之为码流，那么，这些数据肯定像流一样，一位接着一位的排成一队。组织这些编码数据的方式，常见的是Ann",
+  "keywords": [
+    "H264 Nalu", "H265 Nalu", "SEI", "codec"
+  ],
+  "articleBody": "H264码流 H264协议中将编码器分成两个逻辑层，就是经常见到的VCL（视频数据编码层）和NAL（网络抽象层）。VCL负责具体图像数据的编码，NAL负责组织这些编码后的数据。\n既然称之为码流，那么，这些数据肯定像流一样，一位接着一位的排成一队。组织这些编码数据的方式，常见的是Annex B格式和AVCC格式，感觉Annex B格式最为常见，它长这样：\nH264码流 Startcode 其中，NALU是NAL层数据的基本单元，U是Unit。之所以加上StartCode，是因为这是数据流，想解析一个包，必须知道包从哪里开始，到哪里结束，这在计算机网络体系里边，应该叫帧定界符才对。在一个码流中，两个StartCode之间的数据，就是一个NALU。StartCode只有3字节：0x00 0x00 0x01，特殊情况下，也会在其前边加上一个1个字节的0x00构成4字节: 0x00 0x00 0x00 0x01。\nNALU NALU是码流的核心元素，如上图，一个NALU由两部分组成：Header和Data。\nNalu Header 和大部分协议一样，Header部分一般会包含载荷的相关信息，Nalu Header定义如下：\nF字段占1 bit，初始为0，当该NALU在传输过程中识别为错误时，该字段会被修改为1，作为标识。 NRI字段占2 bits，记录着该NALU的重要等级。 Type字段占5 bits，指明载荷是什么类型的数据。 较为常用Type如下：\nType值 说明 1 非IDR帧 5 IDR帧 6 SEI数据 7 SPS数据 8 PPS数据 Nalu Data Nalu Data是NALU中的载荷，也就是具体传输的内容。\n这里要注意一下，前边提到的StartCode，既然用StartCode来做帧定界符，那么就必须要保证传输的数据中没有StartCode字符才可以，要不然解析时就会出错，这个环节在计算机网络中也有，其实就是数据链路层的“透明传输”问题。\n这里引出3个概念: SODB， RBSP，EBSP。\nSODB: 要传输的最原始数据，比如想发送字符串Hello Clay，那么Hello Clay就是SODB。 RBSP：SODB数据由VCL产生，其基本单位是bit。不一定能转换成整数个字节，所以，这一步要做的，是将SODB进行字节对齐，方法是先在SODB的末尾加1个bit的1，然后再用若干比特个0对齐到字节（8的整数倍）。处理后的数据，即为RBSP。尾部填充的这些数据，有个专有名词“RBSP Trailing Bits” EBSP：RBSP中有可能包含StartCode，所以，还需要将这些冲突的数据处理一下。方法是：在RBSP中连续的两个0x00后边插入一个0x03，在解析时移除。 SEI SEI的全程是 Supplemental Enhancement Information，补充增强信息。可以用SEI向码流中加入额外信息，比如libx264在刚编码刚开始的时候，会用SEI加入编码器参数、版本等信息。\n在一些特殊场景下，也会用到SEI附加信息到码流中，比如，在直播场景下，一般的通信链路和媒体流都是分开的，如果想在某个时刻（比如有大哥刷了礼物）触发一个特效，但是，这个特效必须要和一个动作强关联，这种情况下，如果不在码流中插入触发信息，想做好二者的同步，好像不太容易，一是通信和媒体流走的是两条路，必须要做一次对齐才行，二是这个动作未必能和视频帧准确对齐。此时，如果能在码流中的视频帧后边用SEI附加这个指令，同步问题就很好做了。\n其结构如下：\nSEI信息，也包含很多类型，所以，这里有一个payload type字段。\npayload size字段表达的是后边的payload content数据的长度，单位是字节。\n上图中没有标明每个字段所占的位数，这是因为，在SEI信息中，type、size和content都是可变长的。\ntype和size的规则一样：将待写入的数值拆分，分多次写入，每次只写入一个字节，除最后一次写入以外，之前的每次写入数值为255。\n伪代码如下：\nuint32_t type; uint8_t *buf; int x = 0; // write to buf int idx = 0; for(x = type; x \u003e= 255; x -= 255) buf[idx++] = 255; buf[idx++] = x; 在较多的博客文章中，想在SEI中插入自定义信息，都建议使用Type类型为5的报文格式，这是因为，根据参考[1]中的内容，SEI的类型为5时，该报文载荷数据为未注册的用户数据类型，可以存入自定义的数据。此时，payload content中的前16个字节应为符合标准的UUID，同时，这也说明，payload size最小应该为16字节。但是感觉，这和开发人员按照自己的业务逻辑自定义一个类型为100、200的好像没有区别？所以，在一些场景下，比如只是想单纯的为某一帧标记一些数据，可以自定义类型，保证自定义的类型不和标准协议中冲突即可。\n代码实践 RBSP 转 EBSP std::vector\u003cuint8_t\u003e RBSP2EBSP(const std::vector\u003cuint8_t\u003e \u0026rbsp) { std::vector\u003cuint8_t\u003e res; res.reserve(rbsp.size() * 1.5); int cnt = 0; for(auto\u0026\u0026 c : rbsp) { res.emplace_back(c); if(c == 0x00) { if(++cnt == 2) { res.emplace_back(0x03); cnt = 0; } }else{ cnt = 0; } } return res; } EBSP 转 RBSP std::vector\u003cuint8_t\u003e EBSP2RBSP(const std::vector\u003cuint8_t\u003e \u0026ebsp) { std::vector\u003cuint8_t\u003e res; res.reserve(ebsp.size()); int cnt = 0; for(auto\u0026\u0026 c : ebsp) { if(c == 0x03 \u0026\u0026 cnt \u003e= 2) 1; else res.emplace_back(c); if(c == 0x00) ++cnt; else cnt = 0; } return res; } 构建SEI NALU std::vector\u003cuint8_t\u003e MakeSEI(uint32_t sei_type, const std::string \u0026data) { const auto ebsp = RBSP2EBSP(std::vector\u003cuint8_t\u003e(data.begin(), data.end())); const size_t len = 4 + 1 + (1 + sei_type / 255) + (1 + ebsp.size() / 255) + ebsp.size() + 1; std::vector\u003cuint8_t\u003e nalu(len, 0); // start code(4 B): 0x00 0x00 0x00 0x01 int idx = 3; nalu[idx++] = 0x01; // nalu header (1 B): 0x06 nalu[idx++] = 0x06; // payload type(n B): 0x64 for(; sei_type \u003e= 255; sei_type -= 255) nalu[idx++] = 0xff; nalu[idx++] = sei_type; // payload size(n B) int c = ebsp.size(); for(;c \u003e= 255; c -= 255) nalu[idx++] = 0xff; nalu[idx++] = c; // payload content std::copy(ebsp.begin(), ebsp.end(), nalu.begin() + idx); // rbsp trailing bits (1 B) nalu.back() = 0x80; return nalu; } 解析SEI NALU std::pair\u003cuint32_t, std::vector\u003cuint8_t\u003e\u003e ExtractSEI(const std::vector\u003cuint8_t\u003e \u0026nalu) { int startcodeLen = GetStartcodeLen(nalu); if(startcodeLen == -1) return {-1, std::vector\u003cuint8_t\u003e()}; int idx = startcodeLen + 1; // at payload type // read payload type uint32_t payloadType = 0; uint8_t byte = 0xff; while(byte == 0xff) { byte = nalu[idx++]; payloadType += byte; } // read payload size uint32_t payloadSize = 0; byte = 0xff; while(byte == 0xff) { byte = nalu[idx++]; payloadSize += byte; } // read payload content std::vector\u003cuint8_t\u003e ebsp(payloadSize, 0); std::copy(nalu.begin() + idx, nalu.begin() + idx + payloadSize, ebsp.begin()); return {payloadType, EBSP2RBSP(ebsp)}; } H265码流 仅从Nalu层面来看，与H264码流相比，开发时应该注意：\nStartCode没有变化； 拥有更多Nalu类型； Nalu Header占2个字节； H264中有SPS和PPS，H265中加入VPS，送入解码器的顺序应该是VPS -\u003e SPS -\u003e PPS； SEI有PREFIX_SEI和SUFFIX_SEI两种； Reference https://www.itu.int/ITU-T/recommendations/rec.aspx?id=14659 ",
+  "wordCount" : "2324",
+  "inLanguage": "zh",
+  "datePublished": "2024-05-23T21:52:28+08:00",
+  "dateModified": "2024-05-26T14:10:00+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "Clay"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.clayhex.com/posts/2024/05/h264-h265-stream-nalu-sei/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Clay's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.clayhex.com/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://www.clayhex.com/" accesskey="h" title="Clay&#39;s Blog (Alt + H)">
+                <img src="https://www.clayhex.com/img/avatar.jpg" alt="" aria-label="logo"
+                    height="35">Clay&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch">
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://www.clayhex.com/search" title="🔍 搜索 (Alt &#43; /)" accesskey=/>
+                    <span>🔍 搜索</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.clayhex.com/" title="🏡 主页">
+                    <span>🏡 主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.clayhex.com/posts" title="📒 记录">
+                    <span>📒 记录</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.clayhex.com/tags" title="📛 标签">
+                    <span>📛 标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.clayhex.com/archives/" title="📁 归档">
+                    <span>📁 归档</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.clayhex.com/about" title="📖 关于">
+                    <span>📖 关于</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://www.clayhex.com/">主页</a>&nbsp;»&nbsp;<a href="https://www.clayhex.com/posts/">📒 记录</a>&nbsp;»&nbsp;<a href="https://www.clayhex.com/posts/learn/">📚 学习</a></div>
+    <h1 class="post-title entry-hint-parent">
+      H264、H265码流中的SEI NALU
+    </h1>
+    <div class="post-meta"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2024-05-23
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>2324字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    <span id="post_meta_style_6">
+        <span class="fa fa-tags" style="opacity: 0.8"></span>
+        <span>
+            <span class="post-tags-meta">
+                <a href="https://www.clayhex.com/tags/%E9%9F%B3%E8%A7%86%E9%A2%91/" style="color: var(--secondary)!important;">音视频</a>
+            </span>
+        </span>
+    </span>
+</span>
+
+</div>
+  </header> <aside id="toc-container" class="toc-container wide">
+    <div class="toc">
+        <details  open>
+            <summary accesskey="c" title="(Alt + C)">
+                <span class="details">目录</span>
+            </summary>
+
+            <div class="inner"><ul>
+                    <li>
+                        <a href="#h264%e7%a0%81%e6%b5%81" aria-label="H264码流">H264码流</a></li>
+                    <li>
+                        <a href="#startcode" aria-label="Startcode">Startcode</a></li>
+                    <li>
+                        <a href="#nalu" aria-label="NALU">NALU</a><ul>
+                            
+                    <li>
+                        <a href="#nalu-header" aria-label="Nalu Header">Nalu Header</a></li>
+                    <li>
+                        <a href="#nalu-data" aria-label="Nalu Data">Nalu Data</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#sei" aria-label="SEI">SEI</a></li>
+                    <li>
+                        <a href="#%e4%bb%a3%e7%a0%81%e5%ae%9e%e8%b7%b5" aria-label="代码实践">代码实践</a><ul>
+                            
+                    <li>
+                        <a href="#rbsp-%e8%bd%ac-ebsp" aria-label="RBSP 转 EBSP">RBSP 转 EBSP</a></li>
+                    <li>
+                        <a href="#ebsp-%e8%bd%ac-rbsp" aria-label="EBSP 转 RBSP">EBSP 转 RBSP</a></li>
+                    <li>
+                        <a href="#%e6%9e%84%e5%bb%basei-nalu" aria-label="构建SEI NALU">构建SEI NALU</a></li>
+                    <li>
+                        <a href="#%e8%a7%a3%e6%9e%90sei-nalu" aria-label="解析SEI NALU">解析SEI NALU</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#h265%e7%a0%81%e6%b5%81" aria-label="H265码流">H265码流</a></li>
+                    <li>
+                        <a href="#reference" aria-label="Reference">Reference</a>
+                    </li>
+                </ul>
+            </div>
+        </details>
+    </div>
+</aside>
+<script>
+    let activeElement;
+    let elements;
+    window.addEventListener('DOMContentLoaded', function (event) {
+        checkTocPosition();
+
+        elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+         
+         activeElement = elements[0];
+         const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+         document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+     }, false);
+
+    window.addEventListener('resize', function(event) {
+        checkTocPosition();
+    }, false);
+
+    window.addEventListener('scroll', () => {
+        
+        activeElement = Array.from(elements).find((element) => {
+            if ((getOffsetTop(element) - window.pageYOffset) > 0 && 
+                (getOffsetTop(element) - window.pageYOffset) < window.innerHeight/2) {
+                return element;
+            }
+        }) || activeElement
+
+        elements.forEach(element => {
+             const id = encodeURI(element.getAttribute('id')).toLowerCase();
+             if (element === activeElement){
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+             } else {
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.remove('active');
+             }
+         })
+     }, false);
+
+    const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+    const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+    const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+    function checkTocPosition() {
+        const width = document.body.scrollWidth;
+
+        if (width - main - (toc * 2) - (gap * 4) > 0) {
+            document.getElementById("toc-container").classList.add("wide");
+        } else {
+            document.getElementById("toc-container").classList.remove("wide");
+        }
+    }
+
+    function getOffsetTop(element) {
+        if (!element.getClientRects().length) {
+            return 0;
+        }
+        let rect = element.getBoundingClientRect();
+        let win = element.ownerDocument.defaultView;
+        return rect.top + win.pageYOffset;   
+    }
+</script>
+  <div class="post-content"><h1 id="h264码流">H264码流<a hidden class="anchor" aria-hidden="true" href="#h264码流">#</a></h1>
+<p>H264协议中将编码器分成两个逻辑层，就是经常见到的VCL（视频数据编码层）和NAL（网络抽象层）。VCL负责具体图像数据的编码，NAL负责组织这些编码后的数据。</p>
+<p>既然称之为码流，那么，这些数据肯定像流一样，一位接着一位的排成一队。组织这些编码数据的方式，常见的是<code>Annex B</code>格式和<code>AVCC</code>格式，感觉<code>Annex B</code>格式最为常见，它长这样：</p>
+<center><figure>
+    <img loading="lazy" src="imgs/stream.png" width="100%"/> <figcaption>
+            H264码流
+        </figcaption>
+</figure>
+</center>
+<h1 id="startcode">Startcode<a hidden class="anchor" aria-hidden="true" href="#startcode">#</a></h1>
+<p>其中，NALU是NAL层数据的基本单元，U是Unit。之所以加上<code>StartCode</code>，是因为这是数据流，想解析一个包，必须知道包从哪里开始，到哪里结束，这在计算机网络体系里边，应该叫<code>帧定界符</code>才对。在一个码流中，两个<code>StartCode</code>之间的数据，就是一个NALU。<code>StartCode</code>只有<code>3</code>字节：<code>0x00 0x00 0x01</code>，特殊情况下，也会在其前边加上一个<code>1</code>个字节的<code>0x00</code>构成<code>4</code>字节: <code>0x00 0x00 0x00 0x01</code>。</p>
+<h1 id="nalu">NALU<a hidden class="anchor" aria-hidden="true" href="#nalu">#</a></h1>
+<p>NALU是码流的核心元素，如上图，一个NALU由两部分组成：Header和Data。</p>
+<h2 id="nalu-header">Nalu Header<a hidden class="anchor" aria-hidden="true" href="#nalu-header">#</a></h2>
+<p>和大部分协议一样，Header部分一般会包含载荷的相关信息，Nalu Header定义如下：</p>
+<center><figure>
+    <img loading="lazy" src="imgs/nalu_header.png" width="60%"/> 
+</figure>
+</center>
+<ul>
+<li><code>F</code>字段占1 bit，初始为0，当该NALU在传输过程中识别为错误时，该字段会被修改为1，作为标识。</li>
+<li><code>NRI</code>字段占2 bits，记录着该NALU的重要等级。</li>
+<li><code>Type</code>字段占5 bits，指明载荷是什么类型的数据。</li>
+</ul>
+<p>较为常用Type如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Type值</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">非IDR帧</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:center">IDR帧</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td style="text-align:center">SEI数据</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td style="text-align:center">SPS数据</td>
+</tr>
+<tr>
+<td style="text-align:center">8</td>
+<td style="text-align:center">PPS数据</td>
+</tr>
+</tbody>
+</table>
+<h2 id="nalu-data">Nalu Data<a hidden class="anchor" aria-hidden="true" href="#nalu-data">#</a></h2>
+<p>Nalu Data是NALU中的载荷，也就是具体传输的内容。<br>
+这里要注意一下，前边提到的<code>StartCode</code>，既然用<code>StartCode</code>来做帧定界符，那么就必须要保证传输的数据中没有<code>StartCode</code>字符才可以，要不然解析时就会出错，这个环节在计算机网络中也有，其实就是数据链路层的“透明传输”问题。</p>
+<p>这里引出3个概念: SODB， RBSP，EBSP。</p>
+<ul>
+<li>SODB: 要传输的最原始数据，比如想发送字符串<code>Hello Clay</code>，那么<code>Hello Clay</code>就是SODB。</li>
+<li>RBSP：SODB数据由VCL产生，其基本单位是bit。不一定能转换成整数个字节，所以，这一步要做的，是将SODB进行字节对齐，方法是先在SODB的末尾加1个bit的<code>1</code>，然后再用若干比特个<code>0</code>对齐到字节（8的整数倍）。处理后的数据，即为RBSP。尾部填充的这些数据，有个专有名词“RBSP Trailing Bits”</li>
+<li>EBSP：RBSP中有可能包含<code>StartCode</code>，所以，还需要将这些冲突的数据处理一下。方法是：在RBSP中连续的两个<code>0x00</code>后边插入一个<code>0x03</code>，在解析时移除。</li>
+</ul>
+<h1 id="sei">SEI<a hidden class="anchor" aria-hidden="true" href="#sei">#</a></h1>
+<p><code>SEI</code>的全程是<code> Supplemental Enhancement Information</code>，补充增强信息。可以用SEI向码流中加入额外信息，比如<code>libx264</code>在刚编码刚开始的时候，会用SEI加入编码器参数、版本等信息。</p>
+<p>在一些特殊场景下，也会用到SEI附加信息到码流中，比如，在直播场景下，一般的通信链路和媒体流都是分开的，如果想在某个时刻（比如有大哥刷了礼物）触发一个特效，但是，这个特效必须要和一个动作强关联，这种情况下，如果不在码流中插入触发信息，想做好二者的同步，好像不太容易，一是通信和媒体流走的是两条路，必须要做一次对齐才行，二是这个动作未必能和视频帧准确对齐。此时，如果能在码流中的视频帧后边用SEI附加这个指令，同步问题就很好做了。</p>
+<p>其结构如下：</p>
+<center><figure>
+    <img loading="lazy" src="imgs/sei_body.png" width="70%"/> 
+</figure>
+</center>
+<p><code>SEI</code>信息，也包含很多类型，所以，这里有一个<code>payload type</code>字段。<br>
+<code>payload size</code>字段表达的是后边的<code>payload content</code>数据的长度，单位是字节。</p>
+<p>上图中没有标明每个字段所占的位数，这是因为，在SEI信息中，type、size和content都是可变长的。<br>
+<code>type</code>和<code>size</code>的规则一样：将待写入的数值拆分，分多次写入，每次只写入一个字节，除最后一次写入以外，之前的每次写入数值为<code>255</code>。</p>
+<p>伪代码如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">uint32_t</span> <span class="n">type</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">buf</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// write to buf
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">type</span><span class="p">;</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">255</span><span class="p">;</span> <span class="n">x</span> <span class="o">-=</span> <span class="mi">255</span><span class="p">)</span> <span class="n">buf</span><span class="p">[</span><span class="n">idx</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">buf</span><span class="p">[</span><span class="n">idx</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+</span></span></code></pre></div><p>在较多的博客文章中，想在SEI中插入自定义信息，都建议使用<code>Type</code>类型为5的报文格式，这是因为，根据参考[1]中的内容，SEI的类型为5时，该报文载荷数据为未注册的用户数据类型，可以存入自定义的数据。此时，<code>payload content</code>中的前16个字节应为符合标准的UUID，同时，这也说明，<code>payload size</code>最小应该为16字节。但是感觉，这和开发人员按照自己的业务逻辑自定义一个类型为100、200的好像没有区别？所以，在一些场景下，比如只是想单纯的为某一帧标记一些数据，可以自定义类型，保证自定义的类型不和标准协议中冲突即可。</p>
+<h1 id="代码实践">代码实践<a hidden class="anchor" aria-hidden="true" href="#代码实践">#</a></h1>
+<h2 id="rbsp-转-ebsp">RBSP 转 EBSP<a hidden class="anchor" aria-hidden="true" href="#rbsp-转-ebsp">#</a></h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint8_t</span><span class="o">&gt;</span> <span class="n">RBSP2EBSP</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint8_t</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">rbsp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint8_t</span><span class="o">&gt;</span> <span class="n">res</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">res</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="n">rbsp</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.5</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="k">auto</span><span class="o">&amp;&amp;</span> <span class="nl">c</span> <span class="p">:</span> <span class="n">rbsp</span><span class="p">)</span> 
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">res</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="mh">0x00</span><span class="p">)</span> 
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span><span class="p">(</span><span class="o">++</span><span class="n">cnt</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">res</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="mh">0x03</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">res</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="ebsp-转-rbsp">EBSP 转 RBSP<a hidden class="anchor" aria-hidden="true" href="#ebsp-转-rbsp">#</a></h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint8_t</span><span class="o">&gt;</span> <span class="n">EBSP2RBSP</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint8_t</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">ebsp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint8_t</span><span class="o">&gt;</span> <span class="n">res</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">res</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="n">ebsp</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="k">auto</span><span class="o">&amp;&amp;</span> <span class="nl">c</span> <span class="p">:</span> <span class="n">ebsp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="mh">0x03</span> <span class="o">&amp;&amp;</span> <span class="n">cnt</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">)</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span> <span class="n">res</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="mh">0x00</span><span class="p">)</span> <span class="o">++</span><span class="n">cnt</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span> <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">res</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="构建sei-nalu">构建SEI NALU<a hidden class="anchor" aria-hidden="true" href="#构建sei-nalu">#</a></h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint8_t</span><span class="o">&gt;</span> <span class="n">MakeSEI</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">sei_type</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span><span class="n">data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="k">auto</span> <span class="n">ebsp</span> <span class="o">=</span> <span class="n">RBSP2EBSP</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint8_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">data</span><span class="p">.</span><span class="n">end</span><span class="p">()));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="n">size_t</span> <span class="n">len</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">sei_type</span> <span class="o">/</span> <span class="mi">255</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">ebsp</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">/</span> <span class="mi">255</span><span class="p">)</span> <span class="o">+</span> <span class="n">ebsp</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint8_t</span><span class="o">&gt;</span> <span class="n">nalu</span><span class="p">(</span><span class="n">len</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// start code(4 B): 0x00 0x00 0x00 0x01
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">int</span> <span class="n">idx</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">nalu</span><span class="p">[</span><span class="n">idx</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x01</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// nalu header (1 B): 0x06
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">nalu</span><span class="p">[</span><span class="n">idx</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x06</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// payload type(n B): 0x64
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">for</span><span class="p">(;</span> <span class="n">sei_type</span> <span class="o">&gt;=</span> <span class="mi">255</span><span class="p">;</span> <span class="n">sei_type</span> <span class="o">-=</span> <span class="mi">255</span><span class="p">)</span> <span class="n">nalu</span><span class="p">[</span><span class="n">idx</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xff</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">nalu</span><span class="p">[</span><span class="n">idx</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="n">sei_type</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// payload size(n B)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">int</span> <span class="n">c</span> <span class="o">=</span> <span class="n">ebsp</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(;</span><span class="n">c</span> <span class="o">&gt;=</span> <span class="mi">255</span><span class="p">;</span> <span class="n">c</span> <span class="o">-=</span> <span class="mi">255</span><span class="p">)</span> <span class="n">nalu</span><span class="p">[</span><span class="n">idx</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xff</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">nalu</span><span class="p">[</span><span class="n">idx</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// payload content
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">std</span><span class="o">::</span><span class="n">copy</span><span class="p">(</span><span class="n">ebsp</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">ebsp</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">nalu</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span> <span class="o">+</span> <span class="n">idx</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// rbsp trailing bits (1 B)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">nalu</span><span class="p">.</span><span class="n">back</span><span class="p">()</span> <span class="o">=</span> <span class="mh">0x80</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">nalu</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="解析sei-nalu">解析SEI NALU<a hidden class="anchor" aria-hidden="true" href="#解析sei-nalu">#</a></h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint8_t</span><span class="o">&gt;&gt;</span> <span class="n">ExtractSEI</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint8_t</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">nalu</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">startcodeLen</span> <span class="o">=</span> <span class="n">GetStartcodeLen</span><span class="p">(</span><span class="n">nalu</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">startcodeLen</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">return</span> <span class="p">{</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint8_t</span><span class="o">&gt;</span><span class="p">()};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">idx</span> <span class="o">=</span> <span class="n">startcodeLen</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// at payload type
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// read payload type
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">uint32_t</span> <span class="n">payloadType</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">uint8_t</span> <span class="n">byte</span> <span class="o">=</span> <span class="mh">0xff</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="n">byte</span> <span class="o">==</span> <span class="mh">0xff</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">byte</span> <span class="o">=</span> <span class="n">nalu</span><span class="p">[</span><span class="n">idx</span><span class="o">++</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="n">payloadType</span> <span class="o">+=</span> <span class="n">byte</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// read payload size
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">uint32_t</span> <span class="n">payloadSize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">byte</span> <span class="o">=</span> <span class="mh">0xff</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="n">byte</span> <span class="o">==</span> <span class="mh">0xff</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">byte</span> <span class="o">=</span> <span class="n">nalu</span><span class="p">[</span><span class="n">idx</span><span class="o">++</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="n">payloadSize</span> <span class="o">+=</span> <span class="n">byte</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// read payload content
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint8_t</span><span class="o">&gt;</span> <span class="n">ebsp</span><span class="p">(</span><span class="n">payloadSize</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">copy</span><span class="p">(</span><span class="n">nalu</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span> <span class="o">+</span> <span class="n">idx</span><span class="p">,</span> <span class="n">nalu</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span> <span class="o">+</span> <span class="n">idx</span> <span class="o">+</span> <span class="n">payloadSize</span><span class="p">,</span> <span class="n">ebsp</span><span class="p">.</span><span class="n">begin</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">{</span><span class="n">payloadType</span><span class="p">,</span> <span class="n">EBSP2RBSP</span><span class="p">(</span><span class="n">ebsp</span><span class="p">)};</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h1 id="h265码流">H265码流<a hidden class="anchor" aria-hidden="true" href="#h265码流">#</a></h1>
+<p>仅从Nalu层面来看，与H264码流相比，开发时应该注意：</p>
+<ul>
+<li>StartCode没有变化；</li>
+<li>拥有更多Nalu类型；</li>
+<li>Nalu Header占2个字节；</li>
+<li>H264中有SPS和PPS，H265中加入VPS，送入解码器的顺序应该是VPS -&gt; SPS -&gt; PPS；</li>
+<li>SEI有PREFIX_SEI和SUFFIX_SEI两种；</li>
+</ul>
+<h1 id="reference">Reference<a hidden class="anchor" aria-hidden="true" href="#reference">#</a></h1>
+<ol>
+<li><a href="https://www.itu.int/ITU-T/recommendations/rec.aspx?id=14659" target="_blank" rel="noopener" style="color:#42b983";>https://www.itu.int/ITU-T/recommendations/rec.aspx?id=14659</a></li>
+</ol>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://www.clayhex.com/tags/%E9%9F%B3%E8%A7%86%E9%A2%91/">音视频</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://www.clayhex.com/posts/2024/04/2024-april-life-topic/">
+    <span class="title">下一篇 »</span>
+    <br>
+    <span>四月生活主题</span>
+  </a>
+</nav>
+
+  </footer><script>
+    function createGiscusScript(data) {
+      const giscusScript = document.createElement('script');
+  
+      
+      Object.entries(data).forEach(([key, value]) => giscusScript.setAttribute(key, value));
+  
+      
+      document.querySelector('article').appendChild(giscusScript);
+  
+      
+      const toggle = document.querySelector('label[for="switch_default"]');
+      if (toggle) {
+        toggle.addEventListener('click', function () {
+          
+          const theme = document.body.classList.contains('dark') ? 'transparent_dark' : 'light';
+          giscusScript.setAttribute('data-theme', theme);
+  
+          
+          sendMessage({ setConfig: { theme } });
+        });
+      }
+    }
+  
+    function sendMessage(message) {
+      const iframe = document.querySelector('iframe.giscus-frame');
+      if (iframe) {
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+    }
+  
+    document.addEventListener('DOMContentLoaded', function () {
+      
+      const giscusAttributes = {
+        src: 'https://giscus.app/client.js',
+        'data-repo': 'Clay-Hex/BlogComments',
+        'data-repo-id': 'R_kgDOLexoRQ',
+        'data-category': 'Announcements',
+        'data-category-id': 'DIC_kwDOLexoRc4Cd5Ao',
+        'data-mapping': 'pathname',
+        'data-strict': '1',
+        'data-reactions-enabled': '1',
+        'data-emit-metadata': '0',
+        'data-input-position': 'top',
+        'data-lang': 'zh-CN',
+        crossorigin: 'anonymous',
+        async: '',
+      };
+  
+      
+      giscusAttributes['data-theme'] = document.body.classList.contains('dark')
+        ? 'transparent_dark'
+        : 'light';
+  
+      
+      createGiscusScript(giscusAttributes);
+  
+      
+      const bodyObserver = new MutationObserver(() => {
+        const theme = document.body.classList.contains('dark') ? 'transparent_dark' : 'light';
+        sendMessage({ setConfig: { theme } });
+      });
+  
+      bodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    });
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+  </script>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://www.clayhex.com/">Clay&#39;s Blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <span class="topInner">
+        <svg class="topSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z"/>
+        </svg>
+        <span id="read_progress"></span>
+    </span>
+</a>
+
+<script>
+    document.addEventListener('scroll', function (e) {
+        const readProgress = document.getElementById("read_progress");
+        const scrollHeight = document.documentElement.scrollHeight;
+        const clientHeight = document.documentElement.clientHeight;
+        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        readProgress.innerText = ((scrollTop / (scrollHeight - clientHeight)).toFixed(2) * 100).toFixed(0);
+    })
+</script>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = '复制';
+
+        function copyingDone() {
+            copybutton.innerHTML = '已复制';
+            setTimeout(() => {
+                copybutton.innerHTML = '复制';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        let language = codeblock.className.replaceAll("language-", "")
+        let macTool = document.createElement("div")
+        let macTool1 = document.createElement("div")
+        let macTool2 = document.createElement("div")
+        let macTool3 = document.createElement("div")
+        let languageType = document.createElement("div")
+        languageType.innerText = language
+        macTool.setAttribute('class', 'mac-tool')
+        macTool1.setAttribute('class', 'mac bb1')
+        macTool2.setAttribute('class', 'mac bb2')
+        macTool3.setAttribute('class', 'mac bb3')
+        languageType.setAttribute('class', 'language-type')
+        macTool.appendChild(macTool1)
+        macTool.appendChild(macTool2)
+        macTool.appendChild(macTool3)
+        macTool.appendChild(languageType)
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+            container.appendChild(macTool)
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+            container.appendChild(macTool)
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+            container.appendChild(macTool)
+        }
+    });
+</script>
+</body>
+
+</html>

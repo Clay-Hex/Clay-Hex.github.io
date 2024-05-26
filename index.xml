@@ -6,8 +6,15 @@
     <description>Recent content on Clay&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Mon, 01 Apr 2024 21:33:51 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 26 May 2024 14:10:00 +0800</lastBuildDate>
     <atom:link href="https://www.clayhex.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>H264、H265码流中的SEI NALU</title>
+      <link>https://www.clayhex.com/posts/2024/05/h264-h265-stream-nalu-sei/</link>
+      <pubDate>Thu, 23 May 2024 21:52:28 +0800</pubDate>
+      <guid>https://www.clayhex.com/posts/2024/05/h264-h265-stream-nalu-sei/</guid>
+      <description>H264码流 H264协议中将编码器分成两个逻辑层，就是经常见到的VCL（视频数据编码层）和NAL（网络抽象层）。VCL负责具体图像数据的编码，NAL负责组织这些编码后的数据。 既然称之为码流，那么，这些数据肯定像流一样，一位接着一位的排成一队。组织这些编码数据的方式，常见的是Ann</description>
+    </item>
     <item>
       <title>四月生活主题</title>
       <link>https://www.clayhex.com/posts/2024/04/2024-april-life-topic/</link>
