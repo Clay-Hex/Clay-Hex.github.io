@@ -6,8 +6,15 @@
     <description>Recent content in 📚 学习 on Clay&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Sun, 26 May 2024 14:10:00 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 05 Jul 2024 22:52:56 +0800</lastBuildDate>
     <atom:link href="https://www.clayhex.com/posts/learn/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用Google Indexing API快速收录</title>
+      <link>https://www.clayhex.com/posts/2024/07/google-indexing-api/</link>
+      <pubDate>Fri, 05 Jul 2024 22:52:56 +0800</pubDate>
+      <guid>https://www.clayhex.com/posts/2024/07/google-indexing-api/</guid>
+      <description>Google indexing api是谷歌提供的针对搜索引擎索引功能的接口，相比于在Google search console上提交sitemap，API收录速度要快得多。刚开始的时候，我在GSC上提交了sitemap，后来一段时间，就不抓取了，也不收录，不清楚什么原因。后来使用api直接提交，第二天就可以索引到了。 操</description>
+    </item>
     <item>
       <title>H264、H265码流中的SEI NALU</title>
       <link>https://www.clayhex.com/posts/2024/05/h264-h265-stream-nalu-sei/</link>
