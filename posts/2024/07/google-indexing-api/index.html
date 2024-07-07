@@ -109,8 +109,8 @@
   "keywords": [
     "google indexing api", "gsc", "seo", "google-api-python-client"
   ],
-  "articleBody": "Google indexing api是谷歌提供的针对搜索引擎索引功能的接口，相比于在Google search console上提交sitemap，API收录速度要快得多。刚开始的时候，我在GSC上提交了sitemap，后来一段时间，就不抓取了，也不收录，不清楚什么原因。后来使用api直接提交，第二天就可以索引到了。\n操作步骤参考官方文档：\nhttps://developers.google.com/search/apis/indexing-api/v3/quickstart\n官方也提供了一些例程，可以参考文档内描述，但是，更方便的方法是使用他们的第三方库。\nGithub地址: google-api-python-client\nrepo内有许多的例程，使用的话，可以直接安装google-api-python-client\npip install google-api-python-client 更新/添加网址代码：\nfrom googleapiclient.discovery import build from oauth2client.service_account import ServiceAccountCredentials def publish(): successful=[] urls = ['http://baidu.com'] requests={url:\"URL_UPDATED\" for url in urls} JSON_KEY_FILE = 'xxxxx.json' SCOPES = [\"https://www.googleapis.com/auth/indexing\"] # Authorize credentials credentials = ServiceAccountCredentials.from_json_keyfile_name(JSON_KEY_FILE, scopes=SCOPES) # Build service service = build('indexing', 'v3', credentials=credentials) def index_api_callback(request_id, response, exception): if exception is not None: print(f'id: {request_id}, exception: {exception}') else: successful.append(response['urlNotificationMetadata']['url']) batch = service.new_batch_http_request(callback=index_api_callback) for url, api_type in requests.items(): batch.add(service.urlNotifications().publish( body={\"url\": url, \"type\": api_type})) batch.execute() return successful if __name__ == \"__main__\": publish() 常用的操作类型应该只有2种，更新 URL_UPDATED,和删除 URL_DELETED\n截至本文撰写时，在国内访问，由于各种原因，无法成功提交请求，甚至，我无法成功ping通目标主机indexing.googleapis.com，以至于我的请求出错：\nTimeoutError: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。\n祝君好运。\n",
-  "wordCount" : "494",
+  "articleBody": "Google indexing api是谷歌提供的针对搜索引擎索引功能的接口，相比于在Google search console上提交sitemap，API收录速度要快得多。刚开始的时候，我在GSC上提交了sitemap，后来一段时间，就不抓取了，也不收录，不清楚什么原因。后来使用api直接提交，第二天就可以索引到了。\n操作步骤参考官方文档：\nhttps://developers.google.com/search/apis/indexing-api/v3/quickstart\n官方也提供了一些例程，可以参考文档内描述，但是，更方便的方法是使用他们的第三方库。\nGithub地址: google-api-python-client\nrepo内有许多的例程，使用的话，可以直接安装google-api-python-client\npip install google-api-python-client 更新/添加网址代码：\nfrom googleapiclient.discovery import build from oauth2client.service_account import ServiceAccountCredentials def publish(): successful=[] urls = ['http://baidu.com'] requests={url:\"URL_UPDATED\" for url in urls} JSON_KEY_FILE = 'xxxxx.json' SCOPES = [\"https://www.googleapis.com/auth/indexing\"] # Authorize credentials credentials = ServiceAccountCredentials.from_json_keyfile_name(JSON_KEY_FILE, scopes=SCOPES) # Build service service = build('indexing', 'v3', credentials=credentials) def index_api_callback(request_id, response, exception): if exception is not None: print(f'id: {request_id}, exception: {exception}') else: successful.append(response['urlNotificationMetadata']['url']) batch = service.new_batch_http_request(callback=index_api_callback) for url, api_type in requests.items(): batch.add(service.urlNotifications().publish( body={\"url\": url, \"type\": api_type})) batch.execute() return successful if __name__ == \"__main__\": publish() 常用的操作类型应该只有2种，更新 URL_UPDATED,和删除 URL_DELETED\n截至本文撰写时，在国内访问，由于各种原因，无法成功提交请求，甚至，我无法成功ping通目标主机indexing.googleapis.com，以至于我的请求出错：\nTimeoutError: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。\n可以在colab上操作，网络没有问题，可以一试，但注意不要泄露key。\n祝君好运。\n",
+  "wordCount" : "529",
   "inLanguage": "zh",
   "datePublished": "2024-07-05T22:52:56+08:00",
   "dateModified": "2024-07-05T22:52:56+08:00",
@@ -234,7 +234,7 @@
     
     <span id="post_meta_style_3">
         <span class="fa fa-file-word-o"></span>
-        <span>494字
+        <span>529字
             &nbsp;&nbsp;
         </span>
     </span><span id="post_meta_style_5">
@@ -292,6 +292,7 @@ Github地址: <a href="https://github.com/googleapis/google-api-python-client" t
 </span></span></code></pre></div><p>常用的操作类型应该只有2种，更新 <code>URL_UPDATED</code>,和删除 <code>URL_DELETED</code></p>
 <p>截至本文撰写时，在国内访问，由于各种原因，无法成功提交请求，甚至，我无法成功ping通目标主机<code>indexing.googleapis.com</code>，以至于我的请求出错：<br>
 <code>TimeoutError: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。</code></p>
+<p>可以在<code>colab</code>上操作，网络没有问题，可以一试，但注意不要泄露key。</p>
 <p>祝君好运。</p>
 
 
