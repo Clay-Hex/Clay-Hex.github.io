@@ -65,12 +65,12 @@
 <meta property="og:description" content="最近在开发中，需要恢复git中已经删除的分支。 情况是这样，有两个开发分支，dev_1和dev_2，之所以维护两个，是因为需求存在分叉。 最近在dev_1上出现了bug，所以，我开了一个fix分支出来进行修复，修复完毕后，merge回dev_1上了，接着就把这个fix分支删除了。但是" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.clayhex.com/posts/2024/07/git-recovery-deleted-branch/" />
-<meta property="og:image" content="https://www.clayhex.com/git.png" /><meta property="article:section" content="posts" />
+<meta property="og:image" content="https://www.clayhex.com/cover/git.png" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2024-07-10T21:14:10+08:00" />
 <meta property="article:modified_time" content="2024-07-10T21:14:10+08:00" />
 
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="https://www.clayhex.com/git.png" />
+<meta name="twitter:image" content="https://www.clayhex.com/cover/git.png" />
 <meta name="twitter:title" content="Git恢复已删除的分支"/>
 <meta name="twitter:description" content="最近在开发中，需要恢复git中已经删除的分支。 情况是这样，有两个开发分支，dev_1和dev_2，之所以维护两个，是因为需求存在分叉。 最近在dev_1上出现了bug，所以，我开了一个fix分支出来进行修复，修复完毕后，merge回dev_1上了，接着就把这个fix分支删除了。但是"/>
 
@@ -114,7 +114,7 @@
   "articleBody": "最近在开发中，需要恢复git中已经删除的分支。\n情况是这样，有两个开发分支，dev_1和dev_2，之所以维护两个，是因为需求存在分叉。\n最近在dev_1上出现了bug，所以，我开了一个fix分支出来进行修复，修复完毕后，merge回dev_1上了，接着就把这个fix分支删除了。但是，这些改动仍然需要fix到dev_2上，此时，办法不唯一。\n当然可以直接找到fix的commit，然后cherry-pick过去。\n也可以尝试恢复fix分支，然后合并到dev_2上去。\n此时dev_1的tree大概是这样:\n* 229e0eb (HEAD -\u003e dev_1) Merge branch 'fix' into dev_1 |\\ | * 321c03e fix c2 | * 738d5cf fix c1 |/ * bd44f10 dev 1 feat * e274b11 (master) first commit dev_2的tree:\n* c9ff336 (HEAD -\u003e dev_2) dev 2 feat * e274b11 (master) first commit git创建分支时，是可以指定一个起点的，默认是当前分支的最后一个commit。\n使用 git reflog可以查看HEAD的变化历史。当然，用git log -g --oneline也是同样的效果。如下：\n229e0eb (HEAD -\u003e dev_1) HEAD@{0}: checkout: moving from dev_2 to dev_1 c9ff336 (dev_2) HEAD@{1}: checkout: moving from dev_1 to dev_2 229e0eb (HEAD -\u003e dev_1) HEAD@{2}: merge fix: Merge made by the 'ort' strategy. bd44f10 HEAD@{3}: checkout: moving from fix to dev_1 321c03e HEAD@{4}: commit: fix c2 738d5cf HEAD@{5}: commit: fix c1 bd44f10 HEAD@{6}: checkout: moving from dev_1 to fix bd44f10 HEAD@{7}: checkout: moving from master to dev_1 e274b11 (master) HEAD@{8}: checkout: moving from dev_2 to master c9ff336 (dev_2) HEAD@{9}: checkout: moving from dev_1 to dev_2 bd44f10 HEAD@{10}: checkout: moving from dev_2 to dev_1 c9ff336 (dev_2) HEAD@{11}: commit: dev 2 feat e274b11 (master) HEAD@{12}: checkout: moving from dev_1 to dev_2 bd44f10 HEAD@{13}: commit: dev 1 feat e274b11 (master) HEAD@{14}: checkout: moving from DEV_1 to dev_1 e274b11 (master) HEAD@{15}: checkout: moving from dev_2 to DEV_1 e274b11 (master) HEAD@{16}: checkout: moving from dev_2 to dev_2 e274b11 (master) HEAD@{17}: checkout: moving from dev_1 to dev_2 e274b11 (master) HEAD@{18}: checkout: moving from master to dev_1 e274b11 (master) HEAD@{19}: commit (initial): first commit 只需要找到fix分支最后一次提交的commit，从它开始建立一个分支，就可以了。\ngit branch fix_rec 321c03e\n",
   "wordCount" : "606",
   "inLanguage": "zh",
-  "image":"https://www.clayhex.com/git.png","datePublished": "2024-07-10T21:14:10+08:00",
+  "image":"https://www.clayhex.com/cover/git.png","datePublished": "2024-07-10T21:14:10+08:00",
   "dateModified": "2024-07-10T21:14:10+08:00",
   "author":{
     "@type": "Person",
@@ -257,10 +257,7 @@
 
 </div>
   </header> 
-<figure class="entry-cover1">
-        <img loading="eager" srcset="https://www.clayhex.com/posts/2024/07/git-recovery-deleted-branch/git_hu9cbbd812d66ceba24f3b3a387d15ac56_96826_360x0_resize_box_3.png 360w ,https://www.clayhex.com/posts/2024/07/git-recovery-deleted-branch/git_hu9cbbd812d66ceba24f3b3a387d15ac56_96826_480x0_resize_box_3.png 480w ,https://www.clayhex.com/posts/2024/07/git-recovery-deleted-branch/git_hu9cbbd812d66ceba24f3b3a387d15ac56_96826_720x0_resize_box_3.png 720w ,https://www.clayhex.com/posts/2024/07/git-recovery-deleted-branch/git_hu9cbbd812d66ceba24f3b3a387d15ac56_96826_1080x0_resize_box_3.png 1080w ,https://www.clayhex.com/posts/2024/07/git-recovery-deleted-branch/git_hu9cbbd812d66ceba24f3b3a387d15ac56_96826_1500x0_resize_box_3.png 1500w ,https://www.clayhex.com/posts/2024/07/git-recovery-deleted-branch/git.png 1652w" 
-            sizes="(min-width: 768px) 720px, 100vw" src="https://www.clayhex.com/posts/2024/07/git-recovery-deleted-branch/git.png" alt="" 
-            width="1652" height="432">
+<figure class="entry-cover1"><img loading="eager" src="https://www.clayhex.com/cover/git.png" alt="">
         
 </figure>
   <div class="post-content"><p>最近在开发中，需要恢复git中已经删除的分支。<br>
