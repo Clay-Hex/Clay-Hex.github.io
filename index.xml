@@ -6,8 +6,15 @@
     <description>Recent content on Clay&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Fri, 05 Jul 2024 22:52:56 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 10 Jul 2024 21:14:10 +0800</lastBuildDate>
     <atom:link href="https://www.clayhex.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Git恢复已删除的分支</title>
+      <link>https://www.clayhex.com/posts/2024/07/git-recovery-deleted-branch/</link>
+      <pubDate>Wed, 10 Jul 2024 21:14:10 +0800</pubDate>
+      <guid>https://www.clayhex.com/posts/2024/07/git-recovery-deleted-branch/</guid>
+      <description>最近在开发中，需要恢复git中已经删除的分支。 情况是这样，有两个开发分支，dev_1和dev_2，之所以维护两个，是因为需求存在分叉。 最近在dev_1上出现了bug，所以，我开了一个fix分支出来进行修复，修复完毕后，merge回dev_1上了，接着就把这个fix分支删除了。但是</description>
+    </item>
     <item>
       <title>使用Google Indexing API快速收录</title>
       <link>https://www.clayhex.com/posts/2024/07/google-indexing-api/</link>

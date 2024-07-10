@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>使用Google Indexing API快速收录 | Clay&#39;s Blog</title>
-<meta name="keywords" content="google indexing api, gsc, seo, google-api-python-client">
-<meta name="description" content="Google indexing api是谷歌提供的针对搜索引擎索引功能的接口，相比于在Google search console上提交sitemap，API收录速度要快得多。刚开始的时候，我在GSC上提交了sitemap，后来一段时间，就不抓取了，也不收录，不清楚什么原因。后来使用api直接提交，第二天就可以索引到了。 操">
+<title>Git恢复已删除的分支 | Clay&#39;s Blog</title>
+<meta name="keywords" content="git, recovery branch">
+<meta name="description" content="最近在开发中，需要恢复git中已经删除的分支。 情况是这样，有两个开发分支，dev_1和dev_2，之所以维护两个，是因为需求存在分叉。 最近在dev_1上出现了bug，所以，我开了一个fix分支出来进行修复，修复完毕后，merge回dev_1上了，接着就把这个fix分支删除了。但是">
 <meta name="author" content="Clay">
-<link rel="canonical" href="https://www.clayhex.com/posts/2024/07/google-indexing-api/">
+<link rel="canonical" href="https://www.clayhex.com/posts/2024/07/git-recovery-deleted-branch/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.js" onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://www.clayhex.com/favicon.ico">
@@ -19,7 +19,7 @@
 <link rel="mask-icon" href="https://www.clayhex.com/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="zh" href="https://www.clayhex.com/posts/2024/07/google-indexing-api/">
+<link rel="alternate" hreflang="zh" href="https://www.clayhex.com/posts/2024/07/git-recovery-deleted-branch/">
 <noscript>
     <style>
         #theme-toggle,
@@ -61,16 +61,18 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   
 
-<meta property="og:title" content="使用Google Indexing API快速收录" />
-<meta property="og:description" content="Google indexing api是谷歌提供的针对搜索引擎索引功能的接口，相比于在Google search console上提交sitemap，API收录速度要快得多。刚开始的时候，我在GSC上提交了sitemap，后来一段时间，就不抓取了，也不收录，不清楚什么原因。后来使用api直接提交，第二天就可以索引到了。 操" />
+<meta property="og:title" content="Git恢复已删除的分支" />
+<meta property="og:description" content="最近在开发中，需要恢复git中已经删除的分支。 情况是这样，有两个开发分支，dev_1和dev_2，之所以维护两个，是因为需求存在分叉。 最近在dev_1上出现了bug，所以，我开了一个fix分支出来进行修复，修复完毕后，merge回dev_1上了，接着就把这个fix分支删除了。但是" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://www.clayhex.com/posts/2024/07/google-indexing-api/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2024-07-05T22:52:56+08:00" />
-<meta property="article:modified_time" content="2024-07-05T22:52:56+08:00" />
+<meta property="og:url" content="https://www.clayhex.com/posts/2024/07/git-recovery-deleted-branch/" />
+<meta property="og:image" content="https://www.clayhex.com/git.png" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-07-10T21:14:10+08:00" />
+<meta property="article:modified_time" content="2024-07-10T21:14:10+08:00" />
 
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="使用Google Indexing API快速收录"/>
-<meta name="twitter:description" content="Google indexing api是谷歌提供的针对搜索引擎索引功能的接口，相比于在Google search console上提交sitemap，API收录速度要快得多。刚开始的时候，我在GSC上提交了sitemap，后来一段时间，就不抓取了，也不收录，不清楚什么原因。后来使用api直接提交，第二天就可以索引到了。 操"/>
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://www.clayhex.com/git.png" />
+<meta name="twitter:title" content="Git恢复已删除的分支"/>
+<meta name="twitter:description" content="最近在开发中，需要恢复git中已经删除的分支。 情况是这样，有两个开发分支，dev_1和dev_2，之所以维护两个，是因为需求存在分叉。 最近在dev_1上出现了bug，所以，我开了一个fix分支出来进行修复，修复完毕后，merge回dev_1上了，接着就把这个fix分支删除了。但是"/>
 
 
 <script type="application/ld+json">
@@ -93,8 +95,8 @@
     {
       "@type": "ListItem",
       "position":  3 ,
-      "name": "使用Google Indexing API快速收录",
-      "item": "https://www.clayhex.com/posts/2024/07/google-indexing-api/"
+      "name": "Git恢复已删除的分支",
+      "item": "https://www.clayhex.com/posts/2024/07/git-recovery-deleted-branch/"
     }
   ]
 }
@@ -103,24 +105,24 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "使用Google Indexing API快速收录",
-  "name": "使用Google Indexing API快速收录",
-  "description": "Google indexing api是谷歌提供的针对搜索引擎索引功能的接口，相比于在Google search console上提交sitemap，API收录速度要快得多。刚开始的时候，我在GSC上提交了sitemap，后来一段时间，就不抓取了，也不收录，不清楚什么原因。后来使用api直接提交，第二天就可以索引到了。 操",
+  "headline": "Git恢复已删除的分支",
+  "name": "Git恢复已删除的分支",
+  "description": "最近在开发中，需要恢复git中已经删除的分支。 情况是这样，有两个开发分支，dev_1和dev_2，之所以维护两个，是因为需求存在分叉。 最近在dev_1上出现了bug，所以，我开了一个fix分支出来进行修复，修复完毕后，merge回dev_1上了，接着就把这个fix分支删除了。但是",
   "keywords": [
-    "google indexing api", "gsc", "seo", "google-api-python-client"
+    "git", "recovery branch"
   ],
-  "articleBody": "Google indexing api是谷歌提供的针对搜索引擎索引功能的接口，相比于在Google search console上提交sitemap，API收录速度要快得多。刚开始的时候，我在GSC上提交了sitemap，后来一段时间，就不抓取了，也不收录，不清楚什么原因。后来使用api直接提交，第二天就可以索引到了。\n操作步骤参考官方文档：\nhttps://developers.google.com/search/apis/indexing-api/v3/quickstart\n官方也提供了一些例程，可以参考文档内描述，但是，更方便的方法是使用他们的第三方库。\nGithub地址: google-api-python-client\nrepo内有许多的例程，使用的话，可以直接安装google-api-python-client\npip install google-api-python-client 更新/添加网址代码：\nfrom googleapiclient.discovery import build from oauth2client.service_account import ServiceAccountCredentials def publish(): successful=[] urls = ['http://baidu.com'] requests={url:\"URL_UPDATED\" for url in urls} JSON_KEY_FILE = 'xxxxx.json' SCOPES = [\"https://www.googleapis.com/auth/indexing\"] # Authorize credentials credentials = ServiceAccountCredentials.from_json_keyfile_name(JSON_KEY_FILE, scopes=SCOPES) # Build service service = build('indexing', 'v3', credentials=credentials) def index_api_callback(request_id, response, exception): if exception is not None: print(f'id: {request_id}, exception: {exception}') else: successful.append(response['urlNotificationMetadata']['url']) batch = service.new_batch_http_request(callback=index_api_callback) for url, api_type in requests.items(): batch.add(service.urlNotifications().publish( body={\"url\": url, \"type\": api_type})) batch.execute() return successful if __name__ == \"__main__\": publish() 常用的操作类型应该只有2种，更新 URL_UPDATED,和删除 URL_DELETED\n截至本文撰写时，在国内访问，由于各种原因，无法成功提交请求，甚至，我无法成功ping通目标主机indexing.googleapis.com，以至于我的请求出错：\nTimeoutError: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。\n可以在colab上操作，网络没有问题，可以一试，但注意不要泄露key。\n祝君好运。\n",
-  "wordCount" : "529",
+  "articleBody": "最近在开发中，需要恢复git中已经删除的分支。\n情况是这样，有两个开发分支，dev_1和dev_2，之所以维护两个，是因为需求存在分叉。\n最近在dev_1上出现了bug，所以，我开了一个fix分支出来进行修复，修复完毕后，merge回dev_1上了，接着就把这个fix分支删除了。但是，这些改动仍然需要fix到dev_2上，此时，办法不唯一。\n当然可以直接找到fix的commit，然后cherry-pick过去。\n也可以尝试恢复fix分支，然后合并到dev_2上去。\n此时dev_1的tree大概是这样:\n* 229e0eb (HEAD -\u003e dev_1) Merge branch 'fix' into dev_1 |\\ | * 321c03e fix c2 | * 738d5cf fix c1 |/ * bd44f10 dev 1 feat * e274b11 (master) first commit dev_2的tree:\n* c9ff336 (HEAD -\u003e dev_2) dev 2 feat * e274b11 (master) first commit git创建分支时，是可以指定一个起点的，默认是当前分支的最后一个commit。\n使用 git reflog可以查看HEAD的变化历史。当然，用git log -g --oneline也是同样的效果。如下：\n229e0eb (HEAD -\u003e dev_1) HEAD@{0}: checkout: moving from dev_2 to dev_1 c9ff336 (dev_2) HEAD@{1}: checkout: moving from dev_1 to dev_2 229e0eb (HEAD -\u003e dev_1) HEAD@{2}: merge fix: Merge made by the 'ort' strategy. bd44f10 HEAD@{3}: checkout: moving from fix to dev_1 321c03e HEAD@{4}: commit: fix c2 738d5cf HEAD@{5}: commit: fix c1 bd44f10 HEAD@{6}: checkout: moving from dev_1 to fix bd44f10 HEAD@{7}: checkout: moving from master to dev_1 e274b11 (master) HEAD@{8}: checkout: moving from dev_2 to master c9ff336 (dev_2) HEAD@{9}: checkout: moving from dev_1 to dev_2 bd44f10 HEAD@{10}: checkout: moving from dev_2 to dev_1 c9ff336 (dev_2) HEAD@{11}: commit: dev 2 feat e274b11 (master) HEAD@{12}: checkout: moving from dev_1 to dev_2 bd44f10 HEAD@{13}: commit: dev 1 feat e274b11 (master) HEAD@{14}: checkout: moving from DEV_1 to dev_1 e274b11 (master) HEAD@{15}: checkout: moving from dev_2 to DEV_1 e274b11 (master) HEAD@{16}: checkout: moving from dev_2 to dev_2 e274b11 (master) HEAD@{17}: checkout: moving from dev_1 to dev_2 e274b11 (master) HEAD@{18}: checkout: moving from master to dev_1 e274b11 (master) HEAD@{19}: commit (initial): first commit 只需要找到fix分支最后一次提交的commit，从它开始建立一个分支，就可以了。\ngit branch fix_rec 321c03e\n",
+  "wordCount" : "606",
   "inLanguage": "zh",
-  "datePublished": "2024-07-05T22:52:56+08:00",
-  "dateModified": "2024-07-05T22:52:56+08:00",
+  "image":"https://www.clayhex.com/git.png","datePublished": "2024-07-10T21:14:10+08:00",
+  "dateModified": "2024-07-10T21:14:10+08:00",
   "author":{
     "@type": "Person",
     "name": "Clay"
   },
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://www.clayhex.com/posts/2024/07/google-indexing-api/"
+    "@id": "https://www.clayhex.com/posts/2024/07/git-recovery-deleted-branch/"
   },
   "publisher": {
     "@type": "Organization",
@@ -217,11 +219,11 @@
   <header class="post-header">
     <div class="breadcrumbs"><a href="https://www.clayhex.com/">主页</a>&nbsp;»&nbsp;<a href="https://www.clayhex.com/posts/">📒 记录</a>&nbsp;»&nbsp;<a href="https://www.clayhex.com/posts/learn/">📚 学习</a></div>
     <h1 class="post-title entry-hint-parent">
-      使用Google Indexing API快速收录
+      Git恢复已删除的分支
     </h1>
     <div class="post-meta"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
-        <span>2024-07-05
+        <span>2024-07-10
             &nbsp;&nbsp;
         </span>
     </span>
@@ -234,7 +236,7 @@
     
     <span id="post_meta_style_3">
         <span class="fa fa-file-word-o"></span>
-        <span>529字
+        <span>606字
             &nbsp;&nbsp;
         </span>
     </span><span id="post_meta_style_5">
@@ -243,74 +245,83 @@
             &nbsp;&nbsp;
         </span>
     </span>
+    <span id="post_meta_style_6">
+        <span class="fa fa-tags" style="opacity: 0.8"></span>
+        <span>
+            <span class="post-tags-meta">
+                <a href="https://www.clayhex.com/tags/git/" style="color: var(--secondary)!important;">Git</a>
+            </span>
+        </span>
+    </span>
 </span>
 
 </div>
   </header> 
-  <div class="post-content"><p>Google indexing api是谷歌提供的针对搜索引擎索引功能的接口，相比于在Google search console上提交sitemap，API收录速度要快得多。刚开始的时候，我在GSC上提交了sitemap，后来一段时间，就不抓取了，也不收录，不清楚什么原因。后来使用api直接提交，第二天就可以索引到了。</p>
-<p>操作步骤参考官方文档：<br>
-<a href="https://developers.google.com/search/apis/indexing-api/v3/quickstart" target="_blank" rel="noopener" style="color:#42b983";>https://developers.google.com/search/apis/indexing-api/v3/quickstart</a></p>
-<p>官方也提供了一些例程，可以参考文档内描述，但是，更方便的方法是使用他们的第三方库。<br>
-Github地址: <a href="https://github.com/googleapis/google-api-python-client" target="_blank" rel="noopener" style="color:#42b983";>google-api-python-client</a></p>
-<p>repo内有许多的例程，使用的话，可以直接安装<code>google-api-python-client</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">pip</span> <span class="n">install</span> <span class="n">google</span><span class="o">-</span><span class="n">api</span><span class="o">-</span><span class="n">python</span><span class="o">-</span><span class="n">client</span>
-</span></span></code></pre></div><p>更新/添加网址代码：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">googleapiclient.discovery</span> <span class="kn">import</span> <span class="n">build</span>
-</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">oauth2client.service_account</span> <span class="kn">import</span> <span class="n">ServiceAccountCredentials</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">publish</span><span class="p">():</span>
-</span></span><span class="line"><span class="cl">    <span class="n">successful</span><span class="o">=</span><span class="p">[]</span>
-</span></span><span class="line"><span class="cl">    <span class="n">urls</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;http://baidu.com&#39;</span><span class="p">]</span>
-</span></span><span class="line"><span class="cl">    <span class="n">requests</span><span class="o">=</span><span class="p">{</span><span class="n">url</span><span class="p">:</span><span class="s2">&#34;URL_UPDATED&#34;</span> <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">urls</span><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">JSON_KEY_FILE</span> <span class="o">=</span> <span class="s1">&#39;xxxxx.json&#39;</span>
-</span></span><span class="line"><span class="cl">    <span class="n">SCOPES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&#34;https://www.googleapis.com/auth/indexing&#34;</span><span class="p">]</span>
-</span></span><span class="line"><span class="cl">    <span class="c1"># Authorize credentials</span>
-</span></span><span class="line"><span class="cl">    <span class="n">credentials</span> <span class="o">=</span> <span class="n">ServiceAccountCredentials</span><span class="o">.</span><span class="n">from_json_keyfile_name</span><span class="p">(</span><span class="n">JSON_KEY_FILE</span><span class="p">,</span> <span class="n">scopes</span><span class="o">=</span><span class="n">SCOPES</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="c1"># Build service</span>
-</span></span><span class="line"><span class="cl">    <span class="n">service</span> <span class="o">=</span> <span class="n">build</span><span class="p">(</span><span class="s1">&#39;indexing&#39;</span><span class="p">,</span> <span class="s1">&#39;v3&#39;</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">index_api_callback</span><span class="p">(</span><span class="n">request_id</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">exception</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">exception</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;id: </span><span class="si">{</span><span class="n">request_id</span><span class="si">}</span><span class="s1">, exception: </span><span class="si">{</span><span class="n">exception</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="k">else</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">            <span class="n">successful</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;urlNotificationMetadata&#39;</span><span class="p">][</span><span class="s1">&#39;url&#39;</span><span class="p">])</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">batch</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">new_batch_http_request</span><span class="p">(</span><span class="n">callback</span><span class="o">=</span><span class="n">index_api_callback</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">url</span><span class="p">,</span> <span class="n">api_type</span> <span class="ow">in</span> <span class="n">requests</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-</span></span><span class="line"><span class="cl">        <span class="n">batch</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">service</span><span class="o">.</span><span class="n">urlNotifications</span><span class="p">()</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span>
-</span></span><span class="line"><span class="cl">            <span class="n">body</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;url&#34;</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span> <span class="s2">&#34;type&#34;</span><span class="p">:</span> <span class="n">api_type</span><span class="p">}))</span>
-</span></span><span class="line"><span class="cl">    <span class="n">batch</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">successful</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&#34;__main__&#34;</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">    <span class="n">publish</span><span class="p">()</span>
-</span></span></code></pre></div><p>常用的操作类型应该只有2种，更新 <code>URL_UPDATED</code>,和删除 <code>URL_DELETED</code></p>
-<p>截至本文撰写时，在国内访问，由于各种原因，无法成功提交请求，甚至，我无法成功ping通目标主机<code>indexing.googleapis.com</code>，以至于我的请求出错：<br>
-<code>TimeoutError: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。</code></p>
-<p>可以在<code>colab</code>上操作，网络没有问题，可以一试，但注意不要泄露key。</p>
-<p>祝君好运。</p>
+<figure class="entry-cover1">
+        <img loading="eager" srcset="https://www.clayhex.com/posts/2024/07/git-recovery-deleted-branch/git_hu9cbbd812d66ceba24f3b3a387d15ac56_96826_360x0_resize_box_3.png 360w ,https://www.clayhex.com/posts/2024/07/git-recovery-deleted-branch/git_hu9cbbd812d66ceba24f3b3a387d15ac56_96826_480x0_resize_box_3.png 480w ,https://www.clayhex.com/posts/2024/07/git-recovery-deleted-branch/git_hu9cbbd812d66ceba24f3b3a387d15ac56_96826_720x0_resize_box_3.png 720w ,https://www.clayhex.com/posts/2024/07/git-recovery-deleted-branch/git_hu9cbbd812d66ceba24f3b3a387d15ac56_96826_1080x0_resize_box_3.png 1080w ,https://www.clayhex.com/posts/2024/07/git-recovery-deleted-branch/git_hu9cbbd812d66ceba24f3b3a387d15ac56_96826_1500x0_resize_box_3.png 1500w ,https://www.clayhex.com/posts/2024/07/git-recovery-deleted-branch/git.png 1652w" 
+            sizes="(min-width: 768px) 720px, 100vw" src="https://www.clayhex.com/posts/2024/07/git-recovery-deleted-branch/git.png" alt="" 
+            width="1652" height="432">
+        
+</figure>
+  <div class="post-content"><p>最近在开发中，需要恢复git中已经删除的分支。<br>
+情况是这样，有两个开发分支，<code>dev_1</code>和<code>dev_2</code>，之所以维护两个，是因为需求存在分叉。<br>
+最近在<code>dev_1</code>上出现了bug，所以，我开了一个<code>fix</code>分支出来进行修复，修复完毕后，<code>merge</code>回<code>dev_1</code>上了，接着就把这个<code>fix</code>分支删除了。但是，这些改动仍然需要fix到<code>dev_2</code>上，此时，办法不唯一。</p>
+<ul>
+<li>
+<p>当然可以直接找到<code>fix</code>的<code>commit</code>，然后<code>cherry-pick</code>过去。</p>
+</li>
+<li>
+<p>也可以尝试恢复<code>fix</code>分支，然后合并到<code>dev_2</code>上去。</p>
+</li>
+</ul>
+<p>此时<code>dev_1</code>的<code>tree</code>大概是这样:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">*   229e0eb (HEAD -&gt; dev_1) Merge branch &#39;fix&#39; into dev_1
+</span></span><span class="line"><span class="cl">|\
+</span></span><span class="line"><span class="cl">| * 321c03e fix c2
+</span></span><span class="line"><span class="cl">| * 738d5cf fix c1
+</span></span><span class="line"><span class="cl">|/
+</span></span><span class="line"><span class="cl">* bd44f10 dev 1 feat
+</span></span><span class="line"><span class="cl">* e274b11 (master) first commit
+</span></span></code></pre></div><p><code>dev_2</code>的<code>tree</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">* c9ff336 (HEAD -&gt; dev_2) dev 2 feat
+</span></span><span class="line"><span class="cl">* e274b11 (master) first commit
+</span></span></code></pre></div><p>git创建分支时，是可以指定一个起点的，默认是当前分支的最后一个<code>commit</code>。</p>
+<p>使用 <code>git reflog</code>可以查看HEAD的变化历史。当然，用<code>git log -g --oneline</code>也是同样的效果。如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">229e0eb (HEAD -&gt; dev_1) HEAD@{0}: checkout: moving from dev_2 to dev_1
+</span></span><span class="line"><span class="cl">c9ff336 (dev_2) HEAD@{1}: checkout: moving from dev_1 to dev_2
+</span></span><span class="line"><span class="cl">229e0eb (HEAD -&gt; dev_1) HEAD@{2}: merge fix: Merge made by the &#39;ort&#39; strategy.
+</span></span><span class="line"><span class="cl">bd44f10 HEAD@{3}: checkout: moving from fix to dev_1
+</span></span><span class="line"><span class="cl">321c03e HEAD@{4}: commit: fix c2
+</span></span><span class="line"><span class="cl">738d5cf HEAD@{5}: commit: fix c1
+</span></span><span class="line"><span class="cl">bd44f10 HEAD@{6}: checkout: moving from dev_1 to fix
+</span></span><span class="line"><span class="cl">bd44f10 HEAD@{7}: checkout: moving from master to dev_1
+</span></span><span class="line"><span class="cl">e274b11 (master) HEAD@{8}: checkout: moving from dev_2 to master
+</span></span><span class="line"><span class="cl">c9ff336 (dev_2) HEAD@{9}: checkout: moving from dev_1 to dev_2
+</span></span><span class="line"><span class="cl">bd44f10 HEAD@{10}: checkout: moving from dev_2 to dev_1
+</span></span><span class="line"><span class="cl">c9ff336 (dev_2) HEAD@{11}: commit: dev 2 feat
+</span></span><span class="line"><span class="cl">e274b11 (master) HEAD@{12}: checkout: moving from dev_1 to dev_2
+</span></span><span class="line"><span class="cl">bd44f10 HEAD@{13}: commit: dev 1 feat
+</span></span><span class="line"><span class="cl">e274b11 (master) HEAD@{14}: checkout: moving from DEV_1 to dev_1
+</span></span><span class="line"><span class="cl">e274b11 (master) HEAD@{15}: checkout: moving from dev_2 to DEV_1
+</span></span><span class="line"><span class="cl">e274b11 (master) HEAD@{16}: checkout: moving from dev_2 to dev_2
+</span></span><span class="line"><span class="cl">e274b11 (master) HEAD@{17}: checkout: moving from dev_1 to dev_2
+</span></span><span class="line"><span class="cl">e274b11 (master) HEAD@{18}: checkout: moving from master to dev_1
+</span></span><span class="line"><span class="cl">e274b11 (master) HEAD@{19}: commit (initial): first commit
+</span></span></code></pre></div><p>只需要找到<code>fix</code>分支最后一次提交的<code>commit</code>，从它开始建立一个分支，就可以了。</p>
+<p><code>git branch fix_rec 321c03e</code></p>
 
 
   </div>
 
   <footer class="post-footer">
     <ul class="post-tags">
+      <li><a href="https://www.clayhex.com/tags/git/">Git</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://www.clayhex.com/posts/2024/07/git-recovery-deleted-branch/">
-    <span class="title">« 上一篇</span>
-    <br>
-    <span>Git恢复已删除的分支</span>
-  </a>
-  <a class="next" href="https://www.clayhex.com/posts/2024/05/h264-h265-stream-nalu-sei/">
+  <a class="next" href="https://www.clayhex.com/posts/2024/07/google-indexing-api/">
     <span class="title">下一篇 »</span>
     <br>
-    <span>H264、H265码流中的SEI NALU</span>
+    <span>使用Google Indexing API快速收录</span>
   </a>
 </nav>
 

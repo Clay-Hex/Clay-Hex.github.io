@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Git on Clay&#39;s Blog</title>
+    <link>https://www.clayhex.com/tags/git/</link>
+    <description>Recent content in Git on Clay&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Wed, 10 Jul 2024 21:14:10 +0800</lastBuildDate>
+    <atom:link href="https://www.clayhex.com/tags/git/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Git恢复已删除的分支</title>
+      <link>https://www.clayhex.com/posts/2024/07/git-recovery-deleted-branch/</link>
+      <pubDate>Wed, 10 Jul 2024 21:14:10 +0800</pubDate>
+      <guid>https://www.clayhex.com/posts/2024/07/git-recovery-deleted-branch/</guid>
+      <description>最近在开发中，需要恢复git中已经删除的分支。 情况是这样，有两个开发分支，dev_1和dev_2，之所以维护两个，是因为需求存在分叉。 最近在dev_1上出现了bug，所以，我开了一个fix分支出来进行修复，修复完毕后，merge回dev_1上了，接着就把这个fix分支删除了。但是</description>
+    </item>
+  </channel>
+</rss>
