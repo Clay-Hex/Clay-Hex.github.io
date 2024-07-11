@@ -6,8 +6,15 @@
     <description>Recent content on Clay&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Wed, 10 Jul 2024 21:14:10 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 11 Jul 2024 21:14:16 +0800</lastBuildDate>
     <atom:link href="https://www.clayhex.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>C&#43;&#43;选手如何快速入门Python?</title>
+      <link>https://www.clayhex.com/posts/2024/07/cpper-to-pythoner/</link>
+      <pubDate>Thu, 11 Jul 2024 21:14:16 +0800</pubDate>
+      <guid>https://www.clayhex.com/posts/2024/07/cpper-to-pythoner/</guid>
+      <description>1. 实际是静态语言vs动态语言 之前，一直使用C/C++做开发，最近开始尝试使用Python做一些小的工具，顺便学习一下。 包括在学生阶段，我也喜欢C/C++，有更强的控制感，程序的每一步，我都要尽可能的掌握，清楚它到底在做什么。也偶尔用过几次Java做些事情。总而言之，这都属于“静态</description>
+    </item>
     <item>
       <title>Git恢复已删除的分支</title>
       <link>https://www.clayhex.com/posts/2024/07/git-recovery-deleted-branch/</link>
