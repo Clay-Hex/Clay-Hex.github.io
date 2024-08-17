@@ -130,8 +130,8 @@
   "keywords": [
     "立体视觉", "双目视觉", "相机成像原理", "相机坐标系", "像素坐标系", "图像坐标系"
   ],
-  "articleBody": "序： 记录学习过程中自己的理解以及遇到的问题，慢慢补充。\n若有错误，还希望各位大佬不吝赐教。\n0. 零零散散 0.1 公开数据集 Middlebury：https://vision.middlebury.edu/stereo/data/(室内)\nKITTI：http://www.cvlibs.net/datasets/kitti/stereo(室外驾驶)\nSceneFlow：https://lmb.informatik.uni-freiburg.de/resources/datasets\n0.2 左、右手坐标系 左手、右手坐标系\n伸出大拇指，食指和中指，自然摆成三指互相垂直的状态。\n中指：X轴\n大拇指：Y轴\n食指：Z轴\n左手建成的坐标系就是左手坐标系，右手建成的坐标系就是右手坐标系。\n1. 四个经典的坐标系 1.1 世界坐标系 暂时不重要\n1.2 相机坐标系 图中的（Oc-XcYcZc）。\n1.3 图像坐标系 图中的（o-xy）\n1.4 像素坐标系 图中的（ouv-uv）\n2. 理想的单目成像模型 三维空间点P，在相机坐标系下的坐标为P(Xc, Yc, Zc)，它在图像坐标系下的成像点为p(x, y)。\n这里存在两组相似三角形：△ABOc ∽ △oCOc 和 △PBOc ∽ △pCOc\n（1） 由△ABOc ∽ △oCOc，可知：\n$$ \\frac{AB}{oC} = \\frac{AO_c}{oO_c} = \\frac{BO_c}{CO_c} $$ （2） 由△PBOc ∽ △pCOc，可知：\n$$ \\frac{PB}{pC} = \\frac{PO_c}{pO_c} = \\frac{BO_c}{CO_c} $$ 联立上边两个等式，可以得到：\n$$ \\frac{AB}{oC} = \\frac{AO_c}{oO_c} = \\frac{PB}{pC} $$ 根据点的坐标，可以将上式转换为：\n$$ \\frac{X_c}{x} = \\frac{Z_c}{f} = \\frac{Y_c}{y} $$ 变一下型可以得到：\n$$ x = f \\frac{X_c}{Z_c}，y = f \\frac{Y_c}{Z_c} $$ 写成矩阵的形式，并且用齐次坐标的话，就可以写成常见的那个矩阵关系：\n$$ Z_c\\left[ \\begin{matrix} x \\\\ y \\\\ 1 \\end{matrix} \\right] = \\left[ \\begin{matrix} f \u0026 0 \u0026 0 \u0026 0 \\\\ 0 \u0026 f \u0026 0 \u0026 0 \\\\ 0 \u0026 0 \u0026 1 \u0026 0 \\end{matrix} \\right] \\left[ \\begin{matrix} X_c \\\\ Y_c \\\\ Z_c \\\\ 1 \\end{matrix} \\right] $$ 3. 理想的双目成像模型 在上边的单目成像模型中，式子\n$$ x = f \\frac{X_c}{Z_c}，y = f \\frac{Y_c}{Z_c} $$ 可以变形为：\n$$ X_c = \\frac{Z_c}{f}x，Y_c = \\frac{Z_c}{f}y $$ 式中，x和y都是图像坐标系下的坐标，将x和y转成像素坐标系下的坐标，代入像素坐标转图像坐标公式可以得到：\n$$ X_c = \\frac{Z_c}{f}d_x(u-u_0)，Y_c = \\frac{Z_c}{f}d_y(v-v_0) $$ 至此，可以得到点P的Xc和Yc的表达式，式中除了Zc都是已知量。\n此时，引入下图中的理想双目成像模型：\n点P在两个平面上的投影点分别为$P_L$和$P_R$，b为基线长度，$X_L$和$X_R$分别是两个成像点距离各自所在成像平面左边的距离，两个成像平面的像主点在 X 方向上的坐标为X0L和X0R 则可以得到点P在左右相机中的视差：\n$$ d = X_L - X_R（如果计算左图视差，就是左减右，计算右图视差就是右减左） $$ 两个成像点$P_L$和$P_R$之间的物理距离为：\n$$ P_LP_R = b-(X_L - X_{0L}) - (X_{0R} -X_R ) = b - X_L + X_{0L} -X_{0R} + X_R = b - d + X_{0L} - X_{0R} $$ 上图中存在一组相似三角形：△PPLPR ∽ △POLOR。可以得到下式：\n$$ \\frac{P_LP_R}{Z_c-f} = \\frac{b}{Z_c} $$ 代入$P_LP_R$，可以得到：\n$$ \\frac{ b - d + X_{0L} - X_{0R} }{Z_c-f} = \\frac{b}{Z_c} $$ 变形，可以得到:\n$$ Z_c = \\frac{b f}{ d + X_{0R} - X_{0L} } $$ 当$X_{0R} 与 X_{0L}相等时$，上式简化为：\n$$ Z_c = \\frac{b f}{ d } $$ 至此，Zc也得到了，物点P的三维坐标都得到了：\n$$ \\left\\{ \\begin{aligned} X_c \u0026 = \u0026 \\frac{Z_c}{f}d_x(u-u_0) \\\\ Y_c \u0026 = \u0026 \\frac{Z_c}{f}d_y(v-v_0) \\\\ Z_c \u0026 = \u0026 \\frac{b f}{ d + X_{0R} - X_{0L} } \\end{aligned} \\right. $$ 式中的$f、b、d_x、d_y、u_0、v_0、X_{0L}、X_{0R}$都是可以通过标定得到的，$u$和$v$是该点在左图中的像素坐标，视差$d$可以通过立体匹配得到。所以，点P的相机坐标可以得到。\n注：\nopencv中使用函数stereoRectify()时，如果参数flags设置为CV_CALIB_ZERO_DISPARITY ，则该函数会让两幅校正后的图像的主点有相同的像素坐标，也就是上边的$X_{0R}$ 与 $X_{0L}$相等，否则该函数会水平或垂直的移动图像，以使得其有用的范围最大。\n上式当中焦距 f 的单位 mm，不便于后边计算，所有在双目视觉领域中，出现了“等效焦距\"，也就是经常见到的$f_x = \\frac{f}{dx}和f_y = \\frac{f}{dy}$。\n其中，$d_x$表示一个像素在 x 方向有多少mm，$d_y$表示一个像素在 y 方向有多少mm。而且，在标定的结果当中，一般也是直接得到$f_x$和f$_y$。一般的工业相机会在详细的资料介绍中，会给出$d_x$和$d_y$的值，可以手动计算验证一下。\n引入等效焦距后，物点P的三维坐标可以写成：\n$$ \\left\\{ \\begin{aligned} X_c \u0026 = \u0026 \\frac{Z_c}{f_x}(u-u_0) \\\\ Y_c \u0026 = \u0026 \\frac{Z_c}{f_y}(v-v_0) \\\\ Z_c \u0026 = \u0026 \\frac{b f}{ d + X_{0R} - X_{0L} } \\end{aligned} \\right. $$ 4. 非理想的双目成像模型 上边都是理想的情况，而现实的情况是，两个相机各自都存在畸变，并且在安装双目时，既做不到让两个相机的光轴完全平行，也做不到让两个相机的成像平面平行。\n4.1 存在畸变，怎么办？ 通过标定得到畸变系数，采集到双目图像后，通过畸变校正，在一定程度上消除畸变，得到较为理想的左图和右图。\n4.2 无法做到共面行对准，怎么办？ 在畸变校正之后，通过使用立体校正算法，将两幅非共面行对准的图像 校正成为 共面行对准的左右图像。\n5. 为什么距离越远，误差越大？ 深度的公式：\n$$ Z_c = \\frac{b f}{ d } $$ 可以的得出两个结论：\n视差与深度成反比 同样的视差间隔，距离越远，两个视差所对应的深度间隔越大。 对于第二点，可以举例：\n假定，$bf=1000$，\n$$ \\left\\{ \\begin{aligned} Z_c \u0026 = \u0026 \\frac{1000}{1} \u0026 = 1000.0\\\\ Z_c \u0026 = \u0026 \\frac{1000}{2} \u0026 = 500.0\\\\ Z_c \u0026 = \u0026 \\frac{1000}{79} \u0026 = 12.6582 \\\\ Z_c \u0026 = \u0026 \\frac{1000}{80} \u0026 = 12.5 \\\\ \\end{aligned} \\right. $$ 1和2，79和80，两组数，都是间隔1个像素的视差，但是第一组的深度相差了500,第二组的深度差了0.1582。目标物离相机越远时，视差越小，对应第一组数据的情形，所以说，同样的视差间隔，距离越远，两个视差所对应的深度间隔越大。所以在距离较远时，视差引起的误差更大。\nOpenCV中的一些操作 1. 基本数据 首先由双目标定，可以得到左相机的内参M1和畸变系数D1，可以得到右相机的内参M2和畸变系数D2，以及两个相机之间的旋转矩阵R和平移矩阵T。\n2.立体校正 使用stereoRectify函数主要包含两个步骤：畸变校正、立体矫正，还有一些方便后续计算的矩阵R1、R2、P1、P2、Q。\nCV_EXPORTS_W void stereoRectify( InputArray cameraMatrix1, InputArray distCoeffs1, InputArray cameraMatrix2, InputArray distCoeffs2, Size imageSize, InputArray R, InputArray T, OutputArray R1, OutputArray R2, OutputArray P1, OutputArray P2, OutputArray Q, int flags = CALIB_ZERO_DISPARITY, double alpha = -1, Size newImageSize = Size(), CV_OUT Rect* validPixROI1 = 0, CV_OUT Rect* validPixROI2 = 0 ); cameraMatrix1、distCoeffs1为相机1的内参数M1和畸变系数D1。\ncameraMatrix2、distCoeffs2为相机2的内参数M2和畸变系数D2。\nimageSize为用于校正的图像尺寸。\nR1、R2为两个相机进行共面行对准时所用的旋转矩阵（使用这两个旋转矩阵，相当于把两个实际的相机坐标系转换到理想的两个坐标系了），换一种说法：R1和R2分别为左右相机消除畸变后的像平面投影到公共像平面的旋转矩阵。\nP1，P2为两个相机的理想投影矩阵，可以将相机坐标系（O-XcYcZc）投影到像素坐标系(O-uv)，这两个坐标系都是校正后的，理想的。\nP1,P2分别为左右相机的投影矩阵，其作用是将世界坐标系的点转换到像素坐标系下(左相机光心为世界坐标系原点，所以，这里可以直接认为是完成相机坐标系转像素坐标系):\nQ为重投影矩阵，可以把像素坐标系重投影为世界坐标系（相机坐标系，因为此时，世界坐标系与相机坐标系重合），这两个坐标系都是校正后的，理想的。\n。。。。 P1和P2的验证\n（挖坑， 待填）\n。。。 。 Q矩阵的用法\n（挖坑， 待填）\nP1和P2在理想状态下，其实内部只差一个数字，P2比P1多了一个$-b·f$，\n其他一些注意点 MATLAB标定结果中。\n",
-  "wordCount" : "3012",
+  "articleBody": "序： 记录学习过程中自己的理解以及遇到的问题，慢慢补充。\n若有错误，还希望各位大佬不吝赐教。\n0. 零零散散 0.1 公开数据集 Middlebury：https://vision.middlebury.edu/stereo/data/(室内)\nKITTI：http://www.cvlibs.net/datasets/kitti/stereo(室外驾驶)\nSceneFlow：https://lmb.informatik.uni-freiburg.de/resources/datasets\n0.2 左、右手坐标系 左手、右手坐标系\n伸出大拇指，食指和中指，自然摆成三指互相垂直的状态。\n中指：X轴\n大拇指：Y轴\n食指：Z轴\n左手建成的坐标系就是左手坐标系，右手建成的坐标系就是右手坐标系。\n1. 四个经典的坐标系 1.1 世界坐标系 暂时不重要\n1.2 相机坐标系 图中的（Oc-XcYcZc）。\n1.3 图像坐标系 图中的（o-xy）\n1.4 像素坐标系 图中的（ouv-uv）\n2. 理想的单目成像模型 三维空间点P，在相机坐标系下的坐标为P(Xc, Yc, Zc)，它在图像坐标系下的成像点为p(x, y)。\n这里存在两组相似三角形：△ABOc ∽ △oCOc 和 △PBOc ∽ △pCOc\n（1） 由△ABOc ∽ △oCOc，可知：\n$$ \\frac{AB}{oC} = \\frac{AO_c}{oO_c} = \\frac{BO_c}{CO_c} $$\n（2） 由△PBOc ∽ △pCOc，可知：\n$$ \\frac{PB}{pC} = \\frac{PO_c}{pO_c} = \\frac{BO_c}{CO_c} $$联立上边两个等式，可以得到：\n$$ \\frac{AB}{oC} = \\frac{AO_c}{oO_c} = \\frac{PB}{pC} $$根据点的坐标，可以将上式转换为：\n$$ \\frac{X_c}{x} = \\frac{Z_c}{f} = \\frac{Y_c}{y} $$变一下型可以得到：\n$$ x = f \\frac{X_c}{Z_c}，y = f \\frac{Y_c}{Z_c} $$\n写成矩阵的形式，并且用齐次坐标的话，就可以写成常见的那个矩阵关系：\n$$ Z_c\\left[ \\begin{matrix} x \\\\ y \\\\ 1 \\end{matrix} \\right] = \\left[ \\begin{matrix} f \u0026 0 \u0026 0 \u0026 0 \\\\ 0 \u0026 f \u0026 0 \u0026 0 \\\\ 0 \u0026 0 \u0026 1 \u0026 0 \\end{matrix} \\right] \\left[ \\begin{matrix} X_c \\\\ Y_c \\\\ Z_c \\\\ 1 \\end{matrix} \\right] $$3. 理想的双目成像模型 在上边的单目成像模型中，式子\n$$ x = f \\frac{X_c}{Z_c}，y = f \\frac{Y_c}{Z_c} $$\n可以变形为：\n$$ X_c = \\frac{Z_c}{f}x，Y_c = \\frac{Z_c}{f}y $$式中，x和y都是图像坐标系下的坐标，将x和y转成像素坐标系下的坐标，代入像素坐标转图像坐标公式可以得到：\n$$ X_c = \\frac{Z_c}{f}d_x(u-u_0)，Y_c = \\frac{Z_c}{f}d_y(v-v_0) $$\n至此，可以得到点P的Xc和Yc的表达式，式中除了Zc都是已知量。\n此时，引入下图中的理想双目成像模型：\n点P在两个平面上的投影点分别为$P_L$和$P_R$，b为基线长度，$X_L$和$X_R$分别是两个成像点距离各自所在成像平面左边的距离，两个成像平面的像主点在 X 方向上的坐标为X0L和X0R 则可以得到点P在左右相机中的视差：\n$$ d = X_L - X_R（如果计算左图视差，就是左减右，计算右图视差就是右减左） $$\n两个成像点$P_L$和$P_R$之间的物理距离为：\n$$ P_LP_R = b-(X_L - X_{0L}) - (X_{0R} -X_R ) = b - X_L + X_{0L} -X_{0R} + X_R = b - d + X_{0L} - X_{0R} $$\n上图中存在一组相似三角形：△PPLPR ∽ △POLOR。可以得到下式：\n$$ \\frac{P_LP_R}{Z_c-f} = \\frac{b}{Z_c} $$\n代入$P_LP_R$，可以得到：\n$$ \\frac{ b - d + X_{0L} - X_{0R} }{Z_c-f} = \\frac{b}{Z_c} $$\n变形，可以得到:\n$$ Z_c = \\frac{b f}{ d + X_{0R} - X_{0L} } $$当$X_{0R} 与 X_{0L}相等时$，上式简化为：\n$$ Z_c = \\frac{b f}{ d } $$至此，Zc也得到了，物点P的三维坐标都得到了：\n$$ \\left\\{ \\begin{aligned} X_c \u0026 = \u0026 \\frac{Z_c}{f}d_x(u-u_0) \\\\ Y_c \u0026 = \u0026 \\frac{Z_c}{f}d_y(v-v_0) \\\\ Z_c \u0026 = \u0026 \\frac{b f}{ d + X_{0R} - X_{0L} } \\end{aligned} \\right. $$式中的$f、b、d_x、d_y、u_0、v_0、X_{0L}、X_{0R}$都是可以通过标定得到的，$u$和$v$是该点在左图中的像素坐标，视差$d$可以通过立体匹配得到。所以，点P的相机坐标可以得到。\n注：\nopencv中使用函数stereoRectify()时，如果参数flags设置为CV_CALIB_ZERO_DISPARITY ，则该函数会让两幅校正后的图像的主点有相同的像素坐标，也就是上边的$X_{0R}$ 与 $X_{0L}$相等，否则该函数会水平或垂直的移动图像，以使得其有用的范围最大。\n上式当中焦距 f 的单位 mm，不便于后边计算，所有在双目视觉领域中，出现了“等效焦距\"，也就是经常见到的$f_x = \\frac{f}{dx}和f_y = \\frac{f}{dy}$。\n其中，$d_x$表示一个像素在 x 方向有多少mm，$d_y$表示一个像素在 y 方向有多少mm。而且，在标定的结果当中，一般也是直接得到$f_x$和f$_y$。一般的工业相机会在详细的资料介绍中，会给出$d_x$和$d_y$的值，可以手动计算验证一下。\n引入等效焦距后，物点P的三维坐标可以写成：\n$$ \\left\\{ \\begin{aligned} X_c \u0026 = \u0026 \\frac{Z_c}{f_x}(u-u_0) \\\\ Y_c \u0026 = \u0026 \\frac{Z_c}{f_y}(v-v_0) \\\\ Z_c \u0026 = \u0026 \\frac{b f}{ d + X_{0R} - X_{0L} } \\end{aligned} \\right. $$4. 非理想的双目成像模型 上边都是理想的情况，而现实的情况是，两个相机各自都存在畸变，并且在安装双目时，既做不到让两个相机的光轴完全平行，也做不到让两个相机的成像平面平行。\n4.1 存在畸变，怎么办？ 通过标定得到畸变系数，采集到双目图像后，通过畸变校正，在一定程度上消除畸变，得到较为理想的左图和右图。\n4.2 无法做到共面行对准，怎么办？ 在畸变校正之后，通过使用立体校正算法，将两幅非共面行对准的图像 校正成为 共面行对准的左右图像。\n5. 为什么距离越远，误差越大？ 深度的公式：\n$$ Z_c = \\frac{b f}{ d } $$\n可以的得出两个结论：\n视差与深度成反比 同样的视差间隔，距离越远，两个视差所对应的深度间隔越大。 对于第二点，可以举例：\n假定，$bf=1000$，\n$$ \\left\\{ \\begin{aligned} Z_c \u0026 = \u0026 \\frac{1000}{1} \u0026 = 1000.0\\\\ Z_c \u0026 = \u0026 \\frac{1000}{2} \u0026 = 500.0\\\\ Z_c \u0026 = \u0026 \\frac{1000}{79} \u0026 = 12.6582 \\\\ Z_c \u0026 = \u0026 \\frac{1000}{80} \u0026 = 12.5 \\\\ \\end{aligned} \\right. $$\n1和2，79和80，两组数，都是间隔1个像素的视差，但是第一组的深度相差了500,第二组的深度差了0.1582。目标物离相机越远时，视差越小，对应第一组数据的情形，所以说，同样的视差间隔，距离越远，两个视差所对应的深度间隔越大。所以在距离较远时，视差引起的误差更大。\nOpenCV中的一些操作 1. 基本数据 首先由双目标定，可以得到左相机的内参M1和畸变系数D1，可以得到右相机的内参M2和畸变系数D2，以及两个相机之间的旋转矩阵R和平移矩阵T。\n2.立体校正 使用stereoRectify函数主要包含两个步骤：畸变校正、立体矫正，还有一些方便后续计算的矩阵R1、R2、P1、P2、Q。\nCV_EXPORTS_W void stereoRectify( InputArray cameraMatrix1, InputArray distCoeffs1, InputArray cameraMatrix2, InputArray distCoeffs2, Size imageSize, InputArray R, InputArray T, OutputArray R1, OutputArray R2, OutputArray P1, OutputArray P2, OutputArray Q, int flags = CALIB_ZERO_DISPARITY, double alpha = -1, Size newImageSize = Size(), CV_OUT Rect* validPixROI1 = 0, CV_OUT Rect* validPixROI2 = 0 ); cameraMatrix1、distCoeffs1为相机1的内参数M1和畸变系数D1。\ncameraMatrix2、distCoeffs2为相机2的内参数M2和畸变系数D2。\nimageSize为用于校正的图像尺寸。\nR1、R2为两个相机进行共面行对准时所用的旋转矩阵（使用这两个旋转矩阵，相当于把两个实际的相机坐标系转换到理想的两个坐标系了），换一种说法：R1和R2分别为左右相机消除畸变后的像平面投影到公共像平面的旋转矩阵。\nP1，P2为两个相机的理想投影矩阵，可以将相机坐标系（O-XcYcZc）投影到像素坐标系(O-uv)，这两个坐标系都是校正后的，理想的。\nP1,P2分别为左右相机的投影矩阵，其作用是将世界坐标系的点转换到像素坐标系下(左相机光心为世界坐标系原点，所以，这里可以直接认为是完成相机坐标系转像素坐标系):\nQ为重投影矩阵，可以把像素坐标系重投影为世界坐标系（相机坐标系，因为此时，世界坐标系与相机坐标系重合），这两个坐标系都是校正后的，理想的。\n。。。。 P1和P2的验证\n（挖坑， 待填）\n。。。 。 Q矩阵的用法\n（挖坑， 待填）\nP1和P2在理想状态下，其实内部只差一个数字，P2比P1多了一个$-b·f$，\n其他一些注意点 MATLAB标定结果中。\n",
+  "wordCount" : "3017",
   "inLanguage": "zh",
   "datePublished": "2021-04-25T22:00:07+08:00",
   "dateModified": "2021-04-25T22:00:07+08:00",
@@ -255,7 +255,7 @@
     
     <span id="post_meta_style_3">
         <span class="fa fa-file-word-o"></span>
-        <span>3012字
+        <span>3017字
             &nbsp;&nbsp;
         </span>
     </span><span id="post_meta_style_5">
@@ -429,53 +429,44 @@ SceneFlow：https://lmb.informatik.uni-freiburg.de/resources/datasets</p>
 </p>
 $$
 \frac{AB}{oC} = \frac{AO_c}{oO_c} =   \frac{BO_c}{CO_c}
-$$
-<p><br>
+$$<p><br>
 （2） 由△PBO<sub>c</sub> ∽ △pCO<sub>c</sub>，可知：<br>
 </p>
 $$
 \frac{PB}{pC} = \frac{PO_c}{pO_c} =   \frac{BO_c}{CO_c}
-$$
-<p>联立上边两个等式，可以得到：<br>
+$$<p>联立上边两个等式，可以得到：<br>
 </p>
 $$
 \frac{AB}{oC} = \frac{AO_c}{oO_c} = \frac{PB}{pC} 
-$$
-<p>根据点的坐标，可以将上式转换为：<br>
+$$<p>根据点的坐标，可以将上式转换为：<br>
 </p>
 $$
 \frac{X_c}{x} = \frac{Z_c}{f} = \frac{Y_c}{y} 
-$$
-<p>变一下型可以得到：<br>
+$$<p>变一下型可以得到：<br>
 </p>
 $$
 x = f \frac{X_c}{Z_c}，y = f \frac{Y_c}{Z_c}
-$$
-<p><br>
+$$<p><br>
 写成矩阵的形式，并且用齐次坐标的话，就可以写成常见的那个矩阵关系：</p>
 $$
 Z_c\left[ \begin{matrix} x \\ y \\ 1 \end{matrix} \right] 
 = \left[ \begin{matrix} f & 0 & 0 & 0 \\ 0 & f & 0 & 0 \\ 0 & 0 & 1 & 0 \end{matrix} \right]
 \left[ \begin{matrix} X_c \\ Y_c \\ Z_c \\ 1 \end{matrix} \right]
-$$
-<h1 id="3-理想的双目成像模型">3. 理想的双目成像模型<a hidden class="anchor" aria-hidden="true" href="#3-理想的双目成像模型">#</a></h1>
+$$<h1 id="3-理想的双目成像模型">3. 理想的双目成像模型<a hidden class="anchor" aria-hidden="true" href="#3-理想的双目成像模型">#</a></h1>
 <p>在上边的单目成像模型中，式子<br>
 </p>
 $$
 x = f \frac{X_c}{Z_c}，y = f \frac{Y_c}{Z_c}
-$$
-<p><br>
+$$<p><br>
 可以变形为：<br>
 </p>
 $$
 X_c = \frac{Z_c}{f}x，Y_c = \frac{Z_c}{f}y
-$$
-<p>式中，x和y都是图像坐标系下的坐标，将x和y转成像素坐标系下的坐标，代入<strong>像素坐标转图像坐标公式</strong>可以得到：<br>
+$$<p>式中，x和y都是图像坐标系下的坐标，将x和y转成像素坐标系下的坐标，代入<strong>像素坐标转图像坐标公式</strong>可以得到：<br>
 </p>
 $$
 X_c = \frac{Z_c}{f}d_x(u-u_0)，Y_c = \frac{Z_c}{f}d_y(v-v_0)
-$$
-<p><br>
+$$<p><br>
 至此，可以得到点P的X<sub>c</sub>和Y<sub>c</sub>的表达式，式中除了Z<sub>c</sub>都是已知量。</p>
 <p>此时，引入下图中的理想双目成像模型：</p>
 <center><figure>
@@ -486,37 +477,31 @@ $$
 </p>
 $$
 d = X_L - X_R（如果计算左图视差，就是左减右，计算右图视差就是右减左）
-$$
-<p><br>
+$$<p><br>
 两个成像点$P_L$和$P_R$之间的物理距离为：<br>
 </p>
 $$
 P_LP_R = b-(X_L - X_{0L}) - (X_{0R} -X_R ) = b - X_L + X_{0L} -X_{0R} + X_R = b - d + X_{0L} - X_{0R}
-$$
-<p><br>
+$$<p><br>
 上图中存在一组相似三角形：△PP<sub>L</sub>P<sub>R</sub> ∽ △PO<sub>L</sub>O<sub>R</sub>。可以得到下式：<br>
 </p>
 $$
 \frac{P_LP_R}{Z_c-f}  =  \frac{b}{Z_c}
-$$
-<p><br>
+$$<p><br>
 代入$P_LP_R$，可以得到：<br>
 </p>
 $$
 \frac{ b - d + X_{0L} - X_{0R} }{Z_c-f}  =  \frac{b}{Z_c}
-$$
-<p><br>
+$$<p><br>
 变形，可以得到:<br>
 </p>
 $$
 Z_c = \frac{b f}{ d + X_{0R} - X_{0L} }
-$$
-<p>当$X_{0R} 与 X_{0L}相等时$，上式简化为：<br>
+$$<p>当$X_{0R} 与 X_{0L}相等时$，上式简化为：<br>
 </p>
 $$
 Z_c = \frac{b f}{ d  }
-$$
-<p>至此，Z<sub>c</sub>也得到了，物点P的三维坐标都得到了：<br>
+$$<p>至此，Z<sub>c</sub>也得到了，物点P的三维坐标都得到了：<br>
 </p>
 $$
 \left\{
@@ -526,8 +511,7 @@ Y_c & = & \frac{Z_c}{f}d_y(v-v_0) \\
 Z_c & = & \frac{b f}{ d + X_{0R} - X_{0L} }
 \end{aligned}
 \right.
-$$
-<p>式中的$f、b、d_x、d_y、u_0、v_0、X_{0L}、X_{0R}$都是可以通过标定得到的，$u$和$v$是该点在左图中的像素坐标，视差$d$可以通过立体匹配得到。所以，点P的相机坐标可以得到。</p>
+$$<p>式中的$f、b、d_x、d_y、u_0、v_0、X_{0L}、X_{0R}$都是可以通过标定得到的，$u$和$v$是该点在左图中的像素坐标，视差$d$可以通过立体匹配得到。所以，点P的相机坐标可以得到。</p>
 <p>注：</p>
 <blockquote>
 <p>opencv中使用函数<code>stereoRectify()</code>时，如果参数<code>flags</code>设置为<code>CV_CALIB_ZERO_DISPARITY </code>，则该函数会让两幅校正后的图像的主点有相同的像素坐标，也就是上边的$X_{0R}$ 与 $X_{0L}$相等，否则该函数会水平或垂直的移动图像，以使得其有用的范围最大。</p>
@@ -544,8 +528,7 @@ Y_c & = & \frac{Z_c}{f_y}(v-v_0) \\
 Z_c & = & \frac{b f}{ d + X_{0R} - X_{0L} }
 \end{aligned}
 \right.
-$$
-<h1 id="4-非理想的双目成像模型">4. 非理想的双目成像模型<a hidden class="anchor" aria-hidden="true" href="#4-非理想的双目成像模型">#</a></h1>
+$$<h1 id="4-非理想的双目成像模型">4. 非理想的双目成像模型<a hidden class="anchor" aria-hidden="true" href="#4-非理想的双目成像模型">#</a></h1>
 <p>上边都是理想的情况，而现实的情况是，两个相机各自都存在畸变，并且在安装双目时，既做不到让两个相机的光轴完全平行，也做不到让两个相机的成像平面平行。</p>
 <h2 id="41-存在畸变怎么办">4.1 存在畸变，怎么办？<a hidden class="anchor" aria-hidden="true" href="#41-存在畸变怎么办">#</a></h2>
 <p>通过标定得到畸变系数，采集到双目图像后，通过畸变校正，在一定程度上消除畸变，得到较为理想的左图和右图。</p>
@@ -556,8 +539,7 @@ $$
 </p>
 $$
 Z_c = \frac{b f}{ d  }
-$$
-<p><br>
+$$<p><br>
 可以的得出两个结论：</p>
 <ul>
 <li>视差与深度成反比</li>
@@ -575,8 +557,7 @@ Z_c & = & \frac{1000}{79} & = 12.6582 \\
 Z_c & = & \frac{1000}{80} & = 12.5 \\
 \end{aligned}
 \right.
-$$
-<p><br>
+$$<p><br>
 1和2，79和80，两组数，都是间隔1个像素的视差，但是第一组的深度相差了500,第二组的深度差了0.1582。目标物离相机越远时，视差越小，对应第一组数据的情形，所以说，同样的视差间隔，距离越远，两个视差所对应的深度间隔越大。所以在距离较远时，视差引起的误差更大。</p>
 <h1 id="opencv中的一些操作">OpenCV中的一些操作<a hidden class="anchor" aria-hidden="true" href="#opencv中的一些操作">#</a></h1>
 <h2 id="1-基本数据">1. 基本数据<a hidden class="anchor" aria-hidden="true" href="#1-基本数据">#</a></h2>
