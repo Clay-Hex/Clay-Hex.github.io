@@ -7,7 +7,9 @@
 <meta name="robots" content="index, follow">
 <title>Git恢复已删除的分支 | Clay&#39;s Blog</title>
 <meta name="keywords" content="git, recovery branch">
-<meta name="description" content="最近在开发中，需要恢复git中已经删除的分支。 情况是这样，有两个开发分支，dev_1和dev_2，之所以维护两个，是因为需求存在分叉。 最近在dev_1上出现了bug，所以，我开了一个fix分支出来进行修复，修复完毕后，merge回dev_1上了，接着就把这个fix分支删除了。但是">
+<meta name="description" content="最近在开发中，需要恢复git中已经删除的分支。
+情况是这样，有两个开发分支，dev_1和dev_2，之所以维护两个，是因为需求存在分叉。
+最近在dev_1上出现了bug，所以，我开了一个fix分支出来进行修复，修复完毕后，merge回dev_1上了，接着就把这个fix分支删除了。但是，这些改动仍然需要fix到dev_2上，此时，办法不唯一。">
 <meta name="author" content="Clay">
 <link rel="canonical" href="https://www.clayhex.com/posts/2024/07/git-recovery-deleted-branch/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
@@ -58,11 +60,10 @@
     </style>
 </noscript>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
-  
-
-<meta property="og:title" content="Git恢复已删除的分支" />
-<meta property="og:description" content="最近在开发中，需要恢复git中已经删除的分支。 情况是这样，有两个开发分支，dev_1和dev_2，之所以维护两个，是因为需求存在分叉。 最近在dev_1上出现了bug，所以，我开了一个fix分支出来进行修复，修复完毕后，merge回dev_1上了，接着就把这个fix分支删除了。但是" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><meta property="og:title" content="Git恢复已删除的分支" />
+<meta property="og:description" content="最近在开发中，需要恢复git中已经删除的分支。
+情况是这样，有两个开发分支，dev_1和dev_2，之所以维护两个，是因为需求存在分叉。
+最近在dev_1上出现了bug，所以，我开了一个fix分支出来进行修复，修复完毕后，merge回dev_1上了，接着就把这个fix分支删除了。但是，这些改动仍然需要fix到dev_2上，此时，办法不唯一。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.clayhex.com/posts/2024/07/git-recovery-deleted-branch/" />
 <meta property="og:image" content="https://www.clayhex.com/cover/git.png" /><meta property="article:section" content="posts" />
@@ -72,7 +73,9 @@
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:image" content="https://www.clayhex.com/cover/git.png" />
 <meta name="twitter:title" content="Git恢复已删除的分支"/>
-<meta name="twitter:description" content="最近在开发中，需要恢复git中已经删除的分支。 情况是这样，有两个开发分支，dev_1和dev_2，之所以维护两个，是因为需求存在分叉。 最近在dev_1上出现了bug，所以，我开了一个fix分支出来进行修复，修复完毕后，merge回dev_1上了，接着就把这个fix分支删除了。但是"/>
+<meta name="twitter:description" content="最近在开发中，需要恢复git中已经删除的分支。
+情况是这样，有两个开发分支，dev_1和dev_2，之所以维护两个，是因为需求存在分叉。
+最近在dev_1上出现了bug，所以，我开了一个fix分支出来进行修复，修复完毕后，merge回dev_1上了，接着就把这个fix分支删除了。但是，这些改动仍然需要fix到dev_2上，此时，办法不唯一。"/>
 
 
 <script type="application/ld+json">
@@ -107,7 +110,7 @@
   "@type": "BlogPosting",
   "headline": "Git恢复已删除的分支",
   "name": "Git恢复已删除的分支",
-  "description": "最近在开发中，需要恢复git中已经删除的分支。 情况是这样，有两个开发分支，dev_1和dev_2，之所以维护两个，是因为需求存在分叉。 最近在dev_1上出现了bug，所以，我开了一个fix分支出来进行修复，修复完毕后，merge回dev_1上了，接着就把这个fix分支删除了。但是",
+  "description": "最近在开发中，需要恢复git中已经删除的分支。\n情况是这样，有两个开发分支，dev_1和dev_2，之所以维护两个，是因为需求存在分叉。\n最近在dev_1上出现了bug，所以，我开了一个fix分支出来进行修复，修复完毕后，merge回dev_1上了，接着就把这个fix分支删除了。但是，这些改动仍然需要fix到dev_2上，此时，办法不唯一。\n",
   "keywords": [
     "git", "recovery branch"
   ],

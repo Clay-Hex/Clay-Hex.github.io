@@ -7,7 +7,11 @@
 <meta name="robots" content="index, follow">
 <title>2C4T与4C4T在计算密集型任务下的效率对比 | Clay&#39;s Blog</title>
 <meta name="keywords" content="Compute intensive task">
-<meta name="description" content="1. 环境 机器1：Intel(R) Core(TM) i5-4200H CPU @ 2.80GHz，双核四线程，win10 x64，16G内存 机器2：Intel(R) Core(TM) i3-9100T CPU @ 3.10GHz，四核四线程。wn10 x64，8G内存 目的：大概测试一下2C4T与4C4T在计算密集型任务下的效率提升对比，内存大小、频率暂且忽略。 方法：使">
+<meta name="description" content="1. 环境
+机器1：Intel(R) Core(TM) i5-4200H CPU @ 2.80GHz，双核四线程，win10 x64，16G内存
+机器2：Intel(R) Core(TM) i3-9100T CPU @ 3.10GHz，四核四线程。wn10 x64，8G内存
+目的：大概测试一下2C4T与4C4T在计算密集型任务下的效率提升对比，内存大小、频率暂且忽略。
+方法：使用openMP控制计算任务中的线程使用数量，测试12层for循环所消耗的时间（12是1、2、3、4的公倍数，防止openMP分配任务不均）。实际是测120层的耗时，再除以10。">
 <meta name="author" content="Clay">
 <link rel="canonical" href="https://www.clayhex.com/posts/2021/10/2c4t-4c4t-compute-intensive-task/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
@@ -58,11 +62,12 @@
     </style>
 </noscript>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
-  
-
-<meta property="og:title" content="2C4T与4C4T在计算密集型任务下的效率对比" />
-<meta property="og:description" content="1. 环境 机器1：Intel(R) Core(TM) i5-4200H CPU @ 2.80GHz，双核四线程，win10 x64，16G内存 机器2：Intel(R) Core(TM) i3-9100T CPU @ 3.10GHz，四核四线程。wn10 x64，8G内存 目的：大概测试一下2C4T与4C4T在计算密集型任务下的效率提升对比，内存大小、频率暂且忽略。 方法：使" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><meta property="og:title" content="2C4T与4C4T在计算密集型任务下的效率对比" />
+<meta property="og:description" content="1. 环境
+机器1：Intel(R) Core(TM) i5-4200H CPU @ 2.80GHz，双核四线程，win10 x64，16G内存
+机器2：Intel(R) Core(TM) i3-9100T CPU @ 3.10GHz，四核四线程。wn10 x64，8G内存
+目的：大概测试一下2C4T与4C4T在计算密集型任务下的效率提升对比，内存大小、频率暂且忽略。
+方法：使用openMP控制计算任务中的线程使用数量，测试12层for循环所消耗的时间（12是1、2、3、4的公倍数，防止openMP分配任务不均）。实际是测120层的耗时，再除以10。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.clayhex.com/posts/2021/10/2c4t-4c4t-compute-intensive-task/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-10-03T20:45:51+08:00" />
@@ -70,7 +75,11 @@
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="2C4T与4C4T在计算密集型任务下的效率对比"/>
-<meta name="twitter:description" content="1. 环境 机器1：Intel(R) Core(TM) i5-4200H CPU @ 2.80GHz，双核四线程，win10 x64，16G内存 机器2：Intel(R) Core(TM) i3-9100T CPU @ 3.10GHz，四核四线程。wn10 x64，8G内存 目的：大概测试一下2C4T与4C4T在计算密集型任务下的效率提升对比，内存大小、频率暂且忽略。 方法：使"/>
+<meta name="twitter:description" content="1. 环境
+机器1：Intel(R) Core(TM) i5-4200H CPU @ 2.80GHz，双核四线程，win10 x64，16G内存
+机器2：Intel(R) Core(TM) i3-9100T CPU @ 3.10GHz，四核四线程。wn10 x64，8G内存
+目的：大概测试一下2C4T与4C4T在计算密集型任务下的效率提升对比，内存大小、频率暂且忽略。
+方法：使用openMP控制计算任务中的线程使用数量，测试12层for循环所消耗的时间（12是1、2、3、4的公倍数，防止openMP分配任务不均）。实际是测120层的耗时，再除以10。"/>
 
 
 <script type="application/ld+json">
@@ -105,7 +114,7 @@
   "@type": "BlogPosting",
   "headline": "2C4T与4C4T在计算密集型任务下的效率对比",
   "name": "2C4T与4C4T在计算密集型任务下的效率对比",
-  "description": "1. 环境 机器1：Intel(R) Core(TM) i5-4200H CPU @ 2.80GHz，双核四线程，win10 x64，16G内存 机器2：Intel(R) Core(TM) i3-9100T CPU @ 3.10GHz，四核四线程。wn10 x64，8G内存 目的：大概测试一下2C4T与4C4T在计算密集型任务下的效率提升对比，内存大小、频率暂且忽略。 方法：使",
+  "description": "1. 环境 机器1：Intel(R) Core(TM) i5-4200H CPU @ 2.80GHz，双核四线程，win10 x64，16G内存\n机器2：Intel(R) Core(TM) i3-9100T CPU @ 3.10GHz，四核四线程。wn10 x64，8G内存\n目的：大概测试一下2C4T与4C4T在计算密集型任务下的效率提升对比，内存大小、频率暂且忽略。\n方法：使用openMP控制计算任务中的线程使用数量，测试12层for循环所消耗的时间（12是1、2、3、4的公倍数，防止openMP分配任务不均）。实际是测120层的耗时，再除以10。\n",
   "keywords": [
     "Compute intensive task"
   ],
@@ -361,57 +370,57 @@
 </span></span></code></pre></div><h1 id="3-结果">3. 结果<a hidden class="anchor" aria-hidden="true" href="#3-结果">#</a></h1>
 <p>机器1（2C4T）：</p>
 <table>
-<thead>
-<tr>
-<th style="text-align:center">线程数</th>
-<th style="text-align:center">耗时（秒）</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">1</td>
-<td style="text-align:center">2.0653</td>
-</tr>
-<tr>
-<td style="text-align:center">2</td>
-<td style="text-align:center">1.37322</td>
-</tr>
-<tr>
-<td style="text-align:center">3</td>
-<td style="text-align:center">1.15472</td>
-</tr>
-<tr>
-<td style="text-align:center">4</td>
-<td style="text-align:center">1.10587</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: center">线程数</th>
+          <th style="text-align: center">耗时（秒）</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: center">1</td>
+          <td style="text-align: center">2.0653</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">2</td>
+          <td style="text-align: center">1.37322</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">3</td>
+          <td style="text-align: center">1.15472</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">4</td>
+          <td style="text-align: center">1.10587</td>
+      </tr>
+  </tbody>
 </table>
 <p>机器2（4C4T）：</p>
 <table>
-<thead>
-<tr>
-<th style="text-align:center">线程数</th>
-<th style="text-align:center">耗时（秒）</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">1</td>
-<td style="text-align:center">1.72509</td>
-</tr>
-<tr>
-<td style="text-align:center">2</td>
-<td style="text-align:center">0.877413</td>
-</tr>
-<tr>
-<td style="text-align:center">3</td>
-<td style="text-align:center">0.618491</td>
-</tr>
-<tr>
-<td style="text-align:center">4</td>
-<td style="text-align:center">0.49988</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: center">线程数</th>
+          <th style="text-align: center">耗时（秒）</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: center">1</td>
+          <td style="text-align: center">1.72509</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">2</td>
+          <td style="text-align: center">0.877413</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">3</td>
+          <td style="text-align: center">0.618491</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">4</td>
+          <td style="text-align: center">0.49988</td>
+      </tr>
+  </tbody>
 </table>
 <p>在双核四线程的机器上，单线程执行与双线程执行有明显的效率提升，但是当线程数开到3、4时，效率提升几乎可以忽略不计。原因在于，双核四线程，真正的核心只有2个，也就只有两个物理线程。多出来的两个线程是模拟出来的。但是，这种计算密集型的任务，类似等待IO这种耗时的操作也比较少，核心也就不会切换，虚拟出来的线程几乎派不上用场。所以，最多就是两个线程的效率。</p>
 <p>而，四核四线程，是实打实的四个线程在工作。从任务耗时来看，所消耗的时间与线程数量成反比，4线程的仅是1线程耗时的四分之一，4倍左右的效率提升。</p>

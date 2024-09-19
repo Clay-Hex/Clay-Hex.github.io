@@ -13,14 +13,33 @@
       <link>https://www.clayhex.com/posts/2021/04/binocular-stereo-vision-theory/</link>
       <pubDate>Sun, 25 Apr 2021 22:00:07 +0800</pubDate>
       <guid>https://www.clayhex.com/posts/2021/04/binocular-stereo-vision-theory/</guid>
-      <description>序： 记录学习过程中自己的理解以及遇到的问题，慢慢补充。 若有错误，还希望各位大佬不吝赐教。 0. 零零散散 0.1 公开数据集 Middlebury：https://vision.middlebury.edu/stereo/data/(室内) KITTI：http://www.cvlibs.net/</description>
+      <description>&lt;h1 id=&#34;序&#34;&gt;序：&lt;/h1&gt;
+&lt;p&gt;记录学习过程中自己的理解以及遇到的问题，慢慢补充。&lt;br&gt;
+若有错误，还希望各位大佬不吝赐教。&lt;/p&gt;
+&lt;h1 id=&#34;0-零零散散&#34;&gt;0. 零零散散&lt;/h1&gt;
+&lt;h2 id=&#34;01-公开数据集&#34;&gt;0.1 公开数据集&lt;/h2&gt;
+&lt;p&gt;Middlebury：https://vision.middlebury.edu/stereo/data/(室内)&lt;br&gt;
+KITTI：http://www.cvlibs.net/datasets/kitti/stereo(室外驾驶)&lt;br&gt;
+SceneFlow：https://lmb.informatik.uni-freiburg.de/resources/datasets&lt;/p&gt;</description>
     </item>
     <item>
       <title>SGM算法开源库libSGM在windows下的编译和使用</title>
       <link>https://www.clayhex.com/posts/2021/04/windows-libsgm/</link>
       <pubDate>Fri, 23 Apr 2021 17:06:35 +0800</pubDate>
       <guid>https://www.clayhex.com/posts/2021/04/windows-libsgm/</guid>
-      <description>0. 原材料 libSGM开源库是一个使用CUDA对半全局匹配算法SGM的加速实现版本。 英伟达显卡（算力 &amp;gt;= 3.5） cuda环境（我的版本是cuda 10.0） OpenCV（版本 &amp;gt;= 3.0） Cmake（版本&amp;gt;=3.1） 1. 源码下载和编译 1.0 代码clone 开源库地址： https://github.com/fixstars/libSGM 先把代码clone到本</description>
+      <description>&lt;h1 id=&#34;0-原材料&#34;&gt;0. 原材料&lt;/h1&gt;
+&lt;p&gt;libSGM开源库是一个使用CUDA对半全局匹配算法SGM的加速实现版本。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;英伟达显卡（算力 &amp;gt;= 3.5）&lt;/li&gt;
+&lt;li&gt;cuda环境（我的版本是cuda 10.0）&lt;/li&gt;
+&lt;li&gt;OpenCV（版本 &amp;gt;= 3.0）&lt;/li&gt;
+&lt;li&gt;Cmake（版本&amp;gt;=3.1）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;1-源码下载和编译&#34;&gt;1. 源码下载和编译&lt;/h1&gt;
+&lt;h2 id=&#34;10-代码clone&#34;&gt;1.0 代码clone&lt;/h2&gt;
+&lt;p&gt;开源库地址：&lt;br&gt;
+&lt;a href=&#34;https://github.com/fixstars/libSGM&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34; style=&#34;color:#42b983&#34;;&gt;https://github.com/fixstars/libSGM&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;先把代码clone到本地来。&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

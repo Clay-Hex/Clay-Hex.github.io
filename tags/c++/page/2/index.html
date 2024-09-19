@@ -58,10 +58,7 @@
     </style>
 </noscript>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
-  
-
-<meta property="og:title" content="C&#43;&#43;" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><meta property="og:title" content="C&#43;&#43;" />
 <meta property="og:description" content="Clay的博客,Clay&#39;s Blog,hugo,paperMod,c&#43;&#43;" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://www.clayhex.com/tags/c&#43;&#43;/" />
@@ -163,7 +160,14 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>0. 重构 重构是对程序内部的架构的调整。 重构强调的是在不改变&#34;软件外部可观察的行为&#34;前提下，对内部结构进行调整，使得从程序的外部功能上看，没有任何变化。 如下例子： 重构前代码如下： #include &lt;iostream&gt; class child { private: public: child(){}; void func(){ std::cout &lt;&lt; 123 &lt;&lt; std::endl; } }; int main(int argc, char const *argv[]) { child a; a.func(); return 0; } 程序运行后，输出123. 重...</p>
+      <p>0. 重构 重构是对程序内部的架构的调整。
+重构强调的是在不改变&#34;软件外部可观察的行为&#34;前提下，对内部结构进行调整，使得从程序的外部功能上看，没有任何变化。
+如下例子：
+重构前代码如下：
+#include &lt;iostream&gt; class child { private: public: child(){}; void func(){ std::cout &lt;&lt; 123 &lt;&lt; std::endl; } }; int main(int argc, char const *argv[]) { child a; a.func(); return 0; } 程序运行后，输出123.
+重构后的代码如下：
+#include &lt;iostream&gt; class child { private: public: child(){}; void f1(){std::cout &lt;&lt; 1;} void f2(){std::cout &lt;&lt; 2;} void f3(){std::cout &lt;&lt; 3;} void func(){ f1(); f2(); f3(); std::cout &lt;&lt; std::endl; } }; int main(int argc, char const *argv[]) { child a; a.func(); return 0; } main函数执行的时候，依然是调用a的func方法，程序的输出也是123，对于外部来说没有任何改变，但是func内部的实现方式已经改变。
+...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>

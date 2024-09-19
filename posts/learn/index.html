@@ -58,10 +58,7 @@
     </style>
 </noscript>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
-  
-
-<meta property="og:title" content="📚 学习" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><meta property="og:title" content="📚 学习" />
 <meta property="og:description" content="Clay的博客,Clay&#39;s Blog,hugo,paperMod,c&#43;&#43;" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://www.clayhex.com/posts/learn/" />
@@ -180,11 +177,98 @@
 <article class="post-entry">
   <div class="post-info">
     <header class="entry-header">
+      <h2 class="entry-hint-parent">Anaconda的平替 - Miniforge
+      </h2>
+    </header>
+    <div class="entry-content">
+      <p>Anaconda在2020年的一次公告中宣布，对于团队用户，他们将开始收费。
+团队人数少于200人，可以继续免费使用。 收费的范围是Anaconda团队提供的default通道中的软件包。 如果我继续使用Anaconda发行版软件，但是不用Anaconda的下载通道，要不要付费呢？ 没有实践，直接卸载吧还是。
+...</p>
+    </div>
+    <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2024-08-21
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>697字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+</span></footer>
+  </div> 
+
+  <a class="entry-link" aria-label="post link to Anaconda的平替 - Miniforge" href="https://www.clayhex.com/posts/2024/08/miniforge-replaces-anaconda/"></a>
+</article>
+
+<article class="post-entry">
+  <div class="post-info">
+    <header class="entry-header">
+      <h2 class="entry-hint-parent">任务管线框架 - Luigi
+      </h2>
+    </header>
+    <div class="entry-content">
+      <p>简述 Luigi基于Python，可以快速搭建数据处理的任务管线。
+在一定程度上支持分布式处理。
+开始一个任务 使用luigi启动一个任务，有两种方法：
+通过luigi命令行执行
+类似 luigi --module main MyTaskAll --id 1 --local-scheduler，这里main是我的.py文件名（为了可以找到整个main.py，执行前需要把main.py所在路径加到PythonPath里边），MyTaskAll是main.py中我定义的Task类名，--id 1是传给MyTaskAll任务的具体参数。--local-scheduler是配置调度器，这个后边会说。
+...</p>
+    </div>
+    <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2024-08-17
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>1895字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+</span></footer>
+  </div> 
+
+  <a class="entry-link" aria-label="post link to 任务管线框架 - Luigi" href="https://www.clayhex.com/posts/2024/08/luigi-tasks/"></a>
+</article>
+
+<article class="post-entry">
+  <div class="post-info">
+    <header class="entry-header">
       <h2 class="entry-hint-parent">C&#43;&#43;选手如何快速入门Python?
       </h2>
     </header>
     <div class="entry-content">
-      <p>1. 实际是静态语言vs动态语言 之前，一直使用C/C&#43;&#43;做开发，最近开始尝试使用Python做一些小的工具，顺便学习一下。 包括在学生阶段，我也喜欢C/C&#43;&#43;，有更强的控制感，程序的每一步，我都要尽可能的掌握，清楚它到底在做什么。也偶尔用过几次Java做些事情。总而言之，这都属于“静态...</p>
+      <p>1. 实际是静态语言vs动态语言 之前，一直使用C/C&#43;&#43;做开发，最近开始尝试使用Python做一些小的工具，顺便学习一下。
+包括在学生阶段，我也喜欢C/C&#43;&#43;，有更强的控制感，程序的每一步，我都要尽可能的掌握，清楚它到底在做什么。也偶尔用过几次Java做些事情。总而言之，这都属于“静态语言”。与之相对的是“动态语言”，典型代表就是Python。
+...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -234,7 +318,10 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>最近在开发中，需要恢复git中已经删除的分支。 情况是这样，有两个开发分支，dev_1和dev_2，之所以维护两个，是因为需求存在分叉。 最近在dev_1上出现了bug，所以，我开了一个fix分支出来进行修复，修复完毕后，merge回dev_1上了，接着就把这个fix分支删除了。但是...</p>
+      <p>最近在开发中，需要恢复git中已经删除的分支。
+情况是这样，有两个开发分支，dev_1和dev_2，之所以维护两个，是因为需求存在分叉。
+最近在dev_1上出现了bug，所以，我开了一个fix分支出来进行修复，修复完毕后，merge回dev_1上了，接着就把这个fix分支删除了。但是，这些改动仍然需要fix到dev_2上，此时，办法不唯一。
+...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -283,7 +370,10 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>Google indexing api是谷歌提供的针对搜索引擎索引功能的接口，相比于在Google search console上提交sitemap，API收录速度要快得多。刚开始的时候，我在GSC上提交了sitemap，后来一段时间，就不抓取了，也不收录，不清楚什么原因。后来使用api直接提交，第二天就可以索引到了。 操...</p>
+      <p>Google indexing api是谷歌提供的针对搜索引擎索引功能的接口，相比于在Google search console上提交sitemap，API收录速度要快得多。刚开始的时候，我在GSC上提交了sitemap，后来一段时间，就不抓取了，也不收录，不清楚什么原因。后来使用api直接提交，第二天就可以索引到了。
+操作步骤参考官方文档：
+https://developers.google.com/search/apis/indexing-api/v3/quickstart
+...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -322,7 +412,9 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>H264码流 H264协议中将编码器分成两个逻辑层，就是经常见到的VCL（视频数据编码层）和NAL（网络抽象层）。VCL负责具体图像数据的编码，NAL负责组织这些编码后的数据。 既然称之为码流，那么，这些数据肯定像流一样，一位接着一位的排成一队。组织这些编码数据的方式，常见的是Ann...</p>
+      <p>H264码流 H264协议中将编码器分成两个逻辑层，就是经常见到的VCL（视频数据编码层）和NAL（网络抽象层）。VCL负责具体图像数据的编码，NAL负责组织这些编码后的数据。
+既然称之为码流，那么，这些数据肯定像流一样，一位接着一位的排成一队。组织这些编码数据的方式，常见的是Annex B格式和AVCC格式，感觉Annex B格式最为常见，它长这样：
+...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -369,7 +461,10 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>0. C&#43;&#43; 中的锁 两种最常用的：互斥锁、条件锁，此外还有自旋锁 1. C&#43;&#43; 中的条件变量 2. 生产者消费者模型 引出虚假唤醒的问题 3. 虚假唤醒 有多个线程在wait同一个条件变量时，当条件变量发出notify_one的时候，各个线程去竞争锁，此时，只能有一个线程得到锁，但是，其他线程在收到notify_on...</p>
+      <p>0. C&#43;&#43; 中的锁 两种最常用的：互斥锁、条件锁，此外还有自旋锁
+1. C&#43;&#43; 中的条件变量 2. 生产者消费者模型 引出虚假唤醒的问题
+3. 虚假唤醒 有多个线程在wait同一个条件变量时，当条件变量发出notify_one的时候，各个线程去竞争锁，此时，只能有一个线程得到锁，但是，其他线程在收到notify_one信号时，线程已经从wait队列换到锁竞争的队列了（不再等待notify的通知了，而是等待其他线程解除对锁的占用），一旦某个线程拿到锁了，就会立刻向下执行代码，但此时，条件可能已经变了，不是预期的条件了。
+...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -416,7 +511,13 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>0. QT中线程启动的方式 0.1 继承QThread 继承QThread时，子类必须重写run方法，保证线程在手动结束之前持续运行。 当子类使用start方法启动后，run方法会在生命周期内循环执行。 .h文件 #ifndef CLASS1_H #define CLASS1_H #include &lt;QObject&gt; #include &lt;QThread&gt; // 继承QTQThread class Class1 : public QThread { Q_OBJECT public: explicit Class1(QThread *parent = 0); ~Class1(); void run() override; public slots: void testFunc(); }; #endif...</p>
+      <p>0. QT中线程启动的方式 0.1 继承QThread 继承QThread时，子类必须重写run方法，保证线程在手动结束之前持续运行。
+当子类使用start方法启动后，run方法会在生命周期内循环执行。
+.h文件
+#ifndef CLASS1_H #define CLASS1_H #include &lt;QObject&gt; #include &lt;QThread&gt; // 继承QTQThread class Class1 : public QThread { Q_OBJECT public: explicit Class1(QThread *parent = 0); ~Class1(); void run() override; public slots: void testFunc(); }; #endif // CLASS1_H .cpp文件
+#include &#34;class1.h&#34; #include &lt;QDebug&gt; Class1::Class1(QThread *parent) : QThread(parent) { } Class1::~Class1() { } void Class1::run() { qDebug() &lt;&lt; &#34;class 1 run threadID : &#34; &lt;&lt; currentThreadId(); while(1){ // 测试代码，写成了死循环，实际中应该避免这样写 msleep(5); } } void Class1::testFunc() { qDebug() &lt;&lt; &#34;class1 testFunc threadID : &#34; &lt;&lt; currentThreadId(); } 0.2 使用moveToThread启动 这种方式较为简单，正常写自己的类即可，为了保证其方法可以在线程上执行，需要继承QObject类。
+在使用时首先生成子类对象，同时new一个QThread出来，然后使用子类的moveToThread方法，将子类放到刚刚new出来的QThread上，再启动该线程即可。
+...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -455,7 +556,11 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>0. ERS算法 xxx 1. 问题 原本ERS算法的作者提供了python接口，但是是基于Python2的，在python3.6中调用的话，会出现缺失DLL的错误，如下图： 2. 解决方案 作者提供了ERS算法的C语言源代码，所以基于Python3.6重新编译一下即可。 2.1 安装vs 我安装的是VS2017社...</p>
+      <p>0. ERS算法 xxx
+1. 问题 原本ERS算法的作者提供了python接口，但是是基于Python2的，在python3.6中调用的话，会出现缺失DLL的错误，如下图：
+2. 解决方案 作者提供了ERS算法的C语言源代码，所以基于Python3.6重新编译一下即可。
+2.1 安装vs 我安装的是VS2017社区版。
+...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -494,7 +599,14 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>0. 表达式树 在一颗树中，叶子节点都是操作数，所有的非叶子节点都是运算符，这样的树叫做表达式树。 如图: 1. 后缀表达式计算 后缀表达式：也叫逆波兰表达式，是表达式树的后序遍历。 在计算时，不用还原出整棵树，可用一个栈来辅助计算。 leetcode 150. 逆波兰表达式求值 class Solution { public: int evalRPN(vector&lt;string&gt;&amp; tokens) { int st[10005]; int tt = 0; for( auto &amp;x : tokens){ if(x == &#34;&#43;&#34;...</p>
+      <p>0. 表达式树 在一颗树中，叶子节点都是操作数，所有的非叶子节点都是运算符，这样的树叫做表达式树。
+如图:
+1. 后缀表达式计算 后缀表达式：也叫逆波兰表达式，是表达式树的后序遍历。
+在计算时，不用还原出整棵树，可用一个栈来辅助计算。
+leetcode 150. 逆波兰表达式求值
+class Solution { public: int evalRPN(vector&lt;string&gt;&amp; tokens) { int st[10005]; int tt = 0; for( auto &amp;x : tokens){ if(x == &#34;&#43;&#34; || x == &#34;-&#34; || x == &#34;*&#34; || x == &#34;/&#34;) { int b = st[tt--]; int a = st[tt--]; if(x == &#34;&#43;&#34;) st[&#43;&#43;tt] = a &#43; b; else if(x == &#34;-&#34;) st[&#43;&#43;tt] = a - b; else if(x == &#34;*&#34;) st[&#43;&#43;tt] = a * b; else st[&#43;&#43;tt] = a / b; } else st[&#43;&#43;tt] = stoi(x); } return st[tt]; } }; 2. 中缀表达式计算 法1: 转成后缀表达式计算。 法2： 直接利用表达式树计算结果
+需要两个栈：数字栈 和 符号栈
+...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -533,7 +645,28 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>0. 数据集概述 Cityscapes 数据集专注于对城市街景的语义理解。 1. 特点 多边形的标签 实例分割车辆和人 30个类别 5000张精细标注的图 20000张粗略标注的图 leftImg8bit_trainvaltest.zip (11GB) left 8-bit images - train, val, and test sets (5000 images) https://www.cityscapes-dataset.com/file-handling/?packageID=3 rightImg8bit_trainvaltest.zip (11GB) right 8-bit images - train, val, and test sets (5000 images) https://www.cityscapes-dataset.com/file-handling/?packageID=5 disparity_trainvaltest.zip (3.5GB) precomputed depth maps using SGM for train, val, and test sets (5000 images) https://www.cityscapes-dataset.com/file-handling/?packageID=7 camera_trainvaltest.zip (2MB) [md5] intrinsic and extrinsic camera parameters for train, val, and test sets https://www.cityscapes-dataset.com/file-handling/?packageID=8 脚本安装 1. 使用githu...</p>
+      <p>0. 数据集概述 Cityscapes 数据集专注于对城市街景的语义理解。
+1. 特点 多边形的标签
+实例分割车辆和人
+30个类别
+5000张精细标注的图
+20000张粗略标注的图
+leftImg8bit_trainvaltest.zip (11GB)
+left 8-bit images - train, val, and test sets (5000 images)
+https://www.cityscapes-dataset.com/file-handling/?packageID=3
+rightImg8bit_trainvaltest.zip (11GB)
+right 8-bit images - train, val, and test sets (5000 images)
+https://www.cityscapes-dataset.com/file-handling/?packageID=5
+disparity_trainvaltest.zip (3.5GB)
+precomputed depth maps using SGM for train, val, and test sets (5000 images)
+https://www.cityscapes-dataset.com/file-handling/?packageID=7
+camera_trainvaltest.zip (2MB) [md5]
+intrinsic and extrinsic camera parameters for train, val, and test sets
+https://www.cityscapes-dataset.com/file-handling/?packageID=8
+脚本安装 1. 使用github安装 https://github.com/mcordts/cityscapesScripts
+从github上下载官方提供的脚本代码。
+然后把下载的数据集数据也放进来，和setup.py放在同级目录下。例如下图（图中的only_person文件夹是本人自建的，官方提供的没有）
+...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -572,7 +705,11 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>1. 编译器默认添加的函数 自写类的时候，如果没有显式的写出来构造函数、析构函数、拷贝构造函数、拷贝赋值函数。如果程序中这些函数被需要（被调用），编译器就会默认的创建这些函数。 默认的构造函数和析构函数都是空实现的。 默认的拷贝构造函数和拷贝赋值函数都是浅拷贝。 如果有自己写的一个或者多个构...</p>
+      <p>1. 编译器默认添加的函数 自写类的时候，如果没有显式的写出来构造函数、析构函数、拷贝构造函数、拷贝赋值函数。如果程序中这些函数被需要（被调用），编译器就会默认的创建这些函数。
+默认的构造函数和析构函数都是空实现的。
+默认的拷贝构造函数和拷贝赋值函数都是浅拷贝。
+如果有自己写的一个或者多个构造函数（不管有无参数），那么编译器都不会再添加默认的构造函数。
+...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -619,7 +756,8 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>1. 代码 /* * @Brief: 常见排序算法汇总 * @Author: * @Date: 2021-07-01 */ #include &lt;iostream&gt; #include &lt;algorithm&gt; #include &lt;vector&gt; #include &lt;queue&gt; using namespace std; void printArray(int *a, int len){ for(int i = 0; i &lt; len; i&#43;&#43;) cout &lt;&lt; a[i] &lt;&lt; &#34; &#34;; cout &lt;&lt; endl &lt;&lt; endl; } void bubbleSort(int *a, int len){ for(int i = 0; i &lt; len - 1; i&#43;&#43;){ for(int j = 0; j &lt; len - i; j&#43;&#43;){ if(a[j] &gt; a[j&#43;1]) swap(a[j], a[j&#43;1]); } } } void selectSort(int *a, int len){ for(int i = 0; i &lt; len; i&#43;&#43;){ int mi = i; for(int j = i; j &lt; len; j&#43;&#43;){ if(a[j] &lt; a[mi]) mi = j; } if(i != mi) swap(a[i], a[mi]); } } void insertionSort(int *a, int len){ for(int i = 0; i &lt; len;...</p>
+      <p>1. 代码 /* * @Brief: 常见排序算法汇总 * @Author: * @Date: 2021-07-01 */ #include &lt;iostream&gt; #include &lt;algorithm&gt; #include &lt;vector&gt; #include &lt;queue&gt; using namespace std; void printArray(int *a, int len){ for(int i = 0; i &lt; len; i&#43;&#43;) cout &lt;&lt; a[i] &lt;&lt; &#34; &#34;; cout &lt;&lt; endl &lt;&lt; endl; } void bubbleSort(int *a, int len){ for(int i = 0; i &lt; len - 1; i&#43;&#43;){ for(int j = 0; j &lt; len - i; j&#43;&#43;){ if(a[j] &gt; a[j&#43;1]) swap(a[j], a[j&#43;1]); } } } void selectSort(int *a, int len){ for(int i = 0; i &lt; len; i&#43;&#43;){ int mi = i; for(int j = i; j &lt; len; j&#43;&#43;){ if(a[j] &lt; a[mi]) mi = j; } if(i != mi) swap(a[i], a[mi]); } } void insertionSort(int *a, int len){ for(int i = 0; i &lt; len; i&#43;&#43;){ int key = a[i]; int j = i; while(j &gt;= 1 &amp;&amp; a[j - 1] &gt; key) a[j] = a[j-1], j--; a[j] = key; } } void shellSort(int *a, int len){ // cout &lt;&lt; &#34;原始数组&#34; &lt;&lt; endl; // printArray(a, len); for(int d = len / 2; d &gt;= 1; d /= 2){ // 插入排序 for(int i = 0; i &lt; len; i &#43;= d){ int key = a[i]; int j = i; while(j &gt;= d &amp;&amp; a[j-d] &gt; key) a[j] = a[j-d], j -= d; a[j] = key; } // cout &lt;&lt; &#34;d = &#34; &lt;&lt; d &lt;&lt; &#34; 排序结果&#34; &lt;&lt; endl; // printArray(a, len); } } void quickSort(int *a, int len, int l, int r){ if(l &gt;= r) return ; int x = a[l &#43; (r - l) / 2]; int i = l - 1, j = r &#43; 1; while(i &lt; j){ while(a[&#43;&#43;i] &lt; x); while(a[--j] &gt; x); if(i &lt; j) swap(a[i], a[j]); } quickSort(a, len, l, j); quickSort(a, len, j &#43; 1, r); } void mergeSort(int *a, int len, int l, int r){ if(l &gt;= r) return ; int mid = l &#43; (r - l) / 2; mergeSort(a, len, l, mid); mergeSort(a, len, mid &#43; 1, r); int i = l, j = mid &#43; 1, k = 0; int *tmp = new int[r - l &#43; 1]; while(i &lt;= mid &amp;&amp; j &lt;= r){ if(a[i] &lt; a[j]) tmp[k&#43;&#43;] = a[i&#43;&#43;]; else tmp[k&#43;&#43;] = a[j&#43;&#43;]; } // 处理尾巴 while(i &lt;= mid) tmp[k&#43;&#43;] = a[i&#43;&#43;]; while(j &lt;= r) tmp[k&#43;&#43;] = a[j&#43;&#43;]; // 复制回原数组中 for(i = l, k = 0; i &lt;= r; i&#43;&#43;, k&#43;&#43;) a[i] = tmp[k]; delete tmp; // 回收内存 } // 堆排序 namespace heapSort{ int *heap = nullptr; int ss = 0; // 堆的现有节点数 从下标是1的节点开始存 int n = 0; // 数组长度 void down(int u){ // 小顶堆 int t = u; if(u * 2 &lt;= ss &amp;&amp; heap[u * 2] &lt; heap[t]) t = u * 2; if(u * 2 &#43; 1 &lt;= ss &amp;&amp; heap[u * 2 &#43; 1] &lt; heap[t]) t = u * 2 &#43; 1; if(t != u){ swap(heap[t], heap[u]); down(t); } } void heapSort(int *a, int len){ heap = new int[len &#43; 5]; n = len; for(int i = 0; i &lt; len; i&#43;&#43;) heap[&#43;&#43;ss] = a[i]; for(int i = n / 2; i ; i--) down(i); for(int i = 0; i &lt; len; i&#43;&#43;){ a[i] = heap[1]; heap[1] = heap[ss--]; down(1); } delete heap; } }; int main(){ int a[10] = {8, 4, 2, 5, 7, 3, 1, 9, 0, 6}; int len = 10; //bubbleSort(a, len); //selectSort(a, len); //insertionSort(a, len); //quickSort(a, len, 0, len - 1); //mergeSort(a, len, 0, len - 1); //shellSort(a, len); //heapSort::heapSort(a, len); printArray(a, len); return 0; } 2. 稳定性 稳定排序算法：如果两数相等的话，排序以后先后位置是否会改变，如果不改变，就是稳定的。
+...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -666,7 +804,11 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>1. 环境 机器1：Intel(R) Core(TM) i5-4200H CPU @ 2.80GHz，双核四线程，win10 x64，16G内存 机器2：Intel(R) Core(TM) i3-9100T CPU @ 3.10GHz，四核四线程。wn10 x64，8G内存 目的：大概测试一下2C4T与4C4T在计算密集型任务下的效率提升对比，内存大小、频率暂且忽略。 方法：使...</p>
+      <p>1. 环境 机器1：Intel(R) Core(TM) i5-4200H CPU @ 2.80GHz，双核四线程，win10 x64，16G内存
+机器2：Intel(R) Core(TM) i3-9100T CPU @ 3.10GHz，四核四线程。wn10 x64，8G内存
+目的：大概测试一下2C4T与4C4T在计算密集型任务下的效率提升对比，内存大小、频率暂且忽略。
+方法：使用openMP控制计算任务中的线程使用数量，测试12层for循环所消耗的时间（12是1、2、3、4的公倍数，防止openMP分配任务不均）。实际是测120层的耗时，再除以10。
+...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -705,7 +847,12 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>0. placement new 即 原地构造。 用法： int *p = new int(10); // new operator new(p) int(1000); // 在 p 指向的内存上 构造一个int对象，即placement new // 此时 *P 为 1000。 因为是在一个已有的空间上构造对象，所以，空间的释放，就由free或者delete负责了。 0.1 重载placement new 与后边的 3 ：operator new的重载无...</p>
+      <p>0. placement new 即 原地构造。
+用法：
+int *p = new int(10); // new operator new(p) int(1000); // 在 p 指向的内存上 构造一个int对象，即placement new // 此时 *P 为 1000。 因为是在一个已有的空间上构造对象，所以，空间的释放，就由free或者delete负责了。
+0.1 重载placement new 与后边的 3 ：operator new的重载无异，就是可以多增加几个函数，但是，第一个参数必须是std::size_t 类型，这个参数接收的是 new 后边类型的大小，不用显式传参，默认会传递。
+重载示例：
+...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -743,92 +890,6 @@
   </div> 
 
   <a class="entry-link" aria-label="post link to C&#43;&#43;学习记录(13) new与delete" href="https://www.clayhex.com/posts/2021/08/cpp-new-and-delete/"></a>
-</article>
-
-<article class="post-entry">
-  <div class="post-info">
-    <header class="entry-header">
-      <h2 class="entry-hint-parent">小数在计算机中的存储方式
-      </h2>
-    </header>
-    <div class="entry-content">
-      <p>0. 小数在计算机中的存储 两种方法： 定点 浮点 1. 定点数 顾名思义，小数点的位置固定的。 也就是说，用固定数量的bit存储整数部分，也用固定数量的bit存储小数部分，另外再用一个bit存储符号位。 计算时，将三个部分拼接起来，加个小数点即可。 优点：小数点位置固定，方便计算。 缺点：表示输的范围受...</p>
-    </div>
-    <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
-        <span class="fa fa-calendar"></span>
-        <span>2021-08-17
-            &nbsp;&nbsp;
-        </span>
-    </span>
-    
-    
-    
-    
-    
-    
-    
-    <span id="post_meta_style_3">
-        <span class="fa fa-file-word-o"></span>
-        <span>485字
-            &nbsp;&nbsp;
-        </span>
-    </span><span id="post_meta_style_5">
-        <span class="fa fa-user-o"></span>
-        <span>Clay
-            &nbsp;&nbsp;
-        </span>
-    </span>
-</span></footer>
-  </div> 
-
-  <a class="entry-link" aria-label="post link to 小数在计算机中的存储方式" href="https://www.clayhex.com/posts/2021/08/floating-point-and-fixed-point-storage-method/"></a>
-</article>
-
-<article class="post-entry">
-  <div class="post-info">
-    <header class="entry-header">
-      <h2 class="entry-hint-parent">C&#43;&#43;学习记录(12) 类型转换
-      </h2>
-    </header>
-    <div class="entry-content">
-      <p>0. 必要性 C语言中的类型转换，没有安全检查，安全性需要程序猿来保证，C&#43;&#43;提供了4种类型转换的方法，在一定程度上保证转换的安全性。 重点是 dynamic_cast 1. const_cast 仅用于去除类型的const属性，也是四种类型转换中，唯一可以去掉const限制的方法。 只能转换 指针、引用、this（在类内的时候用）。 2. static_cast 隐...</p>
-    </div>
-    <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
-        <span class="fa fa-calendar"></span>
-        <span>2021-08-02
-            &nbsp;&nbsp;
-        </span>
-    </span>
-    
-    
-    
-    
-    
-    
-    
-    <span id="post_meta_style_3">
-        <span class="fa fa-file-word-o"></span>
-        <span>739字
-            &nbsp;&nbsp;
-        </span>
-    </span><span id="post_meta_style_5">
-        <span class="fa fa-user-o"></span>
-        <span>Clay
-            &nbsp;&nbsp;
-        </span>
-    </span>
-    <span id="post_meta_style_6">
-        <span class="fa fa-tags" style="opacity: 0.8"></span>
-        <span>
-            <span class="post-tags-meta">
-                <a href="https://www.clayhex.com/tags/c&#43;&#43;/" style="color: var(--secondary)!important;">C&#43;&#43;</a>
-            </span>
-        </span>
-    </span>
-</span></footer>
-  </div> 
-
-  <a class="entry-link" aria-label="post link to C&#43;&#43;学习记录(12) 类型转换" href="https://www.clayhex.com/posts/2021/08/cpp-type-conversion/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

@@ -13,7 +13,15 @@
       <link>https://www.clayhex.com/posts/2021/07/wireshark-tcp-handshake-wave/</link>
       <pubDate>Tue, 06 Jul 2021 15:22:40 +0800</pubDate>
       <guid>https://www.clayhex.com/posts/2021/07/wireshark-tcp-handshake-wave/</guid>
-      <description>0. 原材料 抓包工具：wireshark 许多文章都是使用浏览器去访问一个网站，抓http的包，进而分析下层的tcp协议过程，但是数据比较多，不清晰，所以我采用了TCP调试助手，这样的话，没有http数据的干预，比较清晰。 1. 环境 借用www.huawei.com的ip地址183.66.1</description>
+      <description>&lt;h1 id=&#34;0-原材料&#34;&gt;0. 原材料&lt;/h1&gt;
+&lt;p&gt;抓包工具：&lt;code&gt;wireshark&lt;/code&gt;&lt;br&gt;
+许多文章都是使用浏览器去访问一个网站，抓http的包，进而分析下层的tcp协议过程，但是数据比较多，不清晰，所以我采用了TCP调试助手，这样的话，没有http数据的干预，比较清晰。&lt;/p&gt;
+&lt;center&gt;&lt;figure&gt;
+    &lt;img loading=&#34;lazy&#34; src=&#34;pic1.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+&lt;/center&gt;
+&lt;h1 id=&#34;1-环境&#34;&gt;1. 环境&lt;/h1&gt;
+&lt;p&gt;借用&lt;code&gt;www.huawei.com&lt;/code&gt;的ip地址&lt;code&gt;183.66.110.167&lt;/code&gt;。&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

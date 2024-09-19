@@ -7,7 +7,10 @@
 <meta name="robots" content="index, follow">
 <title>单片机AT指令操作GA6-B短信模块连接阿里云MQTT服务器（双向通信） | Clay&#39;s Blog</title>
 <meta name="keywords" content="stm32, 单片机, AT指令, GA6-B, MQTT">
-<meta name="description" content="0. 前言 网上这种东西不太多，我也是看了不少资料弄出来了，觉得应该写点东西出来。 我用的板子不是arduino，用的是stm32，开发工具是Arduino IDE，因为Arduino IDE集成了较多的函数库，我们不用管底层的一些东西，都封装好了，写着方便一些。 当然，不管你板子是什么，这篇">
+<meta name="description" content="0. 前言
+网上这种东西不太多，我也是看了不少资料弄出来了，觉得应该写点东西出来。
+我用的板子不是arduino，用的是stm32，开发工具是Arduino IDE，因为Arduino IDE集成了较多的函数库，我们不用管底层的一些东西，都封装好了，写着方便一些。
+当然，不管你板子是什么，这篇文章主要讲的不是板子的问题，而是如何通过串口的AT指令控制GA6-B这种支持GPRS的短信模块来实现MQTT协议，以及微信小程序显示单片机发布的数据。">
 <meta name="author" content="Clay">
 <link rel="canonical" href="https://www.clayhex.com/posts/2020/04/single-chip-microcomputer-at-ga6-b-ali-mqtt/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
@@ -58,11 +61,11 @@
     </style>
 </noscript>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
-  
-
-<meta property="og:title" content="单片机AT指令操作GA6-B短信模块连接阿里云MQTT服务器（双向通信）" />
-<meta property="og:description" content="0. 前言 网上这种东西不太多，我也是看了不少资料弄出来了，觉得应该写点东西出来。 我用的板子不是arduino，用的是stm32，开发工具是Arduino IDE，因为Arduino IDE集成了较多的函数库，我们不用管底层的一些东西，都封装好了，写着方便一些。 当然，不管你板子是什么，这篇" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><meta property="og:title" content="单片机AT指令操作GA6-B短信模块连接阿里云MQTT服务器（双向通信）" />
+<meta property="og:description" content="0. 前言
+网上这种东西不太多，我也是看了不少资料弄出来了，觉得应该写点东西出来。
+我用的板子不是arduino，用的是stm32，开发工具是Arduino IDE，因为Arduino IDE集成了较多的函数库，我们不用管底层的一些东西，都封装好了，写着方便一些。
+当然，不管你板子是什么，这篇文章主要讲的不是板子的问题，而是如何通过串口的AT指令控制GA6-B这种支持GPRS的短信模块来实现MQTT协议，以及微信小程序显示单片机发布的数据。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.clayhex.com/posts/2020/04/single-chip-microcomputer-at-ga6-b-ali-mqtt/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2020-04-30T20:14:44+08:00" />
@@ -70,7 +73,10 @@
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="单片机AT指令操作GA6-B短信模块连接阿里云MQTT服务器（双向通信）"/>
-<meta name="twitter:description" content="0. 前言 网上这种东西不太多，我也是看了不少资料弄出来了，觉得应该写点东西出来。 我用的板子不是arduino，用的是stm32，开发工具是Arduino IDE，因为Arduino IDE集成了较多的函数库，我们不用管底层的一些东西，都封装好了，写着方便一些。 当然，不管你板子是什么，这篇"/>
+<meta name="twitter:description" content="0. 前言
+网上这种东西不太多，我也是看了不少资料弄出来了，觉得应该写点东西出来。
+我用的板子不是arduino，用的是stm32，开发工具是Arduino IDE，因为Arduino IDE集成了较多的函数库，我们不用管底层的一些东西，都封装好了，写着方便一些。
+当然，不管你板子是什么，这篇文章主要讲的不是板子的问题，而是如何通过串口的AT指令控制GA6-B这种支持GPRS的短信模块来实现MQTT协议，以及微信小程序显示单片机发布的数据。"/>
 
 
 <script type="application/ld+json">
@@ -105,7 +111,7 @@
   "@type": "BlogPosting",
   "headline": "单片机AT指令操作GA6-B短信模块连接阿里云MQTT服务器（双向通信）",
   "name": "单片机AT指令操作GA6-B短信模块连接阿里云MQTT服务器（双向通信）",
-  "description": "0. 前言 网上这种东西不太多，我也是看了不少资料弄出来了，觉得应该写点东西出来。 我用的板子不是arduino，用的是stm32，开发工具是Arduino IDE，因为Arduino IDE集成了较多的函数库，我们不用管底层的一些东西，都封装好了，写着方便一些。 当然，不管你板子是什么，这篇",
+  "description": "0. 前言 网上这种东西不太多，我也是看了不少资料弄出来了，觉得应该写点东西出来。\n我用的板子不是arduino，用的是stm32，开发工具是Arduino IDE，因为Arduino IDE集成了较多的函数库，我们不用管底层的一些东西，都封装好了，写着方便一些。\n当然，不管你板子是什么，这篇文章主要讲的不是板子的问题，而是如何通过串口的AT指令控制GA6-B这种支持GPRS的短信模块来实现MQTT协议，以及微信小程序显示单片机发布的数据。\n",
   "keywords": [
     "stm32", "单片机", "AT指令", "GA6-B", "MQTT"
   ],

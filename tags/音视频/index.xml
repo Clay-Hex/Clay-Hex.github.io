@@ -13,7 +13,9 @@
       <link>https://www.clayhex.com/posts/2024/05/h264-h265-stream-nalu-sei/</link>
       <pubDate>Thu, 23 May 2024 21:52:28 +0800</pubDate>
       <guid>https://www.clayhex.com/posts/2024/05/h264-h265-stream-nalu-sei/</guid>
-      <description>H264码流 H264协议中将编码器分成两个逻辑层，就是经常见到的VCL（视频数据编码层）和NAL（网络抽象层）。VCL负责具体图像数据的编码，NAL负责组织这些编码后的数据。 既然称之为码流，那么，这些数据肯定像流一样，一位接着一位的排成一队。组织这些编码数据的方式，常见的是Ann</description>
+      <description>&lt;h1 id=&#34;h264码流&#34;&gt;H264码流&lt;/h1&gt;
+&lt;p&gt;H264协议中将编码器分成两个逻辑层，就是经常见到的VCL（视频数据编码层）和NAL（网络抽象层）。VCL负责具体图像数据的编码，NAL负责组织这些编码后的数据。&lt;/p&gt;
+&lt;p&gt;既然称之为码流，那么，这些数据肯定像流一样，一位接着一位的排成一队。组织这些编码数据的方式，常见的是&lt;code&gt;Annex B&lt;/code&gt;格式和&lt;code&gt;AVCC&lt;/code&gt;格式，感觉&lt;code&gt;Annex B&lt;/code&gt;格式最为常见，它长这样：&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

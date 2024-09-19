@@ -5,24 +5,16 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>小数在计算机中的存储方式 | Clay&#39;s Blog</title>
-<meta name="keywords" content="floating point number, fixed point number">
-<meta name="description" content="0. 小数在计算机中的存储
-两种方法：
+<title>Anaconda的平替 - Miniforge | Clay&#39;s Blog</title>
+<meta name="keywords" content="Anaconda, Miniforge, conda-forge">
+<meta name="description" content="Anaconda在2020年的一次公告中宣布，对于团队用户，他们将开始收费。
 
-定点
-浮点
+团队人数少于200人，可以继续免费使用。
+收费的范围是Anaconda团队提供的default通道中的软件包。
 
-1. 定点数
-顾名思义，小数点的位置固定的。
-也就是说，用固定数量的bit存储整数部分，也用固定数量的bit存储小数部分，另外再用一个bit存储符号位。
-计算时，将三个部分拼接起来，加个小数点即可。
-优点：小数点位置固定，方便计算。
-缺点：表示输的范围受限。
-2. 浮点数
-浮点数在计算机中的存储依赖科学计数法。">
+如果我继续使用Anaconda发行版软件，但是不用Anaconda的下载通道，要不要付费呢？ 没有实践，直接卸载吧还是。">
 <meta name="author" content="Clay">
-<link rel="canonical" href="https://www.clayhex.com/posts/2021/08/floating-point-and-fixed-point-storage-method/">
+<link rel="canonical" href="https://www.clayhex.com/posts/2024/08/miniforge-replaces-anaconda/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.js" onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://www.clayhex.com/favicon.ico">
@@ -32,7 +24,7 @@
 <link rel="mask-icon" href="https://www.clayhex.com/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="zh" href="https://www.clayhex.com/posts/2021/08/floating-point-and-fixed-point-storage-method/">
+<link rel="alternate" hreflang="zh" href="https://www.clayhex.com/posts/2024/08/miniforge-replaces-anaconda/">
 <noscript>
     <style>
         #theme-toggle,
@@ -71,42 +63,26 @@
     </style>
 </noscript>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><meta property="og:title" content="小数在计算机中的存储方式" />
-<meta property="og:description" content="0. 小数在计算机中的存储
-两种方法：
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><meta property="og:title" content="Anaconda的平替 - Miniforge" />
+<meta property="og:description" content="Anaconda在2020年的一次公告中宣布，对于团队用户，他们将开始收费。
 
-定点
-浮点
+团队人数少于200人，可以继续免费使用。
+收费的范围是Anaconda团队提供的default通道中的软件包。
 
-1. 定点数
-顾名思义，小数点的位置固定的。
-也就是说，用固定数量的bit存储整数部分，也用固定数量的bit存储小数部分，另外再用一个bit存储符号位。
-计算时，将三个部分拼接起来，加个小数点即可。
-优点：小数点位置固定，方便计算。
-缺点：表示输的范围受限。
-2. 浮点数
-浮点数在计算机中的存储依赖科学计数法。" />
+如果我继续使用Anaconda发行版软件，但是不用Anaconda的下载通道，要不要付费呢？ 没有实践，直接卸载吧还是。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://www.clayhex.com/posts/2021/08/floating-point-and-fixed-point-storage-method/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2021-08-17T23:16:06+08:00" />
-<meta property="article:modified_time" content="2021-08-17T23:16:06+08:00" />
+<meta property="og:url" content="https://www.clayhex.com/posts/2024/08/miniforge-replaces-anaconda/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-08-21T23:24:46+08:00" />
+<meta property="article:modified_time" content="2024-08-21T23:24:46+08:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="小数在计算机中的存储方式"/>
-<meta name="twitter:description" content="0. 小数在计算机中的存储
-两种方法：
+<meta name="twitter:title" content="Anaconda的平替 - Miniforge"/>
+<meta name="twitter:description" content="Anaconda在2020年的一次公告中宣布，对于团队用户，他们将开始收费。
 
-定点
-浮点
+团队人数少于200人，可以继续免费使用。
+收费的范围是Anaconda团队提供的default通道中的软件包。
 
-1. 定点数
-顾名思义，小数点的位置固定的。
-也就是说，用固定数量的bit存储整数部分，也用固定数量的bit存储小数部分，另外再用一个bit存储符号位。
-计算时，将三个部分拼接起来，加个小数点即可。
-优点：小数点位置固定，方便计算。
-缺点：表示输的范围受限。
-2. 浮点数
-浮点数在计算机中的存储依赖科学计数法。"/>
+如果我继续使用Anaconda发行版软件，但是不用Anaconda的下载通道，要不要付费呢？ 没有实践，直接卸载吧还是。"/>
 
 
 <script type="application/ld+json">
@@ -129,8 +105,8 @@
     {
       "@type": "ListItem",
       "position":  3 ,
-      "name": "小数在计算机中的存储方式",
-      "item": "https://www.clayhex.com/posts/2021/08/floating-point-and-fixed-point-storage-method/"
+      "name": "Anaconda的平替 - Miniforge",
+      "item": "https://www.clayhex.com/posts/2024/08/miniforge-replaces-anaconda/"
     }
   ]
 }
@@ -139,24 +115,24 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "小数在计算机中的存储方式",
-  "name": "小数在计算机中的存储方式",
-  "description": "0. 小数在计算机中的存储 两种方法：\n定点 浮点 1. 定点数 顾名思义，小数点的位置固定的。\n也就是说，用固定数量的bit存储整数部分，也用固定数量的bit存储小数部分，另外再用一个bit存储符号位。\n计算时，将三个部分拼接起来，加个小数点即可。\n优点：小数点位置固定，方便计算。\n缺点：表示输的范围受限。\n2. 浮点数 浮点数在计算机中的存储依赖科学计数法。\n",
+  "headline": "Anaconda的平替 - Miniforge",
+  "name": "Anaconda的平替 - Miniforge",
+  "description": "Anaconda在2020年的一次公告中宣布，对于团队用户，他们将开始收费。\n团队人数少于200人，可以继续免费使用。 收费的范围是Anaconda团队提供的default通道中的软件包。 如果我继续使用Anaconda发行版软件，但是不用Anaconda的下载通道，要不要付费呢？ 没有实践，直接卸载吧还是。\n",
   "keywords": [
-    "floating point number", "fixed point number"
+    "Anaconda", "Miniforge", "conda-forge"
   ],
-  "articleBody": "0. 小数在计算机中的存储 两种方法：\n定点 浮点 1. 定点数 顾名思义，小数点的位置固定的。\n也就是说，用固定数量的bit存储整数部分，也用固定数量的bit存储小数部分，另外再用一个bit存储符号位。\n计算时，将三个部分拼接起来，加个小数点即可。\n优点：小数点位置固定，方便计算。\n缺点：表示输的范围受限。\n2. 浮点数 浮点数在计算机中的存储依赖科学计数法。\n2.1 科学计数法 十进制中，3145使用科学计数法可以表示成 3.145 * 103。\n科学计数法一般的表达形式：M * baseE，其中 M 暂且称他为尾数，必须要 \u003e= 1 且 \u003c base；base是进制，10进制就是10，2进制就是2；E是指数。\n任意一个二进制浮点数可以表示成： V = (-1)s x M x 2E。\n2.2 浮点数的存储 综上，若想在计算机中存储一个浮点数，需要保存如下三个数值：\n符号位 s，0 或者 1 。 尾数 M ，因为基数M前边说过，必须 \u003e= 1，所以，这个数字1就可以不存了，直接存储后边的小数部分。 指数E。 在IEEE 754中规定，32bit的浮点数中（64bit同理），最高 1 bit是符号位，紧接着的 8 bit 存储指数 E，最后的 23 个bit存储尾数 M。\n此外，还有一些特殊规定：\n2.3 浮点数存储及范围的例子 ",
-  "wordCount" : "485",
+  "articleBody": "Anaconda在2020年的一次公告中宣布，对于团队用户，他们将开始收费。\n团队人数少于200人，可以继续免费使用。 收费的范围是Anaconda团队提供的default通道中的软件包。 如果我继续使用Anaconda发行版软件，但是不用Anaconda的下载通道，要不要付费呢？ 没有实践，直接卸载吧还是。\n有鉴于此，我平移到了Miniforge，几乎无痛，Miniforge和Anaconda相比：\n底层都是调用conda来管理环境，而conda是开源的产品。 Anaconda是商业公司，他们提供的Anaconda发行版的产品中，default通道是使用他们的，所以，这里的软件包是有Anaconda公司劳动成本的。 conda-forge是一个开源组织，他们提供很多conda可用的软件包，通过Miniforge可以使用它们，Miniforge的default通道换成了conda-forge，是免费的。 顺手记录一个问题（不算Bug，毕竟代码里就这样写的，只能说不及我的预期吧）：\n问题：\n自定义envs的存储文件夹后，即修改了envs_dirs变量，然后使用conda env list查看环境列表时，不显示环境的名字，始终显示为路径。 激活环境后，命令行前边的Prompt，也显示的是具体路径，不是环境名字。 前置:\n我没有修改过env_prompt，并且确认了它的值是'{default_env}'，不是其他。\n原因：\n查看了源代码，这不是Miniforge的问题，是conda的问题，conda在解析环境名的时候，环境所在的文件夹名字必须是envs，才能解析出名字。详见下面文件\n# repo/conda/activate.py def _default_env(self, prefix): if paths_equal(prefix, context.root_prefix): return \"base\" return basename(prefix) if basename(dirname(prefix)) == \"envs\" else prefix ",
+  "wordCount" : "697",
   "inLanguage": "zh",
-  "datePublished": "2021-08-17T23:16:06+08:00",
-  "dateModified": "2021-08-17T23:16:06+08:00",
+  "datePublished": "2024-08-21T23:24:46+08:00",
+  "dateModified": "2024-08-21T23:24:46+08:00",
   "author":{
     "@type": "Person",
     "name": "Clay"
   },
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://www.clayhex.com/posts/2021/08/floating-point-and-fixed-point-storage-method/"
+    "@id": "https://www.clayhex.com/posts/2024/08/miniforge-replaces-anaconda/"
   },
   "publisher": {
     "@type": "Organization",
@@ -253,11 +229,11 @@
   <header class="post-header">
     <div class="breadcrumbs"><a href="https://www.clayhex.com/">主页</a>&nbsp;»&nbsp;<a href="https://www.clayhex.com/posts/">📒 记录</a>&nbsp;»&nbsp;<a href="https://www.clayhex.com/posts/learn/">📚 学习</a></div>
     <h1 class="post-title entry-hint-parent">
-      小数在计算机中的存储方式
+      Anaconda的平替 - Miniforge
     </h1>
     <div class="post-meta"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
-        <span>2021-08-17
+        <span>2024-08-21
             &nbsp;&nbsp;
         </span>
     </span>
@@ -270,7 +246,7 @@
     
     <span id="post_meta_style_3">
         <span class="fa fa-file-word-o"></span>
-        <span>485字
+        <span>697字
             &nbsp;&nbsp;
         </span>
     </span><span id="post_meta_style_5">
@@ -282,136 +258,43 @@
 </span>
 
 </div>
-  </header> <aside id="toc-container" class="toc-container wide">
-    <div class="toc">
-        <details  open>
-            <summary accesskey="c" title="(Alt + C)">
-                <span class="details">目录</span>
-            </summary>
-
-            <div class="inner"><ul>
-                    <li>
-                        <a href="#0-%e5%b0%8f%e6%95%b0%e5%9c%a8%e8%ae%a1%e7%ae%97%e6%9c%ba%e4%b8%ad%e7%9a%84%e5%ad%98%e5%82%a8" aria-label="0. 小数在计算机中的存储">0. 小数在计算机中的存储</a></li>
-                    <li>
-                        <a href="#1-%e5%ae%9a%e7%82%b9%e6%95%b0" aria-label="1. 定点数">1. 定点数</a></li>
-                    <li>
-                        <a href="#2-%e6%b5%ae%e7%82%b9%e6%95%b0" aria-label="2. 浮点数">2. 浮点数</a><ul>
-                            
-                    <li>
-                        <a href="#21-%e7%a7%91%e5%ad%a6%e8%ae%a1%e6%95%b0%e6%b3%95" aria-label="2.1 科学计数法">2.1 科学计数法</a></li>
-                    <li>
-                        <a href="#22-%e6%b5%ae%e7%82%b9%e6%95%b0%e7%9a%84%e5%ad%98%e5%82%a8" aria-label="2.2 浮点数的存储">2.2 浮点数的存储</a></li>
-                    <li>
-                        <a href="#23-%e6%b5%ae%e7%82%b9%e6%95%b0%e5%ad%98%e5%82%a8%e5%8f%8a%e8%8c%83%e5%9b%b4%e7%9a%84%e4%be%8b%e5%ad%90" aria-label="2.3 浮点数存储及范围的例子">2.3 浮点数存储及范围的例子</a>
-                    </li>
-                </ul>
-                </li>
-                </ul>
-            </div>
-        </details>
-    </div>
-</aside>
-<script>
-    let activeElement;
-    let elements;
-    window.addEventListener('DOMContentLoaded', function (event) {
-        checkTocPosition();
-
-        elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
-         
-         activeElement = elements[0];
-         const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
-         document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
-     }, false);
-
-    window.addEventListener('resize', function(event) {
-        checkTocPosition();
-    }, false);
-
-    window.addEventListener('scroll', () => {
-        
-        activeElement = Array.from(elements).find((element) => {
-            if ((getOffsetTop(element) - window.pageYOffset) > 0 && 
-                (getOffsetTop(element) - window.pageYOffset) < window.innerHeight/2) {
-                return element;
-            }
-        }) || activeElement
-
-        elements.forEach(element => {
-             const id = encodeURI(element.getAttribute('id')).toLowerCase();
-             if (element === activeElement){
-                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
-             } else {
-                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.remove('active');
-             }
-         })
-     }, false);
-
-    const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
-    const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
-    const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
-
-    function checkTocPosition() {
-        const width = document.body.scrollWidth;
-
-        if (width - main - (toc * 2) - (gap * 4) > 0) {
-            document.getElementById("toc-container").classList.add("wide");
-        } else {
-            document.getElementById("toc-container").classList.remove("wide");
-        }
-    }
-
-    function getOffsetTop(element) {
-        if (!element.getClientRects().length) {
-            return 0;
-        }
-        let rect = element.getBoundingClientRect();
-        let win = element.ownerDocument.defaultView;
-        return rect.top + win.pageYOffset;   
-    }
-</script>
-  <div class="post-content"><h1 id="0-小数在计算机中的存储">0. 小数在计算机中的存储<a hidden class="anchor" aria-hidden="true" href="#0-小数在计算机中的存储">#</a></h1>
-<p>两种方法：</p>
+  </header> 
+  <div class="post-content"><p>Anaconda在2020年的一次公告中宣布，对于团队用户，他们将开始收费。</p>
 <ul>
-<li>定点</li>
-<li>浮点</li>
+<li>团队人数少于200人，可以继续免费使用。</li>
+<li>收费的范围是Anaconda团队提供的default通道中的软件包。</li>
 </ul>
-<h1 id="1-定点数">1. 定点数<a hidden class="anchor" aria-hidden="true" href="#1-定点数">#</a></h1>
-<p>顾名思义，小数点的位置固定的。</p>
-<p>也就是说，用<code>固定数量</code>的<code>bit</code>存储<code>整数部分</code>，也用<code>固定数量</code>的<code>bit</code>存储<code>小数部分</code>，另外再用一个bit存储符号位。</p>
-<p>计算时，将三个部分拼接起来，加个小数点即可。</p>
-<p>优点：小数点位置固定，方便计算。<br>
-缺点：表示输的范围受限。</p>
-<h1 id="2-浮点数">2. 浮点数<a hidden class="anchor" aria-hidden="true" href="#2-浮点数">#</a></h1>
-<p><strong>浮点数在计算机中的存储依赖科学计数法。</strong></p>
-<h2 id="21-科学计数法">2.1 科学计数法<a hidden class="anchor" aria-hidden="true" href="#21-科学计数法">#</a></h2>
-<p>十进制中，3145使用科学计数法可以表示成  3.145 * 10<sup>3</sup>。<br>
-科学计数法一般的表达形式：M * base<sup>E</sup>，其中 <code>M</code> 暂且称他为尾数，必须要 <code>&gt;= 1 且 &lt; base</code>；<code>base</code>是进制，10进制就是10，2进制就是2；<code>E</code>是指数。</p>
-<p>任意一个二进制浮点数可以表示成： V = (-1)<sup>s</sup> x M x 2<sup>E</sup>。</p>
-<h2 id="22-浮点数的存储">2.2 浮点数的存储<a hidden class="anchor" aria-hidden="true" href="#22-浮点数的存储">#</a></h2>
-<p>综上，若想在计算机中存储一个浮点数，需要保存如下三个数值：</p>
+<p>如果我继续使用Anaconda发行版软件，但是不用Anaconda的下载通道，要不要付费呢？ 没有实践，直接卸载吧还是。</p>
+<p>有鉴于此，我平移到了Miniforge，几乎无痛，Miniforge和Anaconda相比：</p>
 <ul>
-<li>符号位 s，0 或者 1 。</li>
-<li>尾数 <code>M</code> ，因为基数<code>M</code>前边说过，必须 &gt;= 1，所以，这个数字<code>1</code>就可以不存了，直接存储后边的小数部分。</li>
-<li>指数<code>E</code>。</li>
+<li>底层都是调用conda来管理环境，而conda是开源的产品。</li>
+<li>Anaconda是商业公司，他们提供的Anaconda发行版的产品中，default通道是使用他们的，所以，这里的软件包是有Anaconda公司劳动成本的。</li>
+<li>conda-forge是一个开源组织，他们提供很多conda可用的软件包，通过Miniforge可以使用它们，Miniforge的default通道换成了conda-forge，是免费的。</li>
 </ul>
 <hr>
-<p>在<code>IEEE 754</code>中规定，32bit的浮点数中（64bit同理），最高 1 bit是符号位，紧接着的 8 bit 存储指数 E，最后的 23 个bit存储尾数 M。</p>
-<p>此外，还有一些特殊规定：</p>
-<center><figure>
-    <img loading="lazy" src="pic1.png" width="100%"/> 
-</figure>
-</center>
-<h2 id="23-浮点数存储及范围的例子">2.3 浮点数存储及范围的例子<a hidden class="anchor" aria-hidden="true" href="#23-浮点数存储及范围的例子">#</a></h2>
-<center><figure>
-    <img loading="lazy" src="pic2.png" width="100%"/> 
-</figure>
-</center>
-<center><figure>
-    <img loading="lazy" src="pic3.png" width="100%"/> 
-</figure>
-</center>
-
+<p>顺手记录一个问题（不算Bug，毕竟代码里就这样写的，只能说不及我的预期吧）：<br>
+问题：</p>
+<blockquote>
+<ul>
+<li>自定义envs的存储文件夹后，即修改了<code>envs_dirs</code>变量，然后使用<code>conda env list</code>查看环境列表时，不显示环境的名字，始终显示为路径。</li>
+<li>激活环境后，命令行前边的Prompt，也显示的是具体路径，不是环境名字。</li>
+</ul>
+</blockquote>
+<p>前置:</p>
+<blockquote>
+<p>我没有修改过<code>env_prompt</code>，并且确认了它的值是<code>'{default_env}'</code>，不是其他。</p>
+</blockquote>
+<p>原因：</p>
+<blockquote>
+<p>查看了源代码，这不是Miniforge的问题，是conda的问题，conda在解析环境名的时候，环境所在的文件夹名字必须是<code>envs</code>，才能解析出名字。详见下面文件</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="c1"># repo/conda/activate.py</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">_default_env</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">paths_equal</span><span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="n">context</span><span class="o">.</span><span class="n">root_prefix</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="s2">&#34;base&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">basename</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span> <span class="k">if</span> <span class="n">basename</span><span class="p">(</span><span class="n">dirname</span><span class="p">(</span><span class="n">prefix</span><span class="p">))</span> <span class="o">==</span> <span class="s2">&#34;envs&#34;</span> <span class="k">else</span> <span class="n">prefix</span>
+</span></span></code></pre></div>
 
   </div>
 
@@ -419,15 +302,10 @@
     <ul class="post-tags">
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://www.clayhex.com/posts/2021/08/cpp-new-and-delete/">
-    <span class="title">« 上一篇</span>
-    <br>
-    <span>C&#43;&#43;学习记录(13) new与delete</span>
-  </a>
-  <a class="next" href="https://www.clayhex.com/posts/2021/08/cpp-type-conversion/">
+  <a class="next" href="https://www.clayhex.com/posts/2024/08/luigi-tasks/">
     <span class="title">下一篇 »</span>
     <br>
-    <span>C&#43;&#43;学习记录(12) 类型转换</span>
+    <span>任务管线框架 - Luigi</span>
   </a>
 </nav>
 

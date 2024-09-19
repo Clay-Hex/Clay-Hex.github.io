@@ -7,7 +7,59 @@
 <meta name="robots" content="index, follow">
 <title>QT中线程启动方式和操作的注意问题 | Clay&#39;s Blog</title>
 <meta name="keywords" content="qt, thread, QThread">
-<meta name="description" content="0. QT中线程启动的方式 0.1 继承QThread 继承QThread时，子类必须重写run方法，保证线程在手动结束之前持续运行。 当子类使用start方法启动后，run方法会在生命周期内循环执行。 .h文件 #ifndef CLASS1_H #define CLASS1_H #include &lt;QObject&gt; #include &lt;QThread&gt; // 继承QTQThread class Class1 : public QThread { Q_OBJECT public: explicit Class1(QThread *parent = 0); ~Class1(); void run() override; public slots: void testFunc(); }; #endif">
+<meta name="description" content="0. QT中线程启动的方式
+0.1 继承QThread
+继承QThread时，子类必须重写run方法，保证线程在手动结束之前持续运行。
+当子类使用start方法启动后，run方法会在生命周期内循环执行。
+.h文件
+#ifndef CLASS1_H
+#define CLASS1_H
+
+#include &lt;QObject&gt;
+#include &lt;QThread&gt;
+
+// 继承QTQThread
+
+class Class1 : public QThread
+{
+    Q_OBJECT
+public:
+    explicit Class1(QThread *parent = 0);
+    ~Class1();
+    void run() override;
+    
+public slots:
+    void testFunc();
+};
+
+#endif // CLASS1_H
+.cpp文件
+#include &#34;class1.h&#34;
+#include &lt;QDebug&gt;
+
+Class1::Class1(QThread *parent) : QThread(parent)
+{
+}
+
+Class1::~Class1()
+{
+}
+
+void Class1::run()
+{
+    qDebug() &lt;&lt; &#34;class 1 run threadID : &#34; &lt;&lt; currentThreadId();
+    while(1){   // 测试代码，写成了死循环，实际中应该避免这样写
+        msleep(5);
+    }
+}
+
+void Class1::testFunc()
+{
+    qDebug() &lt;&lt; &#34;class1 testFunc threadID : &#34; &lt;&lt; currentThreadId();
+}
+0.2 使用moveToThread启动
+这种方式较为简单，正常写自己的类即可，为了保证其方法可以在线程上执行，需要继承QObject类。
+在使用时首先生成子类对象，同时new一个QThread出来，然后使用子类的moveToThread方法，将子类放到刚刚new出来的QThread上，再启动该线程即可。">
 <meta name="author" content="Clay">
 <link rel="canonical" href="https://www.clayhex.com/posts/2022/11/qt-thread/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
@@ -58,11 +110,60 @@
     </style>
 </noscript>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
-  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><meta property="og:title" content="QT中线程启动方式和操作的注意问题" />
+<meta property="og:description" content="0. QT中线程启动的方式
+0.1 继承QThread
+继承QThread时，子类必须重写run方法，保证线程在手动结束之前持续运行。
+当子类使用start方法启动后，run方法会在生命周期内循环执行。
+.h文件
+#ifndef CLASS1_H
+#define CLASS1_H
 
-<meta property="og:title" content="QT中线程启动方式和操作的注意问题" />
-<meta property="og:description" content="0. QT中线程启动的方式 0.1 继承QThread 继承QThread时，子类必须重写run方法，保证线程在手动结束之前持续运行。 当子类使用start方法启动后，run方法会在生命周期内循环执行。 .h文件 #ifndef CLASS1_H #define CLASS1_H #include &lt;QObject&gt; #include &lt;QThread&gt; // 继承QTQThread class Class1 : public QThread { Q_OBJECT public: explicit Class1(QThread *parent = 0); ~Class1(); void run() override; public slots: void testFunc(); }; #endif" />
+#include &lt;QObject&gt;
+#include &lt;QThread&gt;
+
+// 继承QTQThread
+
+class Class1 : public QThread
+{
+    Q_OBJECT
+public:
+    explicit Class1(QThread *parent = 0);
+    ~Class1();
+    void run() override;
+    
+public slots:
+    void testFunc();
+};
+
+#endif // CLASS1_H
+.cpp文件
+#include &#34;class1.h&#34;
+#include &lt;QDebug&gt;
+
+Class1::Class1(QThread *parent) : QThread(parent)
+{
+}
+
+Class1::~Class1()
+{
+}
+
+void Class1::run()
+{
+    qDebug() &lt;&lt; &#34;class 1 run threadID : &#34; &lt;&lt; currentThreadId();
+    while(1){   // 测试代码，写成了死循环，实际中应该避免这样写
+        msleep(5);
+    }
+}
+
+void Class1::testFunc()
+{
+    qDebug() &lt;&lt; &#34;class1 testFunc threadID : &#34; &lt;&lt; currentThreadId();
+}
+0.2 使用moveToThread启动
+这种方式较为简单，正常写自己的类即可，为了保证其方法可以在线程上执行，需要继承QObject类。
+在使用时首先生成子类对象，同时new一个QThread出来，然后使用子类的moveToThread方法，将子类放到刚刚new出来的QThread上，再启动该线程即可。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.clayhex.com/posts/2022/11/qt-thread/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2022-11-15T09:52:46+08:00" />
@@ -70,7 +171,59 @@
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="QT中线程启动方式和操作的注意问题"/>
-<meta name="twitter:description" content="0. QT中线程启动的方式 0.1 继承QThread 继承QThread时，子类必须重写run方法，保证线程在手动结束之前持续运行。 当子类使用start方法启动后，run方法会在生命周期内循环执行。 .h文件 #ifndef CLASS1_H #define CLASS1_H #include &lt;QObject&gt; #include &lt;QThread&gt; // 继承QTQThread class Class1 : public QThread { Q_OBJECT public: explicit Class1(QThread *parent = 0); ~Class1(); void run() override; public slots: void testFunc(); }; #endif"/>
+<meta name="twitter:description" content="0. QT中线程启动的方式
+0.1 继承QThread
+继承QThread时，子类必须重写run方法，保证线程在手动结束之前持续运行。
+当子类使用start方法启动后，run方法会在生命周期内循环执行。
+.h文件
+#ifndef CLASS1_H
+#define CLASS1_H
+
+#include &lt;QObject&gt;
+#include &lt;QThread&gt;
+
+// 继承QTQThread
+
+class Class1 : public QThread
+{
+    Q_OBJECT
+public:
+    explicit Class1(QThread *parent = 0);
+    ~Class1();
+    void run() override;
+    
+public slots:
+    void testFunc();
+};
+
+#endif // CLASS1_H
+.cpp文件
+#include &#34;class1.h&#34;
+#include &lt;QDebug&gt;
+
+Class1::Class1(QThread *parent) : QThread(parent)
+{
+}
+
+Class1::~Class1()
+{
+}
+
+void Class1::run()
+{
+    qDebug() &lt;&lt; &#34;class 1 run threadID : &#34; &lt;&lt; currentThreadId();
+    while(1){   // 测试代码，写成了死循环，实际中应该避免这样写
+        msleep(5);
+    }
+}
+
+void Class1::testFunc()
+{
+    qDebug() &lt;&lt; &#34;class1 testFunc threadID : &#34; &lt;&lt; currentThreadId();
+}
+0.2 使用moveToThread启动
+这种方式较为简单，正常写自己的类即可，为了保证其方法可以在线程上执行，需要继承QObject类。
+在使用时首先生成子类对象，同时new一个QThread出来，然后使用子类的moveToThread方法，将子类放到刚刚new出来的QThread上，再启动该线程即可。"/>
 
 
 <script type="application/ld+json">
@@ -105,7 +258,7 @@
   "@type": "BlogPosting",
   "headline": "QT中线程启动方式和操作的注意问题",
   "name": "QT中线程启动方式和操作的注意问题",
-  "description": "0. QT中线程启动的方式 0.1 继承QThread 继承QThread时，子类必须重写run方法，保证线程在手动结束之前持续运行。 当子类使用start方法启动后，run方法会在生命周期内循环执行。 .h文件 #ifndef CLASS1_H #define CLASS1_H #include \u0026lt;QObject\u0026gt; #include \u0026lt;QThread\u0026gt; // 继承QTQThread class Class1 : public QThread { Q_OBJECT public: explicit Class1(QThread *parent = 0); ~Class1(); void run() override; public slots: void testFunc(); }; #endif",
+  "description": "0. QT中线程启动的方式 0.1 继承QThread 继承QThread时，子类必须重写run方法，保证线程在手动结束之前持续运行。\n当子类使用start方法启动后，run方法会在生命周期内循环执行。\n.h文件\n#ifndef CLASS1_H #define CLASS1_H #include \u0026lt;QObject\u0026gt; #include \u0026lt;QThread\u0026gt; // 继承QTQThread class Class1 : public QThread { Q_OBJECT public: explicit Class1(QThread *parent = 0); ~Class1(); void run() override; public slots: void testFunc(); }; #endif // CLASS1_H .cpp文件\n#include \u0026#34;class1.h\u0026#34; #include \u0026lt;QDebug\u0026gt; Class1::Class1(QThread *parent) : QThread(parent) { } Class1::~Class1() { } void Class1::run() { qDebug() \u0026lt;\u0026lt; \u0026#34;class 1 run threadID : \u0026#34; \u0026lt;\u0026lt; currentThreadId(); while(1){ // 测试代码，写成了死循环，实际中应该避免这样写 msleep(5); } } void Class1::testFunc() { qDebug() \u0026lt;\u0026lt; \u0026#34;class1 testFunc threadID : \u0026#34; \u0026lt;\u0026lt; currentThreadId(); } 0.2 使用moveToThread启动 这种方式较为简单，正常写自己的类即可，为了保证其方法可以在线程上执行，需要继承QObject类。\n在使用时首先生成子类对象，同时new一个QThread出来，然后使用子类的moveToThread方法，将子类放到刚刚new出来的QThread上，再启动该线程即可。\n",
   "keywords": [
     "qt", "thread", "QThread"
   ],

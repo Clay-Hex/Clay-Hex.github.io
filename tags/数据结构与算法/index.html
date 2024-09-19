@@ -58,10 +58,7 @@
     </style>
 </noscript>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
-  
-
-<meta property="og:title" content="数据结构与算法" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><meta property="og:title" content="数据结构与算法" />
 <meta property="og:description" content="Clay的博客,Clay&#39;s Blog,hugo,paperMod,c&#43;&#43;" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://www.clayhex.com/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" />
@@ -163,7 +160,8 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>1. 代码 /* * @Brief: 常见排序算法汇总 * @Author: * @Date: 2021-07-01 */ #include &lt;iostream&gt; #include &lt;algorithm&gt; #include &lt;vector&gt; #include &lt;queue&gt; using namespace std; void printArray(int *a, int len){ for(int i = 0; i &lt; len; i&#43;&#43;) cout &lt;&lt; a[i] &lt;&lt; &#34; &#34;; cout &lt;&lt; endl &lt;&lt; endl; } void bubbleSort(int *a, int len){ for(int i = 0; i &lt; len - 1; i&#43;&#43;){ for(int j = 0; j &lt; len - i; j&#43;&#43;){ if(a[j] &gt; a[j&#43;1]) swap(a[j], a[j&#43;1]); } } } void selectSort(int *a, int len){ for(int i = 0; i &lt; len; i&#43;&#43;){ int mi = i; for(int j = i; j &lt; len; j&#43;&#43;){ if(a[j] &lt; a[mi]) mi = j; } if(i != mi) swap(a[i], a[mi]); } } void insertionSort(int *a, int len){ for(int i = 0; i &lt; len;...</p>
+      <p>1. 代码 /* * @Brief: 常见排序算法汇总 * @Author: * @Date: 2021-07-01 */ #include &lt;iostream&gt; #include &lt;algorithm&gt; #include &lt;vector&gt; #include &lt;queue&gt; using namespace std; void printArray(int *a, int len){ for(int i = 0; i &lt; len; i&#43;&#43;) cout &lt;&lt; a[i] &lt;&lt; &#34; &#34;; cout &lt;&lt; endl &lt;&lt; endl; } void bubbleSort(int *a, int len){ for(int i = 0; i &lt; len - 1; i&#43;&#43;){ for(int j = 0; j &lt; len - i; j&#43;&#43;){ if(a[j] &gt; a[j&#43;1]) swap(a[j], a[j&#43;1]); } } } void selectSort(int *a, int len){ for(int i = 0; i &lt; len; i&#43;&#43;){ int mi = i; for(int j = i; j &lt; len; j&#43;&#43;){ if(a[j] &lt; a[mi]) mi = j; } if(i != mi) swap(a[i], a[mi]); } } void insertionSort(int *a, int len){ for(int i = 0; i &lt; len; i&#43;&#43;){ int key = a[i]; int j = i; while(j &gt;= 1 &amp;&amp; a[j - 1] &gt; key) a[j] = a[j-1], j--; a[j] = key; } } void shellSort(int *a, int len){ // cout &lt;&lt; &#34;原始数组&#34; &lt;&lt; endl; // printArray(a, len); for(int d = len / 2; d &gt;= 1; d /= 2){ // 插入排序 for(int i = 0; i &lt; len; i &#43;= d){ int key = a[i]; int j = i; while(j &gt;= d &amp;&amp; a[j-d] &gt; key) a[j] = a[j-d], j -= d; a[j] = key; } // cout &lt;&lt; &#34;d = &#34; &lt;&lt; d &lt;&lt; &#34; 排序结果&#34; &lt;&lt; endl; // printArray(a, len); } } void quickSort(int *a, int len, int l, int r){ if(l &gt;= r) return ; int x = a[l &#43; (r - l) / 2]; int i = l - 1, j = r &#43; 1; while(i &lt; j){ while(a[&#43;&#43;i] &lt; x); while(a[--j] &gt; x); if(i &lt; j) swap(a[i], a[j]); } quickSort(a, len, l, j); quickSort(a, len, j &#43; 1, r); } void mergeSort(int *a, int len, int l, int r){ if(l &gt;= r) return ; int mid = l &#43; (r - l) / 2; mergeSort(a, len, l, mid); mergeSort(a, len, mid &#43; 1, r); int i = l, j = mid &#43; 1, k = 0; int *tmp = new int[r - l &#43; 1]; while(i &lt;= mid &amp;&amp; j &lt;= r){ if(a[i] &lt; a[j]) tmp[k&#43;&#43;] = a[i&#43;&#43;]; else tmp[k&#43;&#43;] = a[j&#43;&#43;]; } // 处理尾巴 while(i &lt;= mid) tmp[k&#43;&#43;] = a[i&#43;&#43;]; while(j &lt;= r) tmp[k&#43;&#43;] = a[j&#43;&#43;]; // 复制回原数组中 for(i = l, k = 0; i &lt;= r; i&#43;&#43;, k&#43;&#43;) a[i] = tmp[k]; delete tmp; // 回收内存 } // 堆排序 namespace heapSort{ int *heap = nullptr; int ss = 0; // 堆的现有节点数 从下标是1的节点开始存 int n = 0; // 数组长度 void down(int u){ // 小顶堆 int t = u; if(u * 2 &lt;= ss &amp;&amp; heap[u * 2] &lt; heap[t]) t = u * 2; if(u * 2 &#43; 1 &lt;= ss &amp;&amp; heap[u * 2 &#43; 1] &lt; heap[t]) t = u * 2 &#43; 1; if(t != u){ swap(heap[t], heap[u]); down(t); } } void heapSort(int *a, int len){ heap = new int[len &#43; 5]; n = len; for(int i = 0; i &lt; len; i&#43;&#43;) heap[&#43;&#43;ss] = a[i]; for(int i = n / 2; i ; i--) down(i); for(int i = 0; i &lt; len; i&#43;&#43;){ a[i] = heap[1]; heap[1] = heap[ss--]; down(1); } delete heap; } }; int main(){ int a[10] = {8, 4, 2, 5, 7, 3, 1, 9, 0, 6}; int len = 10; //bubbleSort(a, len); //selectSort(a, len); //insertionSort(a, len); //quickSort(a, len, 0, len - 1); //mergeSort(a, len, 0, len - 1); //shellSort(a, len); //heapSort::heapSort(a, len); printArray(a, len); return 0; } 2. 稳定性 稳定排序算法：如果两数相等的话，排序以后先后位置是否会改变，如果不改变，就是稳定的。
+...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -210,7 +208,12 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>1. 单调栈 1.1 可解决的问题 单调栈的使用场景时分有限，只处理一种典型的问题，叫做 Next Greater Element。 例如：在一个数组中，每个数左边（右边）第一个比它大（小）的数是什么。 1.2 详解 直接上例子解释它。 题目：给出一个原始数组 a[3, 4, 2, 7, 5]，输出每个数左边第一个比它小的数，如果不存在则输出-1。 解释...</p>
+      <p>1. 单调栈 1.1 可解决的问题 单调栈的使用场景时分有限，只处理一种典型的问题，叫做 Next Greater Element。
+例如：在一个数组中，每个数左边（右边）第一个比它大（小）的数是什么。
+1.2 详解 直接上例子解释它。
+题目：给出一个原始数组 a[3, 4, 2, 7, 5]，输出每个数左边第一个比它小的数，如果不存在则输出-1。
+解释：第一个3左边没有数，答案是-1，4左边第一个小的数是3，2左边没有比2小的数，答案是-1，7左边第一个小的数是2，5左边第一个小的数是2，所以最后答案是[-1, 3, -1, 2, 2]。
+...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -257,7 +260,14 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>0. 欧几里得算法 欧几里得算法用于求解两个数的最大公约数。代码如下: int gcd(int a, int b){ if(b == 0) return a; return gcd(b, a % b); } 当b为0时，结束递归，此时a即为a和b的最大公约数。 1. 裴蜀定理 定理内容： 如果a、b均是整数，则一定存在整数x和y，使得ax &#43; by = gcd(a, b)成立。 我们可以再深层次的理解一下式子ax &#43; by = gcd(a, b...</p>
+      <p>0. 欧几里得算法 欧几里得算法用于求解两个数的最大公约数。代码如下:
+int gcd(int a, int b){ if(b == 0) return a; return gcd(b, a % b); } 当b为0时，结束递归，此时a即为a和b的最大公约数。
+1. 裴蜀定理 定理内容：
+如果a、b均是整数，则一定存在整数x和y，使得ax &#43; by = gcd(a, b)成立。
+我们可以再深层次的理解一下式子ax &#43; by = gcd(a, b)的含义，也就是说，整数a和整数b进行线性运算，可以拼凑出他们的最大公约数。再想一想，是不是也可以拼凑出他们最大公约数的整数倍？是的，可以拼凑出他们最大公约数的在整数倍，只要x和y进行对应的放大或缩小就可以了。
+那也就是说，只要等号右侧是gcd(a,b)的整数倍，就一定存在整数x和整数y。（注意这里，后边用扩展欧几里得求解线性同余方程时会用到）
+注意定理中说的是一定存在整数x和整数y，但是并没有告诉我们如何找到x和y，扩展欧几里得算法可以找到整数x和整数y。
+...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -304,7 +314,11 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>模板代码： typedef long long ll; ll quick_pow(ll a,ll b){ ll res = 1; while(b &gt; 0){ if(b &amp; 1){ res *= a; } a *= a; b &gt;&gt;= 1; } return res; } 这里以a^10为例，说一下对快速幂代码的理解。 右下角的o表示这是十进制数 这里写错了，图片中不应该是o，应该d，d表示这是十进制数 ，b表示这是二进制数。可以得到以下的几个式子，都是逐步变换得出来的。 最后一个式...</p>
+      <p>模板代码：
+typedef long long ll; ll quick_pow(ll a,ll b){ ll res = 1; while(b &gt; 0){ if(b &amp; 1){ res *= a; } a *= a; b &gt;&gt;= 1; } return res; } 这里以a^10为例，说一下对快速幂代码的理解。
+右下角的o表示这是十进制数 这里写错了，图片中不应该是o，应该d，d表示这是十进制数 ，b表示这是二进制数。可以得到以下的几个式子，都是逐步变换得出来的。
+最后一个式子可以很好的理解模板代码，可以看到，等号右侧有4项，这4项的幂次是1010，也就是10的二进制表达的每一位。所以，这就要求出幂指数10的二进制的每一位，而且，最后一个式子中，幂次是0的项（第二项和第四项）其实是1，对结果没有贡献，那我们就可以考虑，求出幂指数10的每一位以后，进行判断，如果这一位是0，那就不予考虑了，如果是1的话，就把这一项乘到原有的结果中，也就是代码中的这几行
+...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>

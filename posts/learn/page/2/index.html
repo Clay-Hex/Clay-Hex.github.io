@@ -58,10 +58,7 @@
     </style>
 </noscript>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
-  
-
-<meta property="og:title" content="📚 学习" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><meta property="og:title" content="📚 学习" />
 <meta property="og:description" content="Clay的博客,Clay&#39;s Blog,hugo,paperMod,c&#43;&#43;" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://www.clayhex.com/posts/learn/" />
@@ -180,11 +177,114 @@
 <article class="post-entry">
   <div class="post-info">
     <header class="entry-header">
+      <h2 class="entry-hint-parent">小数在计算机中的存储方式
+      </h2>
+    </header>
+    <div class="entry-content">
+      <p>0. 小数在计算机中的存储 两种方法：
+定点 浮点 1. 定点数 顾名思义，小数点的位置固定的。
+也就是说，用固定数量的bit存储整数部分，也用固定数量的bit存储小数部分，另外再用一个bit存储符号位。
+计算时，将三个部分拼接起来，加个小数点即可。
+优点：小数点位置固定，方便计算。
+缺点：表示输的范围受限。
+2. 浮点数 浮点数在计算机中的存储依赖科学计数法。
+...</p>
+    </div>
+    <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2021-08-17
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>485字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+</span></footer>
+  </div> 
+
+  <a class="entry-link" aria-label="post link to 小数在计算机中的存储方式" href="https://www.clayhex.com/posts/2021/08/floating-point-and-fixed-point-storage-method/"></a>
+</article>
+
+<article class="post-entry">
+  <div class="post-info">
+    <header class="entry-header">
+      <h2 class="entry-hint-parent">C&#43;&#43;学习记录(12) 类型转换
+      </h2>
+    </header>
+    <div class="entry-content">
+      <p> 0. 必要性 C语言中的类型转换，没有安全检查，安全性需要程序猿来保证，C&#43;&#43;提供了4种类型转换的方法，在一定程度上保证转换的安全性。
+重点是 dynamic_cast
+1. const_cast 仅用于去除类型的const属性，也是四种类型转换中，唯一可以去掉const限制的方法。
+只能转换 指针、引用、this（在类内的时候用）。 2. static_cast 隐式转换能转的，它都能转，但是也有例外（父类指针 转 子类指针）。
+...</p>
+    </div>
+    <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2021-08-02
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>739字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    <span id="post_meta_style_6">
+        <span class="fa fa-tags" style="opacity: 0.8"></span>
+        <span>
+            <span class="post-tags-meta">
+                <a href="https://www.clayhex.com/tags/c&#43;&#43;/" style="color: var(--secondary)!important;">C&#43;&#43;</a>
+            </span>
+        </span>
+    </span>
+</span></footer>
+  </div> 
+
+  <a class="entry-link" aria-label="post link to C&#43;&#43;学习记录(12) 类型转换" href="https://www.clayhex.com/posts/2021/08/cpp-type-conversion/"></a>
+</article>
+
+<article class="post-entry">
+  <div class="post-info">
+    <header class="entry-header">
       <h2 class="entry-hint-parent">C&#43;&#43;学习记录(11) 智能指针
       </h2>
     </header>
     <div class="entry-content">
-      <p>1. 什么是智能指针 简而言之，为了更安全的使用指针。 实现方式简单来说，就是用一个模板类把一般的指针包装起来。用这个类来维护内部指针的释放操作。 std中有四种智能指针。 auto_ptr（已弃用） unique_ptr shared_ptr weak_ptr 2. auto_ptr 比较简单的智能指针，实现逻辑如下代码。 实现的原则是：内存空间只能由一个指针所拥有。...</p>
+      <p>1. 什么是智能指针 简而言之，为了更安全的使用指针。
+实现方式简单来说，就是用一个模板类把一般的指针包装起来。用这个类来维护内部指针的释放操作。
+std中有四种智能指针。
+auto_ptr（已弃用） unique_ptr shared_ptr weak_ptr 2. auto_ptr 比较简单的智能指针，实现逻辑如下代码。
+实现的原则是：内存空间只能由一个指针所拥有。
+存在的问题：拷贝和赋值后，原对象内部的指针会为空，有风险。
+...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -231,7 +331,10 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>0. 原材料 抓包工具：wireshark 许多文章都是使用浏览器去访问一个网站，抓http的包，进而分析下层的tcp协议过程，但是数据比较多，不清晰，所以我采用了TCP调试助手，这样的话，没有http数据的干预，比较清晰。 1. 环境 借用www.huawei.com的ip地址183.66.1...</p>
+      <p>0. 原材料 抓包工具：wireshark
+许多文章都是使用浏览器去访问一个网站，抓http的包，进而分析下层的tcp协议过程，但是数据比较多，不清晰，所以我采用了TCP调试助手，这样的话，没有http数据的干预，比较清晰。
+1. 环境 借用www.huawei.com的ip地址183.66.110.167。
+...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -278,7 +381,9 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>0. 为什么要内存对齐？ 经过内存对齐之后，一个最最主要的原因是可以使得CPU的内存访问速度大大提升。 内存空间按照byte划分，从理论上讲似乎对任何类型的变量的访问可以从任何地址开始，但实际情况是在访问特定变量的时候经常在特定的内存地址访问，这就需要各类型数据按照一定的规则在空间上排列...</p>
+      <p>0. 为什么要内存对齐？ 经过内存对齐之后，一个最最主要的原因是可以使得CPU的内存访问速度大大提升。
+内存空间按照byte划分，从理论上讲似乎对任何类型的变量的访问可以从任何地址开始，但实际情况是在访问特定变量的时候经常在特定的内存地址访问，这就需要各类型数据按照一定的规则在空间上排列，而不是顺序的一个接一个的排放，这就是对齐。
+...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -325,7 +430,9 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>转自：https://www.cnblogs.com/stemon/p/4406824.html 前几天女票问了我一个阿里的面试题，是有关C&#43;&#43;语言的const常量的，其实她一提出来我就知道考察的点了：肯定是const常量的内存不是分配在read-only的存储区的，const常量...</p>
+      <p>转自：https://www.cnblogs.com/stemon/p/4406824.html
+前几天女票问了我一个阿里的面试题，是有关C&#43;&#43;语言的const常量的，其实她一提出来我就知道考察的点了：肯定是const常量的内存不是分配在read-only的存储区的，const常量的内存分配区是很普通的栈或者全局区域。也就是说const常量只是编译器在编译的时候做检查，根本不存在什么read-only的区域。
+...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -372,7 +479,12 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>序： 记录学习过程中自己的理解以及遇到的问题，慢慢补充。 若有错误，还希望各位大佬不吝赐教。 0. 零零散散 0.1 公开数据集 Middlebury：https://vision.middlebury.edu/stereo/data/(室内) KITTI：http://www.cvlibs.net/...</p>
+      <p>序： 记录学习过程中自己的理解以及遇到的问题，慢慢补充。
+若有错误，还希望各位大佬不吝赐教。
+0. 零零散散 0.1 公开数据集 Middlebury：https://vision.middlebury.edu/stereo/data/(室内)
+KITTI：http://www.cvlibs.net/datasets/kitti/stereo(室外驾驶)
+SceneFlow：https://lmb.informatik.uni-freiburg.de/resources/datasets
+...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -419,7 +531,11 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>0. 原材料 libSGM开源库是一个使用CUDA对半全局匹配算法SGM的加速实现版本。 英伟达显卡（算力 &gt;= 3.5） cuda环境（我的版本是cuda 10.0） OpenCV（版本 &gt;= 3.0） Cmake（版本&gt;=3.1） 1. 源码下载和编译 1.0 代码clone 开源库地址： https://github.com/fixstars/libSGM 先把代码clone到本...</p>
+      <p>0. 原材料 libSGM开源库是一个使用CUDA对半全局匹配算法SGM的加速实现版本。
+英伟达显卡（算力 &gt;= 3.5） cuda环境（我的版本是cuda 10.0） OpenCV（版本 &gt;= 3.0） Cmake（版本&gt;=3.1） 1. 源码下载和编译 1.0 代码clone 开源库地址：
+https://github.com/fixstars/libSGM
+先把代码clone到本地来。
+...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -466,7 +582,12 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>0. 原料 windows系统的主机 mosquitto软件 1. 下载和安装mosquitto mosquitto可以自己到GitHub上下载源码根据自己实际需求进行编译，也可以直接使用官方提供的二进制文件，我这里直接用的官方二进制文件。 到http://mosquitto.org/files/...</p>
+      <p>0. 原料 windows系统的主机 mosquitto软件 1. 下载和安装mosquitto mosquitto可以自己到GitHub上下载源码根据自己实际需求进行编译，也可以直接使用官方提供的二进制文件，我这里直接用的官方二进制文件。
+到http://mosquitto.org/files/binary/下载对应windows版本的mqtt服务端软件。
+我下载了这一版。
+2. 配置mosquitto 只需要配置mosquitto.conf文件。
+根据我的实际需求，要开启匿名登录和远程访问。
+...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -505,7 +626,12 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>0. 模板 C&#43;&#43;中除了有面向对象的思想，还有泛型编程的思想，泛型编程利用的主要技术就是模板。 C&#43;&#43;中两种模板：函数模板、类模板 语法： template&lt;typename T&gt; 函数声明或定义 含义： template 固定的，声明创建模板 typename 表明后边的T是一种数据类型，也可以用class代替 T 类似形参，任意的合法字符都可以，习惯上用 T 模板有两种...</p>
+      <p>0. 模板 C&#43;&#43;中除了有面向对象的思想，还有泛型编程的思想，泛型编程利用的主要技术就是模板。
+C&#43;&#43;中两种模板：函数模板、类模板
+语法：
+template&lt;typename T&gt; 函数声明或定义 含义：
+template 固定的，声明创建模板 typename 表明后边的T是一种数据类型，也可以用class代替 T 类似形参，任意的合法字符都可以，习惯上用 T 模板有两种类型推导的方式，一种是编译器自动推导，另外一种是程序猿手动指定：
+...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -552,7 +678,11 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>0. 基本语法 多态是面向对象的三大特性之一。 多态：多态即调用成员函数时，会根据调用函数的对象的类型来执行不同的函数。 多态分为两类 静态多态：函数重载 和 运算符重载 属于静态多态，是对函数名的复用。 动态多态：派生类和虚函数实现运行时多态。 静态多态的函数地址早绑定， 编译阶段确定函数地址。 动态多...</p>
+      <p>0. 基本语法 多态是面向对象的三大特性之一。
+多态：多态即调用成员函数时，会根据调用函数的对象的类型来执行不同的函数。
+多态分为两类
+静态多态：函数重载 和 运算符重载 属于静态多态，是对函数名的复用。 动态多态：派生类和虚函数实现运行时多态。 静态多态的函数地址早绑定， 编译阶段确定函数地址。 动态多态的函数地址晚绑定， 运行阶段确定函数地址。 引入虚函数，就是为了通过函数重写实现多态的效果。
+...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -599,7 +729,13 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>0. 基本语法 继承是面向对象的三大特性之一。 class 子类 ： 继承方式 父类 从父类继承来的表现其共性，而新增的成员表现其个性。 1. 继承方式 三种继承方式 public protected private 父类中的private成员，无论哪种方式都不能访问。 2. 继承中的对象模型 问题：从父类继承来的成员，哪些属于子类对象中？ 输出子类的sizeof可以...</p>
+      <p>0. 基本语法 继承是面向对象的三大特性之一。
+class 子类 ： 继承方式 父类
+从父类继承来的表现其共性，而新增的成员表现其个性。
+1. 继承方式 三种继承方式
+public protected private 父类中的private成员，无论哪种方式都不能访问。 2. 继承中的对象模型 问题：从父类继承来的成员，哪些属于子类对象中？
+输出子类的sizeof可以看出，父类中的所有非静态成员都会被子类继承下去，无论哪种继承方式。
+...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -646,7 +782,11 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>0. 类的4个默认函数 4个函数：构造函数、析构函数、拷贝构造函数、赋值号重载函数。 在定义类时，如果没有自定义这些函数，编译器会提供默认的函数，在默认的函数中，构造函数、析构函数默认空实现，拷贝构造函数、赋值号重载函数默认是浅拷贝。 拷贝构造函数作用： 参数是一个同类型的对象，直接拷贝这个...</p>
+      <p>0. 类的4个默认函数 4个函数：构造函数、析构函数、拷贝构造函数、赋值号重载函数。
+在定义类时，如果没有自定义这些函数，编译器会提供默认的函数，在默认的函数中，构造函数、析构函数默认空实现，拷贝构造函数、赋值号重载函数默认是浅拷贝。
+拷贝构造函数作用：
+参数是一个同类型的对象，直接拷贝这个参数的所有属性，注意，这个拷贝默认是浅拷贝，需要深拷贝的话需要重载拷贝构造函数。 【注】
+...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -693,7 +833,12 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>0. 引用的本质 本质：引用在C&#43;&#43;内部的实现是一个指针常量（* const）。 const就限制了必须要初始化，并且初始化以后不可更改。 它不是一个对象，所以没有引用的引用。 1. 注意事项 引用必须初始化 引用在初始化后不可修改 2. 引用做函数参数 与指针传递相似 3. 引用做函数返回值 与指针一样，不要返回局...</p>
+      <p>0. 引用的本质 本质：引用在C&#43;&#43;内部的实现是一个指针常量（* const）。
+const就限制了必须要初始化，并且初始化以后不可更改。
+它不是一个对象，所以没有引用的引用。
+1. 注意事项 引用必须初始化 引用在初始化后不可修改 2. 引用做函数参数 与指针传递相似
+3. 引用做函数返回值 与指针一样，不要返回局部变量（栈区空间）的引用 函数的调用可以作为左值 int&amp; test(){ static int a = 10; return a; } int main(){ int &amp;ss = test(); test() = 100; // 引用作为左值 cout &lt;&lt; ss &lt;&lt; endl; // 输出100 return 0; } 4. 常量引用 作用：在函数中用来修饰形参，防止误操作。
+...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -740,7 +885,11 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>两个比较容易混淆的概念。 0. 记忆方法 const int * p; int * const p; int const * p; 这是常见的三种写法，按照从左至右的顺序记忆，按照从右至左的顺序理解。 记忆 只关注const 和 * 的先后先后顺序，const读做常量，*读做指针。 参考《Effective c&#43;&#43;》Item21上的做法，如果const位于星号的左侧...</p>
+      <p>两个比较容易混淆的概念。
+0. 记忆方法 const int * p; int * const p; int const * p; 这是常见的三种写法，按照从左至右的顺序记忆，按照从右至左的顺序理解。
+记忆 只关注const 和 * 的先后先后顺序，const读做常量，*读做指针。
+参考《Effective c&#43;&#43;》Item21上的做法，如果const位于星号的左侧，则const就是用来修饰指针所指向的变量，即指针指向为常量；如果const位于星号的右侧，const就是修饰指针本身，即指针本身是常量。
+...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -778,100 +927,6 @@
   </div> 
 
   <a class="entry-link" aria-label="post link to C&#43;&#43;学习记录(3) 常量指针与指针常量" href="https://www.clayhex.com/posts/2021/02/cpp-constant-pointer-and-pointer-constant/"></a>
-</article>
-
-<article class="post-entry">
-  <div class="post-info">
-    <header class="entry-header">
-      <h2 class="entry-hint-parent">单调栈与单调队列详解
-      </h2>
-    </header>
-    <div class="entry-content">
-      <p>1. 单调栈 1.1 可解决的问题 单调栈的使用场景时分有限，只处理一种典型的问题，叫做 Next Greater Element。 例如：在一个数组中，每个数左边（右边）第一个比它大（小）的数是什么。 1.2 详解 直接上例子解释它。 题目：给出一个原始数组 a[3, 4, 2, 7, 5]，输出每个数左边第一个比它小的数，如果不存在则输出-1。 解释...</p>
-    </div>
-    <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
-        <span class="fa fa-calendar"></span>
-        <span>2021-02-09
-            &nbsp;&nbsp;
-        </span>
-    </span>
-    
-    
-    
-    
-    
-    
-    
-    <span id="post_meta_style_3">
-        <span class="fa fa-file-word-o"></span>
-        <span>2319字
-            &nbsp;&nbsp;
-        </span>
-    </span><span id="post_meta_style_5">
-        <span class="fa fa-user-o"></span>
-        <span>Clay
-            &nbsp;&nbsp;
-        </span>
-    </span>
-    <span id="post_meta_style_6">
-        <span class="fa fa-tags" style="opacity: 0.8"></span>
-        <span>
-            <span class="post-tags-meta">
-                <a href="https://www.clayhex.com/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" style="color: var(--secondary)!important;">数据结构与算法</a>
-            </span>
-        </span>
-    </span>
-</span></footer>
-  </div> 
-
-  <a class="entry-link" aria-label="post link to 单调栈与单调队列详解" href="https://www.clayhex.com/posts/2021/02/monotone-stack-monotone-queue/"></a>
-</article>
-
-<article class="post-entry">
-  <div class="post-info">
-    <header class="entry-header">
-      <h2 class="entry-hint-parent">C&#43;&#43;学习记录(2) Lambda表达式（匿名函数）
-      </h2>
-    </header>
-    <div class="entry-content">
-      <p>Lambda表达式 Lambda表达式 形式 [capture](params) -&gt; return-type{ function body } 说明 capture 需要捕获的外部变量列表（这里的外部变量不包括程序的全局变量，指的是匿名函数父作用域内的变量）。 如果这个匿名函数需要调用本匿名函数以外的变量，那么就需要在这个[ ] 中进行捕获，捕获包括捕获的变量名称和捕获的方式（值和引用）。 例...</p>
-    </div>
-    <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
-        <span class="fa fa-calendar"></span>
-        <span>2021-01-28
-            &nbsp;&nbsp;
-        </span>
-    </span>
-    
-    
-    
-    
-    
-    
-    
-    <span id="post_meta_style_3">
-        <span class="fa fa-file-word-o"></span>
-        <span>607字
-            &nbsp;&nbsp;
-        </span>
-    </span><span id="post_meta_style_5">
-        <span class="fa fa-user-o"></span>
-        <span>Clay
-            &nbsp;&nbsp;
-        </span>
-    </span>
-    <span id="post_meta_style_6">
-        <span class="fa fa-tags" style="opacity: 0.8"></span>
-        <span>
-            <span class="post-tags-meta">
-                <a href="https://www.clayhex.com/tags/c&#43;&#43;/" style="color: var(--secondary)!important;">C&#43;&#43;</a>
-            </span>
-        </span>
-    </span>
-</span></footer>
-  </div> 
-
-  <a class="entry-link" aria-label="post link to C&#43;&#43;学习记录(2) Lambda表达式（匿名函数）" href="https://www.clayhex.com/posts/2021/01/cpp-lambda-function/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

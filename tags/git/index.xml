@@ -13,7 +13,9 @@
       <link>https://www.clayhex.com/posts/2024/07/git-recovery-deleted-branch/</link>
       <pubDate>Wed, 10 Jul 2024 21:14:10 +0800</pubDate>
       <guid>https://www.clayhex.com/posts/2024/07/git-recovery-deleted-branch/</guid>
-      <description>最近在开发中，需要恢复git中已经删除的分支。 情况是这样，有两个开发分支，dev_1和dev_2，之所以维护两个，是因为需求存在分叉。 最近在dev_1上出现了bug，所以，我开了一个fix分支出来进行修复，修复完毕后，merge回dev_1上了，接着就把这个fix分支删除了。但是</description>
+      <description>&lt;p&gt;最近在开发中，需要恢复git中已经删除的分支。&lt;br&gt;
+情况是这样，有两个开发分支，&lt;code&gt;dev_1&lt;/code&gt;和&lt;code&gt;dev_2&lt;/code&gt;，之所以维护两个，是因为需求存在分叉。&lt;br&gt;
+最近在&lt;code&gt;dev_1&lt;/code&gt;上出现了bug，所以，我开了一个&lt;code&gt;fix&lt;/code&gt;分支出来进行修复，修复完毕后，&lt;code&gt;merge&lt;/code&gt;回&lt;code&gt;dev_1&lt;/code&gt;上了，接着就把这个&lt;code&gt;fix&lt;/code&gt;分支删除了。但是，这些改动仍然需要fix到&lt;code&gt;dev_2&lt;/code&gt;上，此时，办法不唯一。&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
