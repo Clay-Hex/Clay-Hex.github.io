@@ -6,8 +6,26 @@
     <description>Recent content in 📚 学习 on Clay&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Wed, 21 Aug 2024 23:24:46 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 19 Sep 2024 22:19:02 +0800</lastBuildDate>
     <atom:link href="https://www.clayhex.com/posts/learn/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Git仓库迁移</title>
+      <link>https://www.clayhex.com/posts/2024/09/git-repo-migration/</link>
+      <pubDate>Thu, 19 Sep 2024 22:19:02 +0800</pubDate>
+      <guid>https://www.clayhex.com/posts/2024/09/git-repo-migration/</guid>
+      <description>&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git clone --bare old/repo.git
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; repo.git
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# if 有lfs的话&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git lfs fetch --all
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git lfs push --all new/repo.git
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# endif&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git push --mirror new/repo.git
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;上边这种方式比较简单和快捷，首先使用&lt;code&gt;--bare&lt;/code&gt;的方式直接克隆旧服务器上的仓库到本地，这种方式的克隆没有本地工作区的参与。然后使用&lt;code&gt;--mirror&lt;/code&gt;的方式推送到新的服务器上就行，推送前，服务器上要先建立出空的仓库。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;还有一种就是常规的方式：&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Anaconda的平替 - Miniforge</title>
       <link>https://www.clayhex.com/posts/2024/08/miniforge-replaces-anaconda/</link>

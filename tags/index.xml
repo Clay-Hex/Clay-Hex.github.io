@@ -6,8 +6,15 @@
     <description>Recent content in 📛 标签 on Clay&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Thu, 11 Jul 2024 21:14:16 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 19 Sep 2024 22:19:02 +0800</lastBuildDate>
     <atom:link href="https://www.clayhex.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Git</title>
+      <link>https://www.clayhex.com/tags/git/</link>
+      <pubDate>Thu, 19 Sep 2024 22:19:02 +0800</pubDate>
+      <guid>https://www.clayhex.com/tags/git/</guid>
+      <description></description>
+    </item>
     <item>
       <title>C&#43;&#43;</title>
       <link>https://www.clayhex.com/tags/c&#43;&#43;/</link>
@@ -20,13 +27,6 @@
       <link>https://www.clayhex.com/tags/python/</link>
       <pubDate>Thu, 11 Jul 2024 21:14:16 +0800</pubDate>
       <guid>https://www.clayhex.com/tags/python/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Git</title>
-      <link>https://www.clayhex.com/tags/git/</link>
-      <pubDate>Wed, 10 Jul 2024 21:14:10 +0800</pubDate>
-      <guid>https://www.clayhex.com/tags/git/</guid>
       <description></description>
     </item>
     <item>

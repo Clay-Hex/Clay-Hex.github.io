@@ -5,16 +5,22 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Anaconda的平替 - Miniforge | Clay&#39;s Blog</title>
-<meta name="keywords" content="Anaconda, Miniforge, conda-forge">
-<meta name="description" content="Anaconda在2020年的一次公告中宣布，对于团队用户，他们将开始收费。
+<title>Git仓库迁移 | Clay&#39;s Blog</title>
+<meta name="keywords" content="Git, Git migration">
+<meta name="description" content="git clone --bare old/repo.git
+cd repo.git
 
-团队人数少于200人，可以继续免费使用。
-收费的范围是Anaconda团队提供的default通道中的软件包。
+# if 有lfs的话
+git lfs fetch --all
+git lfs push --all new/repo.git
+# endif
 
-如果我继续使用Anaconda发行版软件，但是不用Anaconda的下载通道，要不要付费呢？ 没有实践，直接卸载吧还是。">
+git push --mirror new/repo.git
+上边这种方式比较简单和快捷，首先使用--bare的方式直接克隆旧服务器上的仓库到本地，这种方式的克隆没有本地工作区的参与。然后使用--mirror的方式推送到新的服务器上就行，推送前，服务器上要先建立出空的仓库。
+
+还有一种就是常规的方式：">
 <meta name="author" content="Clay">
-<link rel="canonical" href="https://www.clayhex.com/posts/2024/08/miniforge-replaces-anaconda/">
+<link rel="canonical" href="https://www.clayhex.com/posts/2024/09/git-repo-migration/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.js" onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://www.clayhex.com/favicon.ico">
@@ -24,7 +30,7 @@
 <link rel="mask-icon" href="https://www.clayhex.com/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="zh" href="https://www.clayhex.com/posts/2024/08/miniforge-replaces-anaconda/">
+<link rel="alternate" hreflang="zh" href="https://www.clayhex.com/posts/2024/09/git-repo-migration/">
 <noscript>
     <style>
         #theme-toggle,
@@ -63,26 +69,40 @@
     </style>
 </noscript>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><meta property="og:title" content="Anaconda的平替 - Miniforge" />
-<meta property="og:description" content="Anaconda在2020年的一次公告中宣布，对于团队用户，他们将开始收费。
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><meta property="og:title" content="Git仓库迁移" />
+<meta property="og:description" content="git clone --bare old/repo.git
+cd repo.git
 
-团队人数少于200人，可以继续免费使用。
-收费的范围是Anaconda团队提供的default通道中的软件包。
+# if 有lfs的话
+git lfs fetch --all
+git lfs push --all new/repo.git
+# endif
 
-如果我继续使用Anaconda发行版软件，但是不用Anaconda的下载通道，要不要付费呢？ 没有实践，直接卸载吧还是。" />
+git push --mirror new/repo.git
+上边这种方式比较简单和快捷，首先使用--bare的方式直接克隆旧服务器上的仓库到本地，这种方式的克隆没有本地工作区的参与。然后使用--mirror的方式推送到新的服务器上就行，推送前，服务器上要先建立出空的仓库。
+
+还有一种就是常规的方式：" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://www.clayhex.com/posts/2024/08/miniforge-replaces-anaconda/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2024-08-21T23:24:46+08:00" />
-<meta property="article:modified_time" content="2024-08-21T23:24:46+08:00" />
+<meta property="og:url" content="https://www.clayhex.com/posts/2024/09/git-repo-migration/" />
+<meta property="og:image" content="https://www.clayhex.com/cover/git.png" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-09-19T22:19:02+08:00" />
+<meta property="article:modified_time" content="2024-09-19T22:19:02+08:00" />
 
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Anaconda的平替 - Miniforge"/>
-<meta name="twitter:description" content="Anaconda在2020年的一次公告中宣布，对于团队用户，他们将开始收费。
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://www.clayhex.com/cover/git.png" />
+<meta name="twitter:title" content="Git仓库迁移"/>
+<meta name="twitter:description" content="git clone --bare old/repo.git
+cd repo.git
 
-团队人数少于200人，可以继续免费使用。
-收费的范围是Anaconda团队提供的default通道中的软件包。
+# if 有lfs的话
+git lfs fetch --all
+git lfs push --all new/repo.git
+# endif
 
-如果我继续使用Anaconda发行版软件，但是不用Anaconda的下载通道，要不要付费呢？ 没有实践，直接卸载吧还是。"/>
+git push --mirror new/repo.git
+上边这种方式比较简单和快捷，首先使用--bare的方式直接克隆旧服务器上的仓库到本地，这种方式的克隆没有本地工作区的参与。然后使用--mirror的方式推送到新的服务器上就行，推送前，服务器上要先建立出空的仓库。
+
+还有一种就是常规的方式："/>
 
 
 <script type="application/ld+json">
@@ -105,8 +125,8 @@
     {
       "@type": "ListItem",
       "position":  3 ,
-      "name": "Anaconda的平替 - Miniforge",
-      "item": "https://www.clayhex.com/posts/2024/08/miniforge-replaces-anaconda/"
+      "name": "Git仓库迁移",
+      "item": "https://www.clayhex.com/posts/2024/09/git-repo-migration/"
     }
   ]
 }
@@ -115,24 +135,24 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "Anaconda的平替 - Miniforge",
-  "name": "Anaconda的平替 - Miniforge",
-  "description": "Anaconda在2020年的一次公告中宣布，对于团队用户，他们将开始收费。\n团队人数少于200人，可以继续免费使用。 收费的范围是Anaconda团队提供的default通道中的软件包。 如果我继续使用Anaconda发行版软件，但是不用Anaconda的下载通道，要不要付费呢？ 没有实践，直接卸载吧还是。\n",
+  "headline": "Git仓库迁移",
+  "name": "Git仓库迁移",
+  "description": "git clone --bare old/repo.git cd repo.git # if 有lfs的话 git lfs fetch --all git lfs push --all new/repo.git # endif git push --mirror new/repo.git 上边这种方式比较简单和快捷，首先使用--bare的方式直接克隆旧服务器上的仓库到本地，这种方式的克隆没有本地工作区的参与。然后使用--mirror的方式推送到新的服务器上就行，推送前，服务器上要先建立出空的仓库。\n还有一种就是常规的方式：\n",
   "keywords": [
-    "Anaconda", "Miniforge", "conda-forge"
+    "Git", "Git migration"
   ],
-  "articleBody": "Anaconda在2020年的一次公告中宣布，对于团队用户，他们将开始收费。\n团队人数少于200人，可以继续免费使用。 收费的范围是Anaconda团队提供的default通道中的软件包。 如果我继续使用Anaconda发行版软件，但是不用Anaconda的下载通道，要不要付费呢？ 没有实践，直接卸载吧还是。\n有鉴于此，我平移到了Miniforge，几乎无痛，Miniforge和Anaconda相比：\n底层都是调用conda来管理环境，而conda是开源的产品。 Anaconda是商业公司，他们提供的Anaconda发行版的产品中，default通道是使用他们的，所以，这里的软件包是有Anaconda公司劳动成本的。 conda-forge是一个开源组织，他们提供很多conda可用的软件包，通过Miniforge可以使用它们，Miniforge的default通道换成了conda-forge，是免费的。 顺手记录一个问题（不算Bug，毕竟代码里就这样写的，只能说不及我的预期吧）：\n问题：\n自定义envs的存储文件夹后，即修改了envs_dirs变量，然后使用conda env list查看环境列表时，不显示环境的名字，始终显示为路径。 激活环境后，命令行前边的Prompt，也显示的是具体路径，不是环境名字。 前置:\n我没有修改过env_prompt，并且确认了它的值是'{default_env}'，不是其他。\n原因：\n查看了源代码，这不是Miniforge的问题，是conda的问题，conda在解析环境名的时候，环境所在的文件夹名字必须是envs，才能解析出名字。详见下面文件\n# repo/conda/activate.py def _default_env(self, prefix): if paths_equal(prefix, context.root_prefix): return \"base\" return basename(prefix) if basename(dirname(prefix)) == \"envs\" else prefix ",
-  "wordCount" : "697",
+  "articleBody": "git clone --bare old/repo.git cd repo.git # if 有lfs的话 git lfs fetch --all git lfs push --all new/repo.git # endif git push --mirror new/repo.git 上边这种方式比较简单和快捷，首先使用--bare的方式直接克隆旧服务器上的仓库到本地，这种方式的克隆没有本地工作区的参与。然后使用--mirror的方式推送到新的服务器上就行，推送前，服务器上要先建立出空的仓库。\n还有一种就是常规的方式：\n从旧仓库正常克隆下来，或者之前本地已经存在的仓库。 根据需要，可以选择性的推送哪些分支、标签等到新的仓库上。 ",
+  "wordCount" : "200",
   "inLanguage": "zh",
-  "datePublished": "2024-08-21T23:24:46+08:00",
-  "dateModified": "2024-08-21T23:24:46+08:00",
+  "image":"https://www.clayhex.com/cover/git.png","datePublished": "2024-09-19T22:19:02+08:00",
+  "dateModified": "2024-09-19T22:19:02+08:00",
   "author":{
     "@type": "Person",
     "name": "Clay"
   },
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://www.clayhex.com/posts/2024/08/miniforge-replaces-anaconda/"
+    "@id": "https://www.clayhex.com/posts/2024/09/git-repo-migration/"
   },
   "publisher": {
     "@type": "Organization",
@@ -229,11 +249,11 @@
   <header class="post-header">
     <div class="breadcrumbs"><a href="https://www.clayhex.com/">主页</a>&nbsp;»&nbsp;<a href="https://www.clayhex.com/posts/">📒 记录</a>&nbsp;»&nbsp;<a href="https://www.clayhex.com/posts/learn/">📚 学习</a></div>
     <h1 class="post-title entry-hint-parent">
-      Anaconda的平替 - Miniforge
+      Git仓库迁移
     </h1>
     <div class="post-meta"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
-        <span>2024-08-21
+        <span>2024-09-19
             &nbsp;&nbsp;
         </span>
     </span>
@@ -246,7 +266,7 @@
     
     <span id="post_meta_style_3">
         <span class="fa fa-file-word-o"></span>
-        <span>697字
+        <span>200字
             &nbsp;&nbsp;
         </span>
     </span><span id="post_meta_style_5">
@@ -255,62 +275,50 @@
             &nbsp;&nbsp;
         </span>
     </span>
+    <span id="post_meta_style_6">
+        <span class="fa fa-tags" style="opacity: 0.8"></span>
+        <span>
+            <span class="post-tags-meta">
+                <a href="https://www.clayhex.com/tags/git/" style="color: var(--secondary)!important;">Git</a>
+            </span>
+        </span>
+    </span>
 </span>
 
 </div>
   </header> 
-  <div class="post-content"><p>Anaconda在2020年的一次公告中宣布，对于团队用户，他们将开始收费。</p>
-<ul>
-<li>团队人数少于200人，可以继续免费使用。</li>
-<li>收费的范围是Anaconda团队提供的default通道中的软件包。</li>
-</ul>
-<p>如果我继续使用Anaconda发行版软件，但是不用Anaconda的下载通道，要不要付费呢？ 没有实践，直接卸载吧还是。</p>
-<p>有鉴于此，我平移到了Miniforge，几乎无痛，Miniforge和Anaconda相比：</p>
-<ul>
-<li>底层都是调用conda来管理环境，而conda是开源的产品。</li>
-<li>Anaconda是商业公司，他们提供的Anaconda发行版的产品中，default通道是使用他们的，所以，这里的软件包是有Anaconda公司劳动成本的。</li>
-<li>conda-forge是一个开源组织，他们提供很多conda可用的软件包，通过Miniforge可以使用它们，Miniforge的default通道换成了conda-forge，是免费的。</li>
-</ul>
-<hr>
-<p>顺手记录一个问题（不算Bug，毕竟代码里就这样写的，只能说不及我的预期吧）：<br>
-问题：</p>
-<blockquote>
-<ul>
-<li>自定义envs的存储文件夹后，即修改了<code>envs_dirs</code>变量，然后使用<code>conda env list</code>查看环境列表时，不显示环境的名字，始终显示为路径。</li>
-<li>激活环境后，命令行前边的Prompt，也显示的是具体路径，不是环境名字。</li>
-</ul>
-</blockquote>
-<p>前置:</p>
-<blockquote>
-<p>我没有修改过<code>env_prompt</code>，并且确认了它的值是<code>'{default_env}'</code>，不是其他。</p>
-</blockquote>
-<p>原因：</p>
-<blockquote>
-<p>查看了源代码，这不是Miniforge的问题，是conda的问题，conda在解析环境名的时候，环境所在的文件夹名字必须是<code>envs</code>，才能解析出名字。详见下面文件</p>
-</blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="c1"># repo/conda/activate.py</span>
+<figure class="entry-cover1"><img loading="eager" src="https://www.clayhex.com/cover/git.png" alt="">
+        
+</figure>
+  <div class="post-content"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git clone --bare old/repo.git
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> repo.git
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">_default_env</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">paths_equal</span><span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="n">context</span><span class="o">.</span><span class="n">root_prefix</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="s2">&#34;base&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">basename</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span> <span class="k">if</span> <span class="n">basename</span><span class="p">(</span><span class="n">dirname</span><span class="p">(</span><span class="n">prefix</span><span class="p">))</span> <span class="o">==</span> <span class="s2">&#34;envs&#34;</span> <span class="k">else</span> <span class="n">prefix</span>
-</span></span></code></pre></div>
+</span></span><span class="line"><span class="cl"><span class="c1"># if 有lfs的话</span>
+</span></span><span class="line"><span class="cl">git lfs fetch --all
+</span></span><span class="line"><span class="cl">git lfs push --all new/repo.git
+</span></span><span class="line"><span class="cl"><span class="c1"># endif</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">git push --mirror new/repo.git
+</span></span></code></pre></div><p>上边这种方式比较简单和快捷，首先使用<code>--bare</code>的方式直接克隆旧服务器上的仓库到本地，这种方式的克隆没有本地工作区的参与。然后使用<code>--mirror</code>的方式推送到新的服务器上就行，推送前，服务器上要先建立出空的仓库。</p>
+<hr>
+<p>还有一种就是常规的方式：</p>
+<ol>
+<li>从旧仓库正常克隆下来，或者之前本地已经存在的仓库。</li>
+<li>根据需要，可以选择性的推送哪些分支、标签等到新的仓库上。</li>
+</ol>
+
 
   </div>
 
   <footer class="post-footer">
     <ul class="post-tags">
+      <li><a href="https://www.clayhex.com/tags/git/">Git</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://www.clayhex.com/posts/2024/09/git-repo-migration/">
-    <span class="title">« 上一篇</span>
-    <br>
-    <span>Git仓库迁移</span>
-  </a>
-  <a class="next" href="https://www.clayhex.com/posts/2024/08/luigi-tasks/">
+  <a class="next" href="https://www.clayhex.com/posts/2024/08/miniforge-replaces-anaconda/">
     <span class="title">下一篇 »</span>
     <br>
-    <span>任务管线框架 - Luigi</span>
+    <span>Anaconda的平替 - Miniforge</span>
   </a>
 </nav>
 
