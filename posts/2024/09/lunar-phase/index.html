@@ -5,22 +5,95 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Git仓库迁移 | Clay&#39;s Blog</title>
-<meta name="keywords" content="Git, Git migration">
-<meta name="description" content="git clone --bare old/repo.git
-cd repo.git
+<title>月相 | Clay&#39;s Blog</title>
+<meta name="keywords" content="Moon, Lunar phase, Moon phase">
+<meta name="description" content="北半球的月相变化:
 
-# if 有lfs的话
-git lfs fetch --all
-git lfs push --all new/repo.git
-# endif
+  
+      
+          月相
+          图
+          升落
+          时间
+      
+  
+  
+      
+          新月（朔月）
+          \
+          与太阳几乎同升同落，所以地球上完全看不见
+          三十、初一
+      
+      
+          眉月
+          
+     
 
-git push --mirror new/repo.git
-上边这种方式比较简单和快捷，首先使用--bare的方式直接克隆旧服务器上的仓库到本地，这种方式的克隆没有本地工作区的参与。然后使用--mirror的方式推送到新的服务器上就行，推送前，服务器上要先建立出空的仓库。
 
-还有一种就是常规的方式：">
+          日出后月出，日落后月落，有点延迟，但不多。
+          初三、初四
+      
+      
+          上弦月
+          
+     
+
+
+          比太阳晚大约2/4个天空，正午时月升，日落时，月亮大概在正南方向，午夜时月落。
+          初七、初八
+      
+      
+          上凸月（盈凸月）
+          
+     
+
+
+          比太阳晚大约3/4个天空，日落时，月亮大概在东南方向。
+          十一、十二
+      
+      
+          满月（望月）
+          
+     
+
+
+          比太阳晚整个天空，日落时月升，日出时月落。
+          十五、十六
+      
+      
+          下凸月（亏凸月）
+          
+     
+
+
+          比太阳早3/4个天空，太阳在东南方向时，月落。
+          十九、廿
+      
+      
+          下弦月
+          
+     
+
+
+          比太阳早2/4个天空，午夜时月升，日出时，月亮大概在正南方向，正午时月落。
+          廿二，廿三
+      
+      
+          残月
+          
+     
+
+
+          月出后日出，月落后，日落，有点提前，但不多。
+          月末
+      
+  
+
+
+
+从一个新月，到下一个新月，叫一个“朔望月”，月相是连续变化的。">
 <meta name="author" content="Clay">
-<link rel="canonical" href="https://www.clayhex.com/posts/2024/09/git-repo-migration/">
+<link rel="canonical" href="https://www.clayhex.com/posts/2024/09/lunar-phase/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.js" onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://www.clayhex.com/favicon.ico">
@@ -30,7 +103,7 @@ git push --mirror new/repo.git
 <link rel="mask-icon" href="https://www.clayhex.com/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="zh" href="https://www.clayhex.com/posts/2024/09/git-repo-migration/">
+<link rel="alternate" hreflang="zh" href="https://www.clayhex.com/posts/2024/09/lunar-phase/">
 <noscript>
     <style>
         #theme-toggle,
@@ -69,40 +142,184 @@ git push --mirror new/repo.git
     </style>
 </noscript>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><meta property="og:title" content="Git仓库迁移" />
-<meta property="og:description" content="git clone --bare old/repo.git
-cd repo.git
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><meta property="og:title" content="月相" />
+<meta property="og:description" content="北半球的月相变化:
 
-# if 有lfs的话
-git lfs fetch --all
-git lfs push --all new/repo.git
-# endif
+  
+      
+          月相
+          图
+          升落
+          时间
+      
+  
+  
+      
+          新月（朔月）
+          \
+          与太阳几乎同升同落，所以地球上完全看不见
+          三十、初一
+      
+      
+          眉月
+          
+     
 
-git push --mirror new/repo.git
-上边这种方式比较简单和快捷，首先使用--bare的方式直接克隆旧服务器上的仓库到本地，这种方式的克隆没有本地工作区的参与。然后使用--mirror的方式推送到新的服务器上就行，推送前，服务器上要先建立出空的仓库。
 
-还有一种就是常规的方式：" />
+          日出后月出，日落后月落，有点延迟，但不多。
+          初三、初四
+      
+      
+          上弦月
+          
+     
+
+
+          比太阳晚大约2/4个天空，正午时月升，日落时，月亮大概在正南方向，午夜时月落。
+          初七、初八
+      
+      
+          上凸月（盈凸月）
+          
+     
+
+
+          比太阳晚大约3/4个天空，日落时，月亮大概在东南方向。
+          十一、十二
+      
+      
+          满月（望月）
+          
+     
+
+
+          比太阳晚整个天空，日落时月升，日出时月落。
+          十五、十六
+      
+      
+          下凸月（亏凸月）
+          
+     
+
+
+          比太阳早3/4个天空，太阳在东南方向时，月落。
+          十九、廿
+      
+      
+          下弦月
+          
+     
+
+
+          比太阳早2/4个天空，午夜时月升，日出时，月亮大概在正南方向，正午时月落。
+          廿二，廿三
+      
+      
+          残月
+          
+     
+
+
+          月出后日出，月落后，日落，有点提前，但不多。
+          月末
+      
+  
+
+
+
+从一个新月，到下一个新月，叫一个“朔望月”，月相是连续变化的。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://www.clayhex.com/posts/2024/09/git-repo-migration/" />
-<meta property="og:image" content="https://www.clayhex.com/cover/git.png" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2024-09-19T22:19:02+08:00" />
-<meta property="article:modified_time" content="2024-09-19T22:19:02+08:00" />
+<meta property="og:url" content="https://www.clayhex.com/posts/2024/09/lunar-phase/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-09-21T18:14:29+08:00" />
+<meta property="article:modified_time" content="2024-09-21T18:14:29+08:00" />
 
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="https://www.clayhex.com/cover/git.png" />
-<meta name="twitter:title" content="Git仓库迁移"/>
-<meta name="twitter:description" content="git clone --bare old/repo.git
-cd repo.git
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="月相"/>
+<meta name="twitter:description" content="北半球的月相变化:
 
-# if 有lfs的话
-git lfs fetch --all
-git lfs push --all new/repo.git
-# endif
+  
+      
+          月相
+          图
+          升落
+          时间
+      
+  
+  
+      
+          新月（朔月）
+          \
+          与太阳几乎同升同落，所以地球上完全看不见
+          三十、初一
+      
+      
+          眉月
+          
+     
 
-git push --mirror new/repo.git
-上边这种方式比较简单和快捷，首先使用--bare的方式直接克隆旧服务器上的仓库到本地，这种方式的克隆没有本地工作区的参与。然后使用--mirror的方式推送到新的服务器上就行，推送前，服务器上要先建立出空的仓库。
 
-还有一种就是常规的方式："/>
+          日出后月出，日落后月落，有点延迟，但不多。
+          初三、初四
+      
+      
+          上弦月
+          
+     
+
+
+          比太阳晚大约2/4个天空，正午时月升，日落时，月亮大概在正南方向，午夜时月落。
+          初七、初八
+      
+      
+          上凸月（盈凸月）
+          
+     
+
+
+          比太阳晚大约3/4个天空，日落时，月亮大概在东南方向。
+          十一、十二
+      
+      
+          满月（望月）
+          
+     
+
+
+          比太阳晚整个天空，日落时月升，日出时月落。
+          十五、十六
+      
+      
+          下凸月（亏凸月）
+          
+     
+
+
+          比太阳早3/4个天空，太阳在东南方向时，月落。
+          十九、廿
+      
+      
+          下弦月
+          
+     
+
+
+          比太阳早2/4个天空，午夜时月升，日出时，月亮大概在正南方向，正午时月落。
+          廿二，廿三
+      
+      
+          残月
+          
+     
+
+
+          月出后日出，月落后，日落，有点提前，但不多。
+          月末
+      
+  
+
+
+
+从一个新月，到下一个新月，叫一个“朔望月”，月相是连续变化的。"/>
 
 
 <script type="application/ld+json">
@@ -119,14 +336,14 @@ git push --mirror new/repo.git
     {
       "@type": "ListItem",
       "position":  2 ,
-      "name": "📚 学习",
-      "item": "https://www.clayhex.com/posts/learn/"
+      "name": "🌈 生活",
+      "item": "https://www.clayhex.com/posts/life/"
     }, 
     {
       "@type": "ListItem",
       "position":  3 ,
-      "name": "Git仓库迁移",
-      "item": "https://www.clayhex.com/posts/2024/09/git-repo-migration/"
+      "name": "月相",
+      "item": "https://www.clayhex.com/posts/2024/09/lunar-phase/"
     }
   ]
 }
@@ -135,24 +352,24 @@ git push --mirror new/repo.git
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "Git仓库迁移",
-  "name": "Git仓库迁移",
-  "description": "git clone --bare old/repo.git cd repo.git # if 有lfs的话 git lfs fetch --all git lfs push --all new/repo.git # endif git push --mirror new/repo.git 上边这种方式比较简单和快捷，首先使用--bare的方式直接克隆旧服务器上的仓库到本地，这种方式的克隆没有本地工作区的参与。然后使用--mirror的方式推送到新的服务器上就行，推送前，服务器上要先建立出空的仓库。\n还有一种就是常规的方式：\n",
+  "headline": "月相",
+  "name": "月相",
+  "description": "北半球的月相变化:\n月相 图 升落 时间 新月（朔月） \\ 与太阳几乎同升同落，所以地球上完全看不见 三十、初一 眉月 日出后月出，日落后月落，有点延迟，但不多。 初三、初四 上弦月 比太阳晚大约2/4个天空，正午时月升，日落时，月亮大概在正南方向，午夜时月落。 初七、初八 上凸月（盈凸月） 比太阳晚大约3/4个天空，日落时，月亮大概在东南方向。 十一、十二 满月（望月） 比太阳晚整个天空，日落时月升，日出时月落。 十五、十六 下凸月（亏凸月） 比太阳早3/4个天空，太阳在东南方向时，月落。 十九、廿 下弦月 比太阳早2/4个天空，午夜时月升，日出时，月亮大概在正南方向，正午时月落。 廿二，廿三 残月 月出后日出，月落后，日落，有点提前，但不多。 月末 从一个新月，到下一个新月，叫一个“朔望月”，月相是连续变化的。\n",
   "keywords": [
-    "Git", "Git migration"
+    "Moon", "Lunar phase", "Moon phase"
   ],
-  "articleBody": "git clone --bare old/repo.git cd repo.git # if 有lfs的话 git lfs fetch --all git lfs push --all new/repo.git # endif git push --mirror new/repo.git 上边这种方式比较简单和快捷，首先使用--bare的方式直接克隆旧服务器上的仓库到本地，这种方式的克隆没有本地工作区的参与。然后使用--mirror的方式推送到新的服务器上就行，推送前，服务器上要先建立出空的仓库。\n还有一种就是常规的方式：\n从旧仓库正常克隆下来，或者之前本地已经存在的仓库。 根据需要，可以选择性的推送哪些分支、标签等到新的仓库上。 ",
-  "wordCount" : "200",
+  "articleBody": "北半球的月相变化:\n月相 图 升落 时间 新月（朔月） \\ 与太阳几乎同升同落，所以地球上完全看不见 三十、初一 眉月 日出后月出，日落后月落，有点延迟，但不多。 初三、初四 上弦月 比太阳晚大约2/4个天空，正午时月升，日落时，月亮大概在正南方向，午夜时月落。 初七、初八 上凸月（盈凸月） 比太阳晚大约3/4个天空，日落时，月亮大概在东南方向。 十一、十二 满月（望月） 比太阳晚整个天空，日落时月升，日出时月落。 十五、十六 下凸月（亏凸月） 比太阳早3/4个天空，太阳在东南方向时，月落。 十九、廿 下弦月 比太阳早2/4个天空，午夜时月升，日出时，月亮大概在正南方向，正午时月落。 廿二，廿三 残月 月出后日出，月落后，日落，有点提前，但不多。 月末 从一个新月，到下一个新月，叫一个“朔望月”，月相是连续变化的。\n在南半球观测到的月相和北半球观测的月相，一般是左右相反的，即南半球的上弦月和北半球的下弦月，明暗情况差不错。\n",
+  "wordCount" : "386",
   "inLanguage": "zh",
-  "image":"https://www.clayhex.com/cover/git.png","datePublished": "2024-09-19T22:19:02+08:00",
-  "dateModified": "2024-09-19T22:19:02+08:00",
+  "datePublished": "2024-09-21T18:14:29+08:00",
+  "dateModified": "2024-09-21T18:14:29+08:00",
   "author":{
     "@type": "Person",
     "name": "Clay"
   },
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://www.clayhex.com/posts/2024/09/git-repo-migration/"
+    "@id": "https://www.clayhex.com/posts/2024/09/lunar-phase/"
   },
   "publisher": {
     "@type": "Organization",
@@ -247,13 +464,13 @@ git push --mirror new/repo.git
 
 <article class="post-single">
   <header class="post-header">
-    <div class="breadcrumbs"><a href="https://www.clayhex.com/">主页</a>&nbsp;»&nbsp;<a href="https://www.clayhex.com/posts/">📒 记录</a>&nbsp;»&nbsp;<a href="https://www.clayhex.com/posts/learn/">📚 学习</a></div>
+    <div class="breadcrumbs"><a href="https://www.clayhex.com/">主页</a>&nbsp;»&nbsp;<a href="https://www.clayhex.com/posts/">📒 记录</a>&nbsp;»&nbsp;<a href="https://www.clayhex.com/posts/life/">🌈 生活</a></div>
     <h1 class="post-title entry-hint-parent">
-      Git仓库迁移
+      月相
     </h1>
     <div class="post-meta"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
-        <span>2024-09-19
+        <span>2024-09-21
             &nbsp;&nbsp;
         </span>
     </span>
@@ -266,7 +483,7 @@ git push --mirror new/repo.git
     
     <span id="post_meta_style_3">
         <span class="fa fa-file-word-o"></span>
-        <span>200字
+        <span>386字
             &nbsp;&nbsp;
         </span>
     </span><span id="post_meta_style_5">
@@ -275,55 +492,112 @@ git push --mirror new/repo.git
             &nbsp;&nbsp;
         </span>
     </span>
-    <span id="post_meta_style_6">
-        <span class="fa fa-tags" style="opacity: 0.8"></span>
-        <span>
-            <span class="post-tags-meta">
-                <a href="https://www.clayhex.com/tags/git/" style="color: var(--secondary)!important;">Git</a>
-            </span>
-        </span>
-    </span>
 </span>
 
 </div>
   </header> 
-<figure class="entry-cover1"><img loading="eager" src="https://www.clayhex.com/cover/git.png" alt="">
-        
+  <div class="post-content"><p>北半球的月相变化:</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: center">月相</th>
+          <th style="text-align: center">图</th>
+          <th style="text-align: center">升落</th>
+          <th style="text-align: center">时间</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: center">新月（朔月）</td>
+          <td style="text-align: center">\</td>
+          <td style="text-align: center">与太阳几乎同升同落，所以地球上完全看不见</td>
+          <td style="text-align: center">三十、初一</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">眉月</td>
+          <td style="text-align: center"><center><figure>
+    <img loading="lazy" src="./imgs/1.jpg" width="30%"/> 
 </figure>
-  <div class="post-content"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git clone --bare old/repo.git
-</span></span><span class="line"><span class="cl"><span class="nb">cd</span> repo.git
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># if 有lfs的话</span>
-</span></span><span class="line"><span class="cl">git lfs fetch --all
-</span></span><span class="line"><span class="cl">git lfs push --all new/repo.git
-</span></span><span class="line"><span class="cl"><span class="c1"># endif</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">git push --mirror new/repo.git
-</span></span></code></pre></div><p>上边这种方式比较简单和快捷，首先使用<code>--bare</code>的方式直接克隆旧服务器上的仓库到本地，这种方式的克隆没有本地工作区的参与。然后使用<code>--mirror</code>的方式推送到新的服务器上就行，推送前，服务器上要先建立出空的仓库。</p>
-<hr>
-<p>还有一种就是常规的方式：</p>
-<ol>
-<li>从旧仓库正常克隆下来，或者之前本地已经存在的仓库。</li>
-<li>根据需要，可以选择性的推送哪些分支、标签等到新的仓库上。</li>
-</ol>
+</center></td>
+          <td style="text-align: center">日出后月出，日落后月落，有点延迟，但不多。</td>
+          <td style="text-align: center">初三、初四</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">上弦月</td>
+          <td style="text-align: center"><center><figure>
+    <img loading="lazy" src="./imgs/2.jpg" width="30%"/> 
+</figure>
+</center></td>
+          <td style="text-align: center">比太阳晚大约2/4个天空，正午时月升，日落时，月亮大概在正南方向，午夜时月落。</td>
+          <td style="text-align: center">初七、初八</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">上凸月（盈凸月）</td>
+          <td style="text-align: center"><center><figure>
+    <img loading="lazy" src="./imgs/3.jpg" width="30%"/> 
+</figure>
+</center></td>
+          <td style="text-align: center">比太阳晚大约3/4个天空，日落时，月亮大概在东南方向。</td>
+          <td style="text-align: center">十一、十二</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">满月（望月）</td>
+          <td style="text-align: center"><center><figure>
+    <img loading="lazy" src="./imgs/4.jpg" width="30%"/> 
+</figure>
+</center></td>
+          <td style="text-align: center">比太阳晚整个天空，日落时月升，日出时月落。</td>
+          <td style="text-align: center">十五、十六</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">下凸月（亏凸月）</td>
+          <td style="text-align: center"><center><figure>
+    <img loading="lazy" src="./imgs/5.jpg" width="30%"/> 
+</figure>
+</center></td>
+          <td style="text-align: center">比太阳早3/4个天空，太阳在东南方向时，月落。</td>
+          <td style="text-align: center">十九、廿</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">下弦月</td>
+          <td style="text-align: center"><center><figure>
+    <img loading="lazy" src="./imgs/6.png" width="30%"/> 
+</figure>
+</center></td>
+          <td style="text-align: center">比太阳早2/4个天空，午夜时月升，日出时，月亮大概在正南方向，正午时月落。</td>
+          <td style="text-align: center">廿二，廿三</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">残月</td>
+          <td style="text-align: center"><center><figure>
+    <img loading="lazy" src="./imgs/7.jpg" width="30%"/> 
+</figure>
+</center></td>
+          <td style="text-align: center">月出后日出，月落后，日落，有点提前，但不多。</td>
+          <td style="text-align: center">月末</td>
+      </tr>
+  </tbody>
+</table>
+<ul>
+<li>
+<p>从一个新月，到下一个新月，叫一个“朔望月”，月相是连续变化的。</p>
+</li>
+<li>
+<p>在南半球观测到的月相和北半球观测的月相，一般是左右相反的，即南半球的上弦月和北半球的下弦月，明暗情况差不错。</p>
+</li>
+</ul>
 
 
   </div>
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://www.clayhex.com/tags/git/">Git</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://www.clayhex.com/posts/2024/09/lunar-phase/">
-    <span class="title">« 上一篇</span>
-    <br>
-    <span>月相</span>
-  </a>
-  <a class="next" href="https://www.clayhex.com/posts/2024/08/miniforge-replaces-anaconda/">
+  <a class="next" href="https://www.clayhex.com/posts/2024/09/git-repo-migration/">
     <span class="title">下一篇 »</span>
     <br>
-    <span>Anaconda的平替 - Miniforge</span>
+    <span>Git仓库迁移</span>
   </a>
 </nav>
 

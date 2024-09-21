@@ -6,8 +6,99 @@
     <description>Recent content in 🌈 生活 on Clay&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Mon, 01 Apr 2024 21:33:51 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 21 Sep 2024 18:14:29 +0800</lastBuildDate>
     <atom:link href="https://www.clayhex.com/posts/life/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>月相</title>
+      <link>https://www.clayhex.com/posts/2024/09/lunar-phase/</link>
+      <pubDate>Sat, 21 Sep 2024 18:14:29 +0800</pubDate>
+      <guid>https://www.clayhex.com/posts/2024/09/lunar-phase/</guid>
+      <description>&lt;p&gt;北半球的月相变化:&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;月相&lt;/th&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;图&lt;/th&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;升落&lt;/th&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;时间&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;新月（朔月）&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;\&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;与太阳几乎同升同落，所以地球上完全看不见&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;三十、初一&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;眉月&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;center&gt;&lt;figure&gt;
+    &lt;img loading=&#34;lazy&#34; src=&#34;./imgs/1.jpg&#34; width=&#34;30%&#34;/&gt; 
+&lt;/figure&gt;
+&lt;/center&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;日出后月出，日落后月落，有点延迟，但不多。&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;初三、初四&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;上弦月&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;center&gt;&lt;figure&gt;
+    &lt;img loading=&#34;lazy&#34; src=&#34;./imgs/2.jpg&#34; width=&#34;30%&#34;/&gt; 
+&lt;/figure&gt;
+&lt;/center&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;比太阳晚大约2/4个天空，正午时月升，日落时，月亮大概在正南方向，午夜时月落。&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;初七、初八&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;上凸月（盈凸月）&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;center&gt;&lt;figure&gt;
+    &lt;img loading=&#34;lazy&#34; src=&#34;./imgs/3.jpg&#34; width=&#34;30%&#34;/&gt; 
+&lt;/figure&gt;
+&lt;/center&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;比太阳晚大约3/4个天空，日落时，月亮大概在东南方向。&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;十一、十二&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;满月（望月）&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;center&gt;&lt;figure&gt;
+    &lt;img loading=&#34;lazy&#34; src=&#34;./imgs/4.jpg&#34; width=&#34;30%&#34;/&gt; 
+&lt;/figure&gt;
+&lt;/center&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;比太阳晚整个天空，日落时月升，日出时月落。&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;十五、十六&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;下凸月（亏凸月）&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;center&gt;&lt;figure&gt;
+    &lt;img loading=&#34;lazy&#34; src=&#34;./imgs/5.jpg&#34; width=&#34;30%&#34;/&gt; 
+&lt;/figure&gt;
+&lt;/center&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;比太阳早3/4个天空，太阳在东南方向时，月落。&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;十九、廿&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;下弦月&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;center&gt;&lt;figure&gt;
+    &lt;img loading=&#34;lazy&#34; src=&#34;./imgs/6.png&#34; width=&#34;30%&#34;/&gt; 
+&lt;/figure&gt;
+&lt;/center&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;比太阳早2/4个天空，午夜时月升，日出时，月亮大概在正南方向，正午时月落。&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;廿二，廿三&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;残月&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;&lt;center&gt;&lt;figure&gt;
+    &lt;img loading=&#34;lazy&#34; src=&#34;./imgs/7.jpg&#34; width=&#34;30%&#34;/&gt; 
+&lt;/figure&gt;
+&lt;/center&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;月出后日出，月落后，日落，有点提前，但不多。&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;月末&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;从一个新月，到下一个新月，叫一个“朔望月”，月相是连续变化的。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>四月生活主题</title>
       <link>https://www.clayhex.com/posts/2024/04/2024-april-life-topic/</link>
