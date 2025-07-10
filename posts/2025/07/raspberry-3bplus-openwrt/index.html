@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="zh" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Raspberry 3B&#43; 做旁路网关 | Clay&#39;s Blog</title>
+<meta name="keywords" content="Raspberry, OpenWrt, ImmortalWrt">
+<meta name="description" content="1. Raspberry固件准备 1.1 固件下载 选择了OpenWrt的子分支ImmortalWrt，理由是国内操作比较方便，内置了一些常用的插件。 下载地址：https://firmware-selector.immortalwrt.org/ 页面中的设备，我选择了3B&#43;的32Bits版本，目">
+<meta name="author" content="Clay">
+<link rel="canonical" href="https://www.clayhex.com/posts/2025/07/raspberry-3bplus-openwrt/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.js" onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://www.clayhex.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.clayhex.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.clayhex.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://www.clayhex.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://www.clayhex.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="zh" href="https://www.clayhex.com/posts/2025/07/raspberry-3bplus-openwrt/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><meta property="og:title" content="Raspberry 3B&#43; 做旁路网关" />
+<meta property="og:description" content="1. Raspberry固件准备 1.1 固件下载 选择了OpenWrt的子分支ImmortalWrt，理由是国内操作比较方便，内置了一些常用的插件。 下载地址：https://firmware-selector.immortalwrt.org/ 页面中的设备，我选择了3B&#43;的32Bits版本，目" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.clayhex.com/posts/2025/07/raspberry-3bplus-openwrt/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2025-07-05T19:21:23+08:00" />
+<meta property="article:modified_time" content="2025-07-05T19:21:23+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Raspberry 3B&#43; 做旁路网关"/>
+<meta name="twitter:description" content="1. Raspberry固件准备 1.1 固件下载 选择了OpenWrt的子分支ImmortalWrt，理由是国内操作比较方便，内置了一些常用的插件。 下载地址：https://firmware-selector.immortalwrt.org/ 页面中的设备，我选择了3B&#43;的32Bits版本，目"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "📒 记录",
+      "item": "https://www.clayhex.com/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "📚 学习",
+      "item": "https://www.clayhex.com/posts/learn/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "Raspberry 3B+ 做旁路网关",
+      "item": "https://www.clayhex.com/posts/2025/07/raspberry-3bplus-openwrt/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Raspberry 3B+ 做旁路网关",
+  "name": "Raspberry 3B\u002b 做旁路网关",
+  "description": "1. Raspberry固件准备 1.1 固件下载 选择了OpenWrt的子分支ImmortalWrt，理由是国内操作比较方便，内置了一些常用的插件。 下载地址：https://firmware-selector.immortalwrt.org/ 页面中的设备，我选择了3B+的32Bits版本，目",
+  "keywords": [
+    "Raspberry", "OpenWrt", "ImmortalWrt"
+  ],
+  "articleBody": "1. Raspberry固件准备 1.1 固件下载 选择了OpenWrt的子分支ImmortalWrt，理由是国内操作比较方便，内置了一些常用的插件。\n下载地址：https://firmware-selector.immortalwrt.org/\n页面中的设备，我选择了3B+的32Bits版本，目前的最新版本。\n由于是首次刷入，选择了Factory版本\n使用raspberry官方的烧录器刷入镜像\n2. OpenWrt配置 2.1 关闭DHCP功能 树莓派开机以后，会建立一个名为\"ImmortalWrt\"，密码为空的热点，用PC或者手机连接。\n登录时，账户root，密码password。\n作为旁路网关，应该尽量减少原来网络的修改，它不应该负责dhcp分配，dhcp的工作还应该是主路由来负责。\n所以，OpenWrt里先关闭DHCP服务：\n系统 -\u003e 接口 -\u003e lan -\u003e 编辑 -\u003e DHCP服务器 -\u003e 忽略此接口\n2.2 配置静态IP 系统 -\u003e 接口 -\u003e lan -\u003e 编辑 -\u003e 常规设置\n协议应该是: 静态地址\n旁路网关最好和主路由在同一个子网内，我的主路由是192.168.1.1。所以我把OpenWrt的设置如下：\nIPv4: 192.168.1.100 IPv4网关: 192.168.1.1 DNS服务器: 192.168.1.1（这个要设置一下，否则OpenWrt里边没法做解析） 这里IPv4的地址只要没被占用就可以。IPv4网关必须用主路由IP，因为OpenWrt处理后的数据，要流向主路由。\nIPv4 DNS服务器 点击\"保存并应用\"，让配置生效。\n此时，PC或者手机可以断开该wifi连接了（大概率自动断了），使用之前主路由的wifi即可。\n2.3 禁用默认wifi 因为是作为旁路网关，不需要它的wifi功能，所以，直接禁用掉这个无线接口。\n3. 扩容 3.1 为什么扩容 系统使用的是在SquashFS版本，在这个版本中，文件系统是只读的。那么怎么做到保存配置和安装插件呢？答案就是OverLay。\n在SquashFS + Overlay方案中，可写的配置文件和各种插件，其实并非安装到系统目录中，而是写到了OverLay目录下，然后通过系统路径的映射，找到存放在OverLay中的实际文件。\n所以，OverLay分区的大小，决定了可安装插件的数量。\n下边是默认的磁盘分配情况：\n状态 -\u003e 概览 系统 -\u003e 挂载点 默认的OverLay分区只有大约300MB的大小，但是我树莓派使用SD卡是32GB的，很明显，绝大部分空间都浪费了。\n3.2 扩容 使用SSH登录系统，安装磁盘管理工具cfdisk\nopkg update opkg install cfdisk opkg的这两个操作都需要访问互联网，如果失败了，回去检查树莓派的DNS设置。\n查看磁盘情况\ncfdisk /dev/mmcblk0 /dev/mmcblk0 是树莓派上的SD卡设备\nmmcblk0p1是SD卡上第一个分区\nmmcblk0p2是SD卡上第二个分区\n从OpenWrt中的磁盘使用情况可以看到:\nmmcblk0p1挂载到了/boot mmcblk0p2挂载到了/rom 可以看到，在磁盘的最后有很大块的空间未使用。\n在空闲空间上创建一个新的分区 mmcblk0p3\n新分区 格式化该分区:\nmkfs.ext4 /dev/mmcblk0p3 把分区挂载到系统中\nmkdir /mnt/ex_overlay mount /dev/mmcblk0p3 /mnt/ex_overlay 将原来的文件都copy到新的overlay中\ncp -r /overlay/* /mnt/ex_overlay 文件拷贝完成以后，就可以取消掉这个挂载点了，用不到了。\nunmount /mnt/ex_overlay 到OpenWrt中 系统 -\u003e 挂载点 -\u003e 添加\nOpenWrt添加挂载点 然后保存并应用。\n重启即可，可以看到ImmortalWrt中自带的插件都还在。\n4. 其他设置 美化ui可以安装luci-theme-argon主题 由于工作在主路由器的后方，所以可以关闭SYN-flood防御功能。 luci界面的ssh功能 luci-i18n-ttyd-zh-cn 开启clash以后，国内的下行流量也会经过旁路网关，但树莓派3b+的有线连接带宽受限于USB2.0，大约在300M。对于国内流量，这会成为带宽瓶颈，所以，在clash中开启“绕过xxxx”，下行的国内流量便会从主路由直接到达发起请求的设备。而其他路径都要经过树莓派。 Tip 不是常规用法，亦可解决问题。\n树莓派终于不吃灰了。 ",
+  "wordCount" : "1586",
+  "inLanguage": "zh",
+  "datePublished": "2025-07-05T19:21:23+08:00",
+  "dateModified": "2025-07-05T19:21:23+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "Clay"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.clayhex.com/posts/2025/07/raspberry-3bplus-openwrt/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Clay's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.clayhex.com/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://www.clayhex.com/" accesskey="h" title="Clay&#39;s Blog (Alt + H)">
+                <img src="https://www.clayhex.com/img/avatar.jpg" alt="" aria-label="logo"
+                    height="35">Clay&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch">
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://www.clayhex.com/search" title="🔍 搜索 (Alt &#43; /)" accesskey=/>
+                    <span>🔍 搜索</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.clayhex.com/" title="🏡 主页">
+                    <span>🏡 主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.clayhex.com/posts" title="📒 记录">
+                    <span>📒 记录</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.clayhex.com/tags" title="📛 标签">
+                    <span>📛 标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.clayhex.com/archives/" title="📁 归档">
+                    <span>📁 归档</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.clayhex.com/about" title="📖 关于">
+                    <span>📖 关于</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://www.clayhex.com/">主页</a>&nbsp;»&nbsp;<a href="https://www.clayhex.com/posts/">📒 记录</a>&nbsp;»&nbsp;<a href="https://www.clayhex.com/posts/learn/">📚 学习</a></div>
+    <h1 class="post-title entry-hint-parent">
+      Raspberry 3B&#43; 做旁路网关
+    </h1>
+    <div class="post-meta"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2025-07-05
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>1586字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    <span id="post_meta_style_6">
+        <span class="fa fa-tags" style="opacity: 0.8"></span>
+        <span>
+            <span class="post-tags-meta">
+                <a href="https://www.clayhex.com/tags/raspberry/" style="color: var(--secondary)!important;">Raspberry</a>
+            </span>
+        </span>
+    </span>
+</span>
+
+</div>
+  </header> <aside id="toc-container" class="toc-container wide">
+    <div class="toc">
+        <details  open>
+            <summary accesskey="c" title="(Alt + C)">
+                <span class="details">目录</span>
+            </summary>
+
+            <div class="inner"><ul>
+                    <li>
+                        <a href="#1-raspberry%e5%9b%ba%e4%bb%b6%e5%87%86%e5%a4%87" aria-label="1. Raspberry固件准备">1. Raspberry固件准备</a><ul>
+                            
+                    <li>
+                        <a href="#11-%e5%9b%ba%e4%bb%b6%e4%b8%8b%e8%bd%bd" aria-label="1.1 固件下载">1.1 固件下载</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#2-openwrt%e9%85%8d%e7%bd%ae" aria-label="2. OpenWrt配置">2. OpenWrt配置</a><ul>
+                            
+                    <li>
+                        <a href="#21-%e5%85%b3%e9%97%addhcp%e5%8a%9f%e8%83%bd" aria-label="2.1 关闭DHCP功能">2.1 关闭DHCP功能</a></li>
+                    <li>
+                        <a href="#22-%e9%85%8d%e7%bd%ae%e9%9d%99%e6%80%81ip" aria-label="2.2 配置静态IP">2.2 配置静态IP</a></li>
+                    <li>
+                        <a href="#23-%e7%a6%81%e7%94%a8%e9%bb%98%e8%ae%a4wifi" aria-label="2.3 禁用默认wifi">2.3 禁用默认wifi</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#3-%e6%89%a9%e5%ae%b9" aria-label="3. 扩容">3. 扩容</a><ul>
+                            
+                    <li>
+                        <a href="#31-%e4%b8%ba%e4%bb%80%e4%b9%88%e6%89%a9%e5%ae%b9" aria-label="3.1 为什么扩容">3.1 为什么扩容</a></li>
+                    <li>
+                        <a href="#32-%e6%89%a9%e5%ae%b9" aria-label="3.2 扩容">3.2 扩容</a></li></ul>
+                    </li>
+                    <li>
+                        <a href="#4-%e5%85%b6%e4%bb%96%e8%ae%be%e7%bd%ae" aria-label="4. 其他设置">4. 其他设置</a>
+                    </li>
+                </ul>
+            </div>
+        </details>
+    </div>
+</aside>
+<script>
+    let activeElement;
+    let elements;
+    window.addEventListener('DOMContentLoaded', function (event) {
+        checkTocPosition();
+
+        elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+         
+         activeElement = elements[0];
+         const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+         document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+     }, false);
+
+    window.addEventListener('resize', function(event) {
+        checkTocPosition();
+    }, false);
+
+    window.addEventListener('scroll', () => {
+        
+        activeElement = Array.from(elements).find((element) => {
+            if ((getOffsetTop(element) - window.pageYOffset) > 0 && 
+                (getOffsetTop(element) - window.pageYOffset) < window.innerHeight/2) {
+                return element;
+            }
+        }) || activeElement
+
+        elements.forEach(element => {
+             const id = encodeURI(element.getAttribute('id')).toLowerCase();
+             if (element === activeElement){
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+             } else {
+                 document.querySelector(`.inner ul li a[href="#${id}"]`).classList.remove('active');
+             }
+         })
+     }, false);
+
+    const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+    const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+    const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+    function checkTocPosition() {
+        const width = document.body.scrollWidth;
+
+        if (width - main - (toc * 2) - (gap * 4) > 0) {
+            document.getElementById("toc-container").classList.add("wide");
+        } else {
+            document.getElementById("toc-container").classList.remove("wide");
+        }
+    }
+
+    function getOffsetTop(element) {
+        if (!element.getClientRects().length) {
+            return 0;
+        }
+        let rect = element.getBoundingClientRect();
+        let win = element.ownerDocument.defaultView;
+        return rect.top + win.pageYOffset;   
+    }
+</script>
+  <div class="post-content"><h1 id="1-raspberry固件准备">1. Raspberry固件准备<a hidden class="anchor" aria-hidden="true" href="#1-raspberry固件准备">#</a></h1>
+<h2 id="11-固件下载">1.1 固件下载<a hidden class="anchor" aria-hidden="true" href="#11-固件下载">#</a></h2>
+<p>选择了OpenWrt的子分支<code>ImmortalWrt</code>，理由是国内操作比较方便，内置了一些常用的插件。<br>
+下载地址：<a href="https://firmware-selector.immortalwrt.org/" target="_blank" rel="noopener" style="color:#42b983";>https://firmware-selector.immortalwrt.org/</a><br>
+页面中的设备，我选择了3B+的32Bits版本，目前的最新版本。</p>
+<center><figure>
+    <img loading="lazy" src="pic1.png" width="100%"/> 
+</figure>
+</center>
+<p>由于是首次刷入，选择了<code>Factory</code>版本</p>
+<center><figure>
+    <img loading="lazy" src="pic2.png" width="100%"/> 
+</figure>
+</center>
+<p>使用raspberry官方的烧录器刷入镜像</p>
+<center><figure>
+    <img loading="lazy" src="flash.png" width="100%"/> 
+</figure>
+</center>
+<h1 id="2-openwrt配置">2. OpenWrt配置<a hidden class="anchor" aria-hidden="true" href="#2-openwrt配置">#</a></h1>
+<h2 id="21-关闭dhcp功能">2.1 关闭DHCP功能<a hidden class="anchor" aria-hidden="true" href="#21-关闭dhcp功能">#</a></h2>
+<p>树莓派开机以后，会建立一个名为&quot;ImmortalWrt&quot;，密码为空的热点，用PC或者手机连接。<br>
+登录时，账户root，密码password。</p>
+<p>作为旁路网关，应该尽量减少原来网络的修改，它不应该负责dhcp分配，dhcp的工作还应该是主路由来负责。<br>
+所以，OpenWrt里先关闭DHCP服务：<br>
+系统 -&gt; 接口 -&gt; lan -&gt; 编辑 -&gt; DHCP服务器 -&gt; 忽略此接口</p>
+<center><figure>
+    <img loading="lazy" src="disable_dhcp.png" width="100%"/> 
+</figure>
+</center>
+<h2 id="22-配置静态ip">2.2 配置静态IP<a hidden class="anchor" aria-hidden="true" href="#22-配置静态ip">#</a></h2>
+<p>系统 -&gt; 接口 -&gt; lan -&gt; 编辑 -&gt; 常规设置</p>
+<p>协议应该是: 静态地址</p>
+<p>旁路网关最好和主路由在同一个子网内，我的主路由是<code>192.168.1.1</code>。所以我把OpenWrt的设置如下：</p>
+<ul>
+<li>IPv4: 192.168.1.100</li>
+<li>IPv4网关: 192.168.1.1</li>
+<li>DNS服务器: 192.168.1.1（这个要设置一下，否则OpenWrt里边没法做解析）</li>
+</ul>
+<p>这里IPv4的地址只要没被占用就可以。IPv4网关必须用主路由IP，因为OpenWrt处理后的数据，要流向主路由。</p>
+<center><figure>
+    <img loading="lazy" src="lan_ip.png" width="100%"/> <figcaption>
+            IPv4
+        </figcaption>
+</figure>
+</center>
+<center><figure>
+    <img loading="lazy" src="lan_dns.png" width="100%"/> <figcaption>
+            DNS服务器
+        </figcaption>
+</figure>
+</center>
+<p>点击&quot;保存并应用&quot;，让配置生效。<br>
+此时，PC或者手机可以断开该wifi连接了（大概率自动断了），使用之前主路由的wifi即可。</p>
+<h2 id="23-禁用默认wifi">2.3 禁用默认wifi<a hidden class="anchor" aria-hidden="true" href="#23-禁用默认wifi">#</a></h2>
+<p>因为是作为旁路网关，不需要它的wifi功能，所以，直接禁用掉这个无线接口。</p>
+<center><figure>
+    <img loading="lazy" src="disable_wifi.png" width="100%"/> 
+</figure>
+</center>
+<h1 id="3-扩容">3. 扩容<a hidden class="anchor" aria-hidden="true" href="#3-扩容">#</a></h1>
+<h2 id="31-为什么扩容">3.1 为什么扩容<a hidden class="anchor" aria-hidden="true" href="#31-为什么扩容">#</a></h2>
+<p>系统使用的是在<code>SquashFS</code>版本，在这个版本中，文件系统是只读的。那么怎么做到保存配置和安装插件呢？答案就是<code>OverLay</code>。<br>
+在<code>SquashFS + Overlay</code>方案中，可写的配置文件和各种插件，其实并非安装到系统目录中，而是写到了<code>OverLay</code>目录下，然后通过系统路径的映射，找到存放在<code>OverLay</code>中的实际文件。</p>
+<p>所以，<code>OverLay</code>分区的大小，决定了可安装插件的数量。</p>
+<p>下边是默认的磁盘分配情况：</p>
+<center><figure>
+    <img loading="lazy" src="disk_usage1.png" width="100%"/> <figcaption>
+            状态 -&gt; 概览
+        </figcaption>
+</figure>
+</center>
+<center><figure>
+    <img loading="lazy" src="disk_usage2.png" width="100%"/> <figcaption>
+            系统 -&gt; 挂载点
+        </figcaption>
+</figure>
+</center>
+<p>默认的<code>OverLay</code>分区只有大约300MB的大小，但是我树莓派使用SD卡是32GB的，很明显，绝大部分空间都浪费了。</p>
+<h2 id="32-扩容">3.2 扩容<a hidden class="anchor" aria-hidden="true" href="#32-扩容">#</a></h2>
+<p>使用SSH登录系统，安装磁盘管理工具<code>cfdisk</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">opkg update
+</span></span><span class="line"><span class="cl">opkg install cfdisk
+</span></span></code></pre></div><p>opkg的这两个操作都需要访问互联网，如果失败了，回去检查树莓派的DNS设置。</p>
+<p>查看磁盘情况</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cfdisk /dev/mmcblk0
+</span></span></code></pre></div><p><code>/dev/mmcblk0</code> 是树莓派上的SD卡设备</p>
+<p><code>mmcblk0p1</code>是SD卡上第一个分区<br>
+<code>mmcblk0p2</code>是SD卡上第二个分区</p>
+<p>从OpenWrt中的磁盘使用情况可以看到:</p>
+<ul>
+<li><code>mmcblk0p1</code>挂载到了<code>/boot</code></li>
+<li><code>mmcblk0p2</code>挂载到了<code>/rom</code></li>
+</ul>
+<center><figure>
+    <img loading="lazy" src="cfdisk.png" width="100%"/> 
+</figure>
+</center>
+<p>可以看到，在磁盘的最后有很大块的空间未使用。<br>
+在空闲空间上创建一个新的分区 mmcblk0p3</p>
+<center><figure>
+    <img loading="lazy" src="cfdisk_new.png" width="100%"/> <figcaption>
+            新分区
+        </figcaption>
+</figure>
+</center>
+<p>格式化该分区:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkfs.ext4 /dev/mmcblk0p3
+</span></span></code></pre></div><center><figure>
+    <img loading="lazy" src="mkfs.png" width="100%"/> 
+</figure>
+</center>
+<p>把分区挂载到系统中</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir /mnt/ex_overlay
+</span></span><span class="line"><span class="cl">mount /dev/mmcblk0p3 /mnt/ex_overlay
+</span></span></code></pre></div><p>将原来的文件都copy到新的overlay中</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cp -r /overlay/* /mnt/ex_overlay
+</span></span></code></pre></div><p>文件拷贝完成以后，就可以取消掉这个挂载点了，用不到了。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">unmount /mnt/ex_overlay
+</span></span></code></pre></div><p>到OpenWrt中 系统 -&gt; 挂载点 -&gt; 添加</p>
+<center><figure>
+    <img loading="lazy" src="openwrt_mount.png" width="100%"/> <figcaption>
+            OpenWrt添加挂载点
+        </figcaption>
+</figure>
+</center>
+<p>然后保存并应用。</p>
+<p>重启即可，可以看到<code>ImmortalWrt</code>中自带的插件都还在。</p>
+<h1 id="4-其他设置">4. 其他设置<a hidden class="anchor" aria-hidden="true" href="#4-其他设置">#</a></h1>
+<ul>
+<li>美化ui可以安装<code>luci-theme-argon</code>主题</li>
+<li>由于工作在主路由器的后方，所以可以关闭SYN-flood防御功能。</li>
+<li>luci界面的ssh功能 <code>luci-i18n-ttyd-zh-cn</code></li>
+<li>开启<code>clash</code>以后，国内的下行流量也会经过旁路网关，但树莓派3b+的有线连接带宽受限于USB2.0，大约在300M。对于国内流量，这会成为带宽瓶颈，所以，在clash中开启“绕过xxxx”，下行的国内流量便会从主路由直接到达发起请求的设备。而其他路径都要经过树莓派。</li>
+</ul>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw"></i>Tip<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">不是常规用法，亦可解决问题。<br>
+树莓派终于不吃灰了。</div>
+        </div>
+    </div>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://www.clayhex.com/tags/raspberry/">Raspberry</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://www.clayhex.com/posts/2024/09/software-i18n/">
+    <span class="title">下一篇 »</span>
+    <br>
+    <span>软件的国际化 - i18n</span>
+  </a>
+</nav>
+
+  </footer><script>
+    function createGiscusScript(data) {
+      const giscusScript = document.createElement('script');
+  
+      
+      Object.entries(data).forEach(([key, value]) => giscusScript.setAttribute(key, value));
+  
+      
+      document.querySelector('article').appendChild(giscusScript);
+  
+      
+      const toggle = document.querySelector('label[for="switch_default"]');
+      if (toggle) {
+        toggle.addEventListener('click', function () {
+          
+          const theme = document.body.classList.contains('dark') ? 'transparent_dark' : 'light';
+          giscusScript.setAttribute('data-theme', theme);
+  
+          
+          sendMessage({ setConfig: { theme } });
+        });
+      }
+    }
+  
+    function sendMessage(message) {
+      const iframe = document.querySelector('iframe.giscus-frame');
+      if (iframe) {
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+    }
+  
+    document.addEventListener('DOMContentLoaded', function () {
+      
+      const giscusAttributes = {
+        src: 'https://giscus.app/client.js',
+        'data-repo': 'Clay-Hex/BlogComments',
+        'data-repo-id': 'R_kgDOLexoRQ',
+        'data-category': 'Announcements',
+        'data-category-id': 'DIC_kwDOLexoRc4Cd5Ao',
+        'data-mapping': 'pathname',
+        'data-strict': '1',
+        'data-reactions-enabled': '1',
+        'data-emit-metadata': '0',
+        'data-input-position': 'top',
+        'data-lang': 'zh-CN',
+        crossorigin: 'anonymous',
+        async: '',
+      };
+  
+      
+      giscusAttributes['data-theme'] = document.body.classList.contains('dark')
+        ? 'transparent_dark'
+        : 'light';
+  
+      
+      createGiscusScript(giscusAttributes);
+  
+      
+      const bodyObserver = new MutationObserver(() => {
+        const theme = document.body.classList.contains('dark') ? 'transparent_dark' : 'light';
+        sendMessage({ setConfig: { theme } });
+      });
+  
+      bodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    });
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+  </script>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2025 <a href="https://www.clayhex.com/">Clay&#39;s Blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <span class="topInner">
+        <svg class="topSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z"/>
+        </svg>
+        <span id="read_progress"></span>
+    </span>
+</a>
+
+<script>
+    document.addEventListener('scroll', function (e) {
+        const readProgress = document.getElementById("read_progress");
+        const scrollHeight = document.documentElement.scrollHeight;
+        const clientHeight = document.documentElement.clientHeight;
+        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        readProgress.innerText = ((scrollTop / (scrollHeight - clientHeight)).toFixed(2) * 100).toFixed(0);
+    })
+</script>
+<script>
+    let details = document.getElementsByClassName('details')
+    details = details || [];
+    for (let i = 0; i < details.length; i++) {
+        let element = details[i]
+        const summary = element.getElementsByClassName('details-summary')[0];
+        if (summary) {
+            summary.addEventListener('click', () => {
+                element.classList.toggle('open');
+            }, false);
+        }
+    }
+</script>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = '复制';
+
+        function copyingDone() {
+            copybutton.innerHTML = '已复制';
+            setTimeout(() => {
+                copybutton.innerHTML = '复制';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        let language = codeblock.className.replaceAll("language-", "")
+        let macTool = document.createElement("div")
+        let macTool1 = document.createElement("div")
+        let macTool2 = document.createElement("div")
+        let macTool3 = document.createElement("div")
+        let languageType = document.createElement("div")
+        languageType.innerText = language
+        macTool.setAttribute('class', 'mac-tool')
+        macTool1.setAttribute('class', 'mac bb1')
+        macTool2.setAttribute('class', 'mac bb2')
+        macTool3.setAttribute('class', 'mac bb3')
+        languageType.setAttribute('class', 'language-type')
+        macTool.appendChild(macTool1)
+        macTool.appendChild(macTool2)
+        macTool.appendChild(macTool3)
+        macTool.appendChild(languageType)
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+            container.appendChild(macTool)
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+            container.appendChild(macTool)
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+            container.appendChild(macTool)
+        }
+    });
+</script>
+</body>
+
+</html>

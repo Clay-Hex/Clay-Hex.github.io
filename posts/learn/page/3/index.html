@@ -177,15 +177,105 @@
 <article class="post-entry">
   <div class="post-info">
     <header class="entry-header">
+      <h2 class="entry-hint-parent">C&#43;&#43;学习记录(5) 类
+      </h2>
+    </header>
+    <div class="entry-content">
+      <p>0. 类的4个默认函数 4个函数：构造函数、析构函数、拷贝构造函数、赋值号重载函数。 在定义类时，如果没有自定义这些函数，编译器会提供默认的函数，在默认的函数中，构造函数、析构函数默认空实现，拷贝构造函数、赋值号重载函数默认是浅拷贝。 拷贝构造函数作用： 参数是一个同类型的对象，直接拷贝这个...</p>
+    </div>
+    <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2021-02-17
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>3982字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    <span id="post_meta_style_6">
+        <span class="fa fa-tags" style="opacity: 0.8"></span>
+        <span>
+            <span class="post-tags-meta">
+                <a href="https://www.clayhex.com/tags/c&#43;&#43;/" style="color: var(--secondary)!important;">C&#43;&#43;</a>
+            </span>
+        </span>
+    </span>
+</span></footer>
+  </div> 
+
+  <a class="entry-link" aria-label="post link to C&#43;&#43;学习记录(5) 类" href="https://www.clayhex.com/posts/2021/02/cpp-class/"></a>
+</article>
+
+<article class="post-entry">
+  <div class="post-info">
+    <header class="entry-header">
+      <h2 class="entry-hint-parent">C&#43;&#43;学习记录(4) 引用
+      </h2>
+    </header>
+    <div class="entry-content">
+      <p>0. 引用的本质 本质：引用在C&#43;&#43;内部的实现是一个指针常量（* const）。 const就限制了必须要初始化，并且初始化以后不可更改。 它不是一个对象，所以没有引用的引用。 1. 注意事项 引用必须初始化 引用在初始化后不可修改 2. 引用做函数参数 与指针传递相似 3. 引用做函数返回值 与指针一样，不要返回局...</p>
+    </div>
+    <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2021-02-16
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>228字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    <span id="post_meta_style_6">
+        <span class="fa fa-tags" style="opacity: 0.8"></span>
+        <span>
+            <span class="post-tags-meta">
+                <a href="https://www.clayhex.com/tags/c&#43;&#43;/" style="color: var(--secondary)!important;">C&#43;&#43;</a>
+            </span>
+        </span>
+    </span>
+</span></footer>
+  </div> 
+
+  <a class="entry-link" aria-label="post link to C&#43;&#43;学习记录(4) 引用" href="https://www.clayhex.com/posts/2021/02/cpp-reference/"></a>
+</article>
+
+<article class="post-entry">
+  <div class="post-info">
+    <header class="entry-header">
       <h2 class="entry-hint-parent">C&#43;&#43;学习记录(3) 常量指针与指针常量
       </h2>
     </header>
     <div class="entry-content">
-      <p>两个比较容易混淆的概念。
-0. 记忆方法 const int * p; int * const p; int const * p; 这是常见的三种写法，按照从左至右的顺序记忆，按照从右至左的顺序理解。
-记忆 只关注const 和 * 的先后先后顺序，const读做常量，*读做指针。
-参考《Effective c&#43;&#43;》Item21上的做法，如果const位于星号的左侧，则const就是用来修饰指针所指向的变量，即指针指向为常量；如果const位于星号的右侧，const就是修饰指针本身，即指针本身是常量。
-...</p>
+      <p>两个比较容易混淆的概念。 0. 记忆方法 const int * p; int * const p; int const * p; 这是常见的三种写法，按照从左至右的顺序记忆，按照从右至左的顺序理解。 记忆 只关注const 和 * 的先后先后顺序，const读做常量，*读做指针。 参考《Effective c&#43;&#43;》Item21上的做法，如果const位于星号的左侧...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -232,12 +322,7 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>1. 单调栈 1.1 可解决的问题 单调栈的使用场景时分有限，只处理一种典型的问题，叫做 Next Greater Element。
-例如：在一个数组中，每个数左边（右边）第一个比它大（小）的数是什么。
-1.2 详解 直接上例子解释它。
-题目：给出一个原始数组 a[3, 4, 2, 7, 5]，输出每个数左边第一个比它小的数，如果不存在则输出-1。
-解释：第一个3左边没有数，答案是-1，4左边第一个小的数是3，2左边没有比2小的数，答案是-1，7左边第一个小的数是2，5左边第一个小的数是2，所以最后答案是[-1, 3, -1, 2, 2]。
-...</p>
+      <p>1. 单调栈 1.1 可解决的问题 单调栈的使用场景时分有限，只处理一种典型的问题，叫做 Next Greater Element。 例如：在一个数组中，每个数左边（右边）第一个比它大（小）的数是什么。 1.2 详解 直接上例子解释它。 题目：给出一个原始数组 a[3, 4, 2, 7, 5]，输出每个数左边第一个比它小的数，如果不存在则输出-1。 解释...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -284,15 +369,7 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>Lambda表达式 Lambda表达式
-形式 [capture](params) -&gt; return-type{ function body } 说明 capture 需要捕获的外部变量列表（这里的外部变量不包括程序的全局变量，指的是匿名函数父作用域内的变量）。
-如果这个匿名函数需要调用本匿名函数以外的变量，那么就需要在这个[ ] 中进行捕获，捕获包括捕获的变量名称和捕获的方式（值和引用）。
-例如：
-[ ] 表示不捕获外部的任何变量 [=] 表示捕获外部的所有变量（父作用域内），是以值的方式捕获（不可修改）。 [&amp;] 表示捕获外部的所有变量（父作用域内），是以引用的方式捕获（可修改）。 [=, &amp;x, &amp;y] 表示捕获外部的所有变量（父作用域内），其中x和y以引用的方式捕获，其他变量以值的方式捕获。 [&amp;, x, y] 表示捕获外部的所有变量（父作用域内），其中x和y以值的方式捕获，其他变量以引用的方式捕获。 capture注意事项 如果不进行变量捕获，那么在匿名函数内，不可以使用外部变量。
-捕获列表内，不允许重复捕获。比如 [=, a]，=已经说明所有的变量（包括a）以值的方式捕获，后边的a又进行了一次说明，这是不允许的。
-捕获任何非父作用域内变量或者程序的全局变量，都会出错。
-[this]只能以值的方式捕获
-...</p>
+      <p>Lambda表达式 Lambda表达式 形式 [capture](params) -&gt; return-type{ function body } 说明 capture 需要捕获的外部变量列表（这里的外部变量不包括程序的全局变量，指的是匿名函数父作用域内的变量）。 如果这个匿名函数需要调用本匿名函数以外的变量，那么就需要在这个[ ] 中进行捕获，捕获包括捕获的变量名称和捕获的方式（值和引用）。 例...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -339,14 +416,7 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>0. 重构 重构是对程序内部的架构的调整。
-重构强调的是在不改变&#34;软件外部可观察的行为&#34;前提下，对内部结构进行调整，使得从程序的外部功能上看，没有任何变化。
-如下例子：
-重构前代码如下：
-#include &lt;iostream&gt; class child { private: public: child(){}; void func(){ std::cout &lt;&lt; 123 &lt;&lt; std::endl; } }; int main(int argc, char const *argv[]) { child a; a.func(); return 0; } 程序运行后，输出123.
-重构后的代码如下：
-#include &lt;iostream&gt; class child { private: public: child(){}; void f1(){std::cout &lt;&lt; 1;} void f2(){std::cout &lt;&lt; 2;} void f3(){std::cout &lt;&lt; 3;} void func(){ f1(); f2(); f3(); std::cout &lt;&lt; std::endl; } }; int main(int argc, char const *argv[]) { child a; a.func(); return 0; } main函数执行的时候，依然是调用a的func方法，程序的输出也是123，对于外部来说没有任何改变，但是func内部的实现方式已经改变。
-...</p>
+      <p>0. 重构 重构是对程序内部的架构的调整。 重构强调的是在不改变&#34;软件外部可观察的行为&#34;前提下，对内部结构进行调整，使得从程序的外部功能上看，没有任何变化。 如下例子： 重构前代码如下： #include &lt;iostream&gt; class child { private: public: child(){}; void func(){ std::cout &lt;&lt; 123 &lt;&lt; std::endl; } }; int main(int argc, char const *argv[]) { child a; a.func(); return 0; } 程序运行后，输出123. 重...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -393,10 +463,7 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>Step0 准备文件 opencv-4.4.0.zip opencv_contrib-4.4.0.zip cmake-3.19.1-win64-x64_2.msi w_openvino_toolkit_p_2020.4.287.exe Step1 解压文件 安装cmake-3.19.1-win64-x64_2.msi和w_openvino_toolkit_p_2020.4.287.exe，都默认就好。
-将opencv-4.4.0.zip解压到文件夹opencv440中
-将opencv_contrib-4.4.0.zip解压到文件夹opencv440/opencv_contrib中
-...</p>
+      <p>Step0 准备文件 opencv-4.4.0.zip opencv_contrib-4.4.0.zip cmake-3.19.1-win64-x64_2.msi w_openvino_toolkit_p_2020.4.287.exe Step1 解压文件 安装cmake-3.19.1-win64-x64_2.msi和w_openvino_toolkit_p_2020.4.287.exe，都默认就好。 将opencv-4.4.0.zip解压到文件夹opencv440中 将opencv_contrib-4.4....</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -435,14 +502,7 @@
       </h2>
     </header>
     <div class="entry-content">
-      <p>0. 欧几里得算法 欧几里得算法用于求解两个数的最大公约数。代码如下:
-int gcd(int a, int b){ if(b == 0) return a; return gcd(b, a % b); } 当b为0时，结束递归，此时a即为a和b的最大公约数。
-1. 裴蜀定理 定理内容：
-如果a、b均是整数，则一定存在整数x和y，使得ax &#43; by = gcd(a, b)成立。
-我们可以再深层次的理解一下式子ax &#43; by = gcd(a, b)的含义，也就是说，整数a和整数b进行线性运算，可以拼凑出他们的最大公约数。再想一想，是不是也可以拼凑出他们最大公约数的整数倍？是的，可以拼凑出他们最大公约数的在整数倍，只要x和y进行对应的放大或缩小就可以了。
-那也就是说，只要等号右侧是gcd(a,b)的整数倍，就一定存在整数x和整数y。（注意这里，后边用扩展欧几里得求解线性同余方程时会用到）
-注意定理中说的是一定存在整数x和整数y，但是并没有告诉我们如何找到x和y，扩展欧几里得算法可以找到整数x和整数y。
-...</p>
+      <p>0. 欧几里得算法 欧几里得算法用于求解两个数的最大公约数。代码如下: int gcd(int a, int b){ if(b == 0) return a; return gcd(b, a % b); } 当b为0时，结束递归，此时a即为a和b的最大公约数。 1. 裴蜀定理 定理内容： 如果a、b均是整数，则一定存在整数x和y，使得ax &#43; by = gcd(a, b)成立。 我们可以再深层次的理解一下式子ax &#43; by = gcd(a, b...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -489,10 +549,7 @@ int gcd(int a, int b){ if(b == 0) return a; return gcd(b, a % b); } 当b为0时�
       </h2>
     </header>
     <div class="entry-content">
-      <p>0. 前言 网上这种东西不太多，我也是看了不少资料弄出来了，觉得应该写点东西出来。
-我用的板子不是arduino，用的是stm32，开发工具是Arduino IDE，因为Arduino IDE集成了较多的函数库，我们不用管底层的一些东西，都封装好了，写着方便一些。
-当然，不管你板子是什么，这篇文章主要讲的不是板子的问题，而是如何通过串口的AT指令控制GA6-B这种支持GPRS的短信模块来实现MQTT协议，以及微信小程序显示单片机发布的数据。
-...</p>
+      <p>0. 前言 网上这种东西不太多，我也是看了不少资料弄出来了，觉得应该写点东西出来。 我用的板子不是arduino，用的是stm32，开发工具是Arduino IDE，因为Arduino IDE集成了较多的函数库，我们不用管底层的一些东西，都封装好了，写着方便一些。 当然，不管你板子是什么，这篇...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -531,11 +588,7 @@ int gcd(int a, int b){ if(b == 0) return a; return gcd(b, a % b); } 当b为0时�
       </h2>
     </header>
     <div class="entry-content">
-      <p>模板代码：
-typedef long long ll; ll quick_pow(ll a,ll b){ ll res = 1; while(b &gt; 0){ if(b &amp; 1){ res *= a; } a *= a; b &gt;&gt;= 1; } return res; } 这里以a^10为例，说一下对快速幂代码的理解。
-右下角的o表示这是十进制数 这里写错了，图片中不应该是o，应该d，d表示这是十进制数 ，b表示这是二进制数。可以得到以下的几个式子，都是逐步变换得出来的。
-最后一个式子可以很好的理解模板代码，可以看到，等号右侧有4项，这4项的幂次是1010，也就是10的二进制表达的每一位。所以，这就要求出幂指数10的二进制的每一位，而且，最后一个式子中，幂次是0的项（第二项和第四项）其实是1，对结果没有贡献，那我们就可以考虑，求出幂指数10的每一位以后，进行判断，如果这一位是0，那就不予考虑了，如果是1的话，就把这一项乘到原有的结果中，也就是代码中的这几行
-...</p>
+      <p>模板代码： typedef long long ll; ll quick_pow(ll a,ll b){ ll res = 1; while(b &gt; 0){ if(b &amp; 1){ res *= a; } a *= a; b &gt;&gt;= 1; } return res; } 这里以a^10为例，说一下对快速幂代码的理解。 右下角的o表示这是十进制数 这里写错了，图片中不应该是o，应该d，d表示这是十进制数 ，b表示这是二进制数。可以得到以下的几个式子，都是逐步变换得出来的。 最后一个式...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -584,7 +637,7 @@ typedef long long ll; ll quick_pow(ll a,ll b){ ll res = 1; while(b &gt; 0){ if(b
     </main>
     
 <footer class="footer">
-    <span>&copy; 2024 <a href="https://www.clayhex.com/">Clay&#39;s Blog</a></span>
+    <span>&copy; 2025 <a href="https://www.clayhex.com/">Clay&#39;s Blog</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
@@ -608,6 +661,19 @@ typedef long long ll; ll quick_pow(ll a,ll b){ ll res = 1; while(b &gt; 0){ if(b
         const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
         readProgress.innerText = ((scrollTop / (scrollHeight - clientHeight)).toFixed(2) * 100).toFixed(0);
     })
+</script>
+<script>
+    let details = document.getElementsByClassName('details')
+    details = details || [];
+    for (let i = 0; i < details.length; i++) {
+        let element = details[i]
+        const summary = element.getElementsByClassName('details-summary')[0];
+        if (summary) {
+            summary.addEventListener('click', () => {
+                element.classList.toggle('open');
+            }, false);
+        }
+    }
 </script>
 
 <script>

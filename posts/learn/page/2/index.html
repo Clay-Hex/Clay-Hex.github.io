@@ -177,16 +177,97 @@
 <article class="post-entry">
   <div class="post-info">
     <header class="entry-header">
+      <h2 class="entry-hint-parent">常见排序算法及稳定性
+      </h2>
+    </header>
+    <div class="entry-content">
+      <p>1. 代码 /* * @Brief: 常见排序算法汇总 * @Author: * @Date: 2021-07-01 */ #include &lt;iostream&gt; #include &lt;algorithm&gt; #include &lt;vector&gt; #include &lt;queue&gt; using namespace std; void printArray(int *a, int len){ for(int i = 0; i &lt; len; i&#43;&#43;) cout &lt;&lt; a[i] &lt;&lt; &#34; &#34;; cout &lt;&lt; endl &lt;&lt; endl; } void bubbleSort(int *a, int len){ for(int i = 0; i &lt; len - 1; i&#43;&#43;){ for(int j = 0; j &lt; len - i; j&#43;&#43;){ if(a[j] &gt; a[j&#43;1]) swap(a[j], a[j&#43;1]); } } } void selectSort(int *a, int len){ for(int i = 0; i &lt; len; i&#43;&#43;){ int mi = i; for(int j = i; j &lt; len; j&#43;&#43;){ if(a[j] &lt; a[mi]) mi = j; } if(i != mi) swap(a[i], a[mi]); } } void insertionSort(int *a, int len){ for(int i = 0; i &lt; len;...</p>
+    </div>
+    <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2021-12-20
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>1023字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    <span id="post_meta_style_6">
+        <span class="fa fa-tags" style="opacity: 0.8"></span>
+        <span>
+            <span class="post-tags-meta">
+                <a href="https://www.clayhex.com/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" style="color: var(--secondary)!important;">数据结构与算法</a>
+            </span>
+        </span>
+    </span>
+</span></footer>
+  </div> 
+
+  <a class="entry-link" aria-label="post link to 常见排序算法及稳定性" href="https://www.clayhex.com/posts/2021/12/sorting-algorithm-stability/"></a>
+</article>
+
+<article class="post-entry">
+  <div class="post-info">
+    <header class="entry-header">
+      <h2 class="entry-hint-parent">2C4T与4C4T在计算密集型任务下的效率对比
+      </h2>
+    </header>
+    <div class="entry-content">
+      <p>1. 环境 机器1：Intel(R) Core(TM) i5-4200H CPU @ 2.80GHz，双核四线程，win10 x64，16G内存 机器2：Intel(R) Core(TM) i3-9100T CPU @ 3.10GHz，四核四线程。wn10 x64，8G内存 目的：大概测试一下2C4T与4C4T在计算密集型任务下的效率提升对比，内存大小、频率暂且忽略。 方法：使...</p>
+    </div>
+    <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
+        <span class="fa fa-calendar"></span>
+        <span>2021-10-03
+            &nbsp;&nbsp;
+        </span>
+    </span>
+    
+    
+    
+    
+    
+    
+    
+    <span id="post_meta_style_3">
+        <span class="fa fa-file-word-o"></span>
+        <span>624字
+            &nbsp;&nbsp;
+        </span>
+    </span><span id="post_meta_style_5">
+        <span class="fa fa-user-o"></span>
+        <span>Clay
+            &nbsp;&nbsp;
+        </span>
+    </span>
+</span></footer>
+  </div> 
+
+  <a class="entry-link" aria-label="post link to 2C4T与4C4T在计算密集型任务下的效率对比" href="https://www.clayhex.com/posts/2021/10/2c4t-4c4t-compute-intensive-task/"></a>
+</article>
+
+<article class="post-entry">
+  <div class="post-info">
+    <header class="entry-header">
       <h2 class="entry-hint-parent">C&#43;&#43;学习记录(13) new与delete
       </h2>
     </header>
     <div class="entry-content">
-      <p>0. placement new 即 原地构造。
-用法：
-int *p = new int(10); // new operator new(p) int(1000); // 在 p 指向的内存上 构造一个int对象，即placement new // 此时 *P 为 1000。 因为是在一个已有的空间上构造对象，所以，空间的释放，就由free或者delete负责了。
-0.1 重载placement new 与后边的 3 ：operator new的重载无异，就是可以多增加几个函数，但是，第一个参数必须是std::size_t 类型，这个参数接收的是 new 后边类型的大小，不用显式传参，默认会传递。
-重载示例：
-...</p>
+      <p>0. placement new 即 原地构造。 用法： int *p = new int(10); // new operator new(p) int(1000); // 在 p 指向的内存上 构造一个int对象，即placement new // 此时 *P 为 1000。 因为是在一个已有的空间上构造对象，所以，空间的释放，就由free或者delete负责了。 0.1 重载placement new 与后边的 3 ：operator new的重载无...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -233,14 +314,7 @@ int *p = new int(10); // new operator new(p) int(1000); // 在 p 指向的内存
       </h2>
     </header>
     <div class="entry-content">
-      <p>0. 小数在计算机中的存储 两种方法：
-定点 浮点 1. 定点数 顾名思义，小数点的位置固定的。
-也就是说，用固定数量的bit存储整数部分，也用固定数量的bit存储小数部分，另外再用一个bit存储符号位。
-计算时，将三个部分拼接起来，加个小数点即可。
-优点：小数点位置固定，方便计算。
-缺点：表示输的范围受限。
-2. 浮点数 浮点数在计算机中的存储依赖科学计数法。
-...</p>
+      <p>0. 小数在计算机中的存储 两种方法： 定点 浮点 1. 定点数 顾名思义，小数点的位置固定的。 也就是说，用固定数量的bit存储整数部分，也用固定数量的bit存储小数部分，另外再用一个bit存储符号位。 计算时，将三个部分拼接起来，加个小数点即可。 优点：小数点位置固定，方便计算。 缺点：表示输的范围受...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -279,11 +353,7 @@ int *p = new int(10); // new operator new(p) int(1000); // 在 p 指向的内存
       </h2>
     </header>
     <div class="entry-content">
-      <p> 0. 必要性 C语言中的类型转换，没有安全检查，安全性需要程序猿来保证，C&#43;&#43;提供了4种类型转换的方法，在一定程度上保证转换的安全性。
-重点是 dynamic_cast
-1. const_cast 仅用于去除类型的const属性，也是四种类型转换中，唯一可以去掉const限制的方法。
-只能转换 指针、引用、this（在类内的时候用）。 2. static_cast 隐式转换能转的，它都能转，但是也有例外（父类指针 转 子类指针）。
-...</p>
+      <p>0. 必要性 C语言中的类型转换，没有安全检查，安全性需要程序猿来保证，C&#43;&#43;提供了4种类型转换的方法，在一定程度上保证转换的安全性。 重点是 dynamic_cast 1. const_cast 仅用于去除类型的const属性，也是四种类型转换中，唯一可以去掉const限制的方法。 只能转换 指针、引用、this（在类内的时候用）。 2. static_cast 隐...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -330,13 +400,7 @@ int *p = new int(10); // new operator new(p) int(1000); // 在 p 指向的内存
       </h2>
     </header>
     <div class="entry-content">
-      <p>1. 什么是智能指针 简而言之，为了更安全的使用指针。
-实现方式简单来说，就是用一个模板类把一般的指针包装起来。用这个类来维护内部指针的释放操作。
-std中有四种智能指针。
-auto_ptr（已弃用） unique_ptr shared_ptr weak_ptr 2. auto_ptr 比较简单的智能指针，实现逻辑如下代码。
-实现的原则是：内存空间只能由一个指针所拥有。
-存在的问题：拷贝和赋值后，原对象内部的指针会为空，有风险。
-...</p>
+      <p>1. 什么是智能指针 简而言之，为了更安全的使用指针。 实现方式简单来说，就是用一个模板类把一般的指针包装起来。用这个类来维护内部指针的释放操作。 std中有四种智能指针。 auto_ptr（已弃用） unique_ptr shared_ptr weak_ptr 2. auto_ptr 比较简单的智能指针，实现逻辑如下代码。 实现的原则是：内存空间只能由一个指针所拥有。...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -383,10 +447,7 @@ auto_ptr（已弃用） unique_ptr shared_ptr weak_ptr 2. auto_ptr 比较简单�
       </h2>
     </header>
     <div class="entry-content">
-      <p>0. 原材料 抓包工具：wireshark
-许多文章都是使用浏览器去访问一个网站，抓http的包，进而分析下层的tcp协议过程，但是数据比较多，不清晰，所以我采用了TCP调试助手，这样的话，没有http数据的干预，比较清晰。
-1. 环境 借用www.huawei.com的ip地址183.66.110.167。
-...</p>
+      <p>0. 原材料 抓包工具：wireshark 许多文章都是使用浏览器去访问一个网站，抓http的包，进而分析下层的tcp协议过程，但是数据比较多，不清晰，所以我采用了TCP调试助手，这样的话，没有http数据的干预，比较清晰。 1. 环境 借用www.huawei.com的ip地址183.66.1...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -433,9 +494,7 @@ auto_ptr（已弃用） unique_ptr shared_ptr weak_ptr 2. auto_ptr 比较简单�
       </h2>
     </header>
     <div class="entry-content">
-      <p>0. 为什么要内存对齐？ 经过内存对齐之后，一个最最主要的原因是可以使得CPU的内存访问速度大大提升。
-内存空间按照byte划分，从理论上讲似乎对任何类型的变量的访问可以从任何地址开始，但实际情况是在访问特定变量的时候经常在特定的内存地址访问，这就需要各类型数据按照一定的规则在空间上排列，而不是顺序的一个接一个的排放，这就是对齐。
-...</p>
+      <p>0. 为什么要内存对齐？ 经过内存对齐之后，一个最最主要的原因是可以使得CPU的内存访问速度大大提升。 内存空间按照byte划分，从理论上讲似乎对任何类型的变量的访问可以从任何地址开始，但实际情况是在访问特定变量的时候经常在特定的内存地址访问，这就需要各类型数据按照一定的规则在空间上排列...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -482,9 +541,7 @@ auto_ptr（已弃用） unique_ptr shared_ptr weak_ptr 2. auto_ptr 比较简单�
       </h2>
     </header>
     <div class="entry-content">
-      <p>转自：https://www.cnblogs.com/stemon/p/4406824.html
-前几天女票问了我一个阿里的面试题，是有关C&#43;&#43;语言的const常量的，其实她一提出来我就知道考察的点了：肯定是const常量的内存不是分配在read-only的存储区的，const常量的内存分配区是很普通的栈或者全局区域。也就是说const常量只是编译器在编译的时候做检查，根本不存在什么read-only的区域。
-...</p>
+      <p>转自：https://www.cnblogs.com/stemon/p/4406824.html 前几天女票问了我一个阿里的面试题，是有关C&#43;&#43;语言的const常量的，其实她一提出来我就知道考察的点了：肯定是const常量的内存不是分配在read-only的存储区的，const常量...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -531,12 +588,7 @@ auto_ptr（已弃用） unique_ptr shared_ptr weak_ptr 2. auto_ptr 比较简单�
       </h2>
     </header>
     <div class="entry-content">
-      <p>序： 记录学习过程中自己的理解以及遇到的问题，慢慢补充。
-若有错误，还希望各位大佬不吝赐教。
-0. 零零散散 0.1 公开数据集 Middlebury：https://vision.middlebury.edu/stereo/data/(室内)
-KITTI：http://www.cvlibs.net/datasets/kitti/stereo(室外驾驶)
-SceneFlow：https://lmb.informatik.uni-freiburg.de/resources/datasets
-...</p>
+      <p>序： 记录学习过程中自己的理解以及遇到的问题，慢慢补充。 若有错误，还希望各位大佬不吝赐教。 0. 零零散散 0.1 公开数据集 Middlebury：https://vision.middlebury.edu/stereo/data/(室内) KITTI：http://www.cvlibs.net/...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -553,7 +605,7 @@ SceneFlow：https://lmb.informatik.uni-freiburg.de/resources/datasets
     
     <span id="post_meta_style_3">
         <span class="fa fa-file-word-o"></span>
-        <span>3017字
+        <span>3012字
             &nbsp;&nbsp;
         </span>
     </span><span id="post_meta_style_5">
@@ -583,11 +635,7 @@ SceneFlow：https://lmb.informatik.uni-freiburg.de/resources/datasets
       </h2>
     </header>
     <div class="entry-content">
-      <p>0. 原材料 libSGM开源库是一个使用CUDA对半全局匹配算法SGM的加速实现版本。
-英伟达显卡（算力 &gt;= 3.5） cuda环境（我的版本是cuda 10.0） OpenCV（版本 &gt;= 3.0） Cmake（版本&gt;=3.1） 1. 源码下载和编译 1.0 代码clone 开源库地址：
-https://github.com/fixstars/libSGM
-先把代码clone到本地来。
-...</p>
+      <p>0. 原材料 libSGM开源库是一个使用CUDA对半全局匹配算法SGM的加速实现版本。 英伟达显卡（算力 &gt;= 3.5） cuda环境（我的版本是cuda 10.0） OpenCV（版本 &gt;= 3.0） Cmake（版本&gt;=3.1） 1. 源码下载和编译 1.0 代码clone 开源库地址： https://github.com/fixstars/libSGM 先把代码clone到本...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -634,12 +682,7 @@ https://github.com/fixstars/libSGM
       </h2>
     </header>
     <div class="entry-content">
-      <p>0. 原料 windows系统的主机 mosquitto软件 1. 下载和安装mosquitto mosquitto可以自己到GitHub上下载源码根据自己实际需求进行编译，也可以直接使用官方提供的二进制文件，我这里直接用的官方二进制文件。
-到http://mosquitto.org/files/binary/下载对应windows版本的mqtt服务端软件。
-我下载了这一版。
-2. 配置mosquitto 只需要配置mosquitto.conf文件。
-根据我的实际需求，要开启匿名登录和远程访问。
-...</p>
+      <p>0. 原料 windows系统的主机 mosquitto软件 1. 下载和安装mosquitto mosquitto可以自己到GitHub上下载源码根据自己实际需求进行编译，也可以直接使用官方提供的二进制文件，我这里直接用的官方二进制文件。 到http://mosquitto.org/files/...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -678,12 +721,7 @@ https://github.com/fixstars/libSGM
       </h2>
     </header>
     <div class="entry-content">
-      <p>0. 模板 C&#43;&#43;中除了有面向对象的思想，还有泛型编程的思想，泛型编程利用的主要技术就是模板。
-C&#43;&#43;中两种模板：函数模板、类模板
-语法：
-template&lt;typename T&gt; 函数声明或定义 含义：
-template 固定的，声明创建模板 typename 表明后边的T是一种数据类型，也可以用class代替 T 类似形参，任意的合法字符都可以，习惯上用 T 模板有两种类型推导的方式，一种是编译器自动推导，另外一种是程序猿手动指定：
-...</p>
+      <p>0. 模板 C&#43;&#43;中除了有面向对象的思想，还有泛型编程的思想，泛型编程利用的主要技术就是模板。 C&#43;&#43;中两种模板：函数模板、类模板 语法： template&lt;typename T&gt; 函数声明或定义 含义： template 固定的，声明创建模板 typename 表明后边的T是一种数据类型，也可以用class代替 T 类似形参，任意的合法字符都可以，习惯上用 T 模板有两种...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -730,11 +768,7 @@ template 固定的，声明创建模板 typename 表明后边的T是一种数据
       </h2>
     </header>
     <div class="entry-content">
-      <p>0. 基本语法 多态是面向对象的三大特性之一。
-多态：多态即调用成员函数时，会根据调用函数的对象的类型来执行不同的函数。
-多态分为两类
-静态多态：函数重载 和 运算符重载 属于静态多态，是对函数名的复用。 动态多态：派生类和虚函数实现运行时多态。 静态多态的函数地址早绑定， 编译阶段确定函数地址。 动态多态的函数地址晚绑定， 运行阶段确定函数地址。 引入虚函数，就是为了通过函数重写实现多态的效果。
-...</p>
+      <p>0. 基本语法 多态是面向对象的三大特性之一。 多态：多态即调用成员函数时，会根据调用函数的对象的类型来执行不同的函数。 多态分为两类 静态多态：函数重载 和 运算符重载 属于静态多态，是对函数名的复用。 动态多态：派生类和虚函数实现运行时多态。 静态多态的函数地址早绑定， 编译阶段确定函数地址。 动态多...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -781,13 +815,7 @@ template 固定的，声明创建模板 typename 表明后边的T是一种数据
       </h2>
     </header>
     <div class="entry-content">
-      <p>0. 基本语法 继承是面向对象的三大特性之一。
-class 子类 ： 继承方式 父类
-从父类继承来的表现其共性，而新增的成员表现其个性。
-1. 继承方式 三种继承方式
-public protected private 父类中的private成员，无论哪种方式都不能访问。 2. 继承中的对象模型 问题：从父类继承来的成员，哪些属于子类对象中？
-输出子类的sizeof可以看出，父类中的所有非静态成员都会被子类继承下去，无论哪种继承方式。
-...</p>
+      <p>0. 基本语法 继承是面向对象的三大特性之一。 class 子类 ： 继承方式 父类 从父类继承来的表现其共性，而新增的成员表现其个性。 1. 继承方式 三种继承方式 public protected private 父类中的private成员，无论哪种方式都不能访问。 2. 继承中的对象模型 问题：从父类继承来的成员，哪些属于子类对象中？ 输出子类的sizeof可以...</p>
     </div>
     <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
         <span class="fa fa-calendar"></span>
@@ -826,109 +854,6 @@ public protected private 父类中的private成员，无论哪种方式都不能
 
   <a class="entry-link" aria-label="post link to C&#43;&#43;学习记录(6) 继承" href="https://www.clayhex.com/posts/2021/02/cpp-inheritance/"></a>
 </article>
-
-<article class="post-entry">
-  <div class="post-info">
-    <header class="entry-header">
-      <h2 class="entry-hint-parent">C&#43;&#43;学习记录(5) 类
-      </h2>
-    </header>
-    <div class="entry-content">
-      <p>0. 类的4个默认函数 4个函数：构造函数、析构函数、拷贝构造函数、赋值号重载函数。
-在定义类时，如果没有自定义这些函数，编译器会提供默认的函数，在默认的函数中，构造函数、析构函数默认空实现，拷贝构造函数、赋值号重载函数默认是浅拷贝。
-拷贝构造函数作用：
-参数是一个同类型的对象，直接拷贝这个参数的所有属性，注意，这个拷贝默认是浅拷贝，需要深拷贝的话需要重载拷贝构造函数。 【注】
-...</p>
-    </div>
-    <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
-        <span class="fa fa-calendar"></span>
-        <span>2021-02-17
-            &nbsp;&nbsp;
-        </span>
-    </span>
-    
-    
-    
-    
-    
-    
-    
-    <span id="post_meta_style_3">
-        <span class="fa fa-file-word-o"></span>
-        <span>3982字
-            &nbsp;&nbsp;
-        </span>
-    </span><span id="post_meta_style_5">
-        <span class="fa fa-user-o"></span>
-        <span>Clay
-            &nbsp;&nbsp;
-        </span>
-    </span>
-    <span id="post_meta_style_6">
-        <span class="fa fa-tags" style="opacity: 0.8"></span>
-        <span>
-            <span class="post-tags-meta">
-                <a href="https://www.clayhex.com/tags/c&#43;&#43;/" style="color: var(--secondary)!important;">C&#43;&#43;</a>
-            </span>
-        </span>
-    </span>
-</span></footer>
-  </div> 
-
-  <a class="entry-link" aria-label="post link to C&#43;&#43;学习记录(5) 类" href="https://www.clayhex.com/posts/2021/02/cpp-class/"></a>
-</article>
-
-<article class="post-entry">
-  <div class="post-info">
-    <header class="entry-header">
-      <h2 class="entry-hint-parent">C&#43;&#43;学习记录(4) 引用
-      </h2>
-    </header>
-    <div class="entry-content">
-      <p>0. 引用的本质 本质：引用在C&#43;&#43;内部的实现是一个指针常量（* const）。
-const就限制了必须要初始化，并且初始化以后不可更改。
-它不是一个对象，所以没有引用的引用。
-1. 注意事项 引用必须初始化 引用在初始化后不可修改 2. 引用做函数参数 与指针传递相似
-3. 引用做函数返回值 与指针一样，不要返回局部变量（栈区空间）的引用 函数的调用可以作为左值 int&amp; test(){ static int a = 10; return a; } int main(){ int &amp;ss = test(); test() = 100; // 引用作为左值 cout &lt;&lt; ss &lt;&lt; endl; // 输出100 return 0; } 4. 常量引用 作用：在函数中用来修饰形参，防止误操作。
-...</p>
-    </div>
-    <footer class="entry-footer"><span class="parent-post-meta"><span id="post_meta_style_1">
-        <span class="fa fa-calendar"></span>
-        <span>2021-02-16
-            &nbsp;&nbsp;
-        </span>
-    </span>
-    
-    
-    
-    
-    
-    
-    
-    <span id="post_meta_style_3">
-        <span class="fa fa-file-word-o"></span>
-        <span>228字
-            &nbsp;&nbsp;
-        </span>
-    </span><span id="post_meta_style_5">
-        <span class="fa fa-user-o"></span>
-        <span>Clay
-            &nbsp;&nbsp;
-        </span>
-    </span>
-    <span id="post_meta_style_6">
-        <span class="fa fa-tags" style="opacity: 0.8"></span>
-        <span>
-            <span class="post-tags-meta">
-                <a href="https://www.clayhex.com/tags/c&#43;&#43;/" style="color: var(--secondary)!important;">C&#43;&#43;</a>
-            </span>
-        </span>
-    </span>
-</span></footer>
-  </div> 
-
-  <a class="entry-link" aria-label="post link to C&#43;&#43;学习记录(4) 引用" href="https://www.clayhex.com/posts/2021/02/cpp-reference/"></a>
-</article>
 <footer class="page-footer">
   <nav class="pagination">
     <a class="prev" href="https://www.clayhex.com/posts/learn/">
@@ -941,7 +866,7 @@ const就限制了必须要初始化，并且初始化以后不可更改。
     </main>
     
 <footer class="footer">
-    <span>&copy; 2024 <a href="https://www.clayhex.com/">Clay&#39;s Blog</a></span>
+    <span>&copy; 2025 <a href="https://www.clayhex.com/">Clay&#39;s Blog</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
@@ -965,6 +890,19 @@ const就限制了必须要初始化，并且初始化以后不可更改。
         const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
         readProgress.innerText = ((scrollTop / (scrollHeight - clientHeight)).toFixed(2) * 100).toFixed(0);
     })
+</script>
+<script>
+    let details = document.getElementsByClassName('details')
+    details = details || [];
+    for (let i = 0; i < details.length; i++) {
+        let element = details[i]
+        const summary = element.getElementsByClassName('details-summary')[0];
+        if (summary) {
+            summary.addEventListener('click', () => {
+                element.classList.toggle('open');
+            }, false);
+        }
+    }
 </script>
 
 <script>

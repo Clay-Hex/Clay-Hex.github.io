@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Raspberry on Clay&#39;s Blog</title>
+    <link>https://www.clayhex.com/tags/raspberry/</link>
+    <description>Recent content in Raspberry on Clay&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Sat, 05 Jul 2025 19:21:23 +0800</lastBuildDate>
+    <atom:link href="https://www.clayhex.com/tags/raspberry/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Raspberry 3B&#43; 做旁路网关</title>
+      <link>https://www.clayhex.com/posts/2025/07/raspberry-3bplus-openwrt/</link>
+      <pubDate>Sat, 05 Jul 2025 19:21:23 +0800</pubDate>
+      <guid>https://www.clayhex.com/posts/2025/07/raspberry-3bplus-openwrt/</guid>
+      <description>1. Raspberry固件准备 1.1 固件下载 选择了OpenWrt的子分支ImmortalWrt，理由是国内操作比较方便，内置了一些常用的插件。 下载地址：https://firmware-selector.immortalwrt.org/ 页面中的设备，我选择了3B+的32Bits版本，目</description>
+    </item>
+  </channel>
+</rss>

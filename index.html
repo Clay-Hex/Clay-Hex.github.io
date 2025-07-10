@@ -2,7 +2,7 @@
 <html lang="zh" dir="auto">
 
 <head>
-	<meta name="generator" content="Hugo 0.134.3"><meta charset="utf-8">
+	<meta name="generator" content="Hugo 0.123.7"><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
@@ -75,7 +75,7 @@
   "@type": "Organization",
   "name": "Clay's Blog",
   "url": "https://www.clayhex.com/",
-  "description": "Clay的博客,Clay's Blog,hugo,paperMod,c++",
+  "description": "Clay的博客,Clay\u0026#39;s Blog,hugo,paperMod,c++",
   "thumbnailUrl": "https://www.clayhex.com/favicon.ico",
   "sameAs": [
       
@@ -185,7 +185,7 @@
     </main>
     
 <footer class="footer">
-    <span>&copy; 2024 <a href="https://www.clayhex.com/">Clay&#39;s Blog</a></span>
+    <span>&copy; 2025 <a href="https://www.clayhex.com/">Clay&#39;s Blog</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
@@ -209,6 +209,19 @@
         const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
         readProgress.innerText = ((scrollTop / (scrollHeight - clientHeight)).toFixed(2) * 100).toFixed(0);
     })
+</script>
+<script>
+    let details = document.getElementsByClassName('details')
+    details = details || [];
+    for (let i = 0; i < details.length; i++) {
+        let element = details[i]
+        const summary = element.getElementsByClassName('details-summary')[0];
+        if (summary) {
+            summary.addEventListener('click', () => {
+                element.classList.toggle('open');
+            }, false);
+        }
+    }
 </script>
 
 <script>
